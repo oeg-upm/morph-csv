@@ -22,8 +22,8 @@ def jsnoIterator(json):
                 element['delimiter'] = getDelimiter(table)
                 element['skipRows'] = getSkipRows(table)
                 element['null'] = getNullValue(table)
-                element['max'] = getMax(table)
-                element['min'] = getMin(table)
+                element['max'] = getExtremes(table,['maximum', 'maxInclusive'], ['maxExclusive'])
+                element['min'] = getExtremes(table, ['minimum', 'minInclusive'], ['minExclusive'])
                 element['dateFormat'] = getDateFormat(table)
                 element['booelanFormat'] = getBooleanFormat(table)
                 element['dateCols'] = getDateCols(table)
@@ -48,8 +48,8 @@ def getTitles(table):
             titles = table['rowTitles']
         elif('rowTitle' in table.keys() and str(table['rowTitle']) not in emptyValues):
             title  = table['rowTitle']
-        elif('columns' in table.keys() and str(table['columns']) not in emptyValues):
-            for col in table['columns']:
+        elif(columnsChecker(table)):
+            for col in table['tableSchema']['columns']:
                 if('titles' in col.keys()):
                     if( type(col['titles']) is str and col['titles'] not in emptyValues):
                         titles.append(str(col['titles']))
@@ -83,4 +83,27 @@ def getSkipRows(table):
     return skipRows
 
 def getNullValue(table):
-    
+    nullValues  = [] 
+    if(columnsChecker(table)):
+        for col in table['columns']:
+            if('null' in col.keys()):
+                nullValues.append(col['null'])
+            else:
+                nullValues.append('')
+    return nullValues
+def getExtremes(table, inclusive, exclusive):
+    extremes  = {'inclusive':[],'exclusive':[]}
+    if(columnsChecker(table)):
+        for col in table['tableSchema']['columns']:
+            for el in inclusive:
+                if(el in col.keys()):
+                    extremes['inclusive'].append(col[el])
+                    break
+            for el in exclusive:
+                if(el in col.keys()):
+                    extremes['exclusive'].append(col[el])
+                    break
+    return extremes
+def getDateFormat(table)
+def columnsChecker(table):
+    return 'tableSchema'in table.keys() and 'columns' in table['tableSchema'].keys() and type(table['tableSchema']['columns']) is list and len(table['tableSchema']['columns']) > 0
