@@ -14,7 +14,7 @@ def jsonLoader(path):
         sys.exit()
 def jsonIterator(json):
     try:
-        result = []
+        result = {'values':[]}
         if('tables' in json.keys()):
             for table in json['tables']:
                 element = {}
@@ -27,7 +27,7 @@ def jsonIterator(json):
                 element['min'] = getExtremes(table, ['minimum', 'minInclusive'], ['minExclusive'])
                 element['dateFormat'] = getFormat(table, 'date')
                 element['booleanFormat'] = getFormat(table, 'boolean')
-                result.append(element)
+                result['values'].append(element)
             return result
         else:
             raise Exception("Invalid file, wrong format")
@@ -127,8 +127,8 @@ def columnsChecker(table):
 
 
 def main():
-    csvw = jsonLoader("../mappings/bio2rdf.csvw.json")
+    csvw = jsonLoader("../mappings/madridGtfs.csvw.json")
     csvwParsed = jsonIterator(csvw)
-    print(str(csvwParsed).replace("\'", "\""))
+    print(str(csvwParsed).replace("\'","\""))
 
 main()
