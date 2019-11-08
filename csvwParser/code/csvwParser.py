@@ -127,7 +127,7 @@ def columnsChecker(table):
 
 
 def main():
-    csvw = jsonLoader("/home/w0xter/Desktop/oeg/morph-csv-sparql/csvwParser/mappings/bio2rdf.csvw.json")
+    csvw = jsonLoader("../mappings/bio2rdf.csvw.json")
     csvwParsed = jsonIterator(csvw)
     print(str(csvwParsed).replace("\'", "\""))
 
