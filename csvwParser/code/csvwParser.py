@@ -9,9 +9,10 @@ def jsonLoader(path):
         result = json.loads(open(path).read())
         return result
     except Exception as e:
+        print(e)
         print("The path is not valid")
         sys.exit()
-def jsnoIterator(json):
+def jsonIterator(json):
     try:
         result = []
         if('tables' in json.keys()):
@@ -24,16 +25,18 @@ def jsnoIterator(json):
                 element['null'] = getNullValue(table)
                 element['max'] = getExtremes(table,['maximum', 'maxInclusive'], ['maxExclusive'])
                 element['min'] = getExtremes(table, ['minimum', 'minInclusive'], ['minExclusive'])
-                element['dateFormat'] = getDateFormat(table)
-                element['booelanFormat'] = getBooleanFormat(table)
-                element['dateCols'] = getDateCols(table)
-                element['booleanCols'] = getBooleanCols(table)
+                element['dateFormat'] = getFormat(table, 'date')
+                element['booleanFormat'] = getFormat(table, 'boolean')
+                result.append(element)
+            return result
+        else:
+            raise Exception("Invalid file, wrong format")
     except Exception as e:
         print('The CSVW is not valid')
 
 def getUrl(table):
     try:
-        if('url' in table.keys() and str(table['url']) not in emptyValues]):
+        if('url' in table.keys() and str(table['url']) not in emptyValues):
             return str(table['url'])
         else:
             raise Exception("The format of CSVW is wrong, the Url is not valid")
@@ -69,12 +72,11 @@ def getTitles(table):
 def getDelimiter(table):
     try:
         delimiter = ','
-        if('dialect' in table.keys() and 'delimiter' in table['dialect'].keys()):
-            delimiter = str(table['dialect']['delimeter'])
+        if('dialect' in table.keys() and type(table['dialect']) is dict and 'delimiter' in table['dialect'].keys() and table['dialect']['delimiter'] != ''):
+            delimiter = str(table['dialect']['delimiter'])
         return delimiter
     except Exception as e:
         print(e)
-        pass
 
 def getSkipRows(table):
     skipRows = 0
@@ -85,7 +87,7 @@ def getSkipRows(table):
 def getNullValue(table):
     nullValues  = [] 
     if(columnsChecker(table)):
-        for col in table['columns']:
+        for col in table['tableSchema']['columns']:
             if('null' in col.keys()):
                 nullValues.append(col['null'])
             else:
@@ -104,6 +106,29 @@ def getExtremes(table, inclusive, exclusive):
                     extremes['exclusive'].append(col[el])
                     break
     return extremes
-def getDateFormat(table)
+
+def getFormat(table, dataType):
+    try:
+        result = []
+        if(columnsChecker(table)):
+            for indx, col in enumerate(table['tableSchema']['columns']):
+                if('datatype' in col.keys()):
+                    if(type(col['datatype']) is str and col['datatype'] == dataType and 'format' in col.keys()):
+                        result.append({indx:col['format']})
+                    elif(type(col['datatype']) is dict and 'base' in col['datatype'] and 'format' in col['datatype'] and col['datatype']['base'] == dataType):
+                        result.append({str(indx):col['datatype']['format']})
+        return result
+    except Exception as e:
+        print(e)
+
 def columnsChecker(table):
     return 'tableSchema'in table.keys() and 'columns' in table['tableSchema'].keys() and type(table['tableSchema']['columns']) is list and len(table['tableSchema']['columns']) > 0
+
+
+
+def main():
+    csvw = jsonLoader("/home/w0xter/Desktop/oeg/morph-csv-sparql/csvwParser/mappings/bio2rdf.csvw.json")
+    csvwParsed = jsonIterator(csvw)
+    print(str(csvwParsed).replace("\'", "\""))
+
+main()
