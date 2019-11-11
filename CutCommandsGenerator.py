@@ -1,23 +1,7 @@
 import os
 
-class CSVFile:
-    def __init__(self, path, delimiter):
-        self.path = path
-        self.delimiter = delimiter
-        self.dict = self.build_csv_dictionary()
-
-    def build_csv_dictionary(self):
-        csv_dict = {
-            "Id": "1",
-            "Name": "2",
-            "Status": "3",
-            "Webpage": "4",
-            "Phone": "5",
-            "Email": "6",
-            "Suffix": "7",
-            "Birthdate": "8",
-        }
-        return csv_dict
+from CSVFile import CSVFile
+from RMLTriplesMap import RMLTriplesMap
 
 
 class CutCommandsGenerator:
@@ -25,24 +9,46 @@ class CutCommandsGenerator:
         self.rml_url = rml_path
         self.csv_file = csv_file
 
+    def get_column_number(self, column_name):
+        column_number = self.csv_file.dict[column_name]
+        return column_number
+
     def generate_cut_command(self, sparql_path):
-        field_numbers = self.get_correspond_columns_number(sparql_path)
-        result = 'cut -d ' + self.csv_file.delimiter + ' -f ' + str(field_numbers) + ' ' + self.csv_file.path
+        field_numbers = self.get_correspond_columns_numbers(sparql_path)
+        joined_field_numbers = ','.join(field_numbers)
+        result = 'cut -d ' + self.csv_file.delimiter + ' -f ' + joined_field_numbers + ' ' + self.csv_file.path
         return result
 
-    def get_correspond_columns_number(self, sparql_path):
-        correspond_column_name = self.get_correspond_columns_name(sparql_path)
-        return self.csv_file.dict[correspond_column_name]
+    def get_correspond_columns_numbers(self, sparql_path):
+        correspond_columns_names = self.get_correspond_columns_names(sparql_path)
+        correspond_columns_numbers = list(map(self.get_column_number, correspond_columns_names))
+        return correspond_columns_numbers
 
-    def get_correspond_columns_name(self, sparql_path):
-        return 'Id'
+    def get_correspond_columns_names(self, sparql_path):
+        correspond_triples_map = self.get_correspond_triples_map(sparql_path)
+        correspond_columns_names = self.get_correspond_column_name_from_triples_map(sparql_path, correspond_triples_map)
+        return correspond_columns_names
 
+    def get_correspond_triples_map(self, sparql_path):
+        triples_map = ""
+        return triples_map
+
+    def get_correspond_column_name_from_triples_map(self, sparql_path, triples_map):
+        correspond_columns_names_from_subject_map = self.get_correspond_columns_names_from_subject_map(sparql_path)
+        correspond_column_name_from_predicate_object_maps = self.get_correspond_columns_names_from_predicate_object_maps(sparql_path)
+        correspond_columns_names = correspond_columns_names_from_subject_map + correspond_column_name_from_predicate_object_maps
+        return correspond_columns_names
+
+    def get_correspond_columns_names_from_subject_map(self, sparql_path):
+        return ['Id']
+
+    def get_correspond_columns_names_from_predicate_object_maps(self, sparql_path):
+        return ['Name', 'Email']
 
 student_csv = CSVFile("examples/studentsport/STUDENT.csv", ",")
-p1 = CutCommandsGenerator("examples/studentsport/example1-mapping-csv.ttl", student_csv)
-
-print(p1.rml_url)
-print(p1.csv_file.path)
-cut_command = p1.generate_cut_command('sparql_url')
-print(cut_command)
+cut_command_generator = CutCommandsGenerator("examples/studentsport/example1-mapping-csv.ttl", student_csv)
+#print(cut_command_generator.rml_url)
+#print(cut_command_generator.csv_file.path)
+cut_command = cut_command_generator.generate_cut_command('sparql_url')
+print("cut_command = " + cut_command)
 os.system(cut_command)
