@@ -80,14 +80,15 @@ def getTableTitles(table):
 
 def getTitles(table):
     titles = getTableTitles(table)
-    result = ''.join(str(titles[i]) + ',' for i in range(0, len(titles) - 1)) + titles[-1:][0]
+    result = ''.join(str(titles[i]) + ',' for i in range(0, len(titles)))
+    result = result[:-1]
     return result
 
 def getDelimiter(table):
     try:
         delimiter = ','
         if('dialect' in table.keys() and type(table['dialect']) is dict and 'delimiter' in table['dialect'].keys() and str(table['dialect']['delimiter']) != ''):
-            delimiter = ord(table['dialect']['delimiter'])
+            delimiter = str(table['dialect']['delimiter'])
         return delimiter
     except Exception as e:
         print(e)
@@ -128,12 +129,30 @@ def getFormat(table, dataType):
             for indx, col in enumerate(table['tableSchema']['columns']):
                 if('datatype' in col.keys()):
                     if(type(col['datatype']) is str and col['datatype'] == dataType and 'format' in col.keys()):
-                        result.append({indx:col['format']})
+                        result.append({'col':indx,'format':col['format']})
                     elif(type(col['datatype']) is dict and 'base' in col['datatype'] and 'format' in col['datatype'] and col['datatype']['base'] == dataType):
-                        result.append({str(indx):col['datatype']['format']})
+                        result.append({'col':str(indx), 'format':col['datatype']['format']})
         return result
     except Exception as e:
         print(e)
+def getDateFormat(table):
+    dates = getFormat(table, 'date')
+    for date in dates:
+        if(str(date['format']).lower()[0] == 'y'):
+            date['args'] = '$3 $2 $1'
+        elif(str(date['format']).lower()[0] == 'm'):
+            date['args'] =  '$3 $1 $2'
+        else:
+            date['args'] = '$3 $2 $1'
+        if('.' in date['format']):
+            date['delimiter'] = '.'
+        elif('/' in date['format']):
+            date['delimiter'] = '/'
+        elif('-' in date['format']):
+            date['delimiter'] = '-'
+        else:
+            date['delimiter'] = ''
+    return dates
 
 def columnsChecker(table):
     return 'tableSchema'in table.keys() and 'columns' in table['tableSchema'].keys() and type(table['tableSchema']['columns']) is list and len(table['tableSchema']['columns']) > 0

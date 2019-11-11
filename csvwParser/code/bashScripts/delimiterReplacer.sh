@@ -1,6 +1,5 @@
 #!/bin/bash
-
-delimiter= $1
-fileName= $(echo "$2")
-echo "Delimiter: $delimiter, File: $fileName"
-#sed -i -r "s/$delimiter/,/g" ./tmp/$fileName
+delimiter=$1
+filename=$2
+#echo " Delimiter:$delimiter File:$filename"
+sed -i -r "s/$delimiter/,/g" ./tmp/$filename
