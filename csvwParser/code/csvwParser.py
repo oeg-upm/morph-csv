@@ -1,6 +1,7 @@
 #/bin/python3
 import json
 import sys
+import os
 
 emptyValues = {'', ' '}
 
@@ -28,11 +29,19 @@ def jsonIterator(json):
                 element['dateFormat'] = getFormat(table, 'date')
                 element['booleanFormat'] = getFormat(table, 'boolean')
                 result['values'].append(element)
+                printTitles(element)
             return result
         else:
             raise Exception("Invalid file, wrong format")
     except Exception as e:
         print('The CSVW is not valid')
+
+def printTitles(data):
+    print('*************' + str(data['url']) + '***********************')
+#    print(data['titles'])
+    aux = '\'' + str(data['titles']).replace("[", "").replace("]", "").replace("\'", "") + '\''
+    print(aux)
+    os.system('./functions.sh %s'%(aux))
 
 def getUrl(table):
     try:
@@ -44,7 +53,7 @@ def getUrl(table):
         print(e)
         sys.exit()
 
-def getTitles(table):
+def getTableTitles(table):
     try:
         titles = []
         if('rowTitles' in table.keys() and str(table['rowTitles']) not in emptyValues):
@@ -69,11 +78,16 @@ def getTitles(table):
         print(e)
         pass
 
+def getTitles(table):
+    titles = getTableTitles(table)
+    result = ''.join(str(titles[i]) + ',' for i in range(0, len(titles) - 1)) + titles[-1:][0]
+    return result
+
 def getDelimiter(table):
     try:
         delimiter = ','
-        if('dialect' in table.keys() and type(table['dialect']) is dict and 'delimiter' in table['dialect'].keys() and table['dialect']['delimiter'] != ''):
-            delimiter = str(table['dialect']['delimiter'])
+        if('dialect' in table.keys() and type(table['dialect']) is dict and 'delimiter' in table['dialect'].keys() and str(table['dialect']['delimiter']) != ''):
+            delimiter = ord(table['dialect']['delimiter'])
         return delimiter
     except Exception as e:
         print(e)
@@ -129,6 +143,6 @@ def columnsChecker(table):
 def main():
     csvw = jsonLoader("../mappings/madridGtfs.csvw.json")
     csvwParsed = jsonIterator(csvw)
-    print(str(csvwParsed).replace("\'","\""))
+    #print(str(csvwParsed).replace("\'","\""))
 
-main()
+#main()
