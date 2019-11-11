@@ -2,7 +2,8 @@ import os
 
 from CSVFile import CSVFile
 from RMLTriplesMap import RMLTriplesMap
-
+from RMLTriplesMap import build_example_triples_map
+from RMLTermMap import string_separetion
 
 class CutCommandsGenerator:
     def __init__(self, rml_path, csv_file):
@@ -30,20 +31,30 @@ class CutCommandsGenerator:
         return correspond_columns_names
 
     def get_correspond_triples_map(self, sparql_path):
-        triples_map = ""
-        return triples_map
+        correspond_triples_map = build_example_triples_map()
+        print(correspond_triples_map)
+        return correspond_triples_map
 
     def get_correspond_column_name_from_triples_map(self, sparql_path, triples_map):
-        correspond_columns_names_from_subject_map = self.get_correspond_columns_names_from_subject_map(sparql_path)
+        subject_map = triples_map.subject_map
+        correspond_columns_names_from_subject_map = self.get_correspond_columns_names_from_subject_map(sparql_path, subject_map)
         correspond_column_name_from_predicate_object_maps = self.get_correspond_columns_names_from_predicate_object_maps(sparql_path)
         correspond_columns_names = correspond_columns_names_from_subject_map + correspond_column_name_from_predicate_object_maps
         return correspond_columns_names
 
-    def get_correspond_columns_names_from_subject_map(self, sparql_path):
-        return ['Id']
+    def get_correspond_columns_names_from_subject_map(self, sparql_path, subject_map):
+        return self.get_correspond_columns_names_from_term_map(sparql_path, subject_map)
 
     def get_correspond_columns_names_from_predicate_object_maps(self, sparql_path):
         return ['Name', 'Email']
+
+    def get_correspond_columns_names_from_term_map(self, sparql_path, term_map):
+        term_map_value = term_map.term_map_value
+        print("term_map_value = " + term_map_value)
+        reference, condition = string_separetion(term_map_value)
+        print("term map condition = " + str(condition))
+
+        return [condition]
 
 student_csv = CSVFile("examples/studentsport/STUDENT.csv", ",")
 cut_command_generator = CutCommandsGenerator("examples/studentsport/example1-mapping-csv.ttl", student_csv)
