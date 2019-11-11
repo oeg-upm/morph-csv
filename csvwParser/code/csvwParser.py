@@ -135,6 +135,8 @@ def getFormat(table, dataType):
         return result
     except Exception as e:
         print(e)
+
+#Sending the Cols Orders to display the dates using the bashScript DateFormatChanger.sh
 def getDateFormat(table):
     dates = getFormat(table, 'date')
     for date in dates:
