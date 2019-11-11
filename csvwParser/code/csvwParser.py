@@ -141,11 +141,11 @@ def getDateFormat(table):
     dates = getFormat(table, 'date')
     for date in dates:
         if(str(date['format']).lower()[0] == 'y'):
-            date['args'] = '$3 $2 $1'
+            date['args'] = '$3\"-\"$2\"-\"$1'
         elif(str(date['format']).lower()[0] == 'm'):
-            date['args'] =  '$3 $1 $2'
+            date['args'] =  '$3\"-\"$1\"-\"$2'
         else:
-            date['args'] = '$3 $2 $1'
+            date['args'] = '$3\"-\"$2\"-\"$1'
         if('.' in date['format']):
             date['delimiter'] = '.'
         elif('/' in date['format']):
