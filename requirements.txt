@@ -16,3 +16,4 @@ scandir==1.9.0
 six==1.11.0
 uritemplate==3.0.0
 Werkzeug==0.14.1
+PyYaml==5.1
