@@ -40,6 +40,30 @@ Dates and booleans format (csvw:format → sql formats)
 '''
 def dateFormatReplacer(data, path):
     print(data)
+
+
+'''
+Validity max/minimum value (not correct → null)
+'''
+
+
+'''
+Identify the date cols and boolean cols
+'''
+
+'''
+Default (csvw:default → empty string by default value)
+'''
+
+
+'''
+RML+FnO in object (new column apply the transformation functions)
+'''
+
+'''
+RML+FnO in refObjectMap (new column apply transformation functions)
+'''
+
 def main():
     csvw = parser.jsonLoader('../mappings/bio2rdf.csvw.json')
 #    parsedCsvw = csvwParser.jsonIterator(csvw)
