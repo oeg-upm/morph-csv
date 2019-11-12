@@ -33,7 +33,6 @@ class CutCommandsGenerator:
 
     def get_correspond_triples_map(self, sparql_path):
         correspond_triples_map = build_example_triples_map()
-        print(correspond_triples_map)
         return correspond_triples_map
 
     def get_correspond_column_name_from_triples_map(self, sparql_path, triples_map):
@@ -52,9 +51,7 @@ class CutCommandsGenerator:
         object_conditions = []
         for predicate_object_map in predicate_object_maps:
             object_map = predicate_object_map.object_map
-            print("object_map = " + object_map.term_map_value)
             object_condition = self.get_correspond_columns_names_from_term_map(sparql_path, object_map)
-            print("object_condition = " + str(object_condition))
             object_conditions = object_conditions + object_condition
         return object_conditions
 
@@ -65,12 +62,16 @@ class CutCommandsGenerator:
         term_map_type = term_map.term_map_type
         print("term_map_type = " + str(term_map_type))
 
+        correspond_columns_names = {}
         if term_map_type == TermMapType.TEMPLATE_MAP:
             reference, condition = string_separetion(term_map_value)
-            return [condition]
-        else:
+            correspond_columns_names = [condition]
+        elif term_map_type == TermMapType.COLUMN_MAP:
             term_map_value
-            return [term_map_value]
+            correspond_columns_names = [term_map_value]
+
+        print("correspond_columns_names = " + str(correspond_columns_names))
+        return correspond_columns_names
 
 
 student_csv = CSVFile("examples/studentsport/STUDENT.csv", ",")
