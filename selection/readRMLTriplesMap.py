@@ -1,7 +1,8 @@
 import sys
 import rdflib
 from rdflib.plugins.sparql import prepareQuery
-import TriplesMap as tm
+from model import TriplesMap as tm
+
 
 def mapping_parser(mapping_file):
 

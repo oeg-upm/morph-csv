@@ -11,7 +11,7 @@ class CSVFile:
     def build_csv_dictionary(self):
         csv_columns = pd.read_csv(self.path).columns
         csv_dict = {}
-        i=1
+        i = 1
         for column_name in csv_columns:
             csv_dict[column_name] = str(i)
             i = i + 1

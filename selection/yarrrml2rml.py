@@ -42,14 +42,10 @@ def yarrrml2rml (yarrrml):
                             j += 1
                         t += 1
             i += 1
-    f = open("mapping_aux.yml", "w+")
+    f = open("../tmp/mapping_aux.yml", "w+")
     f.write(yaml.dump(data, default_flow_style=None))
     f.close()
-    call("./yarrrml-parser.sh", shell=True)
+    call("../bash/yarrrml-parser.sh", shell=True)
     return functions
-
-
-if __name__ == "__main__":
-    yarrrml2rml("./mapping.yml")
 
 
