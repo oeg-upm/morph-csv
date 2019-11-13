@@ -3,7 +3,7 @@ import json
 import sys
 import os
 
-emptyValues = {'', ' '}
+emptyValues = ['', ' ']
 
 def jsonLoader(path):
     try:
@@ -56,19 +56,19 @@ def getUrl(table):
 def getTableTitles(table):
     try:
         titles = []
-        if('rowTitles' in table.keys() and str(table['rowTitles']) not in emptyValues):
+        if('rowTitles' in table.keys() and len(table['rowTitles']) > 0):
             titles = table['rowTitles']
-        elif('rowTitle' in table.keys() and str(table['rowTitle']) not in emptyValues):
-            title  = table['rowTitle']
+        elif('rowTitle' in table.keys() and len(table['rowTitle']) > 0):
+            titles = table['rowTitle']
         elif(columnsChecker(table)):
             for col in table['tableSchema']['columns']:
                 if('titles' in col.keys()):
-                    if( type(col['titles']) is str and col['titles'] not in emptyValues):
+                    if( (isinstance(col['titles'], str) or isinstance(col['titles'], unicode)) and str(col['titles']) not in emptyValues):
                         titles.append(str(col['titles']))
                     elif(type(col['titles']) is list and len(col['titles']) > 0):
                         titles = titles + col['titles']
                 elif('title' in col.keys()):
-                    if(type(col['title']) is str and col['title'] not in emptyValues):
+                    if((isinstance(col['title'], str) or isinstance(col['title'], unicode)) and str(col['title']) not in emptyValues):
                         titles.append(str(col['title']))
                     elif(type(col['title']) is list and len(col['title']) > 0):
                         titles = titles + col['title']
@@ -128,7 +128,7 @@ def getFormat(table, dataType):
         if(columnsChecker(table)):
             for indx, col in enumerate(table['tableSchema']['columns']):
                 if('datatype' in col.keys()):
-                    if(type(col['datatype']) is str and col['datatype'] == dataType and 'format' in col.keys()):
+                    if((isinstance(col['datatype'], str) or isinstance(col['datatype'], unicode)) and col['datatype'] == dataType and 'format' in col.keys()):
                         result.append({'col':indx,'format':col['format']})
                     elif(type(col['datatype']) is dict and 'base' in col['datatype'] and 'format' in col['datatype'] and col['datatype']['base'] == dataType):
                         result.append({'col':str(indx), 'format':col['datatype']['format']})
@@ -153,9 +153,11 @@ def getDateFormat(table):
         elif('-' in date['format']):
             date['delimiter'] = '-'
         else:
-            date['delimiter'] = ''
+            date['delimiter'] = 'none'
     return dates
-
+def getBooleanFormat(table):
+    booleans = getFormat(table, 'boolean')
+    return booleans
 def columnsChecker(table):
     return 'tableSchema'in table.keys() and 'columns' in table['tableSchema'].keys() and type(table['tableSchema']['columns']) is list and len(table['tableSchema']['columns']) > 0
 

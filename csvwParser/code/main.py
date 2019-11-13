@@ -8,12 +8,11 @@ def scriptCaller(data):
     insertTitles(parser.getTitles(data), url)
     rowSkipper(parser.getSkipRows(data), url)
     replaceDelimiter(parser.getDelimiter(data), url)
-    dateFormatReplacer(parser.getDateFormat(data), url)
-
+    #dateFormatReplacer(parser.getDateFormat(data), url) NO FUNCIONAN REVISAR!!!!!!!!!!!!!!!!!!!!!!!!!!
+    #booleanFormatReplacer(parser.getBooleanFormat(data), url)
 ##Insert the titles of 
 def insertTitles(data, path):
-    #print("Titles: " + data)
-    #data=data.replace(" ", "")
+#    print("Titles: " + data)
     os.system('./bashScripts/insertTitles.sh \'%s\' %s'%(data, path))
 
 
@@ -29,6 +28,15 @@ def replaceDelimiter(data, path):
 
 def dateFormatReplacer(data, path):
     print(data)
+    for date in data:
+        os.system('./bashScripts/dateFormatChanger.sh %s %s %s %s'%(date['param'],date['col'],date['delimiter'], path))
+def booleanFormatReplacer(data, path):
+    print(data)
+    '''
+    for col in data:
+        os.system('./bashScripts/booleanFormatChanger.sh %s %s %s %s'%(data['col'], data['true'], data['false'], path))
+    '''
+
 def main():
     csvw = parser.jsonLoader('../mappings/bio2rdf.csvw.json')
 #    parsedCsvw = csvwParser.jsonIterator(csvw)
