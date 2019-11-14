@@ -6,40 +6,46 @@ def scriptCaller(data):
     url = parser.getUrl(data).split("/")[-1:][0]
     print("********************" + url + "***************************")
     insertTitles(parser.getTitles(data), url)
+    print("InsertTitles Done")
     rowSkipper(parser.getSkipRows(data), url)
+    print("Skip Rows Done")
     replaceDelimiter(parser.getDelimiter(data), url)
-    #dateFormatReplacer(parser.getDateFormat(data), url) NO FUNCIONAN REVISAR!!!!!!!!!!!!!!!!!!!!!!!!!!
-    #booleanFormatReplacer(parser.getBooleanFormat(data), url)
+    print("Replace Delimiter Done")
+    dateFormatReplacer(parser.getDateFormat(data), url)
+    print("DateFormat Changer Done")
+    booleanFormatReplacer(parser.getBooleanFormat(data), url)
 ##Insert the titles of 
 def insertTitles(data, path):
 #    print("Titles: " + data)
-    os.system('./bashScripts/insertTitles.sh \'%s\' %s'%(data, path))
+    os.system('bash ./bashScripts/insertTitles.sh \'%s\' %s'%(data, path))
 
 
 #If the skipRow is bigger than 0 the function execute the BashScritp
 def rowSkipper(data, path):
     if(int(data)> 0):
-        os.system('./bashScripts/skipRows.sh %s %s'%(data, path))
+        os.system('bash ./bashScripts/skipRows.sh %s %s'%(data, path))
 
 def replaceDelimiter(data, path):
-    delimiter = str(data.encode('utf-8'))[1:]
+    delimiter = str(data.encode('utf-8'))
     #print("Delimiter: " + delimiter + " File: " + path)
-    os.system('./bashScripts/delimiterReplacer.sh %s %s'%(delimiter, path))
+    os.system('bash ./bashScripts/delimiterReplacer.sh \'%s\' %s'%(delimiter, path))
 
 def dateFormatReplacer(data, path):
-    print(data)
-    for date in data:
-        os.system('./bashScripts/dateFormatChanger.sh %s %s %s %s'%(date['param'],date['col'],date['delimiter'], path))
+    if(len(data) > 0):
+        for date in data:
+  #          print("%s %s %s %s"%(date['args'],date['col'],date['delimiter'], path))
+            os.system('bash ./bashScripts/dateFormatChanger.sh \'%s\' %s %s %s'%(date['args'],date['col'],date['delimiter'], path))
 def booleanFormatReplacer(data, path):
     print(data)
     '''
     for col in data:
-        os.system('./bashScripts/booleanFormatChanger.sh %s %s %s %s'%(data['col'], data['true'], data['false'], path))
+        os.system('bash ./bashScripts/booleanFormatChanger.sh %s %s %s %s'%(data['col'], data['true'], data['false'], path))
     '''
 
 def main():
-    csvw = parser.jsonLoader('../mappings/bio2rdf.csvw.json')
+    csvw = parser.jsonLoader('../mappings/madridGtfs.csvw.json')
 #    parsedCsvw = csvwParser.jsonIterator(csvw)
+#    csvw = filterCsvw(csvw, ['CSV1','CSV2'])
     for table in csvw['tables']:
         scriptCaller(table)
 

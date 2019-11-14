@@ -131,7 +131,7 @@ def getFormat(table, dataType):
                     if((isinstance(col['datatype'], str) or isinstance(col['datatype'], unicode)) and col['datatype'] == dataType and 'format' in col.keys()):
                         result.append({'col':indx,'format':col['format']})
                     elif(type(col['datatype']) is dict and 'base' in col['datatype'] and 'format' in col['datatype'] and col['datatype']['base'] == dataType):
-                        result.append({'col':str(indx), 'format':col['datatype']['format']})
+                        result.append({'col':str(indx + 1), 'format':col['datatype']['format']})
         return result
     except Exception as e:
         print(e)
