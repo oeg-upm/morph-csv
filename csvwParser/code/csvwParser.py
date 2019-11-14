@@ -82,11 +82,11 @@ def getSkipRows(table):
 def getNullValue(table):
     nullValues  = [] 
     if(columnsChecker(table)):
-        for col in table['tableSchema']['columns']:
+        for index, col in enumerate(table['tableSchema']['columns']):
             if('null' in col.keys()):
-                nullValues.append(col['null'])
+                nullValues.append({'col':str(index +1), 'null':col['null']})
             else:
-                nullValues.append('')
+                nullValues.append('col':str(index + 1), 'null':'')
     return nullValues
 
 #Get min and Max (Inclusive and exclusive)
@@ -139,9 +139,15 @@ def getDateFormat(table):
             date['delimiter'] = 'none'
     return dates
 
-#Lee el formato de los booleans y manda la información necesaria para ejecutar el BashScript booleanFormatChanger.sh
+#Lee el formato de los booleans y manda la informacion necesaria para ejecutar el BashScript booleanFormatChanger.sh
 def getBooleanFormat(table):
     booleans = getFormat(table, 'boolean')
+    for col in booleans:
+        col['format'] =  str(col['format'])
+        data = col['format'].split("|")
+        col['true'] = str(data[0])
+        col['false'] = str(data[1])
+
     return booleans
 
 #Check if the table includes Columns
