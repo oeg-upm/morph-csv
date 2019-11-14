@@ -1,10 +1,12 @@
-#/bin/python3
+#!/bin/python3
 import json
 import sys
 import os
 
+#Valores nulos que se usan para verificar la validez de los datos.
 emptyValues = ['', ' ']
 
+#Carga el CSVW en el DataFrame
 def jsonLoader(path):
     try:
         result = json.loads(open(path).read())
@@ -13,36 +15,8 @@ def jsonLoader(path):
         print(e)
         print("The path is not valid")
         sys.exit()
-def jsonIterator(json):
-    try:
-        result = {'values':[]}
-        if('tables' in json.keys()):
-            for table in json['tables']:
-                element = {}
-                element['url'] = getUrl(table)
-                element['titles'] = getTitles(table)
-                element['delimiter'] = getDelimiter(table)
-                element['skipRows'] = getSkipRows(table)
-                element['null'] = getNullValue(table)
-                element['max'] = getExtremes(table,['maximum', 'maxInclusive'], ['maxExclusive'])
-                element['min'] = getExtremes(table, ['minimum', 'minInclusive'], ['minExclusive'])
-                element['dateFormat'] = getFormat(table, 'date')
-                element['booleanFormat'] = getFormat(table, 'boolean')
-                result['values'].append(element)
-                printTitles(element)
-            return result
-        else:
-            raise Exception("Invalid file, wrong format")
-    except Exception as e:
-        print('The CSVW is not valid')
 
-def printTitles(data):
-    print('*************' + str(data['url']) + '***********************')
-#    print(data['titles'])
-    aux = '\'' + str(data['titles']).replace("[", "").replace("]", "").replace("\'", "") + '\''
-    print(aux)
-    os.system('./functions.sh %s'%(aux))
-
+#Devuelve la URL de la tabla sobre la que estamos trabajando
 def getUrl(table):
     try:
         if('url' in table.keys() and str(table['url']) not in emptyValues):
@@ -53,6 +27,8 @@ def getUrl(table):
         print(e)
         sys.exit()
 
+#Recorre la tabla en busca de los Titulos, pueden estar en el primer nivel del objeto Table (rowTiltles o rowTitle) tambien
+# pueden estar dentro de las columnas de la tabla (table->tableSchema->columns[i]->title/s)
 def getTableTitles(table):
     try:
         titles = []
@@ -77,13 +53,15 @@ def getTableTitles(table):
     except Exception as e:
         print(e)
         pass
-
+    
+#Devuelve el array de titulos formateado listo para pasarselo directamente al BashScript
 def getTitles(table):
     titles = getTableTitles(table)
     result = ''.join(str(titles[i]) + ',' for i in range(0, len(titles)))
     result = result[:-1]
     return result
 
+#Devuelve el delimitador, por defecto(Si no encuetra ningun delimitador en el csvw) es ',' 
 def getDelimiter(table):
     try:
         delimiter = ','
@@ -93,12 +71,14 @@ def getDelimiter(table):
     except Exception as e:
         print(e)
 
+#Devuelve el numero de filas que hay que saltarse por defecto es 0.
 def getSkipRows(table):
     skipRows = 0
     if('dialect' in table.keys() and 'skipRows' in table['dialect'].keys()):
         skipRows = int(table['dialect']['skipRows'])
     return skipRows
 
+#Recorre las columnas para almacenar el Null value en un ARRAY si no se encuntra ningun NUllvalue se usa el caracter vacio por defecto.
 def getNullValue(table):
     nullValues  = [] 
     if(columnsChecker(table)):
@@ -108,6 +88,8 @@ def getNullValue(table):
             else:
                 nullValues.append('')
     return nullValues
+
+#Get min and Max (Inclusive and exclusive)
 def getExtremes(table, inclusive, exclusive):
     extremes  = {'inclusive':[],'exclusive':[]}
     if(columnsChecker(table)):
@@ -122,6 +104,7 @@ def getExtremes(table, inclusive, exclusive):
                     break
     return extremes
 
+#Devuelve el DataType->Format del DataType especificado
 def getFormat(table, dataType):
     try:
         result = []
@@ -136,12 +119,12 @@ def getFormat(table, dataType):
     except Exception as e:
         print(e)
 
-#Sending the Cols Orders to display the dates using the bashScript DateFormatChanger.sh
+#Lee el Formato de la fecha y manda de la configuracion necesaria para ejecutar el bashScript dateFormatChanger.sh
 def getDateFormat(table):
     dates = getFormat(table, 'date')
     for date in dates:
         if(str(date['format']).lower()[0] == 'y'):
-            date['args'] = '$3\"-\"$2\"-\"$1'
+            date['args'] = '$3\"-\"$2\"-\"$1'#Hace referencia a las columnas que tiene que reordenar AWK tras dividir la columna 'col' segun el delimitador dado
         elif(str(date['format']).lower()[0] == 'm'):
             date['args'] =  '$3\"-\"$1\"-\"$2'
         else:
@@ -155,17 +138,14 @@ def getDateFormat(table):
         else:
             date['delimiter'] = 'none'
     return dates
+
+#Lee el formato de los booleans y manda la información necesaria para ejecutar el BashScript booleanFormatChanger.sh
 def getBooleanFormat(table):
     booleans = getFormat(table, 'boolean')
     return booleans
+
+#Check if the table includes Columns
 def columnsChecker(table):
     return 'tableSchema'in table.keys() and 'columns' in table['tableSchema'].keys() and type(table['tableSchema']['columns']) is list and len(table['tableSchema']['columns']) > 0
 
 
-
-def main():
-    csvw = jsonLoader("../mappings/madridGtfs.csvw.json")
-    csvwParsed = jsonIterator(csvw)
-    #print(str(csvwParsed).replace("\'","\""))
-
-#main()
