@@ -10,7 +10,7 @@ from model.RMLRefObjectMap import RMLRefObjectMap
 from model.RMLJoinCondition import RMLJoinCondition
 
 
-class QueryBasedMappingTranslator:
+class MappingBasedCSVTrimmer:
     def __init__(self, rml_path, csv_files):
         self.rml_url = rml_path
         self.csv_files = csv_files
@@ -24,7 +24,7 @@ class QueryBasedMappingTranslator:
     def get_columns_numbers(csv_file, columns_names):
         columns_numbers = []
         for column_name in columns_names:
-            column_number = QueryBasedMappingTranslator.get_column_number(csv_file, column_name)
+            column_number = MappingBasedCSVTrimmer.get_column_number(csv_file, column_name)
             columns_numbers = columns_numbers + [column_number]
         return columns_numbers
 
@@ -42,7 +42,7 @@ class QueryBasedMappingTranslator:
         csv_path = correspond_csv_file.path
 
         correspond_columns_names = self.get_correspond_columns_names_from_triples_map(sparql_path, triples_map)
-        field_numbers = QueryBasedMappingTranslator.get_columns_numbers(correspond_csv_file, correspond_columns_names)
+        field_numbers = MappingBasedCSVTrimmer.get_columns_numbers(correspond_csv_file, correspond_columns_names)
         field_numbers = sorted(field_numbers)
         field_numbers = list(dict.fromkeys(field_numbers))
         print("field_numbers = " + str(field_numbers))
@@ -141,5 +141,5 @@ class QueryBasedMappingTranslator:
 student_csv = CSVFile("../tmp/studentsport/STUDENT.csv", ",")
 sport_csv = CSVFile("../tmp/studentsport/SPORT.csv", ",")
 csv_files = [student_csv, sport_csv]
-query_based_mapping_translator = QueryBasedMappingTranslator("../tmp/studentsport/example1-mapping-csv.ttl", csv_files)
-query_based_mapping_translator.generate_command_from_sparql('sparql_url')
+mapping_based_csv_trimmer = MappingBasedCSVTrimmer("../tmp/studentsport/example1-mapping-csv.ttl", csv_files)
+mapping_based_csv_trimmer.generate_command_from_sparql('sparql_url')
