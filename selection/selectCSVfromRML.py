@@ -10,7 +10,7 @@ from model.RMLRefObjectMap import RMLRefObjectMap
 from model.RMLJoinCondition import RMLJoinCondition
 
 
-class CutCommandsGenerator:
+class QueryBasedMappingTranslator:
     def __init__(self, rml_path, csv_files):
         self.rml_url = rml_path
         self.csv_files = csv_files
@@ -24,25 +24,25 @@ class CutCommandsGenerator:
     def get_columns_numbers(csv_file, columns_names):
         columns_numbers = []
         for column_name in columns_names:
-            column_number = CutCommandsGenerator.get_column_number(csv_file, column_name)
+            column_number = QueryBasedMappingTranslator.get_column_number(csv_file, column_name)
             columns_numbers = columns_numbers + [column_number]
         return columns_numbers
 
-    def generate_cut_command_from_sparql(self, sparql_path):
+    def generate_command_from_sparql(self, sparql_path):
         correspond_triples_maps = self.get_correspond_triples_maps(sparql_path)
         for triples_map in correspond_triples_maps:
-            cut_command = self.generate_cut_command_from_triples_map(sparql_path, triples_map)
+            cut_command = self.generate_command_from_triples_map(sparql_path, triples_map)
             print("cut_command = " + cut_command)
             os.system(cut_command)
         return 'None'
 
-    def generate_cut_command_from_triples_map(self, sparql_path, triples_map):
+    def generate_command_from_triples_map(self, sparql_path, triples_map):
         correspond_csv_file = triples_map.logical_source.source
         csv_delimiter = correspond_csv_file.delimiter
         csv_path = correspond_csv_file.path
 
         correspond_columns_names = self.get_correspond_columns_names_from_triples_map(sparql_path, triples_map)
-        field_numbers = CutCommandsGenerator.get_columns_numbers(correspond_csv_file, correspond_columns_names)
+        field_numbers = QueryBasedMappingTranslator.get_columns_numbers(correspond_csv_file, correspond_columns_names)
         field_numbers = sorted(field_numbers)
         field_numbers = list(dict.fromkeys(field_numbers))
         print("field_numbers = " + str(field_numbers))
@@ -51,8 +51,33 @@ class CutCommandsGenerator:
         joined_field_numbers = '"\\",","\\""'.join(field_numbers_with_dollar)
         print("joined_field_numbers = " + str(joined_field_numbers))
 
-        result_with_cut = 'cut -d ' + csv_delimiter + ' -f ' + ','.join(["" + str(field_number) for field_number in field_numbers]) + ' ' + csv_path
-        print("result_with_cut = " + str(result_with_cut))
+        cut_command = self.generate_cut_command(sparql_path, triples_map, field_numbers)
+        print("cut_command = " + str(cut_command))
+
+        awk_command = self.generate_awk_command(sparql_path, triples_map, field_numbers)
+        print("awk_command = " + str(awk_command))
+
+        return awk_command
+
+    def generate_cut_command(self, sparql_path, triples_map, field_numbers):
+        correspond_csv_file = triples_map.logical_source.source
+        csv_delimiter = correspond_csv_file.delimiter
+        csv_path = correspond_csv_file.path
+
+        joined_field_numbers = ','.join(["" + str(field_number) for field_number in field_numbers])
+        cut_command = 'cut -d ' + csv_delimiter + ' -f ' + joined_field_numbers + ' ' + csv_path
+        return cut_command
+
+    def generate_awk_command(self, sparql_path, triples_map, field_numbers):
+        correspond_csv_file = triples_map.logical_source.source
+        csv_delimiter = correspond_csv_file.delimiter
+        csv_path = correspond_csv_file.path
+
+        field_numbers_with_dollar = ["$" + str(field_number) for field_number in field_numbers]
+        print("field_numbers_with_dollar = " + str(field_numbers_with_dollar))
+
+        joined_field_numbers = '"\\",","\\""'.join(field_numbers_with_dollar)
+        print("joined_field_numbers = " + str(joined_field_numbers))
 
         awk_command = 'awk -F \'\\"' + csv_delimiter + '\\"\' \'{print '
         if 1 in field_numbers:
@@ -60,8 +85,6 @@ class CutCommandsGenerator:
         else:
             awk_command = awk_command + '"\\""'
         awk_command = awk_command + joined_field_numbers + '"\\""}\' ' + csv_path
-
-        print("awk_command = " + str(awk_command))
         return awk_command
 
     def get_correspond_triples_maps(self, sparql_path):
@@ -118,8 +141,5 @@ class CutCommandsGenerator:
 student_csv = CSVFile("../tmp/studentsport/STUDENT.csv", ",")
 sport_csv = CSVFile("../tmp/studentsport/SPORT.csv", ",")
 csv_files = [student_csv, sport_csv]
-cut_command_generator = CutCommandsGenerator("../tmp/studentsport/example1-mapping-csv.ttl", csv_files)
-
-#print(cut_command_generator.rml_url)
-#print(cut_command_generator.csv_file.path)
-cut_command_generator.generate_cut_command_from_sparql('sparql_url')
+query_based_mapping_translator = QueryBasedMappingTranslator("../tmp/studentsport/example1-mapping-csv.ttl", csv_files)
+query_based_mapping_translator.generate_command_from_sparql('sparql_url')
