@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sparql>
+    <head>
+        <variable name="date"/>
+    </head>
+    <results>
+        <result>
+            <binding name="date">
+                <literal>2018-10-01</literal>
+            </binding>
+        </result>
+        <result>
+            <binding name="date">
+                <literal>2018-10-02</literal>
+            </binding>
+        </result>
+        <result>
+            <binding name="date">
+                <literal>2018-11-28</literal>
+            </binding>
+        </result>
+        <result>
+            <binding name="date">
+                <literal>2018-11-30</literal>
+            </binding>
+        </result>
+    </results>
+</sparql>
