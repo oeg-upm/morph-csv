@@ -33,13 +33,23 @@ class CutCommandsGenerator:
             os.system(cut_command)
         return 'None'
 
+
+
     def generate_cut_command_from_triples_map(self, sparql_path, triples_map):
         correspond_csv_file = triples_map.logical_source.source
         correspond_columns_names = self.get_correspond_columns_names_from_triples_map(sparql_path, triples_map)
         field_numbers = CutCommandsGenerator.get_columns_numbers(correspond_csv_file, correspond_columns_names)
+
+        field_numbers_with_dollar = ["$" + str(field_number) for field_number in field_numbers]
         joined_field_numbers = ','.join(field_numbers)
-        result = 'cut -d ' + correspond_csv_file.delimiter + ' -f ' + joined_field_numbers + ' ' + correspond_csv_file.path
-        return result
+        joined_field_numbers_with_dollar = ','.join(field_numbers_with_dollar)
+
+
+        result_with_cut = 'cut -d ' + correspond_csv_file.delimiter + ' -f ' + joined_field_numbers + ' ' + correspond_csv_file.path
+        result_with_awk = 'awk -F \'\\"' + correspond_csv_file.delimiter + '\\"\' \'{print ' + joined_field_numbers_with_dollar + '}\' ' + correspond_csv_file.path
+        print("result_with_awk = " + str(result_with_awk))
+
+        return result_with_awk
 
     def get_correspond_triples_maps(self, sparql_path):
         correspond_triples_map_student = build_example_triples_map_student()
