@@ -1,11 +1,11 @@
 import os
 
-from CSVFile import CSVFile
-from RMLTriplesMap import RMLTriplesMap
-from RMLTriplesMap import build_example_triples_map_student
-from RMLTriplesMap import build_example_triples_map_sport
-from RMLTermMap import string_separetion
-from RMLTermMap import TermMapType
+from model.RMLTriplesMap import RMLTriplesMap
+from model.RMLTriplesMap import build_example_triples_map_student
+from model.RMLTriplesMap import build_example_triples_map_sport
+from model.CSVFile import CSVFile
+from model.RMLTermMap import string_separetion
+from model.RMLTermMap import TermMapType
 
 class CutCommandsGenerator:
     def __init__(self, rml_path, csv_files):
@@ -29,8 +29,8 @@ class CutCommandsGenerator:
         correspond_triples_maps = self.get_correspond_triples_maps(sparql_path)
         for triples_map in correspond_triples_maps:
             cut_command = self.generate_cut_command_from_triples_map(sparql_path, triples_map)
-            os.system(cut_command)
             print("cut_command = " + cut_command)
+            os.system(cut_command)
         return 'None'
 
     def generate_cut_command_from_triples_map(self, sparql_path, triples_map):
@@ -87,10 +87,11 @@ class CutCommandsGenerator:
         return correspond_columns_names
 
 
-student_csv = CSVFile("examples/studentsport/STUDENT.csv", ",")
-sport_csv = CSVFile("examples/studentsport/SPORT.csv", ",")
+student_csv = CSVFile("../tmp/studentsport/STUDENT.csv", ",")
+sport_csv = CSVFile("../tmp/studentsport/SPORT.csv", ",")
 csv_files = [student_csv, sport_csv]
-cut_command_generator = CutCommandsGenerator("examples/studentsport/example1-mapping-csv.ttl", csv_files)
+cut_command_generator = CutCommandsGenerator("../tmp/studentsport/example1-mapping-csv.ttl", csv_files)
+
 #print(cut_command_generator.rml_url)
 #print(cut_command_generator.csv_file.path)
 cut_command_generator.generate_cut_command_from_sparql('sparql_url')

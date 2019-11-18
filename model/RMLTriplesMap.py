@@ -1,8 +1,9 @@
-from RMLTermMap import RMLTermMap
-from RMLTermMap import TermMapType
-from RMLPredicateObjectMap import RMLPredicateObjectMap
-from RMLLogicalSource import RMLLogicalSource
-from CSVFile import CSVFile
+
+from model.RMLTermMap import RMLTermMap
+from model.RMLTermMap import TermMapType
+from model.RMLPredicateObjectMap import RMLPredicateObjectMap
+from model.RMLLogicalSource import RMLLogicalSource
+from model.CSVFile import CSVFile
 
 
 class RMLTriplesMap:
@@ -13,7 +14,7 @@ class RMLTriplesMap:
 
 
 def build_example_triples_map_student():
-    student_csv = CSVFile("examples/studentsport/STUDENT.csv", ",")
+    student_csv = CSVFile("../tmp/studentsport/STUDENT.csv", ",")
     logical_source = RMLLogicalSource(student_csv, "", "")
     subject_map = RMLTermMap(TermMapType.TEMPLATE_MAP, "http://example.org/Student/{Id}")
     predicate_map = RMLTermMap(TermMapType.CONSTANT_MAP, "http://example.org/hasStudentName")
@@ -25,7 +26,7 @@ def build_example_triples_map_student():
 
 
 def build_example_triples_map_sport():
-    sport_csv = CSVFile("examples/studentsport/SPORT.csv", ",")
+    sport_csv = CSVFile("../tmp/studentsport/SPORT.csv", ",")
     logical_source = RMLLogicalSource(sport_csv, "", "")
     subject_map = RMLTermMap(TermMapType.TEMPLATE_MAP, "http://example.org/Sport/{ID}")
     predicate_map = RMLTermMap(TermMapType.CONSTANT_MAP, "http://example.org/hasSportName")
