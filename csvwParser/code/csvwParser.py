@@ -2,10 +2,11 @@
 import json
 import sys
 import os
+import csv
 
 #Valores nulos que se usan para verificar la validez de los datos.
 emptyValues = ['', ' ']
-
+rowTitles = []
 #Carga el CSVW en el DataFrame
 def jsonLoader(path):
     try:
@@ -13,7 +14,6 @@ def jsonLoader(path):
         return result
     except Exception as e:
         print(e)
-        print("The path is not valid")
         sys.exit()
 
 #Devuelve la URL de la tabla sobre la que estamos trabajando
@@ -27,28 +27,31 @@ def getUrl(table):
         print(e)
         sys.exit()
 
-#Recorre la tabla en busca de los Titulos, pueden estar en el primer nivel del objeto Table (rowTiltles o rowTitle) tambien
+# Recorre la tabla en busca de los Titulos, pueden estar en el primer nivel del objeto Table (rowTiltles o rowTitle) tambien
 # pueden estar dentro de las columnas de la tabla (table->tableSchema->columns[i]->title/s)
+# TENER EN CUENTA LOS HEADERS --> SI ES TRUE ENTONCES LOS TITULOS YA ESTAN EN LA PRIMERA FILA!!!!
 def getTableTitles(table):
     try:
         titles = []
-        if('rowTitles' in table.keys() and len(table['rowTitles']) > 0):
-            titles = table['rowTitles']
-        elif('rowTitle' in table.keys() and len(table['rowTitle']) > 0):
-            titles = table['rowTitle']
-        elif(columnsChecker(table)):
-            for col in table['tableSchema']['columns']:
-                if('titles' in col.keys()):
-                    if( (isinstance(col['titles'], str) or isinstance(col['titles'], unicode)) and str(col['titles']) not in emptyValues):
-                        titles.append(str(col['titles']))
-                    elif(type(col['titles']) is list and len(col['titles']) > 0):
-                        titles = titles + col['titles']
-                elif('title' in col.keys()):
-                    if((isinstance(col['title'], str) or isinstance(col['title'], unicode)) and str(col['title']) not in emptyValues):
-                        titles.append(str(col['title']))
-                    elif(type(col['title']) is list and len(col['title']) > 0):
-                        titles = titles + col['title']
-        return titles
+        header = False
+        if('dialect' in table.keys() and 'header' in table['dialect'].keys()):
+            header =  table['dialect']['header']
+        if('tableSchema' in table.keys()):
+            if('rowTitles' in table['tableSchema'].keys() and len(table['tableSchema']['rowTitles']) > 0):
+                titles = table['tableSchema']['rowTitles']
+            elif('rowTitle' in table['tableSchema'].keys() and len(table['tableSchema']['rowTitle']) > 0):
+                titles = table['tableSchema']['rowTitle']
+        if(header is True and len(titles) == 0):
+            path = './tmp/' + str(table['url'].split("/")[-1:][0].split(".")[0])
+            delimiter = getDelimiter(table)
+            with open(path, "r") as f:
+                reader = csv.reader(f)
+                i = next(reader) 
+                titles = i[0].split(delimiter)
+        global rowTitles
+        rowTitles = titles
+        #SI NO SE ESPECIFICA LOS ROWTITLES EN EL CSVW HAY QUE SACARLOS DEL CSV!!!!!!!
+        return {'header':header, 'titles':titles}
 
     except Exception as e:
         print(e)
@@ -56,10 +59,11 @@ def getTableTitles(table):
     
 #Devuelve el array de titulos formateado listo para pasarselo directamente al BashScript
 def getTitles(table):
-    titles = getTableTitles(table)
+    data = getTableTitles(table)
+    titles = data['titles']
     result = ''.join(str(titles[i]) + ',' for i in range(0, len(titles)))
     result = result[:-1]
-    return result
+    return {'result':result, 'header':data['header']}
 
 #Devuelve el delimitador, por defecto(Si no encuetra ningun delimitador en el csvw) es ',' 
 def getDelimiter(table):
@@ -82,7 +86,9 @@ def getSkipRows(table):
 def getNullValues(table):
     nullValues  = [] 
     if(columnsChecker(table)):
-        for index, col in enumerate(table['tableSchema']['columns']):
+        for col in table['tableSchema']['columns']:
+            title = getColTitle(col)
+            index = rowTitles.index(title)
             if('null' in col.keys()):
                 nullValues.append({'col':str(index +1), 'null':col['null']})
             else:
@@ -109,7 +115,9 @@ def getFormat(table, dataType):
     try:
         result = []
         if(columnsChecker(table)):
-            for indx, col in enumerate(table['tableSchema']['columns']):
+            for col in table['tableSchema']['columns']:
+                title = getColTitle(col)
+                indx = rowTitles.index(title)
                 if('datatype' in col.keys()):
                     if((isinstance(col['datatype'], str) or isinstance(col['datatype'], unicode)) and col['datatype'] == dataType and 'format' in col.keys()):
                         result.append({'col':str(indx + 1),'format':col['format']})
@@ -161,4 +169,16 @@ def getDefaultEmptyStringValue(table):
 def columnsChecker(table):
     return 'tableSchema'in table.keys() and 'columns' in table['tableSchema'].keys() and type(table['tableSchema']['columns']) is list and len(table['tableSchema']['columns']) > 0
 
-
+def getColTitle(col):
+    title = ''
+    if('titles' in col.keys()):
+        if( (isinstance(col['titles'], str) or isinstance(col['titles'], unicode)) and str(col['titles']) not in emptyValues):
+            title = str(col['titles'])
+        elif(type(col['titles']) is list and len(col['titles']) > 0):
+            titles = str(col['titles'][0])
+    elif('title' in col.keys()):
+        if((isinstance(col['title'], str) or isinstance(col['title'], unicode)) and str(col['title']) not in emptyValues):
+            title = str(col['title'])
+        elif(type(col['title']) is list and len(col['title']) > 0):
+            title = str(col['title'][0])
+    return title

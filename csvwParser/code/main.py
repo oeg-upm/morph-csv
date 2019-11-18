@@ -11,8 +11,10 @@ def filterCsvw(csvw, files):
 #Function to call the bash Scripts files and send the scvw data.
 def scriptCaller(data):
     url = parser.getUrl(data).split("/")[-1:][0]
+    url = url.split('.')[0]
     print("********************" + url + "***************************")
     insertTitles(parser.getTitles(data), url)
+    '''
     print("InsertTitles Done")
     rowSkipper(parser.getSkipRows(data), url)
     print("Skip Rows Done")
@@ -25,13 +27,14 @@ def scriptCaller(data):
     nullFormatChanger(parser.getNullValues(data), url)
     print("NullFormat Changer Done")
     defaultEmptyStringFormatChanger(parser.getDefaultEmptyStringValue(data), url)
-
+    '''
 '''
 Insert row titles (from csvw:rowTitles)
 '''
 def insertTitles(data, path):
-#    print("Titles: " + data)
-    os.system('bash ./bashScripts/insertTitles.sh \'%s\' %s'%(data, path))
+    print("Titles: " + str(data['result']))
+    print("Header: " + str(data['header']))
+#    os.system('bash ./bashScripts/insertTitles.sh \'%s\' %s'%(data, path))
 
 '''
 #Skip rows (csvw:skipRows -> remove the first n rows)
@@ -95,7 +98,7 @@ RML+FnO in refObjectMap (new column apply transformation functions)
 '''
 
 def main():
-    csvw = parser.jsonLoader('../mappings/bio2rdf.csvw.json')
+    csvw = parser.jsonLoader('../mappings/ncbigene.csvw.json')
 #    parsedCsvw = csvwParser.jsonIterator(csvw) TO DO
 #    csvw = filterCsvw(csvw, ['CSV1','CSV2']) TO DO
     for table in csvw['tables']:
