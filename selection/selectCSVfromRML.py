@@ -40,8 +40,8 @@ class CutCommandsGenerator:
         correspond_csv_file = triples_map.logical_source.source
         correspond_columns_names = self.get_correspond_columns_names_from_triples_map(sparql_path, triples_map)
         field_numbers = CutCommandsGenerator.get_columns_numbers(correspond_csv_file, correspond_columns_names)
-        field_numbers = list(dict.fromkeys(field_numbers))
         field_numbers = sorted(field_numbers)
+        field_numbers = list(dict.fromkeys(field_numbers))
         print("field_numbers = " + str(field_numbers))
 
         field_numbers_with_dollar = ['"\\""$' + str(field_number) + '"\\","' for field_number in field_numbers[:-1]]
