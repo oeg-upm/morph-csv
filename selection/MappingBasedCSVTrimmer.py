@@ -38,18 +38,11 @@ class MappingBasedCSVTrimmer:
 
     def generate_command_from_triples_map(self, sparql_path, triples_map):
         correspond_csv_file = triples_map.logical_source.source
-        csv_delimiter = correspond_csv_file.delimiter
-        csv_path = correspond_csv_file.path
-
         correspond_columns_names = self.get_correspond_columns_names_from_triples_map(sparql_path, triples_map)
         field_numbers = MappingBasedCSVTrimmer.get_columns_numbers(correspond_csv_file, correspond_columns_names)
         field_numbers = sorted(field_numbers)
         field_numbers = list(dict.fromkeys(field_numbers))
         print("field_numbers = " + str(field_numbers))
-        field_numbers_with_dollar = ["$" + str(field_number) for field_number in field_numbers]
-        print("field_numbers_with_dollar = " + str(field_numbers_with_dollar))
-        joined_field_numbers = '"\\",","\\""'.join(field_numbers_with_dollar)
-        print("joined_field_numbers = " + str(joined_field_numbers))
 
         cut_command = self.generate_cut_command(sparql_path, triples_map, field_numbers)
         print("cut_command = " + str(cut_command))
@@ -137,6 +130,7 @@ class MappingBasedCSVTrimmer:
         correspond_columns_names = [join_condition.child_column_name]
         #print("correspond_columns_names = " + str(correspond_columns_names))
         return correspond_columns_names
+
 
 student_csv = CSVFile("../tmp/studentsport/STUDENT.csv", ",")
 sport_csv = CSVFile("../tmp/studentsport/SPORT.csv", ",")
