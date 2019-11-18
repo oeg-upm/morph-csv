@@ -36,7 +36,7 @@ def build_example_triples_map_student():
 def build_example_triples_map_sport():
     sport_csv = CSVFile("../tmp/studentsport/SPORT.csv", ",")
     logical_source = RMLLogicalSource(sport_csv, "", "")
-    subject_map = RMLTermMap(TermMapType.TEMPLATE_MAP, "http://example.org/Sport/{ID}")
+    subject_map = RMLTermMap(TermMapType.TEMPLATE_MAP, "http://example.org/Sport/{Id}")
     predicate_map = RMLTermMap(TermMapType.CONSTANT_MAP, "http://example.org/hasSportName")
     object_map = RMLTermMap(TermMapType.COLUMN_MAP, "Name")
     predicate_object_map = RMLPredicateObjectMap(predicate_map, object_map)
