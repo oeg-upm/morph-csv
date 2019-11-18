@@ -13,7 +13,7 @@ class CSVFile:
         csv_dict = {}
         i = 1
         for column_name in csv_columns:
-            csv_dict[column_name] = str(i)
+            csv_dict[column_name] = i
             i = i + 1
         print('csv_dict = ' + str(csv_dict))
 
