@@ -38,6 +38,9 @@ class CutCommandsGenerator:
 
     def generate_cut_command_from_triples_map(self, sparql_path, triples_map):
         correspond_csv_file = triples_map.logical_source.source
+        csv_delimiter = correspond_csv_file.delimiter
+        csv_path = correspond_csv_file.path
+
         correspond_columns_names = self.get_correspond_columns_names_from_triples_map(sparql_path, triples_map)
         field_numbers = CutCommandsGenerator.get_columns_numbers(correspond_csv_file, correspond_columns_names)
         field_numbers = sorted(field_numbers)
@@ -48,16 +51,18 @@ class CutCommandsGenerator:
         joined_field_numbers = '"\\",","\\""'.join(field_numbers_with_dollar)
         print("joined_field_numbers = " + str(joined_field_numbers))
 
-        result_with_cut = 'cut -d ' + correspond_csv_file.delimiter + ' -f ' + ','.join(["" + str(field_number) for field_number in field_numbers]) + ' ' + correspond_csv_file.path
+        result_with_cut = 'cut -d ' + csv_delimiter + ' -f ' + ','.join(["" + str(field_number) for field_number in field_numbers]) + ' ' + csv_path
         print("result_with_cut = " + str(result_with_cut))
 
-        result_with_awk = ''
+        awk_command = 'awk -F \'\\"' + csv_delimiter + '\\"\' \'{print '
         if 1 in field_numbers:
-            result_with_awk = 'awk -F \'\\"' + correspond_csv_file.delimiter + '\\"\' \'{print ' + joined_field_numbers + '"\\""}\' ' + correspond_csv_file.path
+            awk_command = awk_command
         else:
-            result_with_awk = 'awk -F \'\\"' + correspond_csv_file.delimiter + '\\"\' \'{print "\\""' + joined_field_numbers + '"\\""}\' ' + correspond_csv_file.path
-        print("result_with_awk = " + str(result_with_awk))
-        return result_with_awk
+            awk_command = awk_command + '"\\""'
+        awk_command = awk_command + joined_field_numbers + '"\\""}\' ' + csv_path
+
+        print("awk_command = " + str(awk_command))
+        return awk_command
 
     def get_correspond_triples_maps(self, sparql_path):
         correspond_triples_map_student = build_example_triples_map_student()
