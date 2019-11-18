@@ -2,40 +2,53 @@ import os
 
 from CSVFile import CSVFile
 from RMLTriplesMap import RMLTriplesMap
-from RMLTriplesMap import build_example_triples_map
+from RMLTriplesMap import build_example_triples_map_student
+from RMLTriplesMap import build_example_triples_map_sport
 from RMLTermMap import string_separetion
 from RMLTermMap import TermMapType
 
 class CutCommandsGenerator:
-    def __init__(self, rml_path, csv_file):
+    def __init__(self, rml_path, csv_files):
         self.rml_url = rml_path
-        self.csv_file = csv_file
+        self.csv_files = csv_files
 
-    def get_column_number(self, column_name):
-        column_number = self.csv_file.dict[column_name]
+    @staticmethod
+    def get_column_number(csv_file, column_name):
+        column_number = csv_file.dict[column_name]
         return column_number
 
-    def generate_cut_command(self, sparql_path):
-        field_numbers = self.get_correspond_columns_numbers(sparql_path)
+    @staticmethod
+    def get_columns_numbers(csv_file, columns_names):
+        columns_numbers = []
+        for column_name in columns_names:
+            column_number = CutCommandsGenerator.get_column_number(csv_file, column_name)
+            columns_numbers = columns_numbers + [column_number]
+        return columns_numbers
+
+    def generate_cut_command_from_sparql(self, sparql_path):
+        correspond_triples_maps = self.get_correspond_triples_maps(sparql_path)
+        for triples_map in correspond_triples_maps:
+            cut_command = self.generate_cut_command_from_triples_map(sparql_path, triples_map)
+            os.system(cut_command)
+            print("cut_command = " + cut_command)
+        return 'None'
+
+    def generate_cut_command_from_triples_map(self, sparql_path, triples_map):
+        correspond_csv_file = triples_map.logical_source.source
+        correspond_columns_names = self.get_correspond_columns_names_from_triples_map(sparql_path, triples_map)
+        field_numbers = CutCommandsGenerator.get_columns_numbers(correspond_csv_file, correspond_columns_names)
         joined_field_numbers = ','.join(field_numbers)
-        result = 'cut -d ' + self.csv_file.delimiter + ' -f ' + joined_field_numbers + ' ' + self.csv_file.path
+        result = 'cut -d ' + correspond_csv_file.delimiter + ' -f ' + joined_field_numbers + ' ' + correspond_csv_file.path
         return result
 
-    def get_correspond_columns_numbers(self, sparql_path):
-        correspond_columns_names = self.get_correspond_columns_names(sparql_path)
-        correspond_columns_numbers = list(map(self.get_column_number, correspond_columns_names))
-        return correspond_columns_numbers
+    def get_correspond_triples_maps(self, sparql_path):
+        correspond_triples_map_student = build_example_triples_map_student()
+        correspond_triples_map_sport = build_example_triples_map_sport()
 
-    def get_correspond_columns_names(self, sparql_path):
-        correspond_triples_map = self.get_correspond_triples_map(sparql_path)
-        correspond_columns_names = self.get_correspond_column_name_from_triples_map(sparql_path, correspond_triples_map)
-        return correspond_columns_names
+        correspond_triples_maps = [correspond_triples_map_student, correspond_triples_map_sport]
+        return correspond_triples_maps
 
-    def get_correspond_triples_map(self, sparql_path):
-        correspond_triples_map = build_example_triples_map()
-        return correspond_triples_map
-
-    def get_correspond_column_name_from_triples_map(self, sparql_path, triples_map):
+    def get_correspond_columns_names_from_triples_map(self, sparql_path, triples_map):
         subject_map = triples_map.subject_map
         predicate_object_maps = triples_map.predicate_object_maps
 
@@ -75,9 +88,9 @@ class CutCommandsGenerator:
 
 
 student_csv = CSVFile("examples/studentsport/STUDENT.csv", ",")
-cut_command_generator = CutCommandsGenerator("examples/studentsport/example1-mapping-csv.ttl", student_csv)
+sport_csv = CSVFile("examples/studentsport/SPORT.csv", ",")
+csv_files = [student_csv, sport_csv]
+cut_command_generator = CutCommandsGenerator("examples/studentsport/example1-mapping-csv.ttl", csv_files)
 #print(cut_command_generator.rml_url)
 #print(cut_command_generator.csv_file.path)
-cut_command = cut_command_generator.generate_cut_command('sparql_url')
-print("cut_command = " + cut_command)
-os.system(cut_command)
+cut_command_generator.generate_cut_command_from_sparql('sparql_url')
