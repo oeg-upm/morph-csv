@@ -1,6 +1,13 @@
 import csvwParser as parser
 import os
 
+#Function to remove not required CSVs
+def filterCsvw(csvw, files):
+    for index,table in enumerate(csvw['tables']):
+        if(table['url'][-1:][0] not in files):
+            csvw['tables'].pop(index)
+    return csvw
+
 #Function to call the bash Scripts files and send the scvw data.
 def scriptCaller(data):
     url = parser.getUrl(data).split("/")[-1:][0]
@@ -15,6 +22,9 @@ def scriptCaller(data):
     print("DateFormat Changer Done")
     booleanFormatReplacer(parser.getBooleanFormat(data), url)
     print("BooleanFormat Changer Done")
+    nullFormatChanger(parser.getNullValues(data), url)
+    print("NullFormat Changer Done")
+    defaultEmptyStringFormatChanger(parser.getDefaultEmptyStringValue(data), url)
 
 '''
 Insert row titles (from csvw:rowTitles)
@@ -51,11 +61,17 @@ def booleanFormatReplacer(data, path):
     print(data)
     
     for col in data:
-        os.system('bash ./bashScripts/booleanFormatChanger.sh %s %s %s %s'%(data['true'], data['false'], data['col'], path))
+        os.system('bash ./bashScripts/booleanFormatChanger.sh %s %s %s %s'%(col['true'], col['false'], col['col'], path))
 
 def nullFormatChanger(data, path):
     for col in data:
-        os.system('bash ./bashScripts/nullFormatChanger.sh %s %s %s',(data['null'], data['col'], path)):
+        print("Col:%s Null:%s"%(col['col'], col['null']))
+        os.system('bash ./bashScripts/nullFormatChanger.sh \'%s\' %s %s'%(col['null'], col['col'], path))
+def defaultEmptyStringFormatChanger(data, path):
+    for col in data:
+#        print("Col:%s Null:%s"%(col['col'], col['default']))
+        os.system('bash ./bashScripts/defaultEmptyStringReplacer.sh \'%s\' %s %s'%(col['default'], col['col'], path))
+
 '''
 Validity max/minimum value (not correct -> null)
 '''
@@ -79,11 +95,10 @@ RML+FnO in refObjectMap (new column apply transformation functions)
 '''
 
 def main():
-    csvw = parser.jsonLoader('../mappings/madridGtfs.csvw.json')
+    csvw = parser.jsonLoader('../mappings/bio2rdf.csvw.json')
 #    parsedCsvw = csvwParser.jsonIterator(csvw) TO DO
 #    csvw = filterCsvw(csvw, ['CSV1','CSV2']) TO DO
     for table in csvw['tables']:
         scriptCaller(table)
-
-main()
-
+if __name__ == '__main__':
+    main()

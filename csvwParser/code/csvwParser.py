@@ -9,7 +9,7 @@ emptyValues = ['', ' ']
 #Carga el CSVW en el DataFrame
 def jsonLoader(path):
     try:
-        result = json.loads(open(path).read())
+        result = json.loads(str(open(path).read()))
         return result
     except Exception as e:
         print(e)
@@ -79,14 +79,14 @@ def getSkipRows(table):
     return skipRows
 
 #Recorre las columnas para almacenar el Null value en un ARRAY si no se encuntra ningun NUllvalue se usa el caracter vacio por defecto.
-def getNullValue(table):
+def getNullValues(table):
     nullValues  = [] 
     if(columnsChecker(table)):
         for index, col in enumerate(table['tableSchema']['columns']):
             if('null' in col.keys()):
                 nullValues.append({'col':str(index +1), 'null':col['null']})
             else:
-                nullValues.append('col':str(index + 1), 'null':'')
+                nullValues.append({'col':str(index + 1), 'null':''})
     return nullValues
 
 #Get min and Max (Inclusive and exclusive)
@@ -112,7 +112,7 @@ def getFormat(table, dataType):
             for indx, col in enumerate(table['tableSchema']['columns']):
                 if('datatype' in col.keys()):
                     if((isinstance(col['datatype'], str) or isinstance(col['datatype'], unicode)) and col['datatype'] == dataType and 'format' in col.keys()):
-                        result.append({'col':indx,'format':col['format']})
+                        result.append({'col':str(indx + 1),'format':col['format']})
                     elif(type(col['datatype']) is dict and 'base' in col['datatype'] and 'format' in col['datatype'] and col['datatype']['base'] == dataType):
                         result.append({'col':str(indx + 1), 'format':col['datatype']['format']})
         return result
@@ -150,6 +150,13 @@ def getBooleanFormat(table):
 
     return booleans
 
+def getDefaultEmptyStringValue(table):
+    result = []
+    if(columnsChecker(table)):
+        for index,col in enumerate(table['tableSchema']['columns']):
+            if('default' in col.keys()):
+                result.append({'col':str(index + 1), 'default':col['default']})
+    return result
 #Check if the table includes Columns
 def columnsChecker(table):
     return 'tableSchema'in table.keys() and 'columns' in table['tableSchema'].keys() and type(table['tableSchema']['columns']) is list and len(table['tableSchema']['columns']) > 0
