@@ -1,0 +1,181 @@
+{  
+  "@context": ["http://www.w3.org/ns/csvw"],
+  "tables": [
+  {
+    "url": "https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/open-city-data-validation/data/stops_transport_1.csv",
+    "tableSchema": {
+      "aboutUrl": "{_row}", 
+      "primaryKey": "stop_id", 
+      "columns": [
+       {
+        "datatype": "string", 
+        "titles": [
+         "stop_id"
+        ], 
+        "@id": "https://iisg.amsterdam/stops.txt/column/stop_id", 
+        "name": "stop_id", 
+        "required": true,
+        "dc:description": "stop_id"
+       }, 
+       {
+        "datatype": "string", 
+        "titles": [
+         "stop_name"
+        ], 
+        "@id": "https://iisg.amsterdam/stops.txt/column/stop_name", 
+        "name": "stop_name", 
+        "required": true,
+        "dc:description": "stop_name"
+       }, 
+       {
+        "datatype": "double", 
+        "titles": [
+         "stop_lat"
+        ], 
+        "@id": "https://iisg.amsterdam/stops.txt/column/stop_lat", 
+        "name": "stop_lat", 
+        "required": true,
+        "dc:description": "stop_lat"
+       }, 
+       {
+        "datatype": "double", 
+        "titles": [
+         "stop_lon"
+        ], 
+        "@id": "https://iisg.amsterdam/stops.txt/column/stop_lon", 
+        "name": "stop_lon", 
+        "required": true,
+        "dc:description": "stop_lon"
+       }, 
+       {
+        "datatype": "string", 
+        "titles": [
+         "stop_url"
+        ], 
+        "@id": "https://iisg.amsterdam/stops.txt/column/stop_url", 
+        "name": "stop_url", 
+        "dc:description": "stop_url"
+       }, 
+       {
+        "datatype": "integer", 
+        "titles": [
+         "wheelchair_boarding"
+        ], 
+        "@id": "https://iisg.amsterdam/stops.txt/column/wheelchair_boarding", 
+        "name": "wheelchair_boarding",
+        "default": 0,
+        "dc:description": "wheelchair_boarding"
+       }
+      ]
+     }
+  },
+  {
+    "url": "https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/open-city-data-validation/data/stops_transport_2.csv",
+    "tableSchema": {
+      "aboutUrl": "{_row}", 
+      "primaryKey": "stop_id", 
+      "columns": [
+       {
+        "datatype": "string", 
+        "titles": [
+         "stop_id"
+        ], 
+        "@id": "https://iisg.amsterdam/stops.txt/column/stop_id", 
+        "name": "stop_id", 
+        "required": true,
+        "dc:description": "stop_id"
+       }, 
+       {
+        "datatype": "string", 
+        "titles": [
+         "stop_name"
+        ], 
+        "@id": "https://iisg.amsterdam/stops.txt/column/stop_name", 
+        "name": "stop_name", 
+        "required": true,
+        "dc:description": "stop_name"
+       }, 
+       {
+        "datatype": "double", 
+        "titles": [
+         "stop_lat"
+        ], 
+        "@id": "https://iisg.amsterdam/stops.txt/column/stop_lat", 
+        "name": "stop_lat", 
+        "required": true,
+        "dc:description": "stop_lat"
+       }, 
+       {
+        "datatype": "double", 
+        "titles": [
+         "stop_lon"
+        ], 
+        "@id": "https://iisg.amsterdam/stops.txt/column/stop_lon", 
+        "name": "stop_lon", 
+        "required": true,
+        "dc:description": "stop_lon"
+       }, 
+       {
+        "datatype": "string", 
+        "titles": [
+         "stop_url"
+        ], 
+        "@id": "https://iisg.amsterdam/stops.txt/column/stop_url", 
+        "name": "stop_url", 
+        "dc:description": "stop_url"
+       }, 
+       {
+        "datatype": "integer", 
+        "titles": [
+         "wheelchair_boarding"
+        ], 
+        "@id": "https://iisg.amsterdam/stops.txt/column/wheelchair_boarding", 
+        "name": "wheelchair_boarding",
+        "default": 0,
+        "dc:description": "wheelchair_boarding"
+       }
+      ]
+     }      
+  },
+  {
+    "url": "https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/open-city-data-validation/data/museums.csv",
+    "tableSchema": {
+      "aboutUrl": "{_row}",
+      "columns": [
+       {
+        "datatype": "string", 
+        "titles": [
+         "NOMBRE"
+        ]
+       }, 
+       {
+        "datatype": "string", 
+        "titles": [
+         "TRANSPORTE"
+        ]
+       }
+     ]}
+  },
+  {
+    "url": "https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/open-city-data-validation/data/sport_center.csv",
+    "tableSchema": {
+      "aboutUrl": "{_row}",
+      "columns": [
+       {
+        "datatype": "string", 
+        "titles": [
+         "NOMBRE"
+        ]
+       }, 
+       {
+        "datatype": "string", 
+        "titles": [
+         "TRANSPORTE"
+        ]
+       }
+     ]}
+  }
+  
+
+
+ ]}

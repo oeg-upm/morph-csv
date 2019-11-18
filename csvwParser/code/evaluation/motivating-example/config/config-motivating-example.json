@@ -1,0 +1,9 @@
+{
+  "sources":[
+    {
+      "csvw":"https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/motivating-example/mappings/motivating-example-annotations.csvw.json",
+      "yarrrml": "https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/motivating-example/mappings/motivating-example.yml",
+      "db": "simpleExample"
+    }
+  ]
+}
