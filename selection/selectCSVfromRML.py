@@ -43,16 +43,19 @@ class CutCommandsGenerator:
         field_numbers = sorted(field_numbers)
         field_numbers = list(dict.fromkeys(field_numbers))
         print("field_numbers = " + str(field_numbers))
+        field_numbers_with_dollar = ["$" + str(field_number) for field_number in field_numbers]
+        print("field_numbers_with_dollar = " + str(field_numbers_with_dollar))
+        joined_field_numbers = '"\\",","\\""'.join(field_numbers_with_dollar)
+        print("joined_field_numbers = " + str(joined_field_numbers))
 
-        field_numbers_with_dollar = ['"\\""$' + str(field_number) + '"\\","' for field_number in field_numbers[:-1]]
-        field_numbers_with_dollar.append('"\\""$' + str(field_numbers[-1:][0]) + '"\\""')
-        if('1' in field_numbers):
-            field_numbers_with_dollar[0] = '$1"\\","'
-        joined_field_numbers = ''.join(str(field_numbers))
-        joined_field_numbers_with_dollar = ','.join(field_numbers_with_dollar)
-        print("joined_field_numbers_with_dollar = " + str(joined_field_numbers_with_dollar))
-        result_with_cut = 'cut -d ' + correspond_csv_file.delimiter + ' -f ' + ','.join(str(field_numbers)) + ' ' + correspond_csv_file.path
-        result_with_awk = 'awk -F \'\\"' + correspond_csv_file.delimiter + '\\"\' \'{print ' + joined_field_numbers_with_dollar + '}\' ' + correspond_csv_file.path
+        result_with_cut = 'cut -d ' + correspond_csv_file.delimiter + ' -f ' + ','.join(["" + str(field_number) for field_number in field_numbers]) + ' ' + correspond_csv_file.path
+        print("result_with_cut = " + str(result_with_cut))
+
+        result_with_awk = ''
+        if 1 in field_numbers:
+            result_with_awk = 'awk -F \'\\"' + correspond_csv_file.delimiter + '\\"\' \'{print ' + joined_field_numbers + '"\\""}\' ' + correspond_csv_file.path
+        else:
+            result_with_awk = 'awk -F \'\\"' + correspond_csv_file.delimiter + '\\"\' \'{print "\\""' + joined_field_numbers + '"\\""}\' ' + correspond_csv_file.path
         print("result_with_awk = " + str(result_with_awk))
         return result_with_awk
 
