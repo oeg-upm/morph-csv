@@ -40,10 +40,14 @@ class CutCommandsGenerator:
         correspond_csv_file = triples_map.logical_source.source
         correspond_columns_names = self.get_correspond_columns_names_from_triples_map(sparql_path, triples_map)
         field_numbers = CutCommandsGenerator.get_columns_numbers(correspond_csv_file, correspond_columns_names)
-        field_numbers_with_dollar = ["$" + str(field_number) for field_number in field_numbers]
-        joined_field_numbers = ','.join(field_numbers)
+        field_numbers_with_dollar = ['"\\""$' + str(field_number) + '"\\","' for field_number in field_numbers[:-1]]
+        field_numbers_with_dollar.append('"\\""$' + str(field_numbers[-1:][0]) + '"\\""')
+        if('1' in field_numbers):
+            field_numbers_with_dollar[0] = '$1"\\","'
+        joined_field_numbers = ''.join(field_numbers)
         joined_field_numbers_with_dollar = ','.join(field_numbers_with_dollar)
-        result_with_cut = 'cut -d ' + correspond_csv_file.delimiter + ' -f ' + joined_field_numbers + ' ' + correspond_csv_file.path
+        print("joined_field_numbers_with_dollar = " + str(joined_field_numbers_with_dollar))
+        result_with_cut = 'cut -d ' + correspond_csv_file.delimiter + ' -f ' + ','.join(field_numbers) + ' ' + correspond_csv_file.path
         result_with_awk = 'awk -F \'\\"' + correspond_csv_file.delimiter + '\\"\' \'{print ' + joined_field_numbers_with_dollar + '}\' ' + correspond_csv_file.path
         print("result_with_awk = " + str(result_with_awk))
         return result_with_awk
