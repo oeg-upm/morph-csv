@@ -7,4 +7,4 @@ filename=$3
 #time sed -i -r -e "s/$delimiter/\t/g" ./tmp/$filename
 echo DELIMTER:$delimiter ARG:$arg FILE:$filename
 awk -F$delimiter "{print $arg}" tmp/$filename > tmp/tmp.txt
-#mv tmp.txt tmp/$filename
+mv tmp/tmp.txt tmp/$filename
