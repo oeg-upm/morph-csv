@@ -149,9 +149,9 @@ def getDateFormat(table):
             date['delimiter'] = '-'
         else:
             date['delimiter'] = 'none'
-        date['arg2'] = ''.join('$' + str(i)  + ', ' for i in range(1, len(rowTitles) + 1))
-        date['arg2'] = str(date['arg2']).replace("$"+ str(date['col']) + ',', 'f1,')
-        date['arg2'] = date['arg2'][:-1]
+        date['arg2'] = ''.join('$' + str(i)  + '"\\",\\""' for i in range(1, len(rowTitles) + 1))
+        date['arg2'] = str(date['arg2']).replace("$"+ str(date['col']) +  '"\\",\\""', 'f1' +  '"\\",\\""')
+        date['arg2'] = date['arg2'][:-7]
     return dates
 
 #Lee el formato de los booleans y manda la informacion necesaria para ejecutar el BashScript booleanFormatChanger.sh
