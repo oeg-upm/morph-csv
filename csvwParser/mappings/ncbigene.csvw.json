@@ -88,7 +88,7 @@
             "null": "-",
             "datatype": {
               "base": "date",
-              "format": "YYYYMMDD"
+              "format": "dd-MM-yyyy"
             }
           },
           {
