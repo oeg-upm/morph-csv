@@ -12,7 +12,7 @@ def filterCsvw(csvw, files):
 #Function to call the bash Scripts files and send the scvw data.
 def scriptCaller(data):
     url = parser.getUrl(data).split("/")[-1:][0]
-    url = url.split('.')[0]
+    #url = url.split('.')[0]
     print("********************" + url + "***************************")
     insertTitles(parser.getTitles(data), url)
     print("InsertTitles Done")
@@ -52,7 +52,8 @@ def replaceDelimiter(data, path):
     delimiter = data['delimiter'].encode('unicode-escape').decode('ascii')
     arg = str(data['arg'])
 #    print("Delimiter: " + delimiter.encode('unicode-escape') + " File: " + path)
-    os.system('bash ./bashScripts/delimiterReplacer.sh \'%s\' \'%s\' %s'%(delimiter,arg,path))
+    if(delimiter != ','):
+        os.system('bash ./bashScripts/delimiterReplacer.sh \'%s\' \'%s\' %s'%(delimiter,arg,path))
 
 '''
 Dates and booleans format (csvw:format -> sql formats)
@@ -60,10 +61,10 @@ Dates and booleans format (csvw:format -> sql formats)
 def dateFormatReplacer(data, path):
     try:
         if(len(data) > 0):
-            print(data)
             for date in data:
+                if(not date['correct']):
 #                print("%s %s %s %s"%(date['args'],date['col'],date['delimiter'], path))
-                os.system('bash ./bashScripts/optimized/allInOneFile \'%s\' %s %s \'%s\' %s'%(date['args'],date['col'],date['delimiter'], date['arg2'], path))
+                    os.system('bash ./bashScripts/optimized/allInOneFile \'%s\' %s %s \'%s\' %s'%(date['args'],date['col'],date['delimiter'], date['arg2'], path))
     except:
         sys.exit()
 def booleanFormatReplacer(data, path):
@@ -104,7 +105,7 @@ RML+FnO in refObjectMap (new column apply transformation functions)
 '''
 
 def main():
-    csvw = parser.jsonLoader('../mappings/ncbigene.csvw.json')
+    csvw = parser.jsonLoader('evaluation/transport-performance/mappings/gtfs-annotations.json')
 #    parsedCsvw = csvwParser.jsonIterator(csvw) TO DO
 #    csvw = filterCsvw(csvw, ['CSV1','CSV2']) TO DO
     for table in csvw['tables']:

@@ -35,20 +35,26 @@ def getTableTitles(table):
     try:
         titles = []
         header = False
+
         if('dialect' in table.keys() and 'header' in table['dialect'].keys()):
             header =  table['dialect']['header']
+
         if('tableSchema' in table.keys()):
             if('rowTitles' in table['tableSchema'].keys() and len(table['tableSchema']['rowTitles']) > 0):
                 titles = table['tableSchema']['rowTitles']
             elif('rowTitle' in table['tableSchema'].keys() and len(table['tableSchema']['rowTitle']) > 0):
                 titles = table['tableSchema']['rowTitle']
-        if(header is True and len(titles) == 0):
-            path = './tmp/' + str(table['url'].split("/")[-1:][0].split(".")[0])
+
+        if(len(titles) == 0):
+            path = './tmp/' + str(table['url'].split("/")[-1:][0])#.split('.')[0])
             delimiter = getDelimiter(table)['delimiter']
             with open(path, "r") as f:
                 reader = csv.reader(f)
                 i = next(reader) 
-                titles = i[0].split(delimiter)
+                titles  = i
+                if(delimiter != ','):
+                    titles = i[0].split(delimiter)
+
         global rowTitles
         rowTitles = titles
         #SI NO SE ESPECIFICA LOS ROWTITLES EN EL CSVW HAY QUE SACARLOS DEL CSV!!!!!!!
@@ -135,23 +141,27 @@ def getFormat(table, dataType):
 def getDateFormat(table):
     dates = getFormat(table, 'date')
     for date in dates:
-        if(str(date['format']).lower()[0] == 'y'):
-            date['args'] = '$3\"-\"$2\"-\"$1'#Hace referencia a las columnas que tiene que reordenar AWK tras dividir la columna 'col' segun el delimitador dado
-        elif(str(date['format']).lower()[0] == 'm'):
-            date['args'] =  '$3\"-\"$1\"-\"$2'
+        if(str(date['format']).lower() != "yyyy-mm-dd"):
+            if(str(date['format']).lower()[0] == 'y'):
+                date['args'] = '$3\"-\"$2\"-\"$1'#Hace referencia a las columnas que tiene que reordenar AWK tras dividir la columna 'col' segun el delimitador dado
+            elif(str(date['format']).lower()[0] == 'm'):
+                date['args'] =  '$3\"-\"$1\"-\"$2'
+            else:
+                date['args'] = '$3\"-\"$2\"-\"$1'
+            if('.' in date['format']):
+                date['delimiter'] = '.'
+            elif('/' in date['format']):
+                date['delimiter'] = '/'
+            elif('-' in date['format']):
+                date['delimiter'] = '-'
+            else:
+                date['delimiter'] = 'none'
+            date['arg2'] = ''.join('$' + str(i)  + '"\\",\\""' for i in range(1, len(rowTitles) + 1))
+            date['arg2'] = str(date['arg2']).replace("$"+ str(date['col']) +  '"\\",\\""', 'f1' +  '"\\",\\""')
+            date['arg2'] = date['arg2'][:-7]
+            date['correct'] = False
         else:
-            date['args'] = '$3\"-\"$2\"-\"$1'
-        if('.' in date['format']):
-            date['delimiter'] = '.'
-        elif('/' in date['format']):
-            date['delimiter'] = '/'
-        elif('-' in date['format']):
-            date['delimiter'] = '-'
-        else:
-            date['delimiter'] = 'none'
-        date['arg2'] = ''.join('$' + str(i)  + '"\\",\\""' for i in range(1, len(rowTitles) + 1))
-        date['arg2'] = str(date['arg2']).replace("$"+ str(date['col']) +  '"\\",\\""', 'f1' +  '"\\",\\""')
-        date['arg2'] = date['arg2'][:-7]
+            date['correct'] = True
     return dates
 
 #Lee el formato de los booleans y manda la informacion necesaria para ejecutar el BashScript booleanFormatChanger.sh
@@ -179,13 +189,13 @@ def columnsChecker(table):
 def getColTitle(col):
     title = ''
     if('titles' in col.keys()):
-        if( (isinstance(col['titles'], str) or isinstance(col['titles'], unicode)) and str(col['titles']) not in emptyValues):
+        if(type(col['titles']) is list and len(col['titles']) > 0):
+            title = str(col['titles'][0])
+        elif(str(col['titles']) not in emptyValues):
             title = str(col['titles'])
-        elif(type(col['titles']) is list and len(col['titles']) > 0):
-            titles = str(col['titles'][0])
     elif('title' in col.keys()):
-        if((isinstance(col['title'], str) or isinstance(col['title'], unicode)) and str(col['title']) not in emptyValues):
-            title = str(col['title'])
-        elif(type(col['title']) is list and len(col['title']) > 0):
+        if(type(col['title']) is list and len(col['title']) > 0):
             title = str(col['title'][0])
+        elif(str(col['title']) not in emptyValues):
+            title = col['title'] 
     return title
