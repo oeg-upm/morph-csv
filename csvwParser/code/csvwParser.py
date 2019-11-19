@@ -156,7 +156,8 @@ def getDateFormat(table):
             elif('-' in date['format']):
                 date['delimiter'] = '-'
             else:
-                date['delimiter'] = 'none'
+                date['delimiter'] = ''
+                date['args'] = '$1$2$3$4"-"$5$6"-"$7$8'
             date['arg2'] = ''.join('$' + str(i)  + '"\\",\\""' for i in range(1, len(rowTitles) + 1))
             date['arg2'] = str(date['arg2']).replace("$"+ str(date['col']) +  '"\\",\\""', 'f1' +  '"\\",\\""')
             date['arg2'] = date['arg2'][:-7]
