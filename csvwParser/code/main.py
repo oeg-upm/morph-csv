@@ -1,3 +1,4 @@
+#!/bin/python3
 import csvwParser as parser
 import os
 
@@ -19,9 +20,9 @@ def scriptCaller(data):
     print("Skip Rows Done")
     replaceDelimiter(parser.getDelimiter(data), url)
     print("Replace Delimiter Done")
-    ''' 
     dateFormatReplacer(parser.getDateFormat(data), url)
     print("DateFormat Changer Done")
+    '''
     booleanFormatReplacer(parser.getBooleanFormat(data), url)
     print("BooleanFormat Changer Done")
     nullFormatChanger(parser.getNullValues(data), url)
@@ -48,11 +49,9 @@ def rowSkipper(data, path):
 #Delimiter (csvw:delimiter -> change to comma)
 '''
 def replaceDelimiter(data, path):
-    delimiter = data['delimiter'].encode('unicode-escape')
-    print('DELIMITER:' + delimiter + str(type(delimiter)))
-
+    delimiter = data['delimiter'].encode('unicode-escape').decode('ascii')
     arg = str(data['arg'])
-    #print("Delimiter: " + delimiter + " File: " + path)
+#    print("Delimiter: " + delimiter.encode('unicode-escape') + " File: " + path)
     os.system('bash ./bashScripts/delimiterReplacer.sh \'%s\' \'%s\' %s'%(delimiter,arg,path))
 
 '''
