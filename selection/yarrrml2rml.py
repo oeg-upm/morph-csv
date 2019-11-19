@@ -17,12 +17,12 @@ def yarrrml2rml (yarrrml):
         for pom in data["mappings"][tm]["po"]:
             if 'p' in pom:
                 if tm not in functions.keys():
-                    functions[tm] = []
+                    functions[tm] = {}
                 predicate = re.sub("^.*:", "", pom["p"])
                 object = pom["o"]
                 #if it is a basic function
                 if 'function' in object[0]:
-                    functions[tm].append([predicate, object])
+                    functions[tm][predicate] = object
                     data["mappings"][tm]["po"][i] = [pom["p"], "$("+predicate+")"]
                 #if it is a join
                 else:
@@ -33,11 +33,12 @@ def yarrrml2rml (yarrrml):
                         for param in parameters:
                             if 'parameter' in param:
                                 if param["parameter"] == 'str1':
-                                    functions[tm].append([predicate+"_child", param])
+                                    functions[tm][predicate+"_child"] = param
                                     data["mappings"][tm]["po"][i]["o"][t]["condition"]["parameters"][j] = [
                                         param["parameter"], "$(" + predicate + "_child)"]
                                 else:
-                                    functions[tm].append([predicate+"_parent", param])
+                                    functions[tm][predicate+"_parent"] = param
+                                    functions[tm]["parentTripleMap"] = jc["mapping"]
                                     data["mappings"][tm]["po"][i]["o"][t]["condition"]["parameters"][j] = [
                                         param["parameter"], "$(" + predicate + "_parent)"]
                             j += 1

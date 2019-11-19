@@ -1,9 +1,10 @@
 
 from selection.readRMLTriplesMap import mapping_parser
 from selection.yarrrml2rml import yarrrml2rml
-from selection.selectMappingFromSPARQL import fromSPARQLtoMapping
+from selection.resorucesFromSPARQL import fromSPARQLtoMapping, getColumnsFromFunctions
 import argparse
 import sys
+import json
 
 
 def main():
@@ -11,16 +12,15 @@ def main():
 
     print("Removing FnO functions from RML")
     functions, mapping = yarrrml2rml("./tmp/mapping.yml")
-
-    print("Selecting RML rules for answering the query")
+    print("Selecting RML rules, CSV files and columns for answering the query")
     # this function creates the rml rules needed to answer query from yarrrml mapping
-    fromSPARQLtoMapping(mapping, "query")
-
+    csvColumns = fromSPARQLtoMapping(mapping, "query")
+    csvColumns = getColumnsFromFunctions(csvColumns, functions)
     print("Selecting CSV files for answering the query")
     # get the triplesMaps objects from RML
-    triples_map_list = mapping_parser("./tmp/mapping.rml.ttl")
+    #triples_map_list = mapping_parser("./tmp/mapping.rml.ttl")
     # obtain the CSV and columns based on mapping
-    # ToDo: Freddy here insert your functions
+
 
     print("Cleaning CSV files based on CSVW")
     # cleaning stuff
