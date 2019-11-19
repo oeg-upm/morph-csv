@@ -46,7 +46,8 @@ def getTableTitles(table):
                 titles = table['tableSchema']['rowTitle']
 
         if(len(titles) == 0):
-            path = './tmp/' + str(table['url'].split("/")[-1:][0])#.split('.')[0])
+            #TODO BUSCAR LA FORMA DE MANEJAR LOS NOMBRES DE LOS CSVs
+            path = './tmp/' + str(table['url'].split("/")[-1:][0].split('.')[0])
             delimiter = getDelimiter(table)['delimiter']
             with open(path, "r") as f:
                 reader = csv.reader(f)
