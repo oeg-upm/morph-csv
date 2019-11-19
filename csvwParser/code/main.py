@@ -48,9 +48,9 @@ def rowSkipper(data, path):
 #Delimiter (csvw:delimiter -> change to comma)
 '''
 def replaceDelimiter(data, path):
-    delimiter = str(data['delimiter'].encode('utf-8'))
-    if(ord(delimiter) == 9):
-        delimiter = '\\t'
+    delimiter = data['delimiter'].encode('unicode-escape')
+    print('DELIMITER:' + delimiter + str(type(delimiter)))
+
     arg = str(data['arg'])
     #print("Delimiter: " + delimiter + " File: " + path)
     os.system('bash ./bashScripts/delimiterReplacer.sh \'%s\' \'%s\' %s'%(delimiter,arg,path))

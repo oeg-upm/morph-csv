@@ -20,6 +20,7 @@ def jsonLoader(path):
 def getUrl(table):
     try:
         if('url' in table.keys() and str(table['url']) not in emptyValues):
+            getTableTitles(table)
             return str(table['url'])
         else:
             raise Exception("The format of CSVW is wrong, the Url is not valid")
@@ -70,7 +71,7 @@ def getDelimiter(table):
     try:
         result = {'delimiter':',', 'arg':''}
         if('dialect' in table.keys() and type(table['dialect']) is dict and 'delimiter' in table['dialect'].keys() and str(table['dialect']['delimiter']) != ''):
-           result['delimiter'] =  str(table['dialect']['delimiter'])
+           result['delimiter'] = table['dialect']['delimiter']
         result['arg'] = ''.join('$' + str(i) + '"\\",\\""' for i in range(1, len(rowTitles) + 1))
         result['arg'] ='"\\""'+ result['arg'][:-6] + '\\""'
         return result
