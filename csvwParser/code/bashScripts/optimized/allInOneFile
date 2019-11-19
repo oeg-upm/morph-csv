@@ -6,6 +6,6 @@ arg2=$4
 file=$5
 
 #echo ARG1:$arg1 ARG2:$arg2 DELIM:$delimiter COL:$col FILE:$file
-awk -F '\",\"' "{print $col }" tmp/$file | awk  -F '' '{print $1$2$3$4"-"$5$6"-"$7$8}' >tmp/$file.tmp
+awk -F '\",\"' "{print $col }" tmp/$file | awk  -F '' "{print $arg1}" >tmp/$file.tmp
 awk -F '\",\"'  "{getline f1 <\"tmp/$file.tmp\" ;print $arg2}" OFS='\",\"' tmp/$file  > salida_tmp.csv
 mv  salida_tmp.csv tmp/$file

@@ -65,7 +65,7 @@ def dateFormatReplacer(data, path):
             for date in data:
                 if(not date['correct']):
 #                print("%s %s %s %s"%(date['args'],date['col'],date['delimiter'], path))
-                    os.system('bash ./bashScripts/optimized/allInOneFile \'%s\' %s %s \'%s\' %s'%(date['args'],date['col'],date['delimiter'], date['arg2'], path))
+                    os.system('bash ./bashScripts/optimized/allInOneFile \'%s\' \'%s\' \'%s\' \'%s\' \'%s\''%(date['args'],date['col'],date['delimiter'], date['arg2'], path))
     except:
         sys.exit()
 def booleanFormatReplacer(data, path):
