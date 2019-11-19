@@ -14,12 +14,12 @@ def scriptCaller(data):
     url = url.split('.')[0]
     print("********************" + url + "***************************")
     insertTitles(parser.getTitles(data), url)
-    '''
     print("InsertTitles Done")
-    rowSkipper(parser.getSkipRows(data), url)
+    #rowSkipper(parser.getSkipRows(data), url)
     print("Skip Rows Done")
     replaceDelimiter(parser.getDelimiter(data), url)
     print("Replace Delimiter Done")
+    ''' 
     dateFormatReplacer(parser.getDateFormat(data), url)
     print("DateFormat Changer Done")
     booleanFormatReplacer(parser.getBooleanFormat(data), url)
@@ -48,18 +48,25 @@ def rowSkipper(data, path):
 #Delimiter (csvw:delimiter -> change to comma)
 '''
 def replaceDelimiter(data, path):
-    delimiter = str(data.encode('utf-8'))
+    delimiter = str(data['delimiter'].encode('utf-8'))
+    if(ord(delimiter) == 9):
+        delimiter = '\\t'
+    arg = str(data['arg'])
     #print("Delimiter: " + delimiter + " File: " + path)
-    os.system('bash ./bashScripts/delimiterReplacer.sh \'%s\' %s'%(delimiter, path))
+    os.system('bash ./bashScripts/delimiterReplacer.sh \'%s\' \'%s\' %s'%(delimiter,arg,path))
 
 '''
 Dates and booleans format (csvw:format -> sql formats)
 '''
 def dateFormatReplacer(data, path):
-    if(len(data) > 0):
-        for date in data:
-  #          print("%s %s %s %s"%(date['args'],date['col'],date['delimiter'], path))
-            os.system('bash ./bashScripts/dateFormatChanger.sh \'%s\' %s %s %s'%(date['args'],date['col'],date['delimiter'], path))
+    try:
+        if(len(data) > 0):
+            print(data)
+            for date in data:
+#                print("%s %s %s %s"%(date['args'],date['col'],date['delimiter'], path))
+                os.system('bash ./bashScripts/optimized/allInOneFile \'%s\' %s %s \'%s\' %s'%(date['args'],date['col'],date['delimiter'], date['arg2'], path))
+    except:
+        sys.exit()
 def booleanFormatReplacer(data, path):
     print(data)
     

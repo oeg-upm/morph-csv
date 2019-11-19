@@ -43,7 +43,7 @@ def getTableTitles(table):
                 titles = table['tableSchema']['rowTitle']
         if(header is True and len(titles) == 0):
             path = './tmp/' + str(table['url'].split("/")[-1:][0].split(".")[0])
-            delimiter = getDelimiter(table)
+            delimiter = getDelimiter(table)['delimiter']
             with open(path, "r") as f:
                 reader = csv.reader(f)
                 i = next(reader) 
@@ -68,10 +68,12 @@ def getTitles(table):
 #Devuelve el delimitador, por defecto(Si no encuetra ningun delimitador en el csvw) es ',' 
 def getDelimiter(table):
     try:
-        delimiter = ','
+        result = {'delimiter':',', 'arg':''}
         if('dialect' in table.keys() and type(table['dialect']) is dict and 'delimiter' in table['dialect'].keys() and str(table['dialect']['delimiter']) != ''):
-            delimiter = str(table['dialect']['delimiter'])
-        return delimiter
+           result['delimiter'] =  str(table['dialect']['delimiter'])
+        result['arg'] = ''.join('$' + str(i) + '"\\",\\""' for i in range(1, len(rowTitles) + 1))
+        result['arg'] ='"\\""'+ result['arg'][:-6] + '\\""'
+        return result
     except Exception as e:
         print(e)
 
@@ -119,7 +121,7 @@ def getFormat(table, dataType):
                 title = getColTitle(col)
                 indx = rowTitles.index(title)
                 if('datatype' in col.keys()):
-                    if((isinstance(col['datatype'], str) or isinstance(col['datatype'], unicode)) and col['datatype'] == dataType and 'format' in col.keys()):
+                    if( str(col['datatype']) == dataType and 'format' in col.keys()):
                         result.append({'col':str(indx + 1),'format':col['format']})
                     elif(type(col['datatype']) is dict and 'base' in col['datatype'] and 'format' in col['datatype'] and col['datatype']['base'] == dataType):
                         result.append({'col':str(indx + 1), 'format':col['datatype']['format']})
@@ -145,6 +147,9 @@ def getDateFormat(table):
             date['delimiter'] = '-'
         else:
             date['delimiter'] = 'none'
+        date['arg2'] = ''.join('$' + str(i)  + ', ' for i in range(1, len(rowTitles) + 1))
+        date['arg2'] = str(date['arg2']).replace("$"+ str(date['col']) + ',', 'f1,')
+        date['arg2'] = date['arg2'][:-1]
     return dates
 
 #Lee el formato de los booleans y manda la informacion necesaria para ejecutar el BashScript booleanFormatChanger.sh
