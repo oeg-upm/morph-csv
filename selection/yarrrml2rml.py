@@ -2,6 +2,7 @@ import yaml
 from subprocess import call
 import re
 
+
 def yarrrml2rml (yarrrml):
     """
     Generate RML mapping without functions:
@@ -42,10 +43,6 @@ def yarrrml2rml (yarrrml):
                             j += 1
                         t += 1
             i += 1
-    f = open("../tmp/mapping_aux.yml", "w+")
-    f.write(yaml.dump(data, default_flow_style=None))
-    f.close()
-    call("../bash/yarrrml-parser.sh", shell=True)
-    return functions
+    return functions, data
 
 
