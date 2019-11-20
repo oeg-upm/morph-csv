@@ -8,20 +8,12 @@ import json
 
 
 def main():
-    print("Inserting headers in CSV files")
-
     print("Removing FnO functions from RML")
     functions, mapping = yarrrml2rml("./tmp/mapping.yml")
     print("Selecting RML rules, CSV files and columns for answering the query")
     # this function creates the rml rules needed to answer query from yarrrml mapping
-    csvColumns = fromSPARQLtoMapping(mapping, "query")
-    csvColumns = getColumnsFromFunctions(csvColumns, functions)
-    print("Selecting CSV files for answering the query")
-    # get the triplesMaps objects from RML
-    #triples_map_list = mapping_parser("./tmp/mapping.rml.ttl")
-    # obtain the CSV and columns based on mapping
-
-
+    csvColumns = getColumnsFromFunctions(fromSPARQLtoMapping(mapping, "query"), functions)
+    print(csvColumns)
     print("Cleaning CSV files based on CSVW")
     # cleaning stuff
 
