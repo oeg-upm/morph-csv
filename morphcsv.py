@@ -9,8 +9,8 @@ def main():
     parser.add_argument("-c", "--json_config", required=True, help="Input config file with yarrrml and csvw")
     parser.add_argument("-q", "--sparql_query", required=True, help="SPARQL query")
     args = parser.parse_args()
-
-    if len(sys.argv) == 2:
+    print(sys.argv)
+    if len(sys.argv) == 5:
         try:
             with open(args.json_config, "r") as json_file:
                 config = json.load(json_file)
