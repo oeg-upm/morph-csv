@@ -1,0 +1,11 @@
+version: "2.4"
+services:
+  morphcsv:
+    container_name: morphcsv
+    image: oegdataintegration/morph-csv-sparql:1.0.0
+    volumes:
+      - ./data:/data
+      - ./results/:/results
+      - ./mappings:/mappings
+      - ./configs:/configs
+      - ./queries:/queries
