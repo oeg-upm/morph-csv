@@ -75,6 +75,7 @@ def booleanFormatReplacer(data, path):
         os.system('bash ./bashScripts/booleanFormatChanger.sh %s %s %s %s'%(col['true'], col['false'], col['col'], path))
 
 def nullFormatChanger(data, path):
+    #METER PATTERN GSUB DESDE ARG1
     for col in data:
         print("Col:%s Null:%s"%(col['col'], col['null']))
         os.system('bash ./bashScripts/nullFormatChanger.sh \'%s\' %s %s'%(col['null'], col['col'], path))
