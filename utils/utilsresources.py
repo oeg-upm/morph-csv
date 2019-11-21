@@ -20,7 +20,7 @@ def downloadCSVfilesFromRML(yarrrml):
         if re.match("^http.*", source):
             filename = re.sub("~csv", "", mapping["mappings"][tm]["sources"][0][0].split("/")[
                 len(mapping["mappings"][tm]["sources"][0][0].split("/")) - 1])
-            os.system("wget -O ./tmp/csv/" + filename + " " + re.sub("~csv", source))
+            os.system("wget -O ./tmp/csv/" + filename + " " + re.sub("~csv","",source))
         else:
             os.system("mv " + source + " ./tmp/csv/")
 
