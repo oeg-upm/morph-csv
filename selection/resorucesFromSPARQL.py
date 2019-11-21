@@ -188,3 +188,12 @@ def extractReferencesFromFno(functions, columns):
         else:
             if re.match("\\$\\(.*\\)", parameters[1]):
                 columns.extend(getColumnsfromOM(parameters[1]))
+
+
+def projectCSVfiles(csvColumns):
+
+    for tm in csvColumns:
+        columns = csvColumns[tm]["columns"]
+        source = csvColumns[tm]["source"]
+        source = ".tmp/csv/+" + source
+        # ToDo substitute the orginal datasets conatining only the desired columns - Jhon
