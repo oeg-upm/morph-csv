@@ -1,5 +1,5 @@
 # Morph-CSV (2.0)
-SPARQL query guide for enhancing virtual KG access over tabular open data 
+
 
 
 ## What is Morph-CSV?
@@ -11,7 +11,7 @@ We provide two ways to run morph-csv: using the created docker image or directly
 git clone https://github.com/oeg-upm/morph-csv-sparql.git
 cd morph-csv-sparql
 ```
-The choose one of the available options:
+Then choose one of the available options:
 - Using docker and docker-compose*:
     ```bash
     docker-compose up -d
@@ -31,7 +31,7 @@ The choose one of the available options:
 
 ## Authors and Contact
 Ontology Engineering Group - Data Integration:
-- David Chaves-Fraga
+- David Chaves-Fraga ([dchaves@fi.upm.es](mailto:dchaves@fi.upm.es))
 - Jhon Toledo
 - Luis del Pozo
 - Freddy Priyatna
