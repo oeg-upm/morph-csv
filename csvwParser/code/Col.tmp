@@ -1,3 +1,0 @@
-"#tax_id","GeneID","Symbol","LocusTag","Synonyms","dbXrefs","chromosome","map_location","description","type_of_gene","Symbol_from_nomenclature_authority","Full_name_from_nomenclature_authority","Nomenclature_status","Other_designations","Modi-fi-ca","Feature_type"
-"7","5692769","null","null","null","null","null","null","Record to support submission of GeneRIFs for a gene not in Gene (Azotirhizobium caulinodans.  Use when strain, subtype, isolate, etc. is unspecified, or when different from all specified ones in Gene.).","other","null","null","null","null","2019-02-02","null"
-"9","1246500","repA1","pLeuDn_01","null","null","null","null","putative replication-associated protein","protein-coding","null","null","null","null","2018-01-29","null"
