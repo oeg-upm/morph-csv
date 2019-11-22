@@ -100,9 +100,14 @@ def getNullValues(table):
             title = getColTitle(col)
             index = rowTitles.index(title)
             if('null' in col.keys()):
-                nullValues.append({'col':str(index +1), 'null':col['null']})
-            else:
-                nullValues.append({'col':str(index + 1), 'null':''})
+                arg = ''
+                if(index == 0):
+                    arg = 'gsub(/\\\"%s/,\"\\\"null\",$1);'%(str(col['null']))
+                elif(index > 0 and index < len(rowTitles) - 1):
+                    arg = 'gsub(/%s/,\"null\",$%s);'%(col['null'], str(index+1))
+                else:
+                    arg =  'gsub(/%s\\\"/,\"null\\\"\",$NF);'%(col['null'])
+                nullValues.append({'col':str(index +1), 'null':col['null'], 'arg':arg})
     return nullValues
 
 #Get min and Max (Inclusive and exclusive)
