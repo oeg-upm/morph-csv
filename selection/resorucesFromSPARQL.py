@@ -190,10 +190,12 @@ def extractReferencesFromFno(functions, columns):
                 columns.extend(getColumnsfromOM(parameters[1]))
 
 
-def projectCSVfiles(csvColumns):
-
+# From a dict with sources a columns name, return the same dict with the indexes of the columns
+def getIndexFromColumns(csvColumns,all_columns):
     for tm in csvColumns:
         columns = csvColumns[tm]["columns"]
-        source = csvColumns[tm]["source"]
-        source = ".tmp/csv/+" + source
-        # ToDo substitute the orginal datasets conatining only the desired columns - Jhon
+        aux = []
+        for column in columns:
+            aux.extend(all_columns.index(column))
+        csvColumns[tm][columns] = aux
+    return csvColumns
