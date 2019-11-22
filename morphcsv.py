@@ -1,6 +1,9 @@
 import argparse
 import sys
 import json
+
+from selection.resorucesFromSPARQL import *
+from selection.yarrrml2rml import *
 from utils.utilsresources import *
 
 
@@ -28,11 +31,13 @@ def main():
     downloadCSVfilesFromRML(config["yarrrml"])
     query = readQuery(query)
     print("Removing FnO functions from RML")
-    #functions, mapping = yarrrml2rml("./tmp/mapping.yml")
+    functions, mapping = getCleanYarrrml("./tmp/mapping.yml")
     print("Selecting RML rules, CSV files and columns for answering the query")
     # this function creates the rml rules needed to answer query from yarrrml mapping
-    #csvColumns = getColumnsFromFunctions(fromSPARQLtoMapping(mapping, query), functions)
+    all_columns = [{"source": "persons.csv", "columns": ["c1","c2","c3"]}]
+    csvColumns = getIndexFromColumns(getColumnsFromFunctions(fromSPARQLtoMapping(mapping, query), functions), all_columns)
     print("Cleaning CSV files based on CSVW")
+    # create the full cleaning and selection bash script
     # cleaning stuff
 
     print("Normalizing CSV files")

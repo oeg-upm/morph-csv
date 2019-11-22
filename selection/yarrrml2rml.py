@@ -3,7 +3,7 @@ from subprocess import call
 import re
 
 
-def yarrrml2rml (yarrrml):
+def getCleanYarrrml (yarrrml):
     """
     Generate RML mapping without functions:
         - yarrrml mapping

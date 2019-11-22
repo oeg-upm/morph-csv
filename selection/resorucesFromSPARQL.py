@@ -194,8 +194,11 @@ def extractReferencesFromFno(functions, columns):
 def getIndexFromColumns(csvColumns,all_columns):
     for tm in csvColumns:
         columns = csvColumns[tm]["columns"]
-        aux = []
-        for column in columns:
-            aux.extend(all_columns.index(column))
+        source = csvColumns[tm]["source"]
+        for file in all_columns:
+            if file["source"] == source:
+                aux = []
+                for column in columns:
+                    aux.extend(file["columns"].index(column))
         csvColumns[tm][columns] = aux
     return csvColumns
