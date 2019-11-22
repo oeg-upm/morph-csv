@@ -1,0 +1,14 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX ex: <http://example.com/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX schema: <http://schema.org/>
+
+select distinct ?stop ?museumName where {
+	?s rdf:type gtfs:Stop;
+		foaf:name ?stop;
+		ex:hasMuseum ?museum .
+	?museum rdf:type schema:Museum;
+	    foaf:name ?museumName .
+}

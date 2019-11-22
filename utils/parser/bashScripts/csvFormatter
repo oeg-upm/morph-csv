@@ -1,0 +1,10 @@
+#!/bin/bash
+delimiter=$1
+all='$0'
+arg=$2
+cols=$3
+file=$4
+newDelimiter="'\",\"'"
+echo DELIMITER:$delimiter ARG1:$arg ARG2:$cols
+{ rm tmp/$file && awk -F "$delimiter" "{$arg print $cols}" > tmp/$file;} < tmp/$file
+

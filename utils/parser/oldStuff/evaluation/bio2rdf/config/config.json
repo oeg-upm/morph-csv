@@ -1,0 +1,9 @@
+{
+  "sources":[
+    {
+      "csvw":"https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/bio2rdf/mappings/bio2rdf.csvw.json",
+      "yarrrml": "https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/bio2rdf/mappings/bio2rdf.yml",
+      "db": "bio2rdf"
+    }
+  ]
+}
