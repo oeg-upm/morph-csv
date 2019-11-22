@@ -1,0 +1,5 @@
+"Id","Name","Sport","Status","Webpage","Phone","Email","Suffix","Birthdate"
+"B1","Paul","100","active","","777-3426","","Jr.","2000-12-31 00:00:00"
+"B2","John","200","active","","","john@acd.edu","Sr.",""
+"B3","George, Pozo","300","active","www.george.edu","","","Sr. ","1990-06-18 00:00:00"
+"B4","Ringo","","active","www.starr.edu","888-4537","ringo@acd.edu","Jr. ",""
