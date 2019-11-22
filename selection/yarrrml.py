@@ -47,3 +47,11 @@ def getCleanYarrrml (yarrrml):
     return functions, data
 
 
+# change source by table in the mapping for translating to R2RML
+def fromSourceToTables(mapping):
+
+    for tm in mapping["mappings"]:
+        source = mapping["mappings"][tm]["sources"][0][0].split("/")[
+            len(mapping["mappings"][tm]["sources"][0][0].split("/")) - 1]
+        re.sub("\\.csv~csv", "", source)
+        mapping["mappings"][tm]["sources"] = [{"table": source.upper()}]

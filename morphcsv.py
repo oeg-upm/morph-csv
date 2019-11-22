@@ -3,7 +3,7 @@ import sys
 import json
 
 from selection.resorucesFromSPARQL import *
-from selection.yarrrml2rml import *
+from selection.yarrrml import *
 from utils.utilsresources import *
 
 
@@ -35,7 +35,8 @@ def main():
     print("Selecting RML rules, CSV files and columns for answering the query")
     # this function creates the rml rules needed to answer query from yarrrml mapping
     all_columns = [{"source": "persons.csv", "columns": ["c1","c2","c3"]}]
-    csvColumns = getIndexFromColumns(getColumnsFromFunctions(fromSPARQLtoMapping(mapping, query), functions), all_columns)
+    csvColumns, mapping = fromSPARQLtoMapping(mapping, query)
+    csvColumns = getIndexFromColumns(getColumnsFromFunctions(csvColumns, functions), all_columns)
     print("Cleaning CSV files based on CSVW")
     # create the full cleaning and selection bash script
     # cleaning stuff
@@ -46,6 +47,9 @@ def main():
     print("Creating new columns based on FnO functions on RML")
 
     print("Removing duplicates")
+
+    print("Translating YARRRML to R2RML...")
+    mapping = fromSourceToTables(mapping)
 
     print("Answering query")
 
