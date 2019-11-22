@@ -96,14 +96,20 @@ def getSkipRows(table):
 def getNullValues(table):
     nullValues  = [] 
     if(columnsChecker(table)):
+        fullArg = ''
         for col in table['tableSchema']['columns']:
             title = getColTitle(col)
             index = rowTitles.index(title)
             if('null' in col.keys()):
-                nullValues.append({'col':str(index +1), 'null':col['null']})
-            else:
-                nullValues.append({'col':str(index + 1), 'null':''})
-    return nullValues
+                arg = ''
+                if(index == 0):
+                    arg = 'gsub(/^\\\"%s$/,\"\\\"null\",$1);'%(str(col['null']))
+                elif(index > 0 and index < len(rowTitles) - 1):
+                    arg = 'gsub(/^%s$/,\"null\",$%s);'%(col['null'], str(index+1))
+                else:
+                    arg =  'gsub(/^%s\\\"$/,\"null\\\"\",$NF);'%(col['null'])
+                fullArg += arg
+    return fullArg
 
 #Get min and Max (Inclusive and exclusive)
 def getExtremes(table, inclusive, exclusive):

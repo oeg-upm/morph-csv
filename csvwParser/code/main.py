@@ -23,10 +23,12 @@ def scriptCaller(data):
     print("Replace Delimiter Done")
     dateFormatReplacer(parser.getDateFormat(data), url)
     print("DateFormat Changer Done")
-    '''
-    booleanFormatReplacer(parser.getBooleanFormat(data), url)
+
+    #booleanFormatReplacer(parser.getBooleanFormat(data), url)
     print("BooleanFormat Changer Done")
+    ''
     nullFormatChanger(parser.getNullValues(data), url)
+    '''
     print("NullFormat Changer Done")
     defaultEmptyStringFormatChanger(parser.getDefaultEmptyStringValue(data), url)
     '''
@@ -75,9 +77,12 @@ def booleanFormatReplacer(data, path):
         os.system('bash ./bashScripts/booleanFormatChanger.sh %s %s %s %s'%(col['true'], col['false'], col['col'], path))
 
 def nullFormatChanger(data, path):
+    #METER PATTERN GSUB DESDE ARG1
+    '''
     for col in data:
         print("Col:%s Null:%s"%(col['col'], col['null']))
-        os.system('bash ./bashScripts/nullFormatChanger.sh \'%s\' %s %s'%(col['null'], col['col'], path))
+    '''
+    os.system('bash ./bashScripts/nullFormatChanger.sh \'%s\' %s'%(data, path))
 def defaultEmptyStringFormatChanger(data, path):
     for col in data:
 #        print("Col:%s Null:%s"%(col['col'], col['default']))
