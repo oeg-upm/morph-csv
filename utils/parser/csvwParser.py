@@ -98,19 +98,25 @@ def getNullValues(table):
     nullValues  = [] 
     if(columnsChecker(table)):
         fullArg = ''
+        result = {'data':[],'fullArg':''}
         for col in table['tableSchema']['columns']:
             title = getColTitle(col)
             index = rowTitles.index(title)
             if('null' in col.keys()):
+                arg = 'gsub(/^%s$/,\"null\",$%s);'%(col['null'], str(index+1))
+                result['data'].append({'col':'$%s'%(str(index+1)), 'value':col['null']})
+                '''
                 arg = ''
                 if(index == 0):
                     arg = 'gsub(/^\\\"%s$/,\"\\\"null\",$1);'%(str(col['null']))
                 elif(index > 0 and index < len(rowTitles) - 1):
                     arg = 'gsub(/^%s$/,\"null\",$%s);'%(col['null'], str(index+1))
                 else:
-                    arg =  'gsub(/^%s\\\"$/,\"null\\\"\",$NF);'%(col['null'])
+                    arg =  'gsub(/^%s\\\"$/,\"null\\\"\",$%s);'%(col['null'], str(index+1))
+                '''
                 fullArg += arg
-    return fullArg
+    result['fullArg'] = fullArg
+    return result
 
 #Get min and Max (Inclusive and exclusive)
 def getExtremes(table, inclusive, exclusive):
@@ -147,15 +153,52 @@ def getFormat(table, dataType):
 
 #Lee el Formato de la fecha y manda de la configuracion necesaria para ejecutar el bashScript dateFormatChanger.sh
 def getDateFormat(table):
+    data = getFormat(table, 'date')
+    result = {'split':'', 'print':[]}
+    for date in data:
+        if(str(date['format']).lower() not in ["yyyy-mm-dd", "yyyymmdd"]):
+            arrayFormat = ''
+            if(str(date['format']).lower()[0] == 'y'):
+                arrayFormat = 'date%s[1] \"-\" date%s[2] \"-\" date%s[3]'%(str(date['col']),str(date['col']),str(date['col']))
+            elif(str(date['format']).lower()[0] == 'm'):
+                arrayFormat = 'date%s[1] \"-\" date%s[2] \"-\" date%s[3]'%(str(date['col']),str(date['col']),str(date['col']))
+            else:
+                arrayFormat = 'date%s[1] \"-\" date%s[2] \"-\" date%s[3]'%(str(date['col']),str(date['col']),str(date['col']))
+            if('.' in date['format']):
+                date['delimiter'] = '.'
+            elif('/' in date['format']):
+                date['delimiter'] = '/'
+            elif('-' in date['format']):
+                date['delimiter'] = '-'
+            result['print'].append({'col':'$%s'%(str(date['col'])),'data':'dateValue%s'%(str(date['col']))})
+            result['split'] += 'if($%s != \"$%sNULL\")split($%s,date%s,\"%s\");dateValue%s=%s;if($%s == \"$%sNULL\")dateValue%s=\"null\";'%(str(date['col']), str(date['col']),str(date['col']),str(date['col']),str(date['delimiter']),str(date['col']), arrayFormat, str(date['col']),str(date['col']),str(date['col']))
+        elif(str(date['format']).lower() == "yyyymmdd"):
+            arrayFormat = 'date%s[1] date%s[2] date%s[3] date%s[4]\"-\" date%s[5] date%s[6] \"-\" date%s[7] date%s[8]'%(
+                    str(date['col']), str(date['col']), str(date['col']), str(date['col']),
+                    str(date['col']),str(date['col']),str(date['col']),str(date['col']))
+            date['delimiter'] = ''
+            result['print'].append({'col':'$%s'%(str(date['col'])),'data':'dateValue%s'%(str(date['col']))})
+            #result['split'] += 'split($%s,date%s,\"%s\");'%(str(date['col']), str(date['col']),str(date['delimiter']))
+            result['split'] += '{if($%s != \"$%sNULL\")split($%s,date%s,\"%s\");dateValue%s=%s;if($%s == \"$%sNULL\")dateValue%s=\"null\";}'%(str(date['col']), str(date['col']),str(date['col']),str(date['col']),str(date['delimiter']),str(date['col']), arrayFormat, str(date['col']),str(date['col']),str(date['col']))
+           
+    return result
+
+
+
+       
+    '''
     dates = getFormat(table, 'date')
     for date in dates:
         if(str(date['format']).lower() != "yyyy-mm-dd"):
             if(str(date['format']).lower()[0] == 'y'):
-                date['args'] = '$3\"-\"$2\"-\"$1'#Hace referencia a las columnas que tiene que reordenar AWK tras dividir la columna 'col' segun el delimitador dado
+                date['args'] = '$1\"-\"$2\"-\"$3'#Hace referencia a las columnas que tiene que reordenar AWK tras dividir la columna 'col' segun el delimitador dado
+                date['print'] = 'date%s[3] \"-\" date%s[2] \"-\" date%s[1]'%(str(date['col']), str(date['col']), str(date['col']))
             elif(str(date['format']).lower()[0] == 'm'):
                 date['args'] =  '$3\"-\"$1\"-\"$2'
+                date['print'] = 'date%s[3] \"-\" date%s[1] \"-\" date%s[2]'%(str(date['col']), str(date['col']), str(date['col']))
             else:
                 date['args'] = '$3\"-\"$2\"-\"$1'
+                date['print'] = 'date%s[3] \"-\" date%s[2] \"-\" date%s[1]'%(str(date['col']), str(date['col']), str(date['col']))
             if('.' in date['format']):
                 date['delimiter'] = '.'
             elif('/' in date['format']):
@@ -165,6 +208,7 @@ def getDateFormat(table):
             else:
                 date['delimiter'] = ''
                 date['args'] = '$1$2$3$4"-"$5$6"-"$7$8'
+#            result['split'] = 'split($%s,date%s,\\\"%s\\\");'%(str(date['col']), str(date['col']),str(date['delimiter']))
             date['arg2'] = ''.join('$' + str(i)  + '"\\",\\""' for i in range(1, len(rowTitles) + 1))
             date['arg2'] = str(date['arg2']).replace("$"+ str(date['col']) +  '"\\",\\""', 'f1' +  '"\\",\\""')
             date['arg2'] = date['arg2'][:-7]
@@ -172,6 +216,7 @@ def getDateFormat(table):
         else:
             date['correct'] = True
     return dates
+    '''
 
 #Lee el formato de los booleans y manda la informacion necesaria para ejecutar el BashScript booleanFormatChanger.sh
 def getBooleanFormat(table):
@@ -211,7 +256,20 @@ def getColTitle(col):
     return title
 
 def getGsubPatterns(table):
-    arg = getNullValues(table)
-#    arg += getDefaultStringValue(table)
-    arg += getBooleanFormat(table)
-    return arg;
+    result = {'split': '', 'gsub':'', 'print':'', 'delimiter':''}
+    date = getDateFormat(table) 
+    delimiter = getDelimiter(table)
+    result['split'] =  str(date['split'])
+    nullValues = getNullValues(table)
+    for col in nullValues['data']:
+        result['split'] = result['split'].replace(str(col['col'])+'NULL',col['value'])
+    script = nullValues['fullArg']
+   # script += getDefaultStringValue(table)
+    script += getBooleanFormat(table)
+    result['gsub'] = str(script)
+    for el in date['print']:
+        delimiter['arg'] = delimiter['arg'].replace(el['col'],' ' +  el['data'] + ' ')
+    result['print'] = delimiter['arg']
+    result['delimiter'] = delimiter['delimiter'].encode('unicode-escape').decode('ascii')
+    return result
+

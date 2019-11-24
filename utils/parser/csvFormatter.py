@@ -17,7 +17,7 @@ def scriptCaller(data):
     print("********************" + url + "***************************")
     insertTitles(parser.getTitles(data), url)
     print("InsertTitles Done")
-    csvFormatter(parser.getDelimiter(data), parser.getGsubPatterns(data), url)
+    csvFormatter(parser.getGsubPatterns(data), url)
     '''
     #rowSkipper(parser.getSkipRows(data), url)
     print("Skip Rows Done")
@@ -87,12 +87,10 @@ def defaultEmptyStringFormatChanger(data, path):
 #        print("Col:%s Null:%s"%(col['col'], col['default']))
         os.system('bash ./bashScripts/defaultEmptyStringReplacer.sh \'%s\' %s %s'%(col['default'], col['col'], path))
 
-def csvFormatter(data, arg, path):
-    delimiter = data['delimiter'].encode('unicode-escape').decode('ascii')
-    print("DELIMITER ARGS: " + str(data['arg']))
-    cols = str(data['arg'])
+def csvFormatter(data, path):
+#    print("FORMATTER: " + str(data))
     #arg += 'print ' + str(data['arg']) + ';'
-    os.system('bash bashScripts/csvFormatter \'%s\' \'%s\' \'%s\' \'%s\''%(str(delimiter), str(arg),cols,str(path)))
+    os.system('bash bashScripts/csvFormatter \'%s\' \'%s\' \'%s\' \'%s\' \'%s\''%(str(data['delimiter']), str(data['gsub']),str(data['print']),str(data['split']),str(path)))
 '''
 Validity max/minimum value (not correct -> null)
 '''
