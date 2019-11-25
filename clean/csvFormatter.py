@@ -127,7 +127,7 @@ RML+FnO in refObjectMap (new column apply transformation functions)
 '''
 
 def csvFormatter(csvSelection):
-    csvw = parser.jsonLoader('../tmp/annotations/motivating-example-annotations.csvw.json')
+    csvw = parser.jsonLoader('../tmp/annotations/annotations.json')
     csvw = csvwFilter(csvw, csvSelection)
     print(str(csvw).replace('\'', '"'))
     for table in csvw['tables']:
