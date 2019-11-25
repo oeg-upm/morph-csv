@@ -27,10 +27,10 @@ def main():
     print("Downloading mappings, data and query")
     maketmpdirs()
     downloadAnnotations(config)
-    downloadCSVfilesFromRML(config["yarrrml"])
+    downloadCSVfilesFromRML()
     query = readQuery(query)
     print("Removing FnO functions from RML")
-    functions, mapping = getCleanYarrrml("./tmp/annotations/mapping.yml")
+    functions, mapping = getCleanYarrrml()
     print("Selecting RML rules, CSV files and columns for answering the query")
     # this function creates the rml rules needed to answer query from yarrrml mapping
     all_columns = [{"source": "person", "columns": ["name","ln2","ln1"]}]

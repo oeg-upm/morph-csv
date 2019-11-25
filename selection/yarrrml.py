@@ -3,7 +3,7 @@ from subprocess import call
 import re
 
 
-def getCleanYarrrml (yarrrml):
+def getCleanYarrrml ():
     """
     Generate RML mapping without functions:
         - yarrrml mapping
@@ -11,7 +11,7 @@ def getCleanYarrrml (yarrrml):
     return dict with the functions (mapping and reference where to apply them) and rml mapping in disk
     """
     functions = {}
-    data = yaml.load(open(yarrrml), Loader=yaml.FullLoader)
+    data = yaml.load(open("./tmp/annotations/mapping.yml"), Loader=yaml.FullLoader)
     for tm in data["mappings"]:
         i = 0
         for pom in data["mappings"][tm]["po"]:
