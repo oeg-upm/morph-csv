@@ -21,7 +21,7 @@ def mappingTranslation(mapping, column):
 
     source = [["./tmp/csv/"+column.csv]]
     s = "http://example.com/$(id)-$("+column+")"
-    pom = [["ex:"+column, "$(column)"]]
+    pom = [["ex:"+column, "$(value)"]]
 
     mapping["mappings"][column] = {"source": source, "s": s, "po": pom}
 
@@ -33,6 +33,7 @@ def createJoin(predicate, column):
     return join
 
 def dataTranslation(file, column, separator):
+    #ToDo call the bash scripts
     #substitute the column by an index (1,2,3...)
     os.system("")
     #create a new file named column with id,[column] and separate the values based on the separator
@@ -59,3 +60,65 @@ def getPredicateAndObjectFromQuery(query,column,mapping):
                         object = algebra['p']['p'][bgp]['triples'][tp][2]
 
     return predicate, object
+
+def toThirdNormalForm(mapping):
+
+    equal = {}
+    normalize = []
+    for tm in mapping["mappings"]:
+        for pom in mapping["mappings"][tm]["po"]:
+            if 'p' in pom:
+                source = mapping["mappings"][tm]["sources"][0][0]
+                parent_mapping = mapping["mappings"][tm]["po"]["o"]["mapping"]
+                source_parent = mapping["mappings"][parent_mapping]["sources"][0][0]
+                if source == source_parent:
+                    for i in range(len(mapping["mappings"][tm]["po"]["o"]["condition"]["parameters"])):
+                        if mapping["mappings"][tm]["po"]["o"]["condition"]["parameters"][i][0] == "str2":
+                            reference = getColumnsfromOM(mapping["mappings"][tm]["po"]["o"]["condition"]["parameters"][i][1])
+                            equal[parent_mapping] = reference[0]
+
+    for tm in equal:
+        target = tm
+        source = mapping["mappings"][tm]["sources"][0][0]
+        columns = []
+        pomcount = 0
+        for pom in mapping["mappings"][tm]["pom"]:
+            if 'p' in pom:
+                columns.extend(getColumnsfromJoin(mapping["mappings"][tm]["po"][pomcount]["o"]))
+            else:
+                columns.extend(getColumnsfromOM(mapping["mappings"][tm]["po"][pomcount][1]))
+            pomcount += 1
+
+        remove = columns.copy().pop(equal[tm])
+        mapping["mappings"][tm]["sources"][0][0] = "./tmp/csv/"+target+".csv~csv"
+        normalize.extend({"source": source, "remove": remove, "columns": columns, "target": target})
+
+    """
+        normalize content:
+            - source: the name of the file where you can get the columns
+            - remove: the columns you have to remove from source
+            - target: the name of the new file
+            - columns: the columns you have to add to target
+        
+    """
+    # ToDo: execute bash script to create target and remove the "remove" columns from source
+
+
+
+def getColumnsfromOM(om):
+    columns = []
+    aux = om.split("$(")
+    for references in aux:
+        if re.match(".*\\).*", references):
+            columns.append(references.split(")")[0])
+    return columns
+
+def getColumnsfromJoin(join):
+    columns = []
+    joinscount = 0
+    while joinscount < len(join):
+        for i in [0, 1]:
+            if join[joinscount]["condition"]["parameters"][i][0] == "str1":
+                columns.extend(getColumnsfromOM(join[joinscount]["condition"]["parameters"][i][1]))
+        joinscount += 1
+    return columns
