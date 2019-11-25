@@ -30,7 +30,7 @@ def main():
     downloadCSVfilesFromRML(config["yarrrml"])
     query = readQuery(query)
     print("Removing FnO functions from RML")
-    functions, mapping = getCleanYarrrml("./tmp/annotations/gtfs-csv.yml")
+    functions, mapping = getCleanYarrrml("./tmp/annotations/mapping.yml")
     print("Selecting RML rules, CSV files and columns for answering the query")
     # this function creates the rml rules needed to answer query from yarrrml mapping
     all_columns = [{"source": "persons.csv", "columns": ["c1","c2","c3"]}]
