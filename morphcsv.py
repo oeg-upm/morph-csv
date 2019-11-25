@@ -12,7 +12,6 @@ def main():
     parser.add_argument("-c", "--json_config", required=True, help="Input config file with yarrrml and csvw")
     parser.add_argument("-q", "--sparql_query", required=True, help="SPARQL query")
     args = parser.parse_args()
-    print(sys.argv)
     if len(sys.argv) == 5:
         try:
             with open(args.json_config, "r") as json_file:
@@ -28,13 +27,13 @@ def main():
     print("Downloading mappings, data and query")
     maketmpdirs()
     downloadAnnotations(config)
-    downloadCSVfilesFromRML(config["yarrrml"])
+    downloadCSVfilesFromRML()
     query = readQuery(query)
     print("Removing FnO functions from RML")
-    functions, mapping = getCleanYarrrml("./tmp/mapping.yml")
+    functions, mapping = getCleanYarrrml()
     print("Selecting RML rules, CSV files and columns for answering the query")
     # this function creates the rml rules needed to answer query from yarrrml mapping
-    all_columns = [{"source": "person", "columns": ["name","ln2","ln1"]}]
+    #all_columns = [{"source": "person", "columns": ["name","ln2","ln1"]}]
     
     csvColumns, mapping = fromSPARQLtoMapping(mapping, query)
     #csvColumns = getIndexFromColumns(getColumnsFromFunctions(csvColumns, functions), all_columns)

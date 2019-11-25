@@ -5,16 +5,20 @@ import yaml
 def downloadAnnotations(config):
     for key in config:
         source = config[key]
+        extension = source.split(".")[len(source.split(".")) - 1]
+        if re.match("json", extension):
+            name = "annotations.json"
+        elif re.match("yml || yaml", extension):
+            name = "mapping.yaml"
         if re.match("^http.*", source):
-            filename = source.split("/")[len(source.split("/")) - 1]
-            os.system("wget -O ./tmp/annotations/" + filename + " " + source)
+
+            os.system("wget -O ./tmp/annotations/" + name + " " + source)
         else:
-            os.system("mv " + source + " ./tmp/annotations/")
+            os.system("mv " + source + " ./tmp/annotations/" + name)
 
 
-def downloadCSVfilesFromRML(yarrrml):
-    yarrrml = yarrrml.split("/")[len(yarrrml.split("/")) - 1]
-    mapping = yaml.load(open("./tmp/annotations/"+yarrrml), Loader=yaml.FullLoader)
+def downloadCSVfilesFromRML():
+    mapping = yaml.load(open("./tmp/annotations/mapping.yaml"), Loader=yaml.FullLoader)
     for tm in mapping["mappings"]:
         source = mapping["mappings"][tm]["sources"][0][0]
         if re.match("^http.*", source):
@@ -22,7 +26,7 @@ def downloadCSVfilesFromRML(yarrrml):
                 len(mapping["mappings"][tm]["sources"][0][0].split("/")) - 1])
             os.system("wget -O ./tmp/csv/" + filename + " " + re.sub("~csv","",source))
         else:
-            os.system("mv " + source + " ./tmp/csv/")
+            os.system("mv " + re.sub("~csv", "", source) + " ./tmp/csv/")
 
 
 def readQuery(path):
