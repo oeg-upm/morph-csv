@@ -188,13 +188,24 @@ def extractReferencesFromFno(functions, columns):
 
 # From a dict with sources a columns name, return the same dict with the indexes of the columns
 def getIndexFromColumns(csvColumns,all_columns):
-    for tm in csvColumns:
-        columns = csvColumns[tm]["columns"]
-        source = csvColumns[tm]["source"]
-        for file in all_columns:
-            if file["source"] == source:
-                aux = []
-                for column in columns:
-                    aux.extend(file["columns"].index(column))
-        csvColumns[tm][columns] = aux
+    print(csvColumns)
+    print(all_columns)
+    aux = {}
+    for tm in all_columns:
+        aux[tm['source']] = []
+        for col in csvColumns[tm['source']]['columns']:
+            aux[tm['source']].append(tm['columns'].index(col))
+            print(col)
+    print(aux)
+#
+#for tm in csvColumns:
+#    columns = csvColumns[tm]["columns"]
+#    source = csvColumns[tm]["source"]
+#    aux = []
+#    for file in all_columns:
+#        if file["source"] == source:
+#            
+#            for column in columns:
+#                aux.extend(file["columns"].index(column))
+#    csvColumns[tm][columns] = aux
     return csvColumns

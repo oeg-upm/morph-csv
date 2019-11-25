@@ -34,7 +34,8 @@ def main():
     functions, mapping = getCleanYarrrml("./tmp/mapping.yml")
     print("Selecting RML rules, CSV files and columns for answering the query")
     # this function creates the rml rules needed to answer query from yarrrml mapping
-    all_columns = [{"source": "persons.csv", "columns": ["c1","c2","c3"]}]
+    all_columns = [{"source": "person", "columns": ["name","ln2","ln1"]}]
+    
     csvColumns, mapping = fromSPARQLtoMapping(mapping, query)
     csvColumns = getIndexFromColumns(getColumnsFromFunctions(csvColumns, functions), all_columns)
     print("Cleaning CSV files based on CSVW")
