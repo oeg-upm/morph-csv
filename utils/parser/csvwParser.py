@@ -54,11 +54,15 @@ def getTableTitles(table):
                 titles = table['tableSchema']['rowTitles']
             elif('rowTitle' in table['tableSchema'].keys() and len(table['tableSchema']['rowTitle']) > 0):
                 titles = table['tableSchema']['rowTitle']
-
+        print('TITLES:'  + str(titles))
         if(len(titles) == 0):
+            print("NO HAY ROW TITLES")
             #TODO BUSCAR LA FORMA DE MANEJAR LOS NOMBRES DE LOS CSVs
             path = './tmp/' + str(table['url'].split("/")[-1:][0]) #.split('.')[0])
-            delimiter = getDelimiter(table)['delimiter']
+            try:
+                delimiter = table['tableSchema']['dialect']['delimiter']
+            except:
+                delimiter = ','
             with open(path, "r") as f:
                 reader = csv.reader(f)
                 i = next(reader) 
@@ -68,12 +72,12 @@ def getTableTitles(table):
 
         global rowTitles
         rowTitles = titles
+        print('ROWTITLES:' + str(rowTitles))
         #SI NO SE ESPECIFICA LOS ROWTITLES EN EL CSVW HAY QUE SACARLOS DEL CSV!!!!!!!
         return {'header':header, 'titles':titles}
 
     except Exception as e:
         print(e)
-        pass    
 #Devuelve el array de titulos formateado listo para pasarselo directamente al BashScript
 def getTitles(table):
     data = getTableTitles(table)

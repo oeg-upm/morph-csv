@@ -127,16 +127,17 @@ RML+FnO in refObjectMap (new column apply transformation functions)
 '''
 
 def csvFormatter(csvSelection):
-    csvw = parser.jsonLoader('../../csvwParser/mappings/ncbigene.csvw.json')
+    csvw = parser.jsonLoader('../../csvwParser/mappings/madridGtfs.csvw.json')
     csvw = csvwFilter(csvw, csvSelection)
-#    print(str(csvw).replace('\'', '"'))
+    print(str(csvw).replace('\'', '"'))
     for table in csvw['tables']:
         scriptCaller(table)
 def main():
-    selection = json.loads('{"gene": {"source": "gene_info.gz", "columns": ["Modification_date", "chromosome", "GeneID"]}}')
+#    selection = json.loads('{"gene": {"source": "gene_info.gz", "columns": ["Modification_date", "chromosome", "GeneID"]}}')
+    selection = json.loads('{"agency": {"source": "AGENCY.csv", "columns": ["agency_id", "agency_timezone", "agency_lang"]}, "routes":{"source": "ROUTES.csv", "columns": ["route_url", "route_short_name", "route_type"]}}')
     csvFormatter(selection)
     '''
-    csvw = parser.jsonLoader('../../csvwParser/mappings/ncbigene.csvw.json')
+    csvw = parser.jsonLoader('../../csvwParser/mappings/madridGtfs.csvw.json')
 #    parsedCsvw = csvwParser.jsonIterator(csvw) TO DO
 #    csvw = filterCsvw(csvw, ['CSV1','CSV2']) TO DO
     for table in csvw['tables']:

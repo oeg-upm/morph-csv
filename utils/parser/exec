@@ -1,4 +1,4 @@
 #!/bin/bash
-cp oldStuff/tests/gene_info  tmp/gene_info.gz
-#cp ../../csvwParser/data/madridGtfs/* tmp/
+#cp oldStuff/tests/gene_info  tmp/gene_info.gz
+cp ../../csvwParser/data/madridGtfs/* tmp/
 time python3 csvFormatter.py
