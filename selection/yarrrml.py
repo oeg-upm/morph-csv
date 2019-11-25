@@ -16,12 +16,12 @@ def getCleanYarrrml (yarrrml):
         i = 0
         for pom in data["mappings"][tm]["po"]:
             if 'p' in pom:
-                if tm not in functions.keys():
-                    functions[tm] = {}
                 predicate = re.sub("^.*:", "", pom["p"])
                 object = pom["o"]
                 #if it is a basic function
                 if 'function' in object[0]:
+                    if tm not in functions.keys():
+                        functions[tm] = {}
                     functions[tm][predicate] = object
                     data["mappings"][tm]["po"][i] = [pom["p"], "$("+predicate+")"]
                 #if it is a join
@@ -32,6 +32,8 @@ def getCleanYarrrml (yarrrml):
                         j = 0
                         for param in parameters:
                             if 'parameter' in param:
+                                if tm not in functions.keys():
+                                    functions[tm] = {}
                                 if param["parameter"] == 'str1':
                                     functions[tm][predicate+"_child"] = param
                                     data["mappings"][tm]["po"][i]["o"][t]["condition"]["parameters"][j] = [
