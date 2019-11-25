@@ -6,13 +6,13 @@ import copy
 
 
 def fromSPARQLtoMapping(mapping, query):
-    query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" \
-            "PREFIX schema: <http://schema.org/> " \
-            "select * where { ?s rdf:type schema:SocialMediaPosting ." \
-            "?s schema:author ?author . " \
-            "?p rdf:type schema:Person ." \
-            "?p schema:name ?name ." \
-            "?p schema:familyName ?name2 .}"
+#    query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" \
+#            "PREFIX schema: <http://schema.org/> " \
+#            "select * where { ?s rdf:type schema:SocialMediaPosting ." \
+#            "?s schema:author ?author . " \
+#            "?p rdf:type schema:Person ." \
+#            "?p schema:name ?name ." \
+#            "?p schema:familyName ?name2 .}"
     algebra = prepareQuery(query).algebra
     uris = {}
     for bgp in algebra['p']['p']:
