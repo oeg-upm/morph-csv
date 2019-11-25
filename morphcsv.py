@@ -5,7 +5,7 @@ import json
 from selection.resorucesFromSPARQL import *
 from selection.yarrrml import *
 from utils.utilsresources import *
-
+from clean.csvFormatter import *
 
 def main():
     parser = argparse.ArgumentParser()
@@ -38,7 +38,10 @@ def main():
     csvColumns, mapping = fromSPARQLtoMapping(mapping, query)
     #csvColumns = getIndexFromColumns(getColumnsFromFunctions(csvColumns, functions), all_columns)
     csvColumns = getColumnsFromFunctions(csvColumns, functions)
-    print(csvColumns)
+
+    testFormat  = csvFormatter(csvColumns)
+    print(testFormat)
+
     print("Cleaning CSV files based on CSVW")
     # create the full cleaning and selection bash script
     # cleaning stuff
