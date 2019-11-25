@@ -7,6 +7,7 @@ import csv
 #Valores nulos que se usan para verificar la validez de los datos.
 emptyValues = ['', ' ']
 rowTitles = []
+filteredRowTitles = []
 #Carga el CSVW en el DataFrame
 def jsonLoader(path):
     try:
@@ -15,7 +16,14 @@ def jsonLoader(path):
     except Exception as e:
         print(e)
         sys.exit()
-
+def filterCols(table):
+    columns = []
+    if(columnsChecker(table)):
+        for col in table['tableSchema']['columns']:
+            if(str(getColTitle(col)) in table['filteredRowTitles']):
+                columns.append(col)
+        table['tableSchema']['columns'] = columns
+    return table
 #Devuelve la URL de la tabla sobre la que estamos trabajando
 def getUrl(table):
     try:
@@ -27,7 +35,9 @@ def getUrl(table):
     except Exception as e:
         print(e)
         sys.exit()
-
+def getTableTitle(table):
+    url = str(getUrl(table)).split("/")[-1:][0]
+    return url
 # Recorre la tabla en busca de los Titulos, pueden estar en el primer nivel del objeto Table (rowTiltles o rowTitle) tambien
 # pueden estar dentro de las columnas de la tabla (table->tableSchema->columns[i]->title/s)
 # TENER EN CUENTA LOS HEADERS --> SI ES TRUE ENTONCES LOS TITULOS YA ESTAN EN LA PRIMERA FILA!!!!
@@ -63,8 +73,7 @@ def getTableTitles(table):
 
     except Exception as e:
         print(e)
-        pass
-    
+        pass    
 #Devuelve el array de titulos formateado listo para pasarselo directamente al BashScript
 def getTitles(table):
     data = getTableTitles(table)
@@ -80,7 +89,10 @@ def getDelimiter(table):
         if('dialect' in table.keys() and type(table['dialect']) is dict and 'delimiter' in table['dialect'].keys() and str(table['dialect']['delimiter']) != ''):
            result['delimiter'] = table['dialect']['delimiter']
 #        result['arg'] = ''.join('$' + str(i) + ' ' for i in range(1, len(rowTitles) + 1))
-        result['arg'] = ''.join('$' + str(i) + '"\\",\\""' for i in range(1, len(rowTitles) + 1))
+        colsToPrint = []
+        for i in table['filteredRowTitles']:
+            colsToPrint.append(rowTitles.index(i)) 
+        result['arg'] = ''.join('$' + str(i + 1) + '"\\",\\""' for i in sorted(colsToPrint))
         result['arg'] ='"\\""'+ result['arg'][:-6] + '\\""'
         return result
     except Exception as e:

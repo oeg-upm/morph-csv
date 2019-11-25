@@ -1,23 +1,36 @@
 #!/bin/python3
 import csvwParser as parser
+import json
 import os
 
 #Function to remove not required CSVs
-def filterCsvw(csvw, files):
-    for index,table in enumerate(csvw['tables']):
-        if(table['url'][-1:][0] not in files):
-            csvw['tables'].pop(index)
-    return csvw
-
+def selectionFormatter(selection):
+    result = {}
+    for tm in selection:
+        result[selection[tm]['source']] = selection[tm]['columns']
+    return result
+def csvwFilter(csvw, selection):
+    selection = selectionFormatter(selection)
+    result = {'@context':csvw['@context'], 'tables':[]}
+    for table in csvw['tables']:
+        title = parser.getTableTitle(table)
+        if(title in selection.keys()):
+            table['filteredRowTitles'] = selection[title]
+            result['tables'].append(table)
+#            scriptCaller(table, selection[title]['columns'])
+#           parser.setFilteredRowTitles(selection[title])
+    return result
 #Function to call the bash Scripts files and send the scvw data.
 def scriptCaller(data):
     #TODO BUSCAR LA FORMA DE MANEJAR LOS NOMBRE DE LOS CSVs 
     url = parser.getUrl(data).split("/")[-1:][0]
     #url = url.split('.')[0]
     print("********************" + url + "***************************")
+    data = parser.filterCols(data)
+    print(str(data).replace('\'', '"'))
     insertTitles(parser.getTitles(data), url)
     print("InsertTitles Done")
-    csvFormatter(parser.getGsubPatterns(data), url)
+    replaceCsvFormat(parser.getGsubPatterns(data), url)
     '''
     #rowSkipper(parser.getSkipRows(data), url)
     print("Skip Rows Done")
@@ -87,7 +100,7 @@ def defaultEmptyStringFormatChanger(data, path):
 #        print("Col:%s Null:%s"%(col['col'], col['default']))
         os.system('bash ./bashScripts/defaultEmptyStringReplacer.sh \'%s\' %s %s'%(col['default'], col['col'], path))
 
-def csvFormatter(data, path):
+def replaceCsvFormat(data, path):
 #    print("FORMATTER: " + str(data))
     #arg += 'print ' + str(data['arg']) + ';'
     os.system('bash bashScripts/csvFormatter \'%s\' \'%s\' \'%s\' \'%s\' \'%s\''%(str(data['delimiter']), str(data['gsub']),str(data['print']),str(data['split']),str(path)))
@@ -113,11 +126,21 @@ RML+FnO in object (new column apply the transformation functions)
 RML+FnO in refObjectMap (new column apply transformation functions)
 '''
 
-def main(colsFiltered):
+def csvFormatter(csvSelection):
+    csvw = parser.jsonLoader('../../csvwParser/mappings/ncbigene.csvw.json')
+    csvw = csvwFilter(csvw, csvSelection)
+#    print(str(csvw).replace('\'', '"'))
+    for table in csvw['tables']:
+        scriptCaller(table)
+def main():
+    selection = json.loads('{"gene": {"source": "gene_info.gz", "columns": ["Modification_date", "chromosome", "GeneID"]}}')
+    csvFormatter(selection)
+    '''
     csvw = parser.jsonLoader('../../csvwParser/mappings/ncbigene.csvw.json')
 #    parsedCsvw = csvwParser.jsonIterator(csvw) TO DO
 #    csvw = filterCsvw(csvw, ['CSV1','CSV2']) TO DO
     for table in csvw['tables']:
         scriptCaller(table)
+    '''
 if __name__ == '__main__':
     main()
