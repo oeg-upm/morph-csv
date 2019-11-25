@@ -23,7 +23,7 @@ def fromSPARQLtoMapping(mapping, query):
             for tp in algebra['p']['p'][bgp]['triples']:
                 obtainURISfromTP(tp, uris)
     translatedmap, csvColumns = getRelevantTM(uris, mapping)
-    # call("../bash/yarrrml-parser.sh", shell=True)
+
     return csvColumns, translatedmap
 
 def obtainURISfromTP(tp, uris):

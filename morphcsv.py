@@ -2,7 +2,7 @@ import argparse
 import sys
 import json
 
-from selection.resorucesFromSPARQL import *
+from selection.resourcesFromSparql import *
 from selection.yarrrml import *
 from utils.utilsresources import *
 

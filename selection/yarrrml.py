@@ -8,7 +8,7 @@ def getCleanYarrrml (yarrrml):
     Generate RML mapping without functions:
         - yarrrml mapping
 
-    return dict with the functions (mapping and reference where to apply them) and rml mapping in disk
+    return dict with the functions (mapping and reference where to apply them) and cleaned yarrrml
     """
     functions = {}
     data = yaml.load(open(yarrrml), Loader=yaml.FullLoader)
