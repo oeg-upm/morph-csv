@@ -113,7 +113,7 @@ RML+FnO in object (new column apply the transformation functions)
 RML+FnO in refObjectMap (new column apply transformation functions)
 '''
 
-def main():
+def main(colsFiltered):
     csvw = parser.jsonLoader('../../csvwParser/mappings/ncbigene.csvw.json')
 #    parsedCsvw = csvwParser.jsonIterator(csvw) TO DO
 #    csvw = filterCsvw(csvw, ['CSV1','CSV2']) TO DO

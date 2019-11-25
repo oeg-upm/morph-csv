@@ -37,7 +37,9 @@ def main():
     all_columns = [{"source": "person", "columns": ["name","ln2","ln1"]}]
     
     csvColumns, mapping = fromSPARQLtoMapping(mapping, query)
-    csvColumns = getIndexFromColumns(getColumnsFromFunctions(csvColumns, functions), all_columns)
+    #csvColumns = getIndexFromColumns(getColumnsFromFunctions(csvColumns, functions), all_columns)
+    csvColumns = getColumnsFromFunctions(csvColumns, functions)
+    print(csvColumns)
     print("Cleaning CSV files based on CSVW")
     # create the full cleaning and selection bash script
     # cleaning stuff

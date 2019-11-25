@@ -24,6 +24,8 @@ def fromSPARQLtoMapping(mapping, query):
                 obtainURISfromTP(tp, uris)
     translatedmap, csvColumns = getRelevantTM(uris, mapping)
     # call("../bash/yarrrml-parser.sh", shell=True)
+#    print("CSVCOLUMNS: " + str(csvColumns))
+#    print("MAP: " + str(translatedmap))
     return csvColumns, translatedmap
 
 def obtainURISfromTP(tp, uris):
@@ -190,13 +192,11 @@ def extractReferencesFromFno(functions, columns):
 def getIndexFromColumns(csvColumns,all_columns):
     print(csvColumns)
     print(all_columns)
-    aux = {}
+    result = {}
     for tm in all_columns:
-        aux[tm['source']] = []
+        result[csvColumns[tm['source']]['source']] = []
         for col in csvColumns[tm['source']]['columns']:
-            aux[tm['source']].append(tm['columns'].index(col))
-            print(col)
-    print(aux)
+            result[csvColumn[tm['source']]['source']].append(tm['columns'].index(col))
 #
 #for tm in csvColumns:
 #    columns = csvColumns[tm]["columns"]
@@ -208,4 +208,4 @@ def getIndexFromColumns(csvColumns,all_columns):
 #            for column in columns:
 #                aux.extend(file["columns"].index(column))
 #    csvColumns[tm][columns] = aux
-    return csvColumns
+    return result
