@@ -36,15 +36,16 @@ def main():
     #all_columns = [{"source": "person", "columns": ["name","ln2","ln1"]}]
     
     csvColumns, mapping = fromSPARQLtoMapping(mapping, query)
-    #csvColumns = getIndexFromColumns(getColumnsFromFunctions(csvColumns, functions), all_columns)
+    
     csvColumns = getColumnsFromFunctions(csvColumns, functions)
-
-    testFormat  = csvFormatter(csvColumns)
-    print("Test :" + str(testFormat))
+    #print("Columnas requeridas"+str(csvColumns))
 
     print("Cleaning CSV files based on CSVW")
     # create the full cleaning and selection bash script
     # cleaning stuff
+    print("FilterColumns"+str(csvColumns))
+    #csvColumns ={'routes': {'source': 'ROUTES.csv', 'columns': ['route_url','agency_id', 'route_id']}, 'agency': {'source': 'AGENCY.csv', 'columns': ['agency_url', 'agency_name', 'agency_id']}}
+    csvFormatter(csvColumns)
 
     print("Normalizing CSV files")
     # normalize
@@ -54,9 +55,11 @@ def main():
     print("Removing duplicates")
 
     print("Translating YARRRML to R2RML...")
-    mapping = fromSourceToTables(mapping)
+    #TODO  fromSourceToTables is void
+    #mapping = fromSourceToTables(mapping)
 
     print("Answering query")
+
 
 if __name__ == "__main__":
     main()

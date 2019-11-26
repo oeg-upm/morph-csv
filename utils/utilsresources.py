@@ -26,7 +26,9 @@ def downloadCSVfilesFromRML():
                 len(mapping["mappings"][tm]["sources"][0][0].split("/")) - 1])
             os.system("wget -O ./tmp/csv/" + filename + " " + re.sub("~csv","",source))
         else:
-            os.system("mv " + re.sub("~csv", "", source) + " ./tmp/csv/")
+            #change to move mv
+            # cp is only for test
+            os.system("cp ." + re.sub("~csv", "", source) + " ./tmp/csv/")
 
 
 def readQuery(path):
