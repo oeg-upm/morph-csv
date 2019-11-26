@@ -53,11 +53,11 @@ def getTableTitles(table):
                 titles = table['tableSchema']['rowTitles']
             elif('rowTitle' in table['tableSchema'].keys() and len(table['tableSchema']['rowTitle']) > 0):
                 titles = table['tableSchema']['rowTitle']
-        print('TITLES:'  + str(titles))
+        #print('TITLES:'  + str(titles))
         if(len(titles) == 0):
-            print("NO HAY ROW TITLES")
+            #print("NO HAY ROW TITLES")
             #TODO BUSCAR LA FORMA DE MANEJAR LOS NOMBRES DE LOS CSVs
-            path = './tmp/' + str(table['url'].split("/")[-1:][0]) #.split('.')[0])
+            path = './tmp/csv/' + str(table['url'].split("/")[-1:][0]) #.split('.')[0])
             try:
                 delimiter = table['tableSchema']['dialect']['delimiter']
             except:
@@ -71,7 +71,7 @@ def getTableTitles(table):
 
         global rowTitles
         rowTitles = titles
-        print('ROWTITLES:' + str(rowTitles))
+        #print('ROWTITLES:' + str(rowTitles))
         #SI NO SE ESPECIFICA LOS ROWTITLES EN EL CSVW HAY QUE SACARLOS DEL CSV!!!!!!!
         return {'header':header, 'titles':titles}
 
@@ -198,41 +198,6 @@ def getDateFormat(table):
            
     return result
 
-
-
-       
-    '''
-    dates = getFormat(table, 'date')
-    for date in dates:
-        if(str(date['format']).lower() != "yyyy-mm-dd"):
-            if(str(date['format']).lower()[0] == 'y'):
-                date['args'] = '$1\"-\"$2\"-\"$3'#Hace referencia a las columnas que tiene que reordenar AWK tras dividir la columna 'col' segun el delimitador dado
-                date['print'] = 'date%s[3] \"-\" date%s[2] \"-\" date%s[1]'%(str(date['col']), str(date['col']), str(date['col']))
-            elif(str(date['format']).lower()[0] == 'm'):
-                date['args'] =  '$3\"-\"$1\"-\"$2'
-                date['print'] = 'date%s[3] \"-\" date%s[1] \"-\" date%s[2]'%(str(date['col']), str(date['col']), str(date['col']))
-            else:
-                date['args'] = '$3\"-\"$2\"-\"$1'
-                date['print'] = 'date%s[3] \"-\" date%s[2] \"-\" date%s[1]'%(str(date['col']), str(date['col']), str(date['col']))
-            if('.' in date['format']):
-                date['delimiter'] = '.'
-            elif('/' in date['format']):
-                date['delimiter'] = '/'
-            elif('-' in date['format']):
-                date['delimiter'] = '-'
-            else:
-                date['delimiter'] = ''
-                date['args'] = '$1$2$3$4"-"$5$6"-"$7$8'
-#            result['split'] = 'split($%s,date%s,\\\"%s\\\");'%(str(date['col']), str(date['col']),str(date['delimiter']))
-            date['arg2'] = ''.join('$' + str(i)  + '"\\",\\""' for i in range(1, len(rowTitles) + 1))
-            date['arg2'] = str(date['arg2']).replace("$"+ str(date['col']) +  '"\\",\\""', 'f1' +  '"\\",\\""')
-            date['arg2'] = date['arg2'][:-7]
-            date['correct'] = False
-        else:
-            date['correct'] = True
-    return dates
-    '''
-
 #Lee el formato de los booleans y manda la informacion necesaria para ejecutar el BashScript booleanFormatChanger.sh
 def getBooleanFormat(table):
     booleans = getFormat(table, 'boolean')
@@ -287,4 +252,3 @@ def getGsubPatterns(table):
     result['print'] = delimiter['arg']
     result['delimiter'] = delimiter['delimiter'].encode('unicode-escape').decode('ascii')
     return result
-
