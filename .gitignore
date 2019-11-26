@@ -1,7 +1,6 @@
-<<<<<<< HEAD
+
 csvwParser/data/ncbigene/*
 csvwParser/code/tmp/*
-=======
 .DS_Store
 .idea
->>>>>>> 6060d341189b81310ecd328800bb54d43cd0dd3a
+tmp

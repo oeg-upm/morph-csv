@@ -6,13 +6,13 @@ import copy
 
 
 def fromSPARQLtoMapping(mapping, query):
-    query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" \
-            "PREFIX schema: <http://schema.org/> " \
-            "select * where { ?s rdf:type schema:SocialMediaPosting ." \
-            "?s schema:author ?author . " \
-            "?p rdf:type schema:Person ." \
-            "?p schema:name ?name ." \
-            "?p schema:familyName ?name2 .}"
+#    query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" \
+#            "PREFIX schema: <http://schema.org/> " \
+#            "select * where { ?s rdf:type schema:SocialMediaPosting ." \
+#            "?s schema:author ?author . " \
+#            "?p rdf:type schema:Person ." \
+#            "?p schema:name ?name ." \
+#            "?p schema:familyName ?name2 .}"
     algebra = prepareQuery(query).algebra
     uris = {}
     for bgp in algebra['p']['p']:
@@ -24,6 +24,8 @@ def fromSPARQLtoMapping(mapping, query):
                 obtainURISfromTP(tp, uris)
     translatedmap, csvColumns = getRelevantTM(uris, mapping)
     # call("../bash/yarrrml-parser.sh", shell=True)
+#    print("CSVCOLUMNS: " + str(csvColumns))
+#    print("MAP: " + str(translatedmap))
     return csvColumns, translatedmap
 
 def obtainURISfromTP(tp, uris):
@@ -190,13 +192,11 @@ def extractReferencesFromFno(functions, columns):
 def getIndexFromColumns(csvColumns,all_columns):
     print(csvColumns)
     print(all_columns)
-    aux = {}
+    result = {}
     for tm in all_columns:
-        aux[tm['source']] = []
+        result[csvColumns[tm['source']]['source']] = []
         for col in csvColumns[tm['source']]['columns']:
-            aux[tm['source']].append(tm['columns'].index(col))
-            print(col)
-    print(aux)
+            result[csvColumn[tm['source']]['source']].append(tm['columns'].index(col))
 #
 #for tm in csvColumns:
 #    columns = csvColumns[tm]["columns"]
@@ -208,4 +208,4 @@ def getIndexFromColumns(csvColumns,all_columns):
 #            for column in columns:
 #                aux.extend(file["columns"].index(column))
 #    csvColumns[tm][columns] = aux
-    return csvColumns
+    return result
