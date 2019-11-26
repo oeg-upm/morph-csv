@@ -7,5 +7,5 @@ split=$4
 file=$5
 newDelimiter="'\",\"'"
 #echo DELIMITER:$delimiter ARG1:$arg ARG2:$cols ARG3:$split
-{ rm tmp/csv/$file && awk -F "$delimiter" "{$split{$arg print $cols}}" > tmp/csv/$file;} < tmp/csv/$file
+{ rm tmp/csv/$file && awk -F "$delimiter" "{$split{$arg print $cols}}" | tr -d "\r"> tmp/csv/$file;} < tmp/csv/$file
 #echo  awk -F "$delimiter" "{$split{$arg print $cols}}" tmp/$file
