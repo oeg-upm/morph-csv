@@ -40,7 +40,7 @@ def main():
     csvColumns = getColumnsFromFunctions(csvColumns, functions)
 
     testFormat  = csvFormatter(csvColumns)
-    print(testFormat)
+    print("Test :" + str(testFormat))
 
     print("Cleaning CSV files based on CSVW")
     # create the full cleaning and selection bash script

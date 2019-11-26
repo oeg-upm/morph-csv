@@ -1,5 +1,5 @@
 #!/bin/python3
-import csvwParser as parser
+from clean import csvwParser as parser
 import json
 import os
 
@@ -127,7 +127,8 @@ RML+FnO in refObjectMap (new column apply transformation functions)
 '''
 
 def csvFormatter(csvSelection):
-    csvw = parser.jsonLoader('../tmp/annotations/annotations.json')
+    print("csvSelection :"+str(csvSelection))
+    csvw = parser.jsonLoader('./tmp/annotations/annotations.json')
     csvw = csvwFilter(csvw, csvSelection)
     print(str(csvw).replace('\'', '"'))
     for table in csvw['tables']:
