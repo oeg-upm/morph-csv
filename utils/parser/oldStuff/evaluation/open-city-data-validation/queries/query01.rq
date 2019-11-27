@@ -1,0 +1,8 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+select ?stop1 ?stop2 where {
+	?stop1 rdf:type gtfs:Stop;
+		owl:sameAs ?stop2
+}

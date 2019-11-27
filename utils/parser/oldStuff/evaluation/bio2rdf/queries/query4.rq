@@ -1,0 +1,10 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ncbiv: <http://bio2rdf.org/ncbigene_vocabulary:>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT ?gene ?description 
+WHERE {
+	?gene rdf:type ncbiv:Resource ;
+		dcterms:description ?description .
+}
+LIMIT 5
