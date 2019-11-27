@@ -2,8 +2,12 @@
 import re
 import os
 from rdflib.plugins.sparql import *
-
+def addNormalizedTableToCsvw(csvw):
+    a=0
+    #for table in csvw['table']:
+        
 def toSecondNormalForm(mapping, file, column, separator, query):
+    #Requirements for NORMALIZATION: csvw, yarrrmlMapping, sparqlQuery.
     mappingTranslation(mapping, column)
     dataTranslation(file, column, separator)
     queryRewritten(query, getPredicateAndObjectFromQuery(query, column, mapping), column)
@@ -43,10 +47,9 @@ def dataTranslation(file, column, separator):
 def getPredicateAndObjectFromQuery(query,column,mapping):
     for tm in mapping["mappings"]:
         i = 0
-        for pom in mapping["mappings"][tm]["po"]:
+        for i,pom in enumerate(mapping["mappings"][tm]["po"]):
             if re.match("\\$\\("+column+"\\)", mapping["mappings"][tm]["po"][i][1]):
                 predicate = mapping["mappings"][tm]["po"][i][0]
-        i += 1
 
     algebra = prepareQuery(query).algebra
     for bgp in algebra['p']['p']:
