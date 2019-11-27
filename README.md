@@ -15,7 +15,7 @@ Then choose one of the available options:
 - Using docker and docker-compose*:
     ```bash
     docker-compose up -d
-    docker exec -it 'run-morph-csv.sh -c /configs/config-file.json -q /queries/query-file.rq' morphcsv
+    docker exec -it morphcsv ./run-morph-csv.sh -c /configs/config-file.json -q /queries/query-file.rq
     ```
 
     *If you have any local resource you want to use copy it to the corresponding shared volume (folders: data, mappings, configs or queries)
