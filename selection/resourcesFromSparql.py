@@ -6,13 +6,13 @@ import copy
 
 
 def fromSPARQLtoMapping(mapping, query):
-    query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" \
-            "PREFIX schema: <http://schema.org/> " \
-            "select * where { ?s rdf:type schema:SocialMediaPosting ." \
-            "?s schema:author ?author . " \
-            "?p rdf:type schema:Person ." \
-            "?p schema:name ?name ." \
-            "?p schema:familyName ?name2 .}"
+#    query = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>" \
+#            "PREFIX schema: <http://schema.org/> " \
+#            "select * where { ?s rdf:type schema:SocialMediaPosting ." \
+#            "?s schema:author ?author . " \
+#            "?p rdf:type schema:Person ." \
+#            "?p schema:name ?name ." \
+#            "?p schema:familyName ?name2 .}"
     algebra = prepareQuery(query).algebra
     uris = {}
     for bgp in algebra['p']['p']:
@@ -23,7 +23,9 @@ def fromSPARQLtoMapping(mapping, query):
             for tp in algebra['p']['p'][bgp]['triples']:
                 obtainURISfromTP(tp, uris)
     translatedmap, csvColumns = getRelevantTM(uris, mapping)
-
+    # call("../bash/yarrrml-parser.sh", shell=True)
+#    print("CSVCOLUMNS: " + str(csvColumns))
+#    print("MAP: " + str(translatedmap))
     return csvColumns, translatedmap
 
 def obtainURISfromTP(tp, uris):
@@ -188,13 +190,22 @@ def extractReferencesFromFno(functions, columns):
 
 # From a dict with sources a columns name, return the same dict with the indexes of the columns
 def getIndexFromColumns(csvColumns,all_columns):
-    for tm in csvColumns:
-        columns = csvColumns[tm]["columns"]
-        source = csvColumns[tm]["source"]
-        for file in all_columns:
-            if file["source"] == source:
-                aux = []
-                for column in columns:
-                    aux.extend(file["columns"].index(column))
-        csvColumns[tm][columns] = aux
-    return csvColumns
+    print(csvColumns)
+    print(all_columns)
+    result = {}
+    for tm in all_columns:
+        result[csvColumns[tm['source']]['source']] = []
+        for col in csvColumns[tm['source']]['columns']:
+            result[csvColumn[tm['source']]['source']].append(tm['columns'].index(col))
+#
+#for tm in csvColumns:
+#    columns = csvColumns[tm]["columns"]
+#    source = csvColumns[tm]["source"]
+#    aux = []
+#    for file in all_columns:
+#        if file["source"] == source:
+#            
+#            for column in columns:
+#                aux.extend(file["columns"].index(column))
+#    csvColumns[tm][columns] = aux
+    return result

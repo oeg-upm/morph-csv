@@ -3,7 +3,7 @@ from subprocess import call
 import re
 
 
-def getCleanYarrrml (yarrrml):
+def getCleanYarrrml ():
     """
     Generate RML mapping without functions:
         - yarrrml mapping
@@ -11,17 +11,17 @@ def getCleanYarrrml (yarrrml):
     return dict with the functions (mapping and reference where to apply them) and cleaned yarrrml
     """
     functions = {}
-    data = yaml.load(open(yarrrml), Loader=yaml.FullLoader)
+    data = yaml.load(open("./tmp/annotations/mapping.yaml"), Loader=yaml.FullLoader)
     for tm in data["mappings"]:
         i = 0
         for pom in data["mappings"][tm]["po"]:
             if 'p' in pom:
-                if tm not in functions.keys():
-                    functions[tm] = {}
                 predicate = re.sub("^.*:", "", pom["p"])
                 object = pom["o"]
                 #if it is a basic function
                 if 'function' in object[0]:
+                    if tm not in functions.keys():
+                        functions[tm] = {}
                     functions[tm][predicate] = object
                     data["mappings"][tm]["po"][i] = [pom["p"], "$("+predicate+")"]
                 #if it is a join
@@ -32,6 +32,8 @@ def getCleanYarrrml (yarrrml):
                         j = 0
                         for param in parameters:
                             if 'parameter' in param:
+                                if tm not in functions.keys():
+                                    functions[tm] = {}
                                 if param["parameter"] == 'str1':
                                     functions[tm][predicate+"_child"] = param
                                     data["mappings"][tm]["po"][i]["o"][t]["condition"]["parameters"][j] = [

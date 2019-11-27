@@ -1,0 +1,9 @@
+{
+  "sources":[
+    {
+      "csvw":"./evaluation/bio2rdf/mappings/taxonomy.csvw.json",
+      "yarrrml": "./evaluation/bio2rdf/mappings/bio2rdf.yml",
+      "db": "bio2rdf"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+#!/bin/bash
+cp tests/gene_info tmp/gene_info
+time python3 main.py

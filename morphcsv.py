@@ -5,14 +5,13 @@ import json
 from selection.resourcesFromSparql import *
 from selection.yarrrml import *
 from utils.utilsresources import *
-
+from clean.csvFormatter import *
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--json_config", required=True, help="Input config file with yarrrml and csvw")
     parser.add_argument("-q", "--sparql_query", required=True, help="SPARQL query")
     args = parser.parse_args()
-    print(sys.argv)
     if len(sys.argv) == 5:
         try:
             with open(args.json_config, "r") as json_file:
@@ -28,18 +27,25 @@ def main():
     print("Downloading mappings, data and query")
     maketmpdirs()
     downloadAnnotations(config)
-    downloadCSVfilesFromRML(config["yarrrml"])
+    downloadCSVfilesFromRML()
     query = readQuery(query)
     print("Removing FnO functions from RML")
-    functions, mapping = getCleanYarrrml("./tmp/mapping.yml")
+    functions, mapping = getCleanYarrrml()
     print("Selecting RML rules, CSV files and columns for answering the query")
     # this function creates the rml rules needed to answer query from yarrrml mapping
-    all_columns = [{"source": "persons.csv", "columns": ["c1","c2","c3"]}]
+    #all_columns = [{"source": "person", "columns": ["name","ln2","ln1"]}]
+    
     csvColumns, mapping = fromSPARQLtoMapping(mapping, query)
-    csvColumns = getIndexFromColumns(getColumnsFromFunctions(csvColumns, functions), all_columns)
+    
+    csvColumns = getColumnsFromFunctions(csvColumns, functions)
+    #print("Columnas requeridas"+str(csvColumns))
+
     print("Cleaning CSV files based on CSVW")
     # create the full cleaning and selection bash script
     # cleaning stuff
+    print("FilterColumns"+str(csvColumns))
+    #csvColumns ={'routes': {'source': 'ROUTES.csv', 'columns': ['route_url','agency_id', 'route_id']}, 'agency': {'source': 'AGENCY.csv', 'columns': ['agency_url', 'agency_name', 'agency_id']}}
+    csvFormatter(csvColumns)
 
     print("Normalizing CSV files")
     # normalize
@@ -49,9 +55,11 @@ def main():
     print("Removing duplicates")
 
     print("Translating YARRRML to R2RML...")
-    mapping = fromSourceToTables(mapping)
+    #TODO  fromSourceToTables is void
+    #mapping = fromSourceToTables(mapping)
 
     print("Answering query")
+
 
 if __name__ == "__main__":
     main()

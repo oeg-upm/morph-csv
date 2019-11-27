@@ -1,0 +1,210 @@
+prefixes:
+  rr: http://www.w3.org/ns/r2rml#
+  foaf: http://xmlns.com/foaf/0.1/
+  ex: http://example.com/
+  xsd: http://www.w3.org/2001/XMLSchema#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  dc: http://purl.org/dc/elements/1.1/
+  rev: http://purl.org/stuff/rev#
+  gtfs: http://vocab.gtfs.org/terms#
+  geo: http://www.w3.org/2003/01/geo/wgs84_pos#
+  schema: http://schema.org/
+  dct: http://purl.org/dc/terms/
+  rml: http://semweb.mmlab.be/ns/rml#
+  ql: http://semweb.mmlab.be/ns/ql#
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  owl: http://www.w3.org/2002/07/owl#
+
+mappings:
+  stops_transport_1:
+    sources:
+      - [https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/open-city-data-validation/data/stops_transport_1.csv~csv]
+    s: http://linkedgtfs.com/CITY/stops-transport-1/$(stop_id)
+    po:
+      - [a,gtfs:Stop]
+      - [gtfs:code,$(stop_code)]
+      - [foaf:name,$(stop_name)]
+      - [dct:description,$(stop_desc)]
+      - [geo:lat,$(stop_lat)]
+      - [geo:long,$(stop_lon)]
+      - [gtfs:zone,$(zone_id)]
+      - [foaf:page,$(stop_url)]
+      - [gtfs:locationType,$(location_type)]
+      - [gtfs:parentStation,$(parent_station)]
+      - [gtfs:timeZone,$(stop_timezone)]
+      - [gtfs:weelchairAccessible,$(wheelchair_boarding)]
+      - p: owl:sameAs
+        o:
+          - mapping: stops_transport_2
+            condition:
+              function: equal
+              parameters:
+                - parameter: str1
+                  value:
+                    function: sql:lower
+                    parameters:
+                      - parameter: sql:valueParameter
+                        value:
+                          function: sql:regexp_replace
+                          parameters:
+                            - parameter: sql:valueParameter
+                              value:
+                                function: sql:trim
+                                parameters:
+                                  - [str1, $(stop_name)]
+                            - [str2, " "]
+                            - [str3, "-"]
+                            - [str4, "c"]
+                - parameter: str2
+                  value:
+                    function: sql:lower
+                    parameters:
+                      - parameter: sql:valueParameter
+                        value:
+                          function: sql:regexp_replace
+                          parameters:
+                            - parameter: sql:valueParameter
+                              value:
+                                function: sql:trim
+                                parameters:
+                                  - [str1, $(stop_name)]
+                            - [str2, " "]
+                            - [str3, "-"]
+                            - [str4, "c"]
+      - p: ex:hasMuseum
+        o:
+          - mapping: museums
+            condition:
+              function: equal
+              parameters:
+                - parameter: str1
+                  value:
+                    function: sql:lower
+                    parameters:
+                      - parameter: sql:valueParameter
+                        value:
+                          function: sql:regexp_replace
+                          parameters:
+                            - parameter: sql:valueParameter
+                              value:
+                                function: sql:trim
+                                parameters:
+                                  - [str1, $(stop_name)]
+                            - [str2, "\\\\s*"]
+                            - [str3, ""]
+                            - [str4, "c"]
+                - parameter: str2
+                  value:
+                    function: sql:lower
+                    parameters:
+                      - parameter: sql:valueParameter
+                        value:
+                          function: sql:regexp_replace
+                          parameters:
+                            - parameter: sql:valueParameter
+                              value:
+                                function: sql:regexp_replace
+                                parameters:
+                                  - parameter: sql:valueParameter
+                                    value:
+                                      function: sql:regexp_replace
+                                      parameters:
+                                        - parameter: sql:valueParameter
+                                          value:
+                                            function: sql:trim
+                                            parameters:
+                                              - [str1, $(transporte)]
+                                        - [str2, "Metro:\\\\s*"]
+                                        - [str3, ""]
+                                        - [str4, "c"]
+                                  - [str2, "\\\\W+.*"]
+                                  - [str3, ""]
+                                  - [str4, "c"]
+                            - [str2,"\\\\s*"]
+                            - [str3, ""]
+                            - [str4, "c"]
+      - p: ex:hasSportCenter
+        o:
+          - mapping: sport_centers
+            condition:
+              function: equal
+              parameters:
+                - parameter: str1
+                  value:
+                    function: sql:lower
+                    parameters:
+                      - parameter: sql:valueParameter
+                        value:
+                          function: sql:regexp_replace
+                          parameters:
+                            - parameter: sql:valueParameter
+                              value:
+                                function: sql:trim
+                                parameters:
+                                  - [str1, $(stop_name)]
+                            - [str2, "\\\\s*"]
+                            - [str3, ""]
+                            - [str4, "c"]
+                - parameter: str2
+                  value:
+                    function: sql:lower
+                    parameters:
+                      - parameter: sql:valueParameter
+                        value:
+                          function: sql:regexp_replace
+                          parameters:
+                            - parameter: sql:valueParameter
+                              value:
+                                function: sql:regexp_replace
+                                parameters:
+                                  - parameter: sql:valueParameter
+                                    value:
+                                      function: sql:regexp_replace
+                                      parameters:
+                                        - parameter: sql:valueParameter
+                                          value:
+                                            function: sql:trim
+                                            parameters:
+                                              - [str1, $(transporte)]
+                                        - [str2, "Metro:\\\\s*"]
+                                        - [str3, ""]
+                                        - [str4, "c"]
+                                  - [str2, "\\\\W+.*"]
+                                  - [str3, ""]
+                                  - [str4, "c"]
+                            - [str2,"\\\\s*"]
+                            - [str3, ""]
+                            - [str4, "c"]
+  stops_transport_2:
+    sources:
+      - [https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/open-city-data-validation/data/stops_transport_2.csv~csv]
+    s: http://linkedgtfs.com/CITY/stops-transport-2/$(stop_id)
+    po:
+      - [a,gtfs:Stop]
+      - [gtfs:code,$(stop_code)]
+      - [foaf:name,$(stop_name)]
+      - [dct:description,$(stop_desc)]
+      - [geo:lat,$(stop_lat)]
+      - [geo:long,$(stop_lon)]
+      - [gtfs:zone,$(zone_id)]
+      - [foaf:page,$(stop_url)]
+      - [gtfs:locationType,$(location_type)]
+      - [gtfs:parentStation,$(parent_station)]
+      - [gtfs:timeZone,$(stop_timezone)]
+      - [gtfs:weelchairAccessible,$(wheelchair_boarding)]
+  museums:
+    sources:
+      - [https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/open-city-data-validation/data/museums.csv~csv]
+    s: http://linkedgtfs.com/CITY/museums/$(PK)
+    po:
+      - [a,schema:Museum]
+      - [foaf:name,$(NOMBRE)]
+      - [ex:transport,$(TRANSPORTE)]
+  sport_centers:
+    sources:
+      - [https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/open-city-data-validation/data/sport_center.csv~csv]
+    s: http://linkedgtfs.com/CITY/sport-centers/$(PK)
+    po:
+      - [a,schema:SportCenter]
+      - [foaf:name,$(NOMBRE)]
+      - [ex:transport,$(TRANSPORTE)]

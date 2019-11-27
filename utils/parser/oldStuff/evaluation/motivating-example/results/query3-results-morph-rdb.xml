@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sparql>
+    <head>
+        <variable name="email"/>
+    </head>
+    <results>
+        <result>
+            <binding name="email">
+                <literal>JohnLung@ex.com</literal>
+            </binding>
+        </result>
+        <result>
+            <binding name="email">
+                <literal>PieterPlot@ex.com</literal>
+            </binding>
+        </result>
+        <result>
+            <binding name="email">
+                <literal>JaneMatch@ex.com</literal>
+            </binding>
+        </result>
+        <result>
+            <binding name="email">
+                <literal>AnaLy@ex.com</literal>
+            </binding>
+        </result>
+    </results>
+</sparql>
