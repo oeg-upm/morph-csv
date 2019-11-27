@@ -27,9 +27,13 @@ def scriptCaller(data):
     #print("********************" + url + "***************************")
     data = parser.filterCols(data)
     #print(str(data).replace('\'', '"'))
-    insertTitles(parser.getTitles(data), url)
+    titles = parser.getTitles(data)
+    insertTitles(titles, url)
     #print("InsertTitles Done")
     replaceCsvFormat(parser.getGsubPatterns(data), url)
+    titles['header'] = False
+    insertTitles(titles, url)
+    
     '''
     #rowSkipper(parser.getSkipRows(data), url)
     print("Skip Rows Done")
@@ -50,8 +54,9 @@ def insertTitles(data, path):
     print("**********TEST***************")
     print("Titles: " + str(data['result']))
     print("Header: " + str(data['header']))
-#    os.system('bash ./bashScripts/insertTitles.sh \'%s\' %s'%(data, path))
-    print("*****************************")
+    if not data['header']:
+        os.system('bash ./bash/insertTitles.sh \'%s\' %s'%(data['result'], path))
+
 
 '''
 #Skip rows (csvw:skipRows -> remove the first n rows)

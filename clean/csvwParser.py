@@ -43,7 +43,7 @@ def getTableTitle(table):
 def getTableTitles(table):
     try:
         titles = []
-        header = False
+        header = True
 
         if('dialect' in table.keys() and 'header' in table['dialect'].keys()):
             header =  table['dialect']['header']
