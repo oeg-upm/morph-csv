@@ -1,10 +1,46 @@
-
+#!/bin/python3
 import re
 import os
 from rdflib.plugins.sparql import *
-def addNormalizedTableToCsvw(csvw):
-    a=0
-    #for table in csvw['table']:
+from ../clean/csvwParser import * as parser
+
+def addNormalizedTablesToCsvw(csvw, mapping, query):
+    newTables = []
+    for table in csvw['tables']:
+        cols = parser.getCols(table)
+        for i,col in enumerate(cols):
+            if(parser.NotNormalized(col)):
+                newTables.append(createNewTable(table,col))
+                toSecondNormalForm(
+                        mapping,
+                        parser.getColTitle(col) + '.csv',
+                        parser.getIndexOfCol(col),
+                        parser.getSeparator(col),
+                        parser.getDelimiterValue(col),
+                        query
+                        )
+    csvw['tables'] += newTables
+    return cscvw
+
+def createNewTable(table,col):
+    table = {
+        'url':'ALGO/%s.csv'%(parser.getColTitle(col)),
+        'dialect':{
+            'delimiter':parser.getDelimiterValue(table),
+            'header':False
+            },
+        'tableSchema':{
+            'rowTitles':['id', 'value'],
+            'columns':[
+                {
+                    'titles':'value',
+                    'null':parser.getNullValue(col),
+                    'datatype':parser.getDataType(col)
+                    }
+                ]
+            }
+        }
+    return table
         
 def toSecondNormalForm(mapping, file, column, separator, query):
     #Requirements for NORMALIZATION: csvw, yarrrmlMapping, sparqlQuery.
@@ -50,7 +86,6 @@ def getPredicateAndObjectFromQuery(query,column,mapping):
         for i,pom in enumerate(mapping["mappings"][tm]["po"]):
             if re.match("\\$\\("+column+"\\)", mapping["mappings"][tm]["po"][i][1]):
                 predicate = mapping["mappings"][tm]["po"][i][0]
-
     algebra = prepareQuery(query).algebra
     for bgp in algebra['p']['p']:
         if bgp == "triples":
@@ -61,7 +96,6 @@ def getPredicateAndObjectFromQuery(query,column,mapping):
                 for tp in algebra['p']['p'][bgp]['triples']:
                     if re.match(predicate, algebra['p']['p'][bgp]['triples'][tp][1]):
                         object = algebra['p']['p'][bgp]['triples'][tp][2]
-
     return predicate, object
 
 def toThirdNormalForm(mapping):
