@@ -23,7 +23,6 @@ BEGIN{
 		}
 	$0=NR
 	print $0
-
 }
 END{
 	

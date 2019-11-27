@@ -126,7 +126,7 @@ RML+FnO in object (new column apply the transformation functions)
 RML+FnO in refObjectMap (new column apply transformation functions)
 '''
 
-def csvFormatter(csvSelection):
+def csvFormatter(csvSelection, csvwPath=''):
     csvw = parser.jsonLoader('../../csvwParser/mappings/ncbigene.csvw.json')
     csvw = csvwFilter(csvw, csvSelection)
     print(str(csvw).replace('\'', '"'))
