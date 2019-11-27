@@ -108,9 +108,9 @@ def defaultEmptyStringFormatChanger(data, path):
 def replaceCsvFormat(data, path):
     os.system('bash bash/csvFormatter \'%s\' \'%s\' \'%s\' \'%s\' \'%s\''%(str(data['delimiter']), str(data['gsub']),str(data['print']),str(data['split']),str(path)))
 
-def csvFormatter(csvSelection):
-    csvw = parser.jsonLoader('./tmp/annotations/annotations.json')
-    csvw = csvwFilter(csvw, csvSelection)
+def csvFormatter(csvw):
+    #csvw = parser.jsonLoader('./tmp/annotations/annotations.json')
+    #csvw = csvwFilter(csvw, csvSelection)
     #print("Here" +str(csvw).replace('\'', '"'))
     for table in csvw['tables']:
         scriptCaller(table)

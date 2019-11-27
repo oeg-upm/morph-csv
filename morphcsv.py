@@ -5,8 +5,9 @@ import json
 from selection.resourcesFromSparql import *
 from selection.yarrrml import *
 from utils.utilsresources import *
-from clean.csvFormatter import *
-
+from clean import csvFormatter  as formatter
+from clean import csvwParser as csvwParser
+from formalization import formalization as formalizer
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--json_config", required=True, help="Input config file with yarrrml and csvw")
@@ -26,8 +27,8 @@ def main():
 
     print("Downloading mappings, data and query")
     maketmpdirs()
-    downloadAnnotations(config)
-    downloadCSVfilesFromRML()
+    #downloadAnnotations(config)
+    #downloadCSVfilesFromRML()
     query = readQuery(query)
     print("Removing FnO functions from RML")
     functions, mapping = getCleanYarrrml()
@@ -38,16 +39,19 @@ def main():
     csvColumns, mapping = fromSPARQLtoMapping(mapping, query)
     
     csvColumns = getColumnsFromFunctions(csvColumns, functions)
-    #print("Columnas requeridas"+str(csvColumns))
-
-    print("Cleaning CSV files based on CSVW")
+    print("Required Columns: "+ str(csvColumns))
+    csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
+    csvw = formatter.csvwFilter(csvw,csvColumns)
+    print("CSVW filtered")
+    csvw = formalizer.addNormalizedTablesToCsvw(csvw, mapping, query)
+    print("Data Normalized")
     # create the full cleaning and selection bash script
     # cleaning stuff
-    print("FilterColumns"+str(csvColumns))
+    #print("FilterColumns"+str(csvColumns))
     #csvColumns ={'routes': {'source': 'ROUTES.csv', 'columns': ['route_url','agency_id', 'route_id']}, 'agency': {'source': 'AGENCY.csv', 'columns': ['agency_url', 'agency_name', 'agency_id']}}
-    csvFormatter(csvColumns)
+    formatter.csvFormatter(csvw)
+    print("Data Formatted")
 
-    print("Normalizing CSV files")
     # normalize
 
     print("Creating new columns based on FnO functions on RML")

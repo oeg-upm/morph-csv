@@ -2,25 +2,25 @@
 import re
 import os
 from rdflib.plugins.sparql import *
-from ../clean/csvwParser import * as parser
+from clean import csvwParser as parser
 
 def addNormalizedTablesToCsvw(csvw, mapping, query):
     newTables = []
     for table in csvw['tables']:
         cols = parser.getCols(table)
         for i,col in enumerate(cols):
-            if(parser.NotNormalized(col)):
+            if(parser.hasSeparator(col)):
                 newTables.append(createNewTable(table,col))
                 toSecondNormalForm(
                         mapping,
                         parser.getColTitle(col) + '.csv',
                         parser.getIndexOfCol(col),
-                        parser.getSeparator(col),
+                        parser.getSeparatorValue(col),
                         parser.getDelimiterValue(col),
                         query
                         )
     csvw['tables'] += newTables
-    return cscvw
+    return csvw
 
 def createNewTable(table,col):
     table = {
@@ -42,11 +42,11 @@ def createNewTable(table,col):
         }
     return table
         
-def toSecondNormalForm(mapping, file, column, separator, query):
+def toSecondNormalForm(mapping, fileName, colIndex, delimiter, separator, query):
     #Requirements for NORMALIZATION: csvw, yarrrmlMapping, sparqlQuery.
-    mappingTranslation(mapping, column)
-    dataTranslation(file, column, separator)
-    queryRewritten(query, getPredicateAndObjectFromQuery(query, column, mapping), column)
+    #mappingTranslation(mapping, column)
+    dataTranslation(csvw, fileName, colIndex, delimiter, separator)
+    #queryRewritten(query, getPredicateAndObjectFromQuery(query, column, mapping), column)
 
 def queryRewritten(query, predicate, variable, column):
     re.sub(predicate + "\\s+" + variable, "?"+column+" . ?"+column+" ex:"+column+" ?"+variable, query)
@@ -72,13 +72,15 @@ def createJoin(predicate, column):
     join["o"] = [{"mapping": column, "condition:": {"function": "equal", "parameters": parameters}}]
     return join
 
-def dataTranslation(file, column, separator):
+def dataTranslation(fileName, colIndex,delimiter,separator):
+    print("FILE:%s COL:%s DELIMITER:%s SEPARATOR:%s"%(fileName, colIndex, delimiter, separator))
+
     #ToDo call the bash scripts
     #substitute the column by an index (1,2,3...)
-    os.system("")
+#    os.system("")
     #create a new file named column with id,[column] and separate the values based on the separator
     #for the separated values, the id is going to be the same
-    os.system("")
+#    os.system("")
 
 def getPredicateAndObjectFromQuery(query,column,mapping):
     for tm in mapping["mappings"]:

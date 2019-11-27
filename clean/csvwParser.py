@@ -88,9 +88,7 @@ def getTitles(table):
 #Devuelve el delimitador, por defecto(Si no encuetra ningun delimitador en el csvw) es ',' 
 def getDelimiter(table):
     try:
-        result = {'delimiter':',', 'arg':''}
-        if('dialect' in table.keys() and type(table['dialect']) is dict and 'delimiter' in table['dialect'].keys() and str(table['dialect']['delimiter']) != ''):
-           result['delimiter'] = table['dialect']['delimiter']
+        result = {'delimiter':getDelimiterValue(table), 'arg':''}
 #        result['arg'] = ''.join('$' + str(i) + ' ' for i in range(1, len(rowTitles) + 1))
         colsToPrint = []
         for i in table['filteredRowTitles']:
@@ -252,3 +250,39 @@ def getGsubPatterns(table):
     result['print'] = delimiter['arg']
     result['delimiter'] = delimiter['delimiter'].encode('unicode-escape').decode('ascii')
     return result
+
+def getIndexOfCol(col):
+    title = getColTitle(col)
+    return rowTitles.index(title) 
+
+def getSeparatorValue(col):
+    try:
+        return str(col['separator'].encode('unicode-escape').decode('ascii'))
+    except:
+        return 'NONE'
+
+def hasSeparator(col):
+    return getSeparatorValue(col) != 'NONE'
+def getNullValue(table):
+    try:
+        nullValue = str(col['null'].encode('unicode-escape').decode('ascii'))
+    except:
+        nullValue = ''
+    return nullValue
+def getDataType(col):
+    try:
+        dataType = col['datatype']
+    except:
+        dataType = ''
+    return dataType
+def getDelimiterValue(table):
+    try:
+        delimiter = str(table['dialect']['delimiter'].encode('unicode-escape').decode('ascii'))
+    except:
+        delimiter = ','
+    return delimiter
+def getCols(table):
+    cols = []
+    if(columnsChecker(table)):
+        cols = table['tableSchema']['columns']
+    return cols
