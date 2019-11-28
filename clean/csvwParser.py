@@ -286,3 +286,15 @@ def getCols(table):
     if(columnsChecker(table)):
         cols = table['tableSchema']['columns']
     return cols
+def getFilteredTitles(table):
+    result = [];
+    for title in table['filteredRowTitles']:
+        result.append(rowTitles.index(title))
+    result = sorted(result)
+    for i,title in enumerate(result):
+        result[i] = rowTitles[result[i]]
+
+    result = '"' + ''.join(str(result[i]) + '","' for i in range(0, len(result)))
+    result = result[:-2]
+ 
+    return result

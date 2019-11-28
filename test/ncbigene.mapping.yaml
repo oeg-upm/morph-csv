@@ -10,7 +10,7 @@ prefixes:
   fno: http://w3id.org/function/ontology#
   sql: http://dchaves.oeg-upm.net/resources/function/sql.ttl#
   bv: http://bio2rdf.org/bio2rdf_vocabulary:
-  ncbiv: http://bio2rdf.org/ncbigene_vocabulary:
+  ncbiv: http://bio2rdf.org/ncbigene_vocabulary
 
 mappings:
   TMncbigene-gene_info1:
@@ -22,7 +22,7 @@ mappings:
       - [rdf:type, ncbiv:Resource]
       - [rdf:type, ncbiv:Gene]
       - [rdf:type, ncbiv:{type_of_gene}-Gene]
-      - [rdfs:label, $(description) (symbol:$(Symbol), taxon:$(tax_id)) [ncbigene:$(GeneID)]]
+      - [rdfs:label, $(description) (symbol:$(Symbol), taxon:$(tax_id)) (ncbigene:$(GeneID))]
       - [dcterms:title, $(description) (symbol:$(Symbol), taxon:$(tax_id))]
       - [dcterms:description, description]
       - [dcterms:identifier, ncbigene:$(GeneID)]

@@ -4,7 +4,7 @@
   ],
   "tables": [
     {
-      "url": "ftp://ftp.ncbi.nih.gov/gene/DATA/gene_info.gz",
+      "url": "ftp://ftp.ncbi.nih.gov/gene/DATA/gene_info.csv",
       "dialect": {
         "delimiter": "\t",
         "header": true
