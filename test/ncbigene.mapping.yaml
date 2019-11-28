@@ -11,19 +11,19 @@ prefixes:
   sql: http://dchaves.oeg-upm.net/resources/function/sql.ttl#
   bv: http://bio2rdf.org/bio2rdf_vocabulary:
   ncbiv: http://bio2rdf.org/ncbigene_vocabulary
-
+  symbol: http://example.com/Symbol/#
+  taxon: http://example.com/Taxonn/#
+  ncbigene: https://bio2rdf.org/ncbigene_vocabulary
 mappings:
   TMncbigene-gene_info1:
-    sources:
-      access: ftp://ftp.ncbi.nih.gov/gene/DATA/gene_info.gz
-      referenceFormulation: csv
+    sources: [tmp/csv/gene_info.csv~csv]
     s: http://bio2rdf.org/ncbigene:$(GeneID)
     po:
       - [rdf:type, ncbiv:Resource]
       - [rdf:type, ncbiv:Gene]
       - [rdf:type, ncbiv:{type_of_gene}-Gene]
-      - [rdfs:label, $(description) (symbol:$(Symbol), taxon:$(tax_id)) (ncbigene:$(GeneID))]
-      - [dcterms:title, $(description) (symbol:$(Symbol), taxon:$(tax_id))]
+      - [rdfs:label, $(description), (symbol:$(Symbol), taxon:$(tax_id)), ncbigene:$(GeneID)]
+      - [dcterms:title, $(description), (symbol:$(Symbol), taxon:$(tax_id))]
       - [dcterms:description, description]
       - [dcterms:identifier, ncbigene:$(GeneID)]
       - [ncbiv:symbol, $(Symbol)]
