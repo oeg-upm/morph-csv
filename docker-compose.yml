@@ -16,6 +16,6 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: root
-      POSTGRES_USER: morphcsv
-      POSTGRES_DB: db
+      POSTGRES_PASSWORD: csv
+      POSTGRES_USER: user
+      POSTGRES_DB: morphcsv

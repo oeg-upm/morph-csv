@@ -196,7 +196,7 @@ def getIndexFromColumns(csvColumns,all_columns):
     for tm in all_columns:
         result[csvColumns[tm['source']]['source']] = []
         for col in csvColumns[tm['source']]['columns']:
-            result[csvColumn[tm['source']]['source']].append(tm['columns'].index(col))
+            result[csvColumns[tm['source']]['source']].append(tm['columns'].index(col))
 #
 #for tm in csvColumns:
 #    columns = csvColumns[tm]["columns"]
