@@ -18,7 +18,7 @@ def insert_data(csvw,con):
 
     for i in range(csvw["tables"]):
         tablename = re.sub(".csv", "", csvw["tables"][i]["url"].split("/")[-1])
-        insert = "COPY "+tablename+" FROM "+ csvw["tables"][i]["url"] + " CSV HEADER;"
+        insert = "COPY "+tablename+" FROM " + "/morphcsv/tmp/csv/" + tablename + ".csv CSV HEADER;"
         cur = con.cursor
         cur.execute(insert)
         con.commit()
