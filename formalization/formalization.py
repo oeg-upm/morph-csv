@@ -10,18 +10,14 @@ def addNormalizedTablesToCsvw(csvw, mapping, query):
         cols = parser.getCols(table)
         for col in cols:
             if(parser.hasSeparator(col)):
+                colName = parser.getColTitle(col)
                 newTables.append(createNewTable(table,col))
-                toSecondNormalForm(
-                        mapping,
-                        parser.getColTitle(col) + '.csv',
-                        parser.getIndexOfCol(col),
-                        parser.getSeparatorValue(col),
-                        parser.getDelimiterValue(col),
-                        query
-                        )
+                mapping = mappingTranslation(mapping, colName)
+                query = queryRewritten(query, getPredicateAndObjectFromQuery(query,colName, mapping), columName)
         dataTranslation(parser.getSeparatorScripts(table))
     csvw['tables'] += newTables
-    return csvw
+    result = {'csvw':csvw, 'mapping':mapping, 'query':query}
+    return result
 
 def createNewTable(table,col):
     table = {
@@ -43,14 +39,14 @@ def createNewTable(table,col):
         }
     return table
         
-def toSecondNormalForm(mapping, fileName, colIndex, delimiter, separator, query):
+def toSecondNormalForm(mapping, columName, query):
     #Requirements for NORMALIZATION: csvw, yarrrmlMapping, sparqlQuery.
-    #mappingTranslation(mapping, column)
-    dataTranslation(csvw, fileName, colIndex, delimiter, separator)
-    #queryRewritten(query, getPredicateAndObjectFromQuery(query, column, mapping), column)
+    mappingTranslation(mapping, column)
+    queryRewritten(query, getPredicateAndObjectFromQuery(query, column, mapping), column)
 
 def queryRewritten(query, predicate, variable, column):
-    re.sub(predicate + "\\s+" + variable, "?"+column+" . ?"+column+" ex:"+column+" ?"+variable, query)
+    query = re.sub(predicate + "\\s+" + variable, "?"+column+" . ?"+column+" ex:"+column+" ?"+variable, query)
+    return query
 
 def mappingTranslation(mapping, column):
     for tm in mapping["mappings"]:
@@ -63,6 +59,7 @@ def mappingTranslation(mapping, column):
     source = [["./tmp/csv/"+column.csv]]
     s = "http://example.com/$(id)-$("+column+")"
     pom = [["ex:"+column, "$(value)"]]
+    return mapping
 
     mapping["mappings"][column] = {"source": source, "s": s, "po": pom}
 
@@ -90,7 +87,7 @@ def getPredicateAndObjectFromQuery(query,column,mapping):
                 predicate = mapping["mappings"][tm]["po"][i][0]
     algebra = prepareQuery(query).algebra
     for bgp in algebra['p']['p']:
-        if bgp == "triples":
+        if bgp == "triples": 
             for tp in algebra['p']['p']['triples']:
                 if re.match(predicate,algebra['p']['p']['triples'][tp][1]):
                     object = algebra['p']['p']['triples'][tp][2]

@@ -43,7 +43,11 @@ def main():
     csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
     csvw = formatter.csvwFilter(csvw,csvColumns)
     print("CSVW filtered")
-    csvw = formalizer.addNormalizedTablesToCsvw(csvw, mapping, query)
+    formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, query)
+    csvw = formalizedData['csvw']
+    query = formalizedData['query']
+    mapping = formalizedData['mapping']
+    print('*****************************CSVW************************\n' + str(csvw) + '\n**************************MAPPING*********************\n' + str(mapping) + '\n*******************QUERY*******\n' + str(qury))
     print("Data Normalized")
     # create the full cleaning and selection bash script
     # cleaning stuff
