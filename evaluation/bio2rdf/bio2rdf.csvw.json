@@ -1,0 +1,602 @@
+{
+  "@context": ["http://www.w3.org/ns/csvw"],
+  "tables": [{
+    "url": "./configs/Bio2RDF-MorphCSV/data/ncbigene/gene2sts",
+    "dialect": {
+      "delimiter": "\t",
+      "header": true
+    },
+    "tableSchema":{
+      "primaryKey": "GeneID,UniSTS_ID",
+      "columns": [{
+        "titles": "UniSTS_ID"
+      }]
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/ncbigene/gene2unigene",
+    "dialect": {
+      "delimiter": "\t",
+      "header": true
+    },
+    "tableSchema":{
+      "primaryKey": "GeneID,UniGene_cluster",
+      "columns": [{
+        "titles": "UniGene_cluster"
+      }]
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/ncbigene/gene2pubmed",
+    "dialect": {
+      "delimiter": "\t",
+      "header": true
+    },
+    "tableSchema":{
+      "primaryKey": "GeneID,PubMed_ID",
+      "columns": [{
+        "titles": "PubMed_ID"
+      }]
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/ncbigene/gene2vega",
+    "dialect": {
+      "delimiter": "\t",
+      "header": true
+    },
+    "tableSchema":{
+      "primaryKey": "GeneID,Vega_protein_identifier",
+      "columns": [{
+        "titles": "RNA_nucleotide_accession.version",
+        "null": "-"
+      },{
+        "titles": "Vega_rna_identifier",
+        "null": "-"
+      },{
+        "titles": "protein_accession.version",
+        "null": "-"
+      },{
+        "titles": "Vega_protein_identifier",
+        "null": "-"
+      }]
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/ncbigene/gene2ensembl",
+    "dialect": {
+      "delimiter": "\t",
+      "header": true
+    },
+    "tableSchema":{
+      "primaryKey": "Ensembl_protein_identifier",
+      "columns": [{
+        "titles": "RNA_nucleotide_accession.version",
+        "null": "-"
+      },{
+        "titles": "Ensembl_rna_identifier",
+        "null": "-"
+      },{
+        "titles": "protein_accession.version",
+        "null": "-"
+      },{
+        "titles": "Ensembl_protein_identifier",
+        "null": "-"
+      }]
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/ncbigene/gene2go",
+    "dialect": {
+      "delimiter": "\t",
+      "header": true
+    },
+    "tableSchema":{
+      "primaryKey": "GeneID",
+      "columns": [{
+        "titles": "Qualifier",
+        "null": "-"
+      },{
+        "titles": "PubMed",
+        "separator": "|",
+        "null": "-"
+      }]
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/ncbigene/gene_info",
+    "dialect": {
+      "delimiter": "\t",
+      "header": true
+    },
+    "tableSchema":{
+      "primaryKey": "GeneID",
+      "columns": [{
+        "titles": "Symbol",
+        "null": "NEWENTRY"
+      },{
+        "titles": "LocusTag",
+        "null": "-"
+      },{
+        "titles": "Synonyms",
+        "null": "-"
+      },{
+        "titles": "dbXrefs",
+        "null": "-"
+      },{
+        "titles": "chromosome",
+        "null": "-"
+      },{
+        "titles": "map_location",
+        "null": "-"
+      },{
+        "titles": "description",
+        "null": "-"
+      },{
+        "titles": "type_of_gene",
+        "null": "-"
+      },{
+        "titles": "Symbol_from_nomenclature_authority",
+        "null": "-"
+      },{
+        "titles": "Full_name_from_nomenclature_authority",
+        "null": "-"
+      },{
+        "titles": "Nomenclature_status",
+        "null": "-"
+      },{
+        "titles": "Full_name_from_nomenclature_authority",
+        "null": "-"
+      },{
+        "titles": "Other_designations",
+        "separator": "\\|",
+        "null": "-"
+      },{
+        "titles": "Modification_date",
+        "null": "-",
+        "datatype": {
+          "base": "date",
+          "format": "yyyyMMdd"
+        }
+      },{
+        "titles": "Feature_type",
+        "null": "-"
+      }]
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/homologene/homologene.csv",
+    "dialect": {
+      "delimiter": "\t",
+      "header": false
+    },
+    "tableSchema":{
+      "rowTitles": ["hid", "taxid", "ncbigene", "genesymbol", "gi", "refseq"],
+      "columns": [{
+        "titles": "genesymbol",
+        "null": ""
+      }],
+      "primaryKey": "hid,ncbigene"
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/genage/genage_models.csv",
+    "dialect": {
+      "delimiter": ",",
+      "header": true
+    },
+    "tableSchema":{
+      "columns": [{
+        "titles": "symbol",
+        "null": ""
+      },{
+        "titles": "name_gene",
+        "null": ""
+      },{
+        "titles": "organism",
+        "null": ""
+      },{
+        "titles": "entrez_gene_id",
+        "null": ""
+      },{
+        "titles": "avg_lifespan_change",
+        "null": ""
+      },{
+        "titles": "lifespan_effect",
+        "null": ""
+      },{
+        "titles": "longevity_influence",
+        "null": ""
+      }]
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/genage/genage_human.csv",
+    "dialect": {
+      "delimiter": ",",
+      "header": true
+    },
+    "tableSchema":{
+      "columns": [{
+        "titles": "symbol",
+        "null": ""
+      },{
+        "titles": "aliases",
+        "separator": " ",
+        "null": ""
+      },{
+        "titles": "name",
+        "null": ""
+      },{
+        "titles": "entrez_gene_id",
+        "null": ""
+      },{
+        "titles": "uniprot",
+        "null": ""
+      },{
+        "titles": "why",
+        "separator": ",",
+        "null": ""
+      },{
+        "titles": "band",
+        "null": ""
+      },{
+        "titles": "location_start",
+        "null": "",
+        "datatype": {
+            "base": "integer"
+          }
+      },{
+        "titles": "location_end",
+        "null": "",
+        "datatype": {
+          "base": "integer"
+        }
+      },{
+        "titles": "orientation",
+        "null": ""
+      },{
+        "titles": "acc_promoter",
+        "null": ""
+      },{
+        "titles": "acc_orf",
+        "null": ""
+      },{
+        "titles": "acc_cds",
+        "null": ""
+      },{
+        "titles": "references",
+      }]
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/wormbase/WBgeneIDs.csv",
+    "dialect": {
+      "delimiter": ",",
+      "header": false
+    },
+    "tableSchema":{
+      "primaryKey": "gene_id",
+      "rowTitles": ["taxid", "gene_id", "symbol", "cosmid", "status", "type"],
+      "columns": [{
+        "titles": "symbol",
+        "null": ""
+      },{
+        "titles": "cosmid", 
+        "null": ""
+      }]
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/wormbase/cutinteractions.csv",
+    "dialect": {
+      "delimiter": "\t",
+      "header": false
+    },
+    "tableSchema":{
+      "primaryKey": "WBInteractionID",
+      "rowTitles": ["WBInteractionID", "Interaction_type", "Interaction_subtype", "Interactor1", "Common-name1", "Role1", "Interactor2", "Common-name2", "Role2"],
+      "columns": [{
+        "titles": "Interactor2",
+        "null": ""
+      }]
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/wormbase/WBphenotype_association.csv",
+    "dialect": {
+      "delimiter": ",",
+      "header": true
+    },
+    "tableSchema":{
+      "primaryKey": "gene_id",
+      "columns": [{
+        "titles": "symbol",
+        "null": ""
+      },{
+        "titles": "association",
+        "default": "YES"
+      },{
+        "titles": "variant",
+        "null": ""
+      },{
+        "titles": "cosmid",
+        "null": ""
+      }]
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/wormbase/WBgene_association.csv",
+    "dialect": {
+      "delimiter": "\t",
+      "header": false
+    },
+    "tableSchema":{
+      "primaryKey": "gene_id",
+      "rowTitles": ["database", "gene_id", "symbol", "association", "GO_id", "references", "evidence", "dbxrefs", "ud1", "ud2", "cosmid", "type", "taxid", "mod_date", "db"],
+      "columns": [{
+        "titles": "symbol",
+        "null": ""
+      },{
+        "titles": "GO_id",
+        "null": ""
+      },{
+        "titles": "references",
+        "null": "",
+        "separator": "|"
+      },{
+        "titles": "evidence",
+        "null": ""
+      }]
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/taxonomy/division.csv",
+    "dialect": {
+      "delimiter": ",",
+      "header": false
+    },
+    "tableSchema":{
+      "rowTitles": ["division_id", "division_cde", "division_name", "comments"],
+      "primaryKey": "division_id",
+      "columns": [{
+        "titles": "comments",
+        "null": ""
+      }]
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/taxonomy/gencode.csv",
+    "dialect": {
+      "delimiter": ",",
+      "header": false
+    },
+    "tableSchema":{
+      "rowTitles": ["genetic_code_id", "name", "cde", "starts"],
+      "primaryKey": "genetic_code_id",
+      "columns": [{
+        "titles": "cde",
+        "null": ""
+      },{
+        "titles": "starts",
+        "null": ""
+      }]
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/taxonomy/names.csv",
+    "dialect": {
+      "delimiter": ",",
+      "header": false
+    },
+    "tableSchema":{
+      "rowTitles": ["tax_id", "name_txt", "unique_name", "name_class"],
+      "primaryKey": "name_txt,name_class",
+      "columns": [{
+        "titles": "name_txt",
+        "null": ""
+      },{
+        "titles": "unique_name",
+        "null": ""
+      },{
+        "titles": "name_class",
+        "null": ""
+      }]
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/taxonomy/nodes.csv",
+    "dialect": {
+      "delimiter": ",",
+      "header": false
+    },
+    "tableSchema":{
+      "rowTitles": ["tax_id", "parent_tax_id", "rank", "embl_code", "division_id", "inherited_div_flag", "genetic_code_id", "inherited_GC_flag", "mitochondrial_genetic_code_id", "inherited_MGC_flag", "GenBank_hidden_flag", "hidden_subtree_root_flag", "comments"],
+      "primaryKey": "tax_id",
+      "columns": [{
+        "titles": "parent_tax_id",
+        "null": ""
+      },{
+        "titles": "rank",
+        "null": ""
+      },{
+        "titles": "embl_code",
+        "null": ""
+      },{
+        "titles": "division_id",
+        "null": ""
+      },{
+        "titles": "inherited_div_flag",
+        "null": ""
+      },{
+        "titles": "genetic_code_id",
+        "null": ""
+      },{
+        "titles": "inherited_GC_flag",
+        "null": ""
+      },{
+        "titles": "mitochondrial_genetic_code_id",
+        "null": ""
+      },{
+        "titles": "inherited_MGC_flag",
+        "null": ""
+      },{
+        "titles": "GenBank_hidden_flag",
+        "null": ""
+      },{
+        "titles": "hidden_subtree_root_flag",
+        "null": ""
+      },{
+        "titles": "comments",
+        "null": ""
+      }]
+    }
+  },{
+    "url": "./configs/Bio2RDF-MorphCSV/data/hgnc/hgnc.csv",
+    "dialect": {
+      "delimiter": "\t",
+      "header": true
+    },
+    "tableSchema":{
+      "columns": [{
+        "titles": "Approved_Symbol",
+        "null": ""
+      },{
+        "titles": "Approved_Name",
+        "null": ""
+      },{
+        "titles": "Status",
+        "null": ""
+      },{
+        "titles": "Locus_Type",
+        "null": ""
+      },{
+        "titles": "Locus_Group",
+        "null": ""
+      },{
+        "titles": "Previous_Symbols",
+        "separator": ", ",
+        "null": ""
+      },{
+        "titles": "Previous_Names",
+        "separator": ", ",
+        "null": ""
+      },{
+        "titles": "Synonyms",
+        "separator": ", ",
+        "null": ""
+      },{
+        "titles": "Name_Synonyms",
+        "separator": ", ",
+        "null": ""
+      },{
+        "titles": "Chromosome",
+        "null": ""
+      },{
+        "titles": "Date_Approved",
+        "null": "",
+        "datatype": {
+               "base": "date",
+               "format": "YYYY-MM-DD"
+        }
+      },{
+        "titles": "Date_Modified",
+        "null": "",
+        "datatype": {
+               "base": "date",
+               "format": "YYYY-MM-DD"
+        }
+      },{
+        "titles": "Date_Symbol_Changed",
+        "null": "",
+        "datatype": {
+               "base": "date",
+               "format": "YYYY-MM-DD"
+        }
+      },{
+        "titles": "Date_Name_Changed",
+        "null": "",
+        "datatype": {
+               "base": "date",
+               "format": "YYYY-MM-DD"
+        }
+      },{
+        "titles": "Accession_Numbers",
+        "separator": ", ",
+        "null": ""
+      },{
+        "titles": "Enzyme_IDs",
+        "null": ""
+      },{
+        "titles": "Entrez_Gene_ID",
+        "null": ""
+      },{
+        "titles": "Ensembl_Gene_ID",
+        "null": ""
+      },{
+        "titles": "Mouse_Genome_Database_ID",
+        "null": ""
+      },{
+        "titles": "Specialist_Database_Links",
+        "separator": "</a> ",
+        "null": ""
+      },{
+        "titles": "Specialist_Database_IDs",
+        "separator": ", ",
+        "null": ""
+      },{
+        "titles": "Pubmed_IDs",
+        "separator": ", ",
+        "null": ""
+      },{
+        "titles": "RefSeq_IDs",
+        "null": ""
+      },{
+        "titles": "Gene_Family_Tag",
+        "separator": ", ",
+        "null": ""
+      },{
+        "titles": "Gene_family_description",
+        "null": ""
+      },{
+        "titles": "Record_Type",
+        "null": ""
+      },{
+        "titles": "Primary_IDs",
+        "separator": ", ",
+        "null": ""
+      },{
+        "titles": "Secondary_IDs",
+        "separator": ", ",
+        "null": ""
+      },{
+        "titles": "CCDS_IDs",
+        "separator": ", ",
+        "null": ""
+      },{
+        "titles": "VEGA_IDs",
+        "separator": ", ",
+        "null": ""
+      },{
+        "titles": "Locus_Specific_Databases",
+        "null": ""
+      },{
+        "titles": "Entrez_Gene_ID_(supplied_by_NCBI)",
+        "null": ""
+      },{
+        "titles": "OMIM_ID_(supplied_by_NCBI)",
+        "null": ""
+      },{
+        "titles": "RefSeq_(supplied_by_NCBI)",
+        "null": ""
+      },{
+        "titles": "UniProt_ID_(supplied_by_UniProt)",
+        "null": ""
+      },{
+        "titles": "Ensembl_ID_(supplied_by_Ensembl)",
+        "null": ""
+      },{
+        "titles": "Vega_ID_(supplied_by_Vega)",
+        "null": ""
+      },{
+        "titles": "UCSC_ID_(supplied_by_UCSC)",
+        "null": ""
+      },{
+        "titles": "Mouse_Genome_Database_ID_(supplied_by_MGI)",
+        "null": ""
+      },{
+        "titles": "Rat_Genome_Database_ID_(supplied_by_RGD)",
+        "null": ""
+      },{
+        "titles": "RNACentral_IDs_(supplied_by_RNACentral)",
+        "null": ""
+      },{
+        "titles": "LNCipedia_symbol_(supplied_by_LNCipedia)",
+        "null": ""
+      }]
+    }
+  }]
+}
