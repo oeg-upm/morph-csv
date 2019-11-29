@@ -11,7 +11,7 @@ services:
       - ./queries:/queries
     depends_on:
        - postgres
-   postgres:
+  postgres:
     container_name: postgres
     image: postgres
     restart: always
