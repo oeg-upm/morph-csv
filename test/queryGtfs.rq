@@ -13,7 +13,7 @@ SELECT * WHERE {
 	?service a gtfs:Service .
 
 	?service gtfs:serviceRule ?serviceRule .
-        
+
 	?serviceRule a gtfs:CalendarDateRule .
 	?serviceRule dct:date ?date .
 	?serviceRule gtfs:dateAddition "true"^^xsd:boolean .
