@@ -13,10 +13,10 @@ def addNormalizedTablesToCsvw(csvw, mapping, query):
                 colName = parser.getColTitle(col)
                 newTables.append(createNewTable(table,col))
                 mapping = mappingTranslation(mapping, colName)
-                query = queryRewritten(query, getPredicateAndObjectFromQuery(query,colName, mapping), columName)
+                query = queryRewritten(query, getPredicateAndObjectFromQuery(query, colName, mapping), colName)
         dataTranslation(parser.getSeparatorScripts(table))
     csvw['tables'] += newTables
-    result = {'csvw':csvw, 'mapping':mapping, 'query':query}
+    result = {'csvw': csvw, 'mapping': mapping, 'query': query}
     return result
 
 def createNewTable(table,col):
@@ -39,7 +39,7 @@ def createNewTable(table,col):
         }
     return table
         
-def toSecondNormalForm(mapping, columName, query):
+def toSecondNormalForm(mapping, column, query):
     #Requirements for NORMALIZATION: csvw, yarrrmlMapping, sparqlQuery.
     mappingTranslation(mapping, column)
     queryRewritten(query, getPredicateAndObjectFromQuery(query, column, mapping), column)
@@ -59,9 +59,8 @@ def mappingTranslation(mapping, column):
     source = [["./tmp/csv/"+column.csv]]
     s = "http://example.com/$(id)-$("+column+")"
     pom = [["ex:"+column, "$(value)"]]
-    return mapping
-
     mapping["mappings"][column] = {"source": source, "s": s, "po": pom}
+    return mapping
 
 def createJoin(predicate, column):
     join = {}
@@ -81,21 +80,29 @@ def dataTranslation(data):
 
 def getPredicateAndObjectFromQuery(query,column,mapping):
     for tm in mapping["mappings"]:
-        i = 0
-        for i,pom in enumerate(mapping["mappings"][tm]["po"]):
+        for i in enumerate(mapping["mappings"][tm]["po"]):
             if re.match("\\$\\("+column+"\\)", mapping["mappings"][tm]["po"][i][1]):
                 predicate = mapping["mappings"][tm]["po"][i][0]
-    algebra = prepareQuery(query).algebra
-    for bgp in algebra['p']['p']:
-        if bgp == "triples": 
-            for tp in algebra['p']['p']['triples']:
-                if re.match(predicate,algebra['p']['p']['triples'][tp][1]):
-                    object = algebra['p']['p']['triples'][tp][2]
-        elif re.match("p[0-9]*", bgp):
-                for tp in algebra['p']['p'][bgp]['triples']:
-                    if re.match(predicate, algebra['p']['p'][bgp]['triples'][tp][1]):
-                        object = algebra['p']['p'][bgp]['triples'][tp][2]
+    object = find_object_in_query(prepareQuery(query).algebra, atomicprefixsubtitution(mapping["prefixes"], predicate))
     return predicate, object
+
+
+def atomicprefixsubtitution(prefixes, value):
+    aux = value.split(":")
+    for prefix in prefixes.keys():
+        if aux[0] == prefix:
+            aux[0] = prefixes[prefix]
+            break
+    return aux
+
+def find_object_in_query(algebra, predicate):
+    for node in algebra:
+        if 'triples' in node:
+            for tp in algebra['triples']:
+                if re.match(predicate, tp[1]):
+                    return tp[2]
+        elif isinstance(algebra[node], dict) and bool(algebra[node].keys()):
+            find_object_in_query(algebra[node], predicate)
 
 def toThirdNormalForm(mapping):
 
