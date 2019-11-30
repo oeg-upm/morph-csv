@@ -3,28 +3,31 @@ import re
 import os
 import sys
 from rdflib.plugins.sparql import *
-from clean import csvwParser as parser
+from clean import csvwParser as csvwParser
+import traceback
 
-def addNormalizedTablesToCsvw(csvw, mapping, query):
+def addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery):
     newTables = []
     for table in csvw['tables']:
-        cols = parser.getCols(table)
+        cols = csvwParser.getCols(table)
         for col in cols:
-            if(parser.hasSeparator(col)):
-                colName = parser.getColTitle(col)
+            if(csvwParser.hasSeparator(col)):
+                colName = csvwParser.getColTitle(col)
                 newTables.append(createNewTable(table,col))
+                print(getPredicateAndObjectFromQuery(query, mapping, parsedQuery,colName))
+                sys.exit()
+                #query = queryRewritten(query, getPredicateAndObjectFromQuery(query, colName, mapping), colName)
                 mapping = mappingTranslation(mapping, colName)
-                query = queryRewritten(query, getPredicateAndObjectFromQuery(query, colName, mapping), colName)
-        dataTranslation(parser.getSeparatorScripts(table))
+        dataTranslation(csvwParser.getSeparatorScripts(table))
     csvw['tables'].extend(newTables)
     result = {'csvw':csvw, 'mapping':mapping, 'query':query}
     return result
 
 def createNewTable(table,col):
     table = {
-        'url':'ALGO/%s.csv'%(parser.getColTitle(col)),
+        'url':'ALGO/%s.csv'%(csvwParser.getColTitle(col)),
         'dialect':{
-            'delimiter':parser.getDelimiterValue(table),
+            'delimiter':csvwParser.getDelimiterValue(table),
             'header':False
             },
         'tableSchema':{
@@ -32,13 +35,12 @@ def createNewTable(table,col):
             'columns':[
                 {
                     'titles':'value',
-                    'null':parser.getNullValue(col),
-                    'datatype':parser.getDataType(col)
+                    'null':csvwParser.getNullValue(col),
+                    'datatype':csvwParser.getDataType(col)
                     }
                 ]
             }
         }
-    print('******NEW TABLE******\n' + str(table))
     return table
         
 def toSecondNormalForm(mapping, column, query):
@@ -80,10 +82,11 @@ def dataTranslation(data):
     #for the separated values, the id is going to be the same
 #    os.system("")
 
-def getPredicateAndObjectFromQuery(query,column,mapping):
-    print('*****MAPPING*****\n' + str(mapping).replace('\'', '"'))
+def getPredicateAndObjectFromQuery(query, mapping,parsedQuery,column):
+    print('SEARCHING: '  + column)
     predicate = getPredicateFromQuery(query, column, mapping)
-    pObject = find_object_in_query(prepareQuery(query).algebra, atomicprefixsubtitution(mapping["prefixes"], predicate))
+    pObject = getObjectFromQuery(parsedQuery, column)
+    #pObject = find_object_in_query(prepareQuery(query).algebra, atomicprefixsubtitution(mapping["prefixes"], predicate))
     return predicate, pObject
     
 def getPredicateFromQuery(query, column,mapping):
@@ -91,27 +94,39 @@ def getPredicateFromQuery(query, column,mapping):
     try:
         for tm in mapping["mappings"]:
             for pom in mapping["mappings"][tm]["po"]:
-                for o in pom['o']:
-                    if re.match("\\$\\("+column+"\\)", o['mapping']):
-                        predicate = mapping["mappings"][tm]["po"]['p']
+                if re.match("\\$\\("+column+"\\)", pom[1]):
+                    predicate = pom[0]
         return predicate
     except:
         print("FALLA getPredicateFromQuery ")
-        print(Exception)
+        print(traceback.format_exc())
         sys.exit()
 
 
-
+def getObjectFromQuery(parsedQuery, predicate):
+    pObject = ''
+    #TODO APRENDE A COMPARAR STRINGS....
+    for tp in parsedQuery['where']:
+        for bgp in tp['triples']:
+            if(predicate == bgp['predicate']['value']):
+                pObject = bgp['object']['value']
+    return pObject
 
 def atomicprefixsubtitution(prefixes, value):
-    aux = value.split(":")
-    for prefix in prefixes.keys():
-        if aux[0] == prefix:
-            aux[0] = prefixes[prefix]
-            break
-    return aux
+    print("PREDICATE: \n" + str(value))
+    print('PREFIXES: \n' + str(prefixes))
+    if(len(value.split(":")) == 2):
+        aux = value.split(":")
+        for prefix in prefixes.keys():
+            if aux[0] == prefix:
+                aux[0] = prefixes[prefix]
+                break
+        print('RESULT:\n' + str(aux))
+        return aux
+    return value
 
 def find_object_in_query(algebra, predicate):
+    print('ALGEBRA\n' + str(algebra))
     for node in algebra:
         if 'triples' in node:
             for tp in algebra['triples']:

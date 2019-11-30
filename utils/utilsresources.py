@@ -47,3 +47,8 @@ def maketmpdirs():
 
 def removetmpdirs():
     os.system("rm -r ./tmp")
+
+def sparqlQueryParser(path):
+    os.system("bash bash/sparqlQueryParser.sh %s"%(str(path)))
+    print('Query Parsed')
+

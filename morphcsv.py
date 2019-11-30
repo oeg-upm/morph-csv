@@ -18,6 +18,9 @@ def main():
             with open(args.json_config, "r") as json_file:
                 config = json.load(json_file)
             query = str(args.sparql_query)
+            sparqlQueryParser(query)
+            parsedQuery = json.loads(open('tmp/annotations/sparql.json').read())
+            print(parsedQuery)
         except ValueError:
             print("No input the correct arguments, run pip3 morphcsv.py -h to see the help")
             sys.exit()
@@ -42,7 +45,7 @@ def main():
     csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
     csvw = formatter.csvwFilter(csvw,csvColumns)
     print("CSVW filtered")
-    formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, query)
+    formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery)
     csvw = formalizedData['csvw']
     query = formalizedData['query']
     mapping = formalizedData['mapping']
