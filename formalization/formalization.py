@@ -1,6 +1,7 @@
 #!/bin/python3
 import re
 import os
+import sys
 from rdflib.plugins.sparql import *
 from clean import csvwParser as parser
 
@@ -15,7 +16,7 @@ def addNormalizedTablesToCsvw(csvw, mapping, query):
                 mapping = mappingTranslation(mapping, colName)
                 query = queryRewritten(query, getPredicateAndObjectFromQuery(query,colName, mapping), columName)
         dataTranslation(parser.getSeparatorScripts(table))
-    csvw['tables'] += newTables
+    csvw['tables'].extend(newTables)
     result = {'csvw':csvw, 'mapping':mapping, 'query':query}
     return result
 
@@ -37,6 +38,7 @@ def createNewTable(table,col):
                 ]
             }
         }
+    print('******NEW TABLE******\n' + str(table))
     return table
         
 def toSecondNormalForm(mapping, columName, query):
@@ -56,7 +58,7 @@ def mappingTranslation(mapping, column):
                 mapping["mappings"][tm]["po"][i] = createJoin(mapping["mappings"][tm]["po"][i][0], column)
         i += 1
 
-    source = [["./tmp/csv/"+column.csv]]
+    source = [["./tmp/csv/"+column + '.csv']]
     s = "http://example.com/$(id)-$("+column+")"
     pom = [["ex:"+column, "$(value)"]]
     return mapping
@@ -80,23 +82,44 @@ def dataTranslation(data):
 #    os.system("")
 
 def getPredicateAndObjectFromQuery(query,column,mapping):
-    for tm in mapping["mappings"]:
-        i = 0
-        for i,pom in enumerate(mapping["mappings"][tm]["po"]):
-            if re.match("\\$\\("+column+"\\)", mapping["mappings"][tm]["po"][i][1]):
-                predicate = mapping["mappings"][tm]["po"][i][0]
-    algebra = prepareQuery(query).algebra
-    for bgp in algebra['p']['p']:
-        if bgp == "triples": 
-            for tp in algebra['p']['p']['triples']:
-                if re.match(predicate,algebra['p']['p']['triples'][tp][1]):
-                    object = algebra['p']['p']['triples'][tp][2]
-        elif re.match("p[0-9]*", bgp):
-                for tp in algebra['p']['p'][bgp]['triples']:
-                    if re.match(predicate, algebra['p']['p'][bgp]['triples'][tp][1]):
-                        object = algebra['p']['p'][bgp]['triples'][tp][2]
-    return predicate, object
-
+    print('*****MAPPING*****\n' + str(mapping).replace('\'', '"'))
+    predicate = getPredicateFromQuery(query, column, mapping)
+    pObject = getObjectFromQuery(query, predicate)
+    return predicate, pObject
+def getPredicateFromQuery(query, column,mapping):
+    predicate = ''
+    try:
+        for tm in mapping["mappings"]:
+            for pom in mapping["mappings"][tm]["po"]:
+                for o in pom['o']:
+                    if re.match("\\$\\("+column+"\\)", o['mapping']):
+                        predicate = mapping["mappings"][tm]["po"]['p']
+        return predicate
+    except:
+        print("FALLA getPredicateFromQuery ")
+        print(Exception)
+        sys.exit()
+def getObjectFromQuery(query, predicate):
+    try:
+        algebra = prepareQuery(query).algebra
+        result = ''
+        print('*********ALGEBRA*********\n')
+        print(algebra.Values())
+        for bgp in algebra['p']['p']:
+            if bgp == "triples": 
+                for tp in algebra['p']['p']['triples']:
+                    if re.match(predicate,algebra['p']['p']['triples'][tp][1]):
+                        result = algebra['p']['p']['triples'][tp][2]
+            elif re.match("p[0-9]*", bgp):
+                    for tp in algebra['p']['p'][bgp]['triples']:
+                        if re.match(predicate, algebra['p']['p'][bgp]['triples'][tp][1]):
+                            result = algebra['p']['p'][bgp]['triples'][tp][2]
+        return result
+    except:
+        print("FALLA getPredicateFromObject()")
+        print(Exception)
+        sys.exit()
+ 
 def toThirdNormalForm(mapping):
 
     equal = {}

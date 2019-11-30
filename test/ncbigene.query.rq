@@ -4,7 +4,5 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 
 SELECT ?gene ?id 
 WHERE {
-	?gene rdf:type ncbiv:Resource ;
-		dcterms:identifier ?id .
+	?p ncbiv:other-designations ?o
 }
-LIMIT 

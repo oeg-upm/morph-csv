@@ -8,31 +8,36 @@ prefixes:
   dcterms: http://purl.org/dc/terms/
   xsd: http://www.w3.org/2001/XMLSchema#
   fno: http://w3id.org/function/ontology#
-  sql: http://dchaves.oeg-upm.net/resources/function/sql.ttl#
-  bv: http://bio2rdf.org/bio2rdf_vocabulary:
-  ncbiv: http://bio2rdf.org/ncbigene_vocabulary
-  symbol: http://example.com/Symbol/#
-  taxon: http://example.com/Taxonn/#
-  ncbigene: https://bio2rdf.org/ncbigene_vocabulary
-mappings:
-  TMncbigene-gene_info1:
-    sources: [tmp/csv/gene_info.csv~csv]
+  sql: http://w3.org/ns/sql#
+  bv: "http://bio2rdf.org/bio2rdf_vocabulary:"
+  homogv: "http://bio2rdf.org/homologene_vocabulary:"
+  ncbiv: "http://bio2rdf.org/ncbigene_vocabulary:"
+  genagev: "http://bio2rdf.org/genage_vocabulary:"
+  sidv: "http://bio2rdf.org/sider_vocabulary:"
+  wbv: "http://bio2rdf.org/wormbase_vocabulary:"
+  ndcv: "http://bio2rdf.org/ndc_vocabulary:"
+  ex: http://example.com
+  
+mappings: 
+  TMncbigene-gene_info:
+    sources:
+      - [./configs/Bio2RDF-MorphCSV/data/ncbigene/gene_info.csv~csv]
     s: http://bio2rdf.org/ncbigene:$(GeneID)
     po:
       - [rdf:type, ncbiv:Resource]
       - [rdf:type, ncbiv:Gene]
-      - [rdf:type, ncbiv:{type_of_gene}-Gene]
-      - [rdfs:label, $(description), (symbol:$(Symbol), taxon:$(tax_id)), ncbigene:$(GeneID)]
-      - [dcterms:title, $(description), (symbol:$(Symbol), taxon:$(tax_id))]
-      - [dcterms:description, description]
-      - [dcterms:identifier, ncbigene:$(GeneID)]
+      - [rdf:type, "http://bio2rdf.org/ncbigene_vocabulary:$(type_of_gene)-Gene"]
+      - [rdfs:label, "$(description) (symbol:$(Symbol), taxon:$(tax_id)) [ncbigene:$(GeneID)]"]
+      - [dcterms:title, "$(description) (symbol:$(Symbol), taxon:$(tax_id))"]
+      - [dcterms:description, $(description)]
+      - [dcterms:identifier, "ncbigene:$(GeneID)"]
       - [ncbiv:symbol, $(Symbol)]
       - [ncbiv:locus, $(LocusTag)]
       - [ncbiv:symbol-synonym, $(Synonyms)]
       - [ncbiv:dbxref, $(dbXrefs)]
       - [ncbiv:chromosome, $(chromosome)]
       - [ncbiv:map-location, $(map_location)]
-      - [ncbiv:nomenclature-authority, $(Symbol_from_nomeclature_authority)]
+      - [ncbiv:nomenclature-authority, $(Symbol_from_nomenclature_authority)]
       - [ncbiv:nomenclature-authority-fullname, $(Full_name_from_nomenclature_authority)]
       - [ncbiv:nomenclature-status, $(Nomenclature_status)]
       - [ncbiv:other-designations, $(Other_designations)]
