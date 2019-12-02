@@ -23,6 +23,17 @@ def filterCols(table):
                 columns.append(col)
         table['tableSchema']['columns'] = columns
     return table
+
+def insertRowTitles(csvw):
+    for i,table in enumerate(csvw['tables']):
+        csvw['tables'][i]['tableSchema']['rowTitles'] = getTableTitles(table)['titles']
+    return csvw
+def getRowTitles(table):
+    try:
+        return table['tableSchema']['rowTitles']
+    except:
+        print('Falla GetRowTitles')
+        sys.exit()
 #Devuelve la URL de la tabla sobre la que estamos trabajando
 def getUrl(table):
     try:
@@ -34,6 +45,7 @@ def getUrl(table):
     except Exception as e:
         print(e)
         sys.exit()
+
 def getTableTitle(table):
     url = str(getUrl(table)).split("/")[-1:][0]
     return url
@@ -251,9 +263,10 @@ def getGsubPatterns(table):
     result['delimiter'] = delimiter['delimiter'].encode('unicode-escape').decode('ascii')
     return result
 
-def getIndexOfCol(col):
+def getIndexOfCol(col, table):
+    print('SEARCHING:' + str(col) + '\nIN:' + str(rowTitles))
     title = getColTitle(col)
-    return rowTitles.index(title) 
+    return getRowTitles(table).index(title) 
 
 def getSeparatorValue(col):
     try:
@@ -302,7 +315,7 @@ def getSeparatorScripts(table):
     if(columnsChecker(table)):
         for col in table['tableSchema']['columns']:
             if(hasSeparator(col)):
-                index = str(getIndexOfCol(col) + 1)
+                index = str(getIndexOfCol(col, table) + 1)
                 name = str(getColTitle(col)) + '.csv'
                 separator = str(getSeparatorValue(col))
                 delimiter = str(getDelimiterValue(col))

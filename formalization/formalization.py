@@ -22,7 +22,6 @@ def addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery):
         dataTranslation(csvwParser.getSeparatorScripts(table),
                 csvwParser.getDelimiterValue(table),
                 csvwParser.getUrl(table).split("/")[-1:][0])
-        sys.exit()
     csvw['tables'].extend(newTables)
     result = {'csvw':csvw, 'mapping':mapping, 'query':query}
     return result
@@ -68,7 +67,7 @@ def mappingTranslation(mapping, column):
     source = [["./tmp/csv/"+column + '.csv']]
     s = "http://example.com/$(id)-$("+column+")"
     pom = [["ex:"+column, "$(value)"]]
-    mapping["mappings"][column] = {"source": source, "s": s, "po": pom}
+    mapping["mappings"][column] = {"sources": source, "s": s, "po": pom}
     return mapping
 
 def createJoin(predicate, column):
@@ -139,14 +138,14 @@ def find_object_in_query(algebra, predicate):
             find_object_in_query(algebra[node], predicate)
 
 def toThirdNormalForm(mapping):
-
     equal = {}
     normalize = []
     for tm in mapping["mappings"]:
-        for pom in mapping["mappings"][tm]["po"]:
+        for index,pom in enumerate(mapping["mappings"][tm]["po"]):
+            print('POM:\n' + str(pom))
             if 'p' in pom:
                 source = mapping["mappings"][tm]["sources"][0][0]
-                parent_mapping = mapping["mappings"][tm]["po"]["o"]["mapping"]
+                parent_mapping = pom["o"][0]["mapping"]
                 source_parent = mapping["mappings"][parent_mapping]["sources"][0][0]
                 if source == source_parent:
                     for i in range(len(mapping["mappings"][tm]["po"]["o"]["condition"]["parameters"])):
@@ -178,6 +177,7 @@ def toThirdNormalForm(mapping):
             - columns: the columns you have to add to target
         
     """
+    print('FN3:\n' + str(normalize))
     # ToDo: execute bash script to create target and remove the "remove" columns from source
 
 

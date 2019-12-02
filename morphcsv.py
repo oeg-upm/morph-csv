@@ -30,26 +30,28 @@ def main():
 
     print("Downloading mappings, data and query")
     maketmpdirs()
-    #downloadAnnotations(config)
-    #downloadCSVfilesFromRML()
+    downloadAnnotations(config)
+    downloadCSVfilesFromRML()
     query = readQuery(query)
     print("Removing FnO functions from RML")
     functions, mapping = getCleanYarrrml()
     print("Selecting RML rules, CSV files and columns for answering the query")
     # this function creates the rml rules needed to answer query from yarrrml mapping
     #all_columns = [{"source": "person", "columns": ["name","ln2","ln1"]}]
-    csvColumns, mapping = fromSPARQLtoMapping(mapping, query)
-    
+    csvColumns, mapping = fromSPARQLtoMapping(mapping, query) 
     csvColumns = getColumnsFromFunctions(csvColumns, functions)
     print("Required Columns: "+ str(csvColumns))
     csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
     csvw = formatter.csvwFilter(csvw,csvColumns)
+    csvw = csvwParser.insertRowTitles(csvw)
+    print('CSVw:\n' + str(csvw).replace('\'', '"'))
     print("CSVW filtered")
     formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery)
     csvw = formalizedData['csvw']
     query = formalizedData['query']
     mapping = formalizedData['mapping']
-    print('*****************************CSVW************************\n' + str(csvw) + '\n**************************MAPPING*********************\n' + str(mapping) + '\n*******************QUERY*******\n' + str(query))
+    formalizer.toThirdNormalForm(mapping)
+    sys.exit()
     print("Data Normalized")
     # create the full cleaning and selection bash script
     # cleaning stuff
