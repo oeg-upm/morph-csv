@@ -1,6 +1,7 @@
 import json
 import sys
 import os
+import logging
 import csv
 
 #Valores nulos que se usan para verificar la validez de los datos.
@@ -23,6 +24,17 @@ def filterCols(table):
                 columns.append(col)
         table['tableSchema']['columns'] = columns
     return table
+
+def insertRowTitles(csvw):
+    for i,table in enumerate(csvw['tables']):
+        csvw['tables'][i]['tableSchema']['rowTitles'] = getTableTitles(table)['titles']
+    return csvw
+def getRowTitles(table):
+    try:
+        return table['tableSchema']['rowTitles']
+    except:
+        print('Falla GetRowTitles')
+        sys.exit()
 #Devuelve la URL de la tabla sobre la que estamos trabajando
 def getUrl(table):
     try:
@@ -34,6 +46,7 @@ def getUrl(table):
     except Exception as e:
         print(e)
         sys.exit()
+
 def getTableTitle(table):
     url = str(getUrl(table)).split("/")[-1:][0]
     return url
@@ -88,9 +101,7 @@ def getTitles(table):
 #Devuelve el delimitador, por defecto(Si no encuetra ningun delimitador en el csvw) es ',' 
 def getDelimiter(table):
     try:
-        result = {'delimiter':',', 'arg':''}
-        if('dialect' in table.keys() and type(table['dialect']) is dict and 'delimiter' in table['dialect'].keys() and str(table['dialect']['delimiter']) != ''):
-           result['delimiter'] = table['dialect']['delimiter']
+        result = {'delimiter':getDelimiterValue(table), 'arg':''}
 #        result['arg'] = ''.join('$' + str(i) + ' ' for i in range(1, len(rowTitles) + 1))
         colsToPrint = []
         for i in table['filteredRowTitles']:
@@ -251,4 +262,76 @@ def getGsubPatterns(table):
         delimiter['arg'] = delimiter['arg'].replace(el['col'],' ' +  el['data'] + ' ')
     result['print'] = delimiter['arg']
     result['delimiter'] = delimiter['delimiter'].encode('unicode-escape').decode('ascii')
+    return result
+
+def getIndexOfCol(col, table):
+    print('SEARCHING:' + str(col) + '\nIN:' + str(rowTitles))
+    title = getColTitle(col)
+    return getRowTitles(table).index(title) 
+
+def getSeparatorValue(col):
+    try:
+        return str(col['separator'].encode('unicode-escape').decode('ascii'))
+    except:
+        return 'NONE'
+
+def hasSeparator(col):
+    return getSeparatorValue(col) != 'NONE'
+def getNullValue(table):
+    try:
+        nullValue = str(col['null'].encode('unicode-escape').decode('ascii'))
+    except:
+        nullValue = ''
+    return nullValue
+def getDataType(col):
+    try:
+        dataType = col['datatype']
+    except:
+        dataType = ''
+    return dataType
+def getDataTypeValue(col):
+    try:
+        datatype=''
+        if(type(col['datatype']) is dict):
+            datatype = col['datatype']['base']
+        else:
+            datatype = col['datatype']
+        return datatype
+    except:
+        print('FALLA getDataTypeValue')
+        logging.exception('Falla GetDataTypeValue()')
+        sys.exit()
+def getDelimiterValue(table):
+    try:
+        delimiter = str(table['dialect']['delimiter'].encode('unicode-escape').decode('ascii'))
+    except:
+        delimiter = ','
+    return delimiter
+def getCols(table):
+    cols = []
+    if(columnsChecker(table)):
+        cols = table['tableSchema']['columns']
+    return cols
+def getFilteredTitles(table):
+    result = [];
+    for title in table['filteredRowTitles']:
+        result.append(rowTitles.index(title))
+    result = sorted(result)
+    for i,title in enumerate(result):
+        result[i] = rowTitles[result[i]]
+
+    result = '"' + ''.join(str(result[i]) + '","' for i in range(0, len(result)))
+    result = result[:-2]
+    return result
+def getSeparatorScripts(table):
+    result = {'columns':[], 'script':''}
+    if(columnsChecker(table)):
+        for col in table['tableSchema']['columns']:
+            if(hasSeparator(col)):
+                index = str(getIndexOfCol(col, table) + 1)
+                name = str(getColTitle(col)) + '.csv'
+                separator = str(getSeparatorValue(col))
+                delimiter = str(getDelimiterValue(col))
+                result['script'] += '''len%s=split($%s,data%s,\"%s\");n%s=\"\";for(i=1;i<=len%s;++i){n%s=n%s NR \"%s\" data%s[i];system(\"echo \" n%s \" >> tmp/csv/%s\");n%s=\"\"}$%s=NR;'''%(index,index,index,separator,index,index,index,index,delimiter,index,index,name,index, index)
+                result['columns'].append('$' + str(index))
     return result
