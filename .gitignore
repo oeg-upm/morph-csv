@@ -1,3 +1,6 @@
+
+csvwParser/data/ncbigene/*
+csvwParser/code/tmp/*
 .DS_Store
 .idea
 tmp

@@ -1,0 +1,104 @@
+stop_id,stop_name,stop_lat,stop_lon,stop_code,stop_desc,zone_id,stop_url,location_type,parent_station,wheelchair_boarding,stop_timezone
+est_90_1,Aluche,40.385630,-3.760850,1,Calle de Valmojado 293,A,http://www.crtm.es,1,,,Europe/Madrid
+est_90_13,Méndez Álvaro Estación Sur,40.395380,-3.678190,13,Calle del Ombu 16,A,http://www.crtm.es,1,,,Europe/Madrid
+est_90_18,Intercambiador de Príncipe Pío,40.421070,-3.720370,18,Paseo de la Florida 2,A,http://www.crtm.es,1,,,Europe/Madrid
+est_90_25,Chamartín,40.472100,-3.682690,25,Calle de Agustín de Foxá 40,A,http://www.crtm.es,1,,,Europe/Madrid
+est_90_33,Aeropuerto T4,40.491760,-3.593560,33,Ctra de Alcobendas a Barajas SN,A,http://www.crtm.es,1,,,Europe/Madrid
+est_90_54,Atocha-Renfe,40.406590,-3.689440,54,Avda de la Ciudad de Barcelona 2 B,A,http://www.crtm.es,1,,,Europe/Madrid
+est_90_58,Puerta del Sol,40.416880,-3.703310,58,Plaza de la Puerta del Sol 6,A,http://www.crtm.es,1,,,Europe/Madrid
+est_90_71,Nuevos Ministerios,40.446620,-3.692460,71,Calle de Raimundo Fernández Villaverde 67,A,http://www.crtm.es,1,,,Europe/Madrid
+par_5_1,AGUILAS LAS,40.381194,-3.780182,1,,A,http://www.crtm.es,,,,Europe/Madrid
+par_5_10,ASAMBLEA DE MADRID-ENTREVIAS,40.381681,-3.667917,10,,A,http://www.crtm.es,,,,Europe/Madrid
+par_5_103,CASAR EL,40.318477,-3.709748,103,,B1,http://www.crtm.es,,,2,Europe/Madrid
+par_5_104,HUMANES,40.255661,-3.828372,104,,B3,http://www.crtm.es,,,1,Europe/Madrid
+par_5_105,PARQUE POLVORANCA,40.312516,-3.783251,105,,B1,http://www.crtm.es,,,1,Europe/Madrid
+par_5_106,GARENA LA,40.480446,-3.393081,106,,B3,http://www.crtm.es,,,1,Europe/Madrid
+par_5_11,ATOCHA,40.406601,-3.689212,11,,A,http://www.crtm.es,,est_90_54,2,
+par_5_12,AZUQUECA,40.561043,-3.265378,12,,C1,http://www.crtm.es,,,1,Europe/Madrid
+par_5_122,SOL,40.416851,-3.703001,122,,A,http://www.crtm.es,,est_90_58,,
+par_5_13,BARRIAL-C.COM.POZUELO EL,40.465383,-3.807647,13,,B1,http://www.crtm.es,,,,Europe/Madrid
+par_5_133,FUENTE DE LA MORA,40.484755,-3.662732,133,,A,http://www.crtm.es,,,2,Europe/Madrid
+par_5_142,AEROPUERTO T4,40.491781,-3.593240,142,,A,http://www.crtm.es,,est_90_33,2,
+par_5_143,SOTO DEL HENARES,40.463543,-3.441248,143,,B2,http://www.crtm.es,,,,Europe/Madrid
+par_5_144,VALDEBEBAS,40.482309,-3.616341,144,,A,http://www.crtm.es,,,2,Europe/Madrid
+par_5_145,MIRASIERRA-PACO DE LUCIA,40.499700,-3.709100,145,,A,http://www.crtm.es,,,,Europe/Madrid
+par_5_15,CANTOBLANCO UNIVERSIDAD,40.543794,-3.700252,15,,B1,http://www.crtm.es,,,2,Europe/Madrid
+par_5_16,CERCEDILLA,40.737573,-4.065807,16,,C2,http://www.crtm.es,,,1,Europe/Madrid
+par_5_18,CHAMARTIN,40.472109,-3.682379,18,,A,http://www.crtm.es,,est_90_25,2,
+par_5_19,CIEMPOZUELOS,40.159078,-3.609932,19,,B3,http://www.crtm.es,,,,Europe/Madrid
+par_5_2,ALCALÁ DE HENARES,40.489039,-3.366252,2,,B3,http://www.crtm.es,,,,Europe/Madrid
+par_5_20,COLLADO MEDIANO,40.692760,-4.035777,20,,C1,http://www.crtm.es,,,,Europe/Madrid
+par_5_21,COLMENAR VIEJO,40.644975,-3.775641,21,,B3,http://www.crtm.es,,,2,Europe/Madrid
+par_5_22,COSLADA,40.423745,-3.561050,22,,B1,http://www.crtm.es,,,1,Europe/Madrid
+par_5_23,COTOS,40.822260,-3.964434,23,,C2,http://www.crtm.es,,,,Europe/Madrid
+par_5_24,CUATRO VIENTOS,40.377713,-3.791344,24,,A,http://www.crtm.es,,,1,Europe/Madrid
+par_5_25,DELICIAS,40.400382,-3.692672,25,,A,http://www.crtm.es,,,1,Europe/Madrid
+par_5_26,DOCE DE OCTUBRE,40.378969,-3.698519,26,,A,http://www.crtm.es,,,,Europe/Madrid
+par_5_28,EMBAJADORES,40.405134,-3.702537,28,,A,http://www.crtm.es,,,1,Europe/Madrid
+par_5_29,ESCORIAL EL,40.585275,-4.132238,29,,C1,http://www.crtm.es,,,1,Europe/Madrid
+par_5_3,ALCALÁ DE HENARES UNIVERSIDAD,40.505349,-3.335324,3,,B3,http://www.crtm.es,,,,Europe/Madrid
+par_5_30,FANJUL,40.383660,-3.768476,30,,A,http://www.crtm.es,,,,Europe/Madrid
+par_5_31,FUENCARRAL,40.501569,-3.682252,31,,A,http://www.crtm.es,,,2,Europe/Madrid
+par_5_32,FUENLABRADA,40.282689,-3.798764,32,,B2,http://www.crtm.es,,,1,Europe/Madrid
+par_5_33,GALAPAGAR-LA NAVATA,40.600120,-3.981764,33,,B3,http://www.crtm.es,,,,Europe/Madrid
+par_5_34,GETAFE CENTRO,40.310110,-3.733844,34,,B1,http://www.crtm.es,,,2,Europe/Madrid
+par_5_35,GETAFE INDUSTRIAL,40.305490,-3.707599,35,,B1,http://www.crtm.es,,,,Europe/Madrid
+par_5_36,GETAFE SECTOR 3,40.288259,-3.737243,36,,B1,http://www.crtm.es,,,2,Europe/Madrid
+par_5_37,GOLOSO EL,40.558583,-3.713978,37,,B1,http://www.crtm.es,,,,Europe/Madrid
+par_5_38,GUADALAJARA,40.644094,-3.182304,38,,C2,http://www.crtm.es,,,,Europe/Madrid
+par_5_4,ALCOBENDAS-S.S. DE LOS REYES,40.546576,-3.635092,4,,B1,http://www.crtm.es,,,2,Europe/Madrid
+par_5_40,LAGUNA,40.399189,-3.744131,40,,A,http://www.crtm.es,,,,Europe/Madrid
+par_5_41,LEGANES,40.328992,-3.771387,41,,B1,http://www.crtm.es,,,1,Europe/Madrid
+par_5_42,MAJADAHONDA,40.474285,-3.845256,42,,B2,http://www.crtm.es,,,1,Europe/Madrid
+par_5_43,MARGARITAS-UNIVERSIDAD LAS,40.323053,-3.727286,43,,B1,http://www.crtm.es,,,2,Europe/Madrid
+par_5_44,MATAS LAS,40.552525,-3.896741,44,,B2,http://www.crtm.es,,,1,Europe/Madrid
+par_5_45,MECO,40.534629,-3.298571,45,,C1,http://www.crtm.es,,,,Europe/Madrid
+par_5_46,MENDEZ ALVARO,40.395388,-3.677986,46,,A,http://www.crtm.es,,est_90_13,1,
+par_5_47,MOLINOS LOS,40.707351,-4.066722,47,,C2,http://www.crtm.es,,,,Europe/Madrid
+par_5_48,MOSTOLES,40.328513,-3.863399,48,,B2,http://www.crtm.es,,,1,Europe/Madrid
+par_5_49,MOSTOLES EL SOTO,40.330902,-3.882241,49,,B2,http://www.crtm.es,,,,Europe/Madrid
+par_5_5,ALCORCON,40.350088,-3.831634,5,,B1,http://www.crtm.es,,,1,Europe/Madrid
+par_5_50,NEGRALES LOS,40.638582,-4.021801,50,,C1,http://www.crtm.es,,,,Europe/Madrid
+par_5_51,NUEVOS MINISTERIOS,40.446628,-3.692250,51,,A,http://www.crtm.es,,est_90_71,2,
+par_5_52,ORCASITAS,40.366916,-3.704319,52,,A,http://www.crtm.es,,,,Europe/Madrid
+par_5_53,PARLA,40.240780,-3.769268,53,,B2,http://www.crtm.es,,,2,Europe/Madrid
+par_5_55,PINAR DE LAS ROZAS,40.522306,-3.882066,55,,B2,http://www.crtm.es,,,,Europe/Madrid
+par_5_56,PINTO,40.242801,-3.703643,56,,B2,http://www.crtm.es,,,,Europe/Madrid
+par_5_57,PIRAMIDES,40.402603,-3.711243,57,,A,http://www.crtm.es,,,1,Europe/Madrid
+par_5_58,PITIS,40.495115,-3.725754,58,,A,http://www.crtm.es,,,1,Europe/Madrid
+par_5_59,POZO EL,40.375911,-3.656140,59,,A,http://www.crtm.es,,,,Europe/Madrid
+par_5_6,ALPEDRETE,40.658166,-4.034970,6,,C1,http://www.crtm.es,,,,Europe/Madrid
+par_5_60,POZUELO,40.447274,-3.800025,60,,B1,http://www.crtm.es,,,,Europe/Madrid
+par_5_61,PRINCIPE PIO,40.421079,-3.720172,61,,A,http://www.crtm.es,,est_90_18,,
+par_5_62,PUENTE ALCOCER,40.350298,-3.705065,62,,A,http://www.crtm.es,,,,Europe/Madrid
+par_5_63,PUERTO NAVACERRADA,40.784416,-4.004644,63,,C2,http://www.crtm.es,,,,Europe/Madrid
+par_5_64,RAMON Y CAJAL,40.488252,-3.694648,64,,A,http://www.crtm.es,,,,Europe/Madrid
+par_5_65,RECOLETOS,40.423421,-3.690763,65,,A,http://www.crtm.es,,,,Europe/Madrid
+par_5_66,RETAMAS LAS,40.341903,-3.842330,66,,B1,http://www.crtm.es,,,1,Europe/Madrid
+par_5_67,ROBLEDO DE CHAVELA,40.520780,-4.246710,67,,C2,http://www.crtm.es,,,,Europe/Madrid
+par_5_68,ROZAS LAS,40.494242,-3.868033,68,,B2,http://www.crtm.es,,,,Europe/Madrid
+par_5_69,SAN CRISTOBAL DE LOS ANGELES,40.342372,-3.683754,69,,A,http://www.crtm.es,,,2,Europe/Madrid
+par_5_7,ALUCHE,40.385640,-3.760653,7,,A,http://www.crtm.es,,est_90_1,,
+par_5_70,SAN CRISTOBAL INDUSTRIAL,40.331923,-3.698623,70,,A,http://www.crtm.es,,,1,Europe/Madrid
+par_5_71,SAN FERNANDO,40.442675,-3.533757,71,,B1,http://www.crtm.es,,,,Europe/Madrid
+par_5_72,SAN JOSE DE VALDERAS,40.356543,-3.815792,72,,B1,http://www.crtm.es,,,,Europe/Madrid
+par_5_74,SAN YAGO,40.617870,-4.031014,74,,C1,http://www.crtm.es,,,,Europe/Madrid
+par_5_75,SANTA EUGENIA,40.386998,-3.608967,75,,A,http://www.crtm.es,,,,Europe/Madrid
+par_5_76,SANTA MARIA DE LA ALAMEDA,40.568920,-4.269330,76,,C2,http://www.crtm.es,,,,Europe/Madrid
+par_5_77,SERNA LA,40.296733,-3.792387,77,,B2,http://www.crtm.es,,,1,Europe/Madrid
+par_5_8,ARANJUEZ,40.034848,-3.618212,8,,C1,http://www.crtm.es,,,,Europe/Madrid
+par_5_81,TORREJON DE ARDOZ,40.454615,-3.479731,81,,B2,http://www.crtm.es,,,,Europe/Madrid
+par_5_82,TORRELODONES,40.574514,-3.956449,82,,B3,http://www.crtm.es,,,1,Europe/Madrid
+par_5_83,TRES CANTOS,40.598446,-3.715560,83,,B2,http://www.crtm.es,,,1,Europe/Madrid
+par_5_84,UNIVERSIDAD P. COMILLAS,40.554066,-3.683245,84,,B1,http://www.crtm.es,,,2,Europe/Madrid
+par_5_85,VALDELASFUENTES,40.547451,-3.654244,85,,B1,http://www.crtm.es,,,2,Europe/Madrid
+par_5_86,VALDEMORO,40.196057,-3.664718,86,,B3,http://www.crtm.es,,,2,Europe/Madrid
+par_5_87,VALLECAS,40.382221,-3.624463,87,,A,http://www.crtm.es,,,1,Europe/Madrid
+par_5_9,ARAVACA,40.448336,-3.785769,9,,A,http://www.crtm.es,,,1,Europe/Madrid
+par_5_90,VICALVARO,40.401327,-3.595839,90,,A,http://www.crtm.es,,,,Europe/Madrid
+par_5_91,VILLALBA,40.626370,-4.008006,91,,B3,http://www.crtm.es,,,1,Europe/Madrid
+par_5_92,VILLAVERDE ALTO,40.341239,-3.711835,92,,A,http://www.crtm.es,,,2,Europe/Madrid
+par_5_93,VILLAVERDE BAJO,40.352651,-3.683893,93,,A,http://www.crtm.es,,,2,Europe/Madrid
+par_5_94,ZARZALEJO,40.538728,-4.158170,94,,C2,http://www.crtm.es,,,,Europe/Madrid
+par_5_95,ZARZAQUEMADA,40.340865,-3.748211,95,,B1,http://www.crtm.es,,,1,Europe/Madrid
+par_5_96,ZORRERAS LAS,40.609421,-4.045967,96,,C1,http://www.crtm.es,,,,Europe/Madrid

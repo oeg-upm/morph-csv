@@ -1,0 +1,7 @@
+,E1,,,,E2,,,
+,Indexing,Execution,Total Time,Numer of responses,Indexing,Execution,Total Time,Numer of responses
+gtfs-1,1.09,error,,0,1.61,0.86,2.47,1284
+gtfs-5,2.18,error,,0,3.66,1.65,5.32,4034
+gtfs-10,3.44,error,,0,5.89,2.74,8.63,7840
+gtfs-50,11.57,error,,0,83.56,10.29,93.84,39008
+gtfs-100,24.37,error,,0,730.70,20.95,751.65,79444

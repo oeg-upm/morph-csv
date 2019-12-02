@@ -1,0 +1,10 @@
+#tax_id	GeneID	Symbol	LocusTag	Synonyms	dbXrefs	chromosome	map_location	description	type_of_gene	Symbol_from_nomenclature_authority	Full_name_from_nomenclature_authority	Nomenclature_status	Other_designations	Modification_date	Feature_type
+7	5692769	NEWENTRY	-	-	-	-	-	Record to support submission of GeneRIFs for a gene not in Gene (Azotirhizobium caulinodans.  Use when strain, subtype, isolate, etc. is unspecified, or when different from all specified ones in Gene.).	other	-	-	-	-	20190202	-
+9	1246500	repA1	pLeuDn_01	-	-	-	-	putative replication-associated protein	protein-coding	-	-	-	-	-	-
+9	1246501	repA2	pLeuDn_03	-	-	-	-	putative replication-associated protein	protein-coding	-	-	-	-	20180129	-
+9	1246502	leuA	pLeuDn_04	-	-	-	-	2-isopropylmalate synthase	protein-coding	-	-	-	-	20180129	-
+-	1246503	leuB	pLeuDn_05	-	-	-	-	3-isopropylmalate dehydrogenase	protein-coding	-	-	-	-	20180129	-
+9	1246504	leuC	pLeuDn_06	-	-	-	-	isopropylmalate isomerase large subunit	protein-coding	-	-	-	-	20180129	-
+9	1246505	leuD	pLeuDn_07	-	-	-	-	isopropylmalate isomerase small subunit	protein-coding	-	-	-	-	20180129	-
+9	1246509	ibp	pBPS1_01	-	-	-	-	Ibp protein	protein-coding	-	-	-	-	20180129	-
+9	1246510	repA1	pBPS1_02	-	-	-	-	repA1 protein	protein-coding	-	-	-	-	-	-

@@ -1,4 +1,4 @@
-version: "2.4"
+version: "2.2"
 services:
   morphcsv:
     container_name: morphcsv
@@ -9,3 +9,13 @@ services:
       - ./mappings:/mappings
       - ./configs:/configs
       - ./queries:/queries
+    depends_on:
+       - postgres
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: csv
+      POSTGRES_USER: user
+      POSTGRES_DB: morphcsv
