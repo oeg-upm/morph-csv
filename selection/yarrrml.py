@@ -11,7 +11,7 @@ def getCleanYarrrml ():
     return dict with the functions (mapping and reference where to apply them) and rml mapping in disk
     """
     functions = {}
-    data = yaml.load(open("./tmp/annotations/mapping.yml"), Loader=yaml.FullLoader)
+    data = yaml.load(open("./tmp/annotations/mapping.yaml"), Loader=yaml.FullLoader)
     for tm in data["mappings"]:
         i = 0
         for pom in data["mappings"][tm]["po"]:

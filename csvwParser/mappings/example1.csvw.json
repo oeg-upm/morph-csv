@@ -1,0 +1,38 @@
+{  
+  "@context": ["http://www.w3.org/ns/csvw"],
+  "tables": [{
+    "url": "https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/motivating-example/data/comments.csv",
+    "tableSchema": {
+       "columns": [{
+           "titles": "date",
+           "datatype": {
+               "base": "date",
+               "format": "yyyyMMdd"
+            }
+        },{
+           "titles": "modifiedDates",
+           "separator": "-",
+           "datatype": {
+               "base": "date",
+               "format": "yyyyMMdd"
+            }
+       }]
+    }
+  },
+  {
+    "url": "https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/motivating-example/data/people.csv",
+    "tableSchema": {
+      "rowTitles": ["name","ln1","ln2","cName","cOfficialName","nCourses"],
+      "columns":[{
+           "titles":"ln2",
+           "null": ""
+        },{
+           "titles":"nCourses",
+           "default": 0,
+           "datatype": {
+               "base": "integer"
+            }
+      }] 
+    }
+  }]
+}

@@ -1,0 +1,9 @@
+{
+  "sources":[
+    {
+      "csvw":"https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/open-city-data-validation/mappings/open-city-data-annotations.json",
+      "yarrrml": "https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/open-city-data-validation/mappings/open-city-data.yml",
+      "db": "openCityData"
+    }
+  ]
+}
