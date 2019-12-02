@@ -302,10 +302,10 @@ def getSeparatorScripts(table):
     if(columnsChecker(table)):
         for col in table['tableSchema']['columns']:
             if(hasSeparator(col)):
-                index = str(getColIndex(col))
+                index = str(getIndexOfCol(col) + 1)
                 name = str(getColTitle(col)) + '.csv'
                 separator = str(getSeparatorValue(col))
                 delimiter = str(getDelimiterValue(col))
-                result['script'] += '''len%s=split($%s,data%s,\\"%s\\");n%s=\\"\\";for(i=1;i<=len%s;++i){n%s=n%s \\"\\\\\\"\\" NR \\"\\\\\\"%s\\\\\\"\\" data%s[i] \\"\\\\\\"\\";system(\\"echo \\\\\\"\\" n%s \\"\\\\\\" >> tmp/csv/%s\\");n%s=\\"\\"}$%s=NR;'''%(index,index,index,separator,index,index,index,index,delimiter,index,index,name,index, index)
+                result['script'] += '''len%s=split($%s,data%s,\"%s\");n%s=\"\";for(i=1;i<=len%s;++i){n%s=n%s NR \"%s\" data%s[i];system(\"echo \" n%s \" >> tmp/csv/%s\");n%s=\"\"}$%s=NR;'''%(index,index,index,separator,index,index,index,index,delimiter,index,index,name,index, index)
                 result['columns'].append('$' + str(index))
     return result

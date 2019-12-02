@@ -8,17 +8,21 @@ import traceback
 
 def addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery):
     newTables = []
+#   query = queryPrefixRewritter(query, mapping['prefixes'])
     for table in csvw['tables']:
         cols = csvwParser.getCols(table)
         for col in cols:
             if(csvwParser.hasSeparator(col)):
                 colName = csvwParser.getColTitle(col)
                 newTables.append(createNewTable(table,col))
-                print(getPredicateAndObjectFromQuery(query, mapping, parsedQuery,colName))
-                sys.exit()
-                #query = queryRewritten(query, getPredicateAndObjectFromQuery(query, colName, mapping), colName)
+                predicate,variable =getPredicateAndObjectFromQuery(query, mapping, parsedQuery,colName)
+                #sys.exit()
+                query = queryRewritten(query,predicate,variable,colName)
                 mapping = mappingTranslation(mapping, colName)
-        dataTranslation(csvwParser.getSeparatorScripts(table))
+        dataTranslation(csvwParser.getSeparatorScripts(table),
+                csvwParser.getDelimiterValue(table),
+                csvwParser.getUrl(table).split("/")[-1:][0])
+        sys.exit()
     csvw['tables'].extend(newTables)
     result = {'csvw':csvw, 'mapping':mapping, 'query':query}
     return result
@@ -49,7 +53,8 @@ def toSecondNormalForm(mapping, column, query):
     queryRewritten(query, getPredicateAndObjectFromQuery(query, column, mapping), column)
 
 def queryRewritten(query, predicate, variable, column):
-    query = re.sub(predicate + "\\s+" + variable, "?"+column+" . ?"+column+" ex:"+column+" ?"+variable, query)
+    #print('PREDICATE:' + str(predicate) + '\nVARIABLE:' + str(variable) + '\nColumn:' + str(column))
+    query = query.replace("?" + variable, "?"+column+".\n\t?"+column+"<ex:"+column+"> ?"+variable)
     return query
 
 def mappingTranslation(mapping, column):
@@ -73,20 +78,14 @@ def createJoin(predicate, column):
     join["o"] = [{"mapping": column, "condition:": {"function": "equal", "parameters": parameters}}]
     return join
 
-def dataTranslation(data):
-    print('SCRIPT:\n' + data['script'] + '\nCOLS:\n' + data['columns'])
-    #ToDo call the bash scripts
-    #substitute the column by an index (1,2,3...)
-#    os.system("")
-    #create a new file named column with id,[column] and separate the values based on the separator
-    #for the separated values, the id is going to be the same
-#    os.system("")
+def dataTranslation(data, delimiter, path):
+    #print('SCRIPT:\n' + str(data['script']) + '\nCOLS:\n' + str(data['columns']))
+    os.system("bash bash/fn1.sh '%s' '%s' '%s'"%(str(delimiter), str(data['script']), str(path)))
 
 def getPredicateAndObjectFromQuery(query, mapping,parsedQuery,column):
     print('SEARCHING: '  + column)
     predicate = getPredicateFromQuery(query, column, mapping)
-    pObject = getObjectFromQuery(parsedQuery, column)
-    #pObject = find_object_in_query(prepareQuery(query).algebra, atomicprefixsubtitution(mapping["prefixes"], predicate))
+    pObject = getObjectFromQuery(parsedQuery, predicate)
     return predicate, pObject
     
 def getPredicateFromQuery(query, column,mapping):
@@ -105,12 +104,16 @@ def getPredicateFromQuery(query, column,mapping):
 
 def getObjectFromQuery(parsedQuery, predicate):
     pObject = ''
-    #TODO APRENDE A COMPARAR STRINGS....
     for tp in parsedQuery['where']:
         for bgp in tp['triples']:
-            if(predicate == bgp['predicate']['value']):
+            if(predicate == str(bgp['predicate']['value'])):
                 pObject = bgp['object']['value']
     return pObject
+
+def queryPrefixRewritter(query, prefixes):
+    for prefix in prefixes:
+        query = str(query).replace(str(prefix)+':', str(prefixes[prefix]))
+    return query
 
 def atomicprefixsubtitution(prefixes, value):
     print("PREDICATE: \n" + str(value))
