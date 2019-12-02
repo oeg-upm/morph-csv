@@ -161,12 +161,14 @@ def getColumnsFromFunctions(csvColumns, functions):
         for csv in csvColumns:
             sourceColumns = csvColumns[tm]["columns"]
             for column in sourceColumns:
-                if column in functions[tm]:
+                if column == functions[tm]["column"]:
                     columns = []
-                    extractReferencesFromFno(functions[tm][column], columns)
+                    extractReferencesFromFno(functions[tm]["params"][column], columns)
                     csvColumns[tm]["columns"].remove(column)
                     csvColumns[tm]["columns"].extend(columns)
                     csvColumns[tm]["columns"] = list(dict.fromkeys(csvColumns[tm]["columns"]))
+                    # to know after what functions I have to create in the sql
+                    functions[tm] = {"query": True, "fno": functions[tm][column]}
     return csvColumns
 
 
