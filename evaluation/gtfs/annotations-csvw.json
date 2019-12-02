@@ -234,6 +234,13 @@
       "url": "/data/FREQUENCIES.csv",
       "tableSchema": {
         "primaryKey": "trip_id,start_time",
+        "foreignKeys": [{
+          "columnReference": "trip_id",
+          "reference": {
+            "resource": "/data/TRIPS.csv",
+            "columnReference": "trip_id"
+          }
+        }],
         "columns": [
           {
             "datatype": "string",
@@ -278,6 +285,13 @@
       "url": "/data/ROUTES.csv",
       "tableSchema": {
         "primaryKey": "route_id",
+        "foreignKeys": [{
+          "columnReference": "agency_id",
+          "reference": {
+            "resource": "/data/AGENCY.csv",
+            "columnReference": "agency_id"
+          }
+        }],
         "columns": [
           {
             "datatype": "string",
@@ -378,6 +392,19 @@
       "url": "/data/STOP_TIMES.csv",
       "tableSchema": {
         "primaryKey": "trip_id,stop_id,arrival_time",
+        "foreignKeys": [{
+          "columnReference": "trip_id",
+          "reference": {
+            "resource": "/data/TRIPS.csv",
+            "columnReference": "trip_id"
+          }},
+          {
+          "columnReference": "stop_id",
+          "reference": {
+            "resource": "/data/STOPS.csv",
+            "columnReference": "stop_id"
+          }
+        }],
         "columns": [
           {
             "datatype": "string",
@@ -438,6 +465,13 @@
       "url": "/data/STOPS.csv",
       "tableSchema": {
         "primaryKey": "stop_id",
+        "foreignKeys": [{
+          "columnReference": "parent_station",
+          "reference": {
+            "resource": "/data/STOPS.csv",
+            "columnReference": "stop_id"
+          }
+        }],
         "columns": [
           {
             "datatype": "string",
@@ -483,6 +517,7 @@
           },
           {
             "datatype": "string",
+            "null": "",
             "titles": [
               "parent_station"
             ]
@@ -518,6 +553,31 @@
       "url": "/data/TRIPS.csv",
       "tableSchema": {
         "primaryKey": "trip_id",
+        "foreignKeys": [{
+          "columnReference": "route_id",
+          "reference": {
+            "resource": "/data/ROUTES.csv",
+            "columnReference": "routes_id"
+          }},
+          {
+          "columnReference": "shape_id",
+          "reference": {
+            "resource": "/data/SHAPES.csv",
+            "columnReference": "shape_id"
+          }},
+          {
+          "columnReference": "service_id",
+          "reference": {
+            "resource": "/data/CALENDAR.csv",
+            "columnReference": "service_id"
+          }},
+          {
+          "columnReference": "service_id",
+          "reference": {
+            "resource": "/data/CALENDAR_DATES.csv",
+            "columnReference": "service_id"
+          }
+        }],
         "columns": [
           {
             "datatype": "string",
