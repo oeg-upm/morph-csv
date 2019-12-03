@@ -8,6 +8,7 @@ from utils.utilsresources import *
 from clean.csvFormatter import *
 import clean.csvwParser as csvwParser
 import schema_generation.from_mapping_to_sql as mapping2Sql
+import schema_generation.create_and_insert as insert
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--json_config", required=True, help="Input config file with yarrrml and csvw")
@@ -32,6 +33,9 @@ def main():
     query = readQuery(query)
     print("Removing FnO functions from RML")
     functions, mapping = getCleanYarrrml()
+    print('*******************************************************')
+    print(functions)
+    print('*******************************************************')
     print("Selecting RML rules, CSV files and columns for answering the query")
     # this function creates the rml rules needed to answer query from yarrrml mapping
     #all_columns = [{"source": "person", "columns": ["name","ln2","ln1"]}]
@@ -41,13 +45,16 @@ def main():
     print("Cleaning CSV files based on CSVW")
     # create the full cleaning and selection bash script
     # cleaning stuff
+
     print("FilterColumns"+str(csvColumns))
     csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
     csvw = csvwFilter(csvw,csvColumns)
-    mapping2Sql.generate_sql_schema(csvw)
-    sys.exit()
+
     #csvColumns ={'routes': {'source': 'ROUTES.csv', 'columns': ['route_url','agency_id', 'route_id']}, 'agency': {'source': 'AGENCY.csv', 'columns': ['agency_url', 'agency_name', 'agency_id']}}
     csvFormatter(csvColumns)
+    schema = mapping2Sql.generate_sql_schema(csvw)
+
+    insert.create_and_insert(csvw, schema)
     print("Normalizing CSV files")
     # normalize
 
