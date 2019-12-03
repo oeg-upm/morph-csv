@@ -57,6 +57,8 @@ def translate_type_to_sql(dataType):
         translated_type = "BOOLEAN"
     elif re.match("decimal", dataType):
         translated_type = "DECIMAL(18,15)"
+    elif re.match("date", dataType):
+        translated_type = "DATE"
     else:
         translated_type = "VARCHAR(200)"
 
