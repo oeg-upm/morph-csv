@@ -10,28 +10,28 @@ def translate_fno_to_sql(functions):
             column = function[tm]["fno"]["column"]
             source = re.sub("\\.csv~csv", "", functions["tm"]["fno"]["source"].split("/")[-1]).upper()
             sql += "ALTER TABLE " + source + "ADD COLUMN (" + column + " VARCHAR(200));\n"
-            sql += "UPDATE " + source + "SET " + column + "=" + translate_function_to_sql(function, f) + "\n"
+            sql += "UPDATE " + source + "SET " + column + "=" + translate_function_to_sql(function, f) + ";\n"
 
     return sql
 
 
 def translate_function_to_sql(function, sql):
 
-    for f in function:
-        sql += translate_f_to_sql(function["function"]) + "("
-        for i in range(len(function["parameters"])):
-            if isinstance(function["parameters"][i], dict):
-                translate_function_to_sql(function["parameters"][i]["value"], sql)
+    for f in range(len(function)):
+        sql += translate_f_to_sql(function[f]) + "("
+        for i in range(len(function[f]["parameters"])):
+            if isinstance(function[f]["parameters"][i], dict):
+                translate_function_to_sql(function[f]["parameters"][i]["value"], sql)
             else:
-                param = function["parameters"][i][1]
+                param = function[f]["parameters"][i][1]
                 if re.match("\\$\\(.*\\)", param):
                     param = re.sub("\\)", "", re.sub("\\$\\(", "", param))
-                if i == len(function["parameters"])-1:
+                if i == len(function[f]["parameters"])-1:
                     sql += param + ")"
                 else:
                     sql += param + ","
 
-    return sql + "\n"
+    return sql
 
 def translate_f_to_sql(value):
     if value == "sql:lower":
