@@ -33,7 +33,8 @@ def scriptCaller(data):
     replaceCsvFormat(parser.getGsubPatterns(data), url)
     titles['header'] = False
     insertTitles(titles, url)
-    
+
+
     '''
     #rowSkipper(parser.getSkipRows(data), url)
     print("Skip Rows Done")
@@ -106,6 +107,8 @@ def defaultEmptyStringFormatChanger(data, path):
         os.system('bash ./bash/defaultEmptyStringReplacer.sh \'%s\' %s %s'%(col['default'], col['col'], path))
 
 def replaceCsvFormat(data, path):
+    print('*************************************************')
+    print(data)
     os.system('bash bash/csvFormatter \'%s\' \'%s\' \'%s\' \'%s\' \'%s\''%(str(data['delimiter']), str(data['gsub']),str(data['print']),str(data['split']),str(path)))
 
 def csvFormatter(csvSelection):
