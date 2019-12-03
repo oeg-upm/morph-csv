@@ -27,8 +27,8 @@ def main():
 
     print("Downloading mappings, data and query")
     maketmpdirs()
-    downloadAnnotations(config)
-    downloadCSVfilesFromRML()
+#    downloadAnnotations(config)
+##    downloadCSVfilesFromRML()
     query = readQuery(query)
     print("Removing FnO functions from RML")
     functions, mapping = getCleanYarrrml()
@@ -43,11 +43,13 @@ def main():
     # cleaning stuff
     print("FilterColumns"+str(csvColumns))
     csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
+    #print('\n\n\nOLD CSVW\n\n\n' + str(csvw).replace('\'', '"') + '\n\n\n')
+    csvw = csvwParser.insertRowTitles(csvw)
+    #print('\n\n\nNEW CSVW\n\n\n' + str(csvw).replace('\'', '"').replace('True', 'true').replace('False', 'false') + '\n\n\n')
     csvw = csvwFilter(csvw,csvColumns)
     mapping2Sql.generate_sql_schema(csvw)
-    sys.exit()
     #csvColumns ={'routes': {'source': 'ROUTES.csv', 'columns': ['route_url','agency_id', 'route_id']}, 'agency': {'source': 'AGENCY.csv', 'columns': ['agency_url', 'agency_name', 'agency_id']}}
-    csvFormatter(csvColumns)
+    csvFormatter(csvw)
     print("Normalizing CSV files")
     # normalize
 

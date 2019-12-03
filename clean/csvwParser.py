@@ -34,6 +34,8 @@ def getRowTitles(table):
         return table['tableSchema']['rowTitles']
     except:
         print('Falla GetRowTitles')
+        print('***************TABLA************')
+        print(str(table).replace('\'', '"'))
         sys.exit()
 #Devuelve la URL de la tabla sobre la que estamos trabajando
 def getUrl(table):
@@ -131,6 +133,10 @@ def getNullValues(table):
             if('null' in col.keys()):
                 arg = 'gsub(/^%s$/,\"null\",$%s);'%(col['null'], str(index+1))
                 result['data'].append({'col':'$%s'%(str(index+1)), 'value':col['null']})
+            else:
+                arg = 'gsub(/^$/,\"null\",$%s);'%( str(index+1))
+                result['data'].append({'col':'$%s'%(str(index+1)), 'value':''})
+
                 '''
                 arg = ''
                 if(index == 0):
@@ -166,7 +172,7 @@ def getFormat(table, dataType):
         if(columnsChecker(table)):
             for col in table['tableSchema']['columns']:
                 title = getColTitle(col)
-                indx = rowTitles.index(title)
+                indx = getRowTitles(table).index(title)
                 if('datatype' in col.keys()):
                     if( str(col['datatype']) == dataType and 'format' in col.keys()):
                         result.append({'col':str(indx + 1),'format':col['format']})
@@ -217,7 +223,7 @@ def getBooleanFormat(table):
         arg = ''
         col['format'] =  str(col['format'])
         data = col['format'].split("|")
-        arg = 'gsub(/^%s$/,"true",$%s);gsub(/^%s$/,"false",$%s);'%(str(data[0]), str(col['col']), str(data[1]), str(col['col']))
+        arg = 'gsub(/%s/,"true",$%s);gsub(/%s/,"false",$%s);'%(str(data[0]), str(col['col']), str(data[1]), str(col['col']))
         fullArg += arg
     return fullArg
 
@@ -313,16 +319,19 @@ def getCols(table):
         cols = table['tableSchema']['columns']
     return cols
 def getFilteredTitles(table):
-    result = [];
-    for title in table['filteredRowTitles']:
+    result = orderAccordingToRowTitles(table['filteredRowTitles']);
+    result = '"' + ''.join(str(result[i]) + '","' for i in range(0, len(result)))
+    result = result[:-2]
+    return result
+def orderAccordingToRowTitles(titles):
+    result = []
+    for title in titles:
         result.append(rowTitles.index(title))
     result = sorted(result)
     for i,title in enumerate(result):
         result[i] = rowTitles[result[i]]
-
-    result = '"' + ''.join(str(result[i]) + '","' for i in range(0, len(result)))
-    result = result[:-2]
     return result
+
 def getSeparatorScripts(table):
     result = {'columns':[], 'script':''}
     if(columnsChecker(table)):
