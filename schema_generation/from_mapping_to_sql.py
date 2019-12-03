@@ -21,7 +21,9 @@ def generate_sql_schema(csvw):
         sql = ''
         source = csvwParser.getUrl(table).split("/")[-1:][0].replace(".csv","")
         columns = csvw["tables"][i]["filteredRowTitles"]
-        sql += "DROP TABLE " + source + ";"
+        print('///////////////////////////////////////////////////////////////////')
+        print(columns)
+        sql += "DROP TABLE IF EXISTS " + source + ";"
         sql += "CREATE TABLE " + source + "("
         for columName in columns:
             sql += columName + " " + find_type_in_csvw(columName, table["tableSchema"]) + ","
