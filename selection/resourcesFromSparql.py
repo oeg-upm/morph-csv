@@ -5,12 +5,30 @@ import yaml
 import copy
 
 
-def fromSPARQLtoMapping(mapping, query):
-    uris = {}
-    find_triples_in_query(prepareQuery(query).algebra, uris)
-    translatedmap, csvColumns = getRelevantTM(uris, mapping)
-    return csvColumns, translatedmap
+def fromSPARQLtoMapping(mapping, query, parsedQuery):
+#    find_triples_in_query(prepareQuery(query).algebra, uris)
+    uris = getUrisFromQuery(parsedQuery)
+    print('\n\n\n**********URIS*********\n\n\n')
+    print(str(uris).replace('\'', '"') + '\n\n\n')
+#    translatedmap, csvColumns = getRelevantTM(uris, mapping)
+    translatedMap = simplifyMappingAccordingToQuery(uris,mapping)
+    print('\n\n\n************NEW MAPPING********\n\n\n' + str(translatedMap).replace('\'', '"') + '\n\n\n')
+#    return csvColumns, translatedmap
 
+def getUrisFromQuery(query):
+    result = []
+    for el in query['where']:
+        for tm in el['triples']:
+            for item in tm:
+                if('http' in tm[item]['value'].split(':')[0]):
+                    result.append(tm[item]['value'])
+
+            '''
+            subject  = tm['subject']['value']
+            if subject not in result.keys():
+                result[subject] = {'predicates':[], 'types':[]}
+            '''
+    return result
 
 def find_triples_in_query(algebra, uris):
     for node in algebra:
@@ -21,7 +39,7 @@ def find_triples_in_query(algebra, uris):
             find_triples_in_query(algebra[node], uris)
 
 
-def obtainURISfromTP(tp, uris):
+def obtainURISfromTP(tp, uris):#Simplificable
     if str(tp[0]) not in uris.keys():
         uris[str(tp[0])] = {"predicates": [], "types": []}
     for value in tp:
@@ -31,9 +49,25 @@ def obtainURISfromTP(tp, uris):
             elif str(tp[1]) != "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" and value == tp[1]:
                 uris[str(tp[0])]["predicates"].append(str(value))
 
-
-def getRelevantTM(uris, mapping):
+def simplifyMappingAccordingToQuery(uris, mapping):
     mapping = substitutePrefixes(mapping)
+#    print(str(mapping).replace('\'', '"'))
+    newMapping = {'prefixes':mapping['prefixes'], 'mappings':{}}
+    for tm in mapping['mappings']:
+        for po in mapping['mappings'][tm]['po']:
+            if(bool(set(po)&set(uris))):
+                print('COINICIDENCE:' + str(set(po)&set(uris)))
+                if(tm not in newMapping['mappings'].keys()):
+                    newMapping['mappings'][tm] = {
+                            'sources':mapping['mappings'][tm]['sources'],
+                            'po':[]
+                            }
+                newMapping['mappings'][tm]['po'].append(po)
+    return newMapping
+
+def getRelevantTM(uris, mapping):#Simplificable
+    mapping = substitutePrefixes(mapping)
+    print('\n\n\n\n********************************************MAPPING***************************************\n\n\n\n' + str(mapping).replace('\'', '"') + '\n\n\n\n')
     relevantTM = {}
     csvColumns = {}
     parentcolumns = {}

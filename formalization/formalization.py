@@ -78,8 +78,9 @@ def createJoin(predicate, column):
     return join
 
 def dataTranslation(data, delimiter, path):
-    #print('SCRIPT:\n' + str(data['script']) + '\nCOLS:\n' + str(data['columns']))
-    os.system("bash bash/fn1.sh '%s' '%s' '%s'"%(str(delimiter), str(data['script']), str(path)))
+    if(len(data['columns'])>0):
+        #print('SCRIPT:\n' + str(data['script']) + '\nCOLS:\n' + str(data['columns']))
+        os.system("bash bash/fn1.sh '%s' '%s' '%s'"%(str(delimiter), str(data['script']), str(path)))
 
 def getPredicateAndObjectFromQuery(query, mapping,parsedQuery,column):
     print('SEARCHING: '  + column)
@@ -138,8 +139,33 @@ def find_object_in_query(algebra, predicate):
             find_object_in_query(algebra[node], predicate)
 
 def toThirdNormalForm(mapping):
-    equal = {}
-    normalize = []
+    #Scope: Encontrar los TM que comparten el mismo source
+    #HowTo: 
+    '''
+        1º Encontrar Fuentes Duplicadas
+        2º Guardar los nombres del TM comparten fuente
+        3º Obtener las columnas del mapping que usa cada TM
+        4º Obtener las columnas del CSVW que hacen referencia a las columnas anteriores
+        5º Llamar al bashScript fn3.sh para generar n CSVs nuevos cada uno con su columna
+           correspondiente en base al Mapping
+    '''
+    print('\n\n\n***********************MAPPING********************\n\n\n')
+    print(str(mapping).replace('\'', '"') + '\n\n\n')
+    sources = {}
+    for tm in mapping['mappings']:
+        source = mapping['mappings'][tm]['sources'][0][0]
+        om = {tm:[getColumnsfromOM(o[1]) for o in mapping['mappings'][tm]['po']]}
+        om[tm]= [item for sublist in om[tm] for item in sublist] #Flatting list
+        if(source not in sources.keys()):
+            sources[source] = []
+        sources[source].append(om) #Adding each TM to the source its belogns to
+    print('\n\n\n**************SOURCES******************\n\n\n')
+    print('\n\n\n' + str(sources) + '\n\n\n')
+#    for source in sources:
+#        if(len(sources[sources]) > 1):
+            #Search For The Columns.
+    sys.exit()
+    '''
     for tm in mapping["mappings"]:
         for index,pom in enumerate(mapping["mappings"][tm]["po"]):
             print('POM:\n' + str(pom))
@@ -168,7 +194,7 @@ def toThirdNormalForm(mapping):
         remove = columns.copy().pop(equal[tm])
         mapping["mappings"][tm]["sources"][0][0] = "./tmp/csv/"+target+".csv~csv"
         normalize.extend({"source": source, "remove": remove, "columns": columns, "target": target})
-
+    '''
     """
         normalize content:
             - source: the name of the file where you can get the columns
@@ -177,19 +203,23 @@ def toThirdNormalForm(mapping):
             - columns: the columns you have to add to target
         
     """
-    print('FN3:\n' + str(normalize))
+#    print('FN3:\n' + str(normalize))
     # ToDo: execute bash script to create target and remove the "remove" columns from source
 
 
 
 def getColumnsfromOM(om):
+    om = str(om).replace('$(', '').replace(')', '').split(' ')
+    print(om)
+    return om
+    '''
     columns = []
     aux = om.split("$(")
     for references in aux:
         if re.match(".*\\).*", references):
             columns.append(references.split(")")[0])
     return columns
-
+    '''
 def getColumnsfromJoin(join):
     columns = []
     joinscount = 0

@@ -1,7 +1,9 @@
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX schema: <http://schema.org/>
-
-select ?comment ?date WHERE {
-	?comment rdf:type schema:SocialMediaPosting;
-	    schema:dateModified ?date
+PREFIX ex: <http://ex.org/ns/ex#>
+select *  WHERE {
+	?s1 schema:givenName ?name;
+	    schema:familyName ?familyName;
+	    schema:email ?email.
+	?s2 ex:officialName ?officialName
 }
