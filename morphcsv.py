@@ -30,8 +30,8 @@ def main():
 
     print("Downloading mappings, data and query")
     maketmpdirs()
-    #downloadAnnotations(config)
-    #downloadCSVfilesFromRML()
+    downloadAnnotations(config)
+    downloadCSVfilesFromRML()
     query = readQuery(query)
     print("Removing FnO functions from RML")
     functions, mapping = getCleanYarrrml()
@@ -42,7 +42,6 @@ def main():
     csvColumns = getColumnsFromFunctions(csvColumns, functions)
     print('FUCNTIONS:\n\n\n' + str(functions))
     print("Required Columns: "+ str(csvColumns))
-    sys.exit()
     csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
     csvw = formatter.csvwFilter(csvw,csvColumns)
     csvw = csvwParser.insertRowTitles(csvw)
@@ -54,6 +53,7 @@ def main():
     mapping = formalizedData['mapping']
     print('QUERY:\n' + str(query))
     formalizer.toThirdNormalForm(mapping)
+    sys.exit()
     print("Data Normalized")
     # create the full cleaning and selection bash script
     # cleaning stuff

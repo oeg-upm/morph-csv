@@ -216,7 +216,7 @@ def getBooleanFormat(table):
         arg = ''
         col['format'] =  str(col['format'])
         data = col['format'].split("|")
-        arg = 'gsub(/^%s$/,"true",$%s);gsub(/^%s$/,"false",$%s);'%(str(data[0]), str(col['col']), str(data[1]), str(col['col']))
+        arg = 'gsub(/%s/,"true",$%s);gsub(/%s/,"false",$%s);'%(str(data[0]), str(col['col']), str(data[1]), str(col['col']))
         fullArg += arg
     return fullArg
 

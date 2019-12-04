@@ -15,7 +15,7 @@ def fromSPARQLtoMapping(mapping, query, parsedQuery):
 #    find_triples_in_query(prepareQuery(query).algebra, testUris)
     translatedMapping = simplifyMappingAccordingToQuery(uris,mapping)
     csvColumns = findCsvColumnsInsideTheMapping(translatedMapping)
-#    print('\n\n\n************NEW MAPPING********\n\n\n' + str(translatedMap).replace('\'', '"') + '\n\n\n')
+    print('\n\n\n************NEW MAPPING********\n\n\n' + str(translatedMapping).replace('\'', '"') + '\n\n\n')
     print('\n\nCSVCOLUMNS:\n' + str(csvColumns) + '\n\n\n')
     return csvColumns, translatedMapping
 
@@ -78,8 +78,32 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
 
                     newMapping['mappings'][tm]['po'].append(po)
     newMapping = removeUnnecesaryTM(newMapping)
+    newMapping  = addReferencesOfTheJoins(mapping, newMapping)
     return newMapping
 
+def addReferencesOfTheJoins(oldMapping, mapping):
+    newMapping = mapping.copy()
+    for tm in mapping['mappings']:
+        for po in mapping['mappings'][tm]['po']:
+            if type(po) is dict:
+                for o in po['o']:
+                    newMapping = checkIfReferenceIsDefined(mapping, newMapping, o)
+    return newMapping
+
+def checkIfReferenceIsDefined(mapping, newMapping, o):
+    joinReferences = getJoinReferences(o)
+    print('\n\nJoin: \n' + str(o))
+    print('\n\nJOIN REFERENCES: ' + str(joinReferences))
+    if joinReferences['outerRef'] not in getColPatterns(newMapping['mappings'][o['mapping']]):
+        for i,po in enumerate(mapping['mappings'][o['mapping']]['po']):
+            if(joinReferences['outerRef'] in getColPatterns(po)):
+                print('Hay que añadir a: \n' + str(po)) 
+                newMapping['mappings'][o['mapping']]['po'].append(po)
+    return newMapping
+
+def getJoinReferences(join):
+    result = {'innerRef': join['condition']['parameters'][1][1], 'outerRef':join['condition']['parameters'][0][1]}
+    return result
 def removeUnnecesaryTM(mapping):
     tripleMaps = mapping['mappings'].keys()
     newMapping = mapping.copy()
@@ -110,31 +134,42 @@ def removeEmptyTM(mapping):
     for tm in tmToRemove:
         del newMapping['mappings'][tm]
     return newMapping
-        
+
 def findCsvColumnsInsideTheMapping(mapping):
     columns = {}
-    colPattern  = "\\$\\(.*\\)"
     for tm in mapping['mappings']:
         columns[tm] = {
                 'source':str(mapping['mappings'][tm]['sources'][0]).split('/')[-1:][0].split('~')[0],
-                'cols':[]
+                'columns':[]
                 }
-        columns[tm]['cols'].extend(
-                cleanColPattern(
-                    re.findall(colPattern,mapping['mappings'][tm]['s'])
-                ))
+        columns[tm]['columns'].extend(cleanColPattern(mapping['mappings'][tm]['s']))
         for po in mapping['mappings'][tm]['po']:
             if(type(po) is dict):
-               
+                for o in po['o']:
+                    references = getJoinReferences(o)
+                    colReference = cleanColPattern(references['innerRef'] )
+                    if(not bool(set(colReference)& set(columns[tm]['columns']))):
+                        columns[tm]['columns'].extend(cleanColPattern(references['innerRef']))
             else:
-                matches = cleanColPattern(re.findall(colPattern, str(po)))
-                columns[tm]['cols'].extend(matches)
+                matches = cleanColPattern(po)
+                columns[tm]['columns'].extend(matches)
     return columns
+
+def getColPatterns(element): 
+    colPattern  = '(\$\((?!\$\(\)).\))'
+    result = []
+    matches = re.findall(colPattern, str(element))
+    result.extend(matches)
+    return result
+
 def cleanColPattern(columns):
+    columns = getColPatterns(columns)
+    print('COLUMNS:' + str(columns))
     result = []
     for col in columns:
         result.append(str(col)[2:-1])
     return result
+
 def isPoInUris(po, uris):
     for item in po:
         if item in uris:
