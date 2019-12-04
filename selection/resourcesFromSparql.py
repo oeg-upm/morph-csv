@@ -1,3 +1,5 @@
+import json
+from ast import literal_eval
 import rdflib
 from rdflib.plugins.sparql import *
 import re
@@ -6,23 +8,25 @@ import copy
 
 
 def fromSPARQLtoMapping(mapping, query, parsedQuery):
-#    find_triples_in_query(prepareQuery(query).algebra, uris)
     uris = getUrisFromQuery(parsedQuery)
     print('\n\n\n**********URIS*********\n\n\n')
     print(str(uris).replace('\'', '"') + '\n\n\n')
-#    translatedmap, csvColumns = getRelevantTM(uris, mapping)
-    translatedMap = simplifyMappingAccordingToQuery(uris,mapping)
-    print('\n\n\n************NEW MAPPING********\n\n\n' + str(translatedMap).replace('\'', '"') + '\n\n\n')
-#    return csvColumns, translatedmap
+    testUris = {}
+#    find_triples_in_query(prepareQuery(query).algebra, testUris)
+    translatedMapping = simplifyMappingAccordingToQuery(uris,mapping)
+    csvColumns = findCsvColumnsInsideTheMapping(translatedMapping)
+#    print('\n\n\n************NEW MAPPING********\n\n\n' + str(translatedMap).replace('\'', '"') + '\n\n\n')
+    print('\n\nCSVCOLUMNS:\n' + str(csvColumns) + '\n\n\n')
+    return csvColumns, translatedMapping
 
 def getUrisFromQuery(query):
     result = []
     for el in query['where']:
         for tm in el['triples']:
-            for item in tm:
-                if('http' in tm[item]['value'].split(':')[0]):
-                    result.append(tm[item]['value'])
-
+            uri = tm['predicate']['value']
+            if uri == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
+                uri = tm['object']['value']
+            result.append(uri)
             '''
             subject  = tm['subject']['value']
             if subject not in result.keys():
@@ -49,25 +53,96 @@ def obtainURISfromTP(tp, uris):#Simplificable
             elif str(tp[1]) != "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" and value == tp[1]:
                 uris[str(tp[0])]["predicates"].append(str(value))
 
-def simplifyMappingAccordingToQuery(uris, mapping):
-    mapping = substitutePrefixes(mapping)
-#    print(str(mapping).replace('\'', '"'))
+def simplifyMappingAccordingToQuery(uris, minMapping):
+    mapping = substitutePrefixes(minMapping)
     newMapping = {'prefixes':mapping['prefixes'], 'mappings':{}}
     for tm in mapping['mappings']:
         for po in mapping['mappings'][tm]['po']:
-            if(bool(set(po)&set(uris))):
-                print('COINICIDENCE:' + str(set(po)&set(uris)))
-                if(tm not in newMapping['mappings'].keys()):
-                    newMapping['mappings'][tm] = {
+            if(type(po) is list):
+                if(isPoInUris(po, uris)):
+                    if(tm not in newMapping['mappings'].keys()):
+                        newMapping['mappings'][tm] = {
+                                'sources':mapping['mappings'][tm]['sources'],
+                                's':mapping['mappings'][tm]['s'],
+                                'po':[]
+                                }
+                    newMapping['mappings'][tm]['po'].append(po)
+            else:
+                if(isPoInUris([po['p']], uris)):
+                    if(tm not in newMapping['mappings'].keys()):
+                        newMapping['mappings'][tm] = {
                             'sources':mapping['mappings'][tm]['sources'],
+                            's':mapping['mappings'][tm]['s'],
                             'po':[]
                             }
-                newMapping['mappings'][tm]['po'].append(po)
+
+                    newMapping['mappings'][tm]['po'].append(po)
+    newMapping = removeUnnecesaryTM(newMapping)
     return newMapping
 
+def removeUnnecesaryTM(mapping):
+    tripleMaps = mapping['mappings'].keys()
+    newMapping = mapping.copy()
+    for tm in mapping['mappings']:
+        for i,po in enumerate(mapping['mappings'][tm]['po']):
+            if(type(po) is dict):
+                for j,o in enumerate(po['o']):
+                    if(o['mapping'] not in tripleMaps):                             
+                        del newMapping['mappings'][tm]['po'][i]['o'][j]
+                if (len(newMapping['mappings'][tm]['po'][i]['o']) == 0):
+                    del newMapping['mappings'][tm]['po'][i]
+    newMapping = removeEmptyTM(newMapping)
+    return newMapping
+
+def removeEmptyTM(mapping):
+    newMapping = mapping.copy()
+    tmToRemove = []
+    types = [ po[1] 
+            for tm in mapping['mappings']
+            for po in mapping['mappings'][tm]['po']
+            if (type(po) is list and po[0] == 'a')]
+    for tm in mapping['mappings']:
+        if(len(mapping['mappings'][tm]['po']) == 1 and 
+            mapping['mappings'][tm]['po'][0][0] == 'a'
+            and types.count(mapping['mappings'][tm]['po'][0][1]) > 1):
+            types.pop(types.index(mapping['mappings'][tm]['po'][0][1]))
+            tmToRemove.append(tm)
+    for tm in tmToRemove:
+        del newMapping['mappings'][tm]
+    return newMapping
+        
+def findCsvColumnsInsideTheMapping(mapping):
+    columns = {}
+    colPattern  = "\\$\\(.*\\)"
+    for tm in mapping['mappings']:
+        columns[tm] = {
+                'source':str(mapping['mappings'][tm]['sources'][0]).split('/')[-1:][0].split('~')[0],
+                'cols':[]
+                }
+        columns[tm]['cols'].extend(
+                cleanColPattern(
+                    re.findall(colPattern,mapping['mappings'][tm]['s'])
+                ))
+        for po in mapping['mappings'][tm]['po']:
+            if(type(po) is dict):
+               
+            else:
+                matches = cleanColPattern(re.findall(colPattern, str(po)))
+                columns[tm]['cols'].extend(matches)
+    return columns
+def cleanColPattern(columns):
+    result = []
+    for col in columns:
+        result.append(str(col)[2:-1])
+    return result
+def isPoInUris(po, uris):
+    for item in po:
+        if item in uris:
+            return True
+    return False
 def getRelevantTM(uris, mapping):#Simplificable
     mapping = substitutePrefixes(mapping)
-    print('\n\n\n\n********************************************MAPPING***************************************\n\n\n\n' + str(mapping).replace('\'', '"') + '\n\n\n\n')
+    #print('\n\n\n\n********************************************MAPPING***************************************\n\n\n\n' + str(mapping).replace('\'', '"') + '\n\n\n\n')
     relevantTM = {}
     csvColumns = {}
     parentcolumns = {}
@@ -157,7 +232,14 @@ def getColumnsfromJoin(join):
 
 def substitutePrefixes(mapping):
     prefixes = mapping["prefixes"]
-
+    strMapping = str(mapping['mappings'])
+    for prefix in prefixes:
+        strMapping = strMapping.replace('\'' + prefix + ':', '\'' + prefixes[prefix])
+#    strMapping = strMapping.replace('\'','"')
+    expandedMapping  = literal_eval(strMapping)
+    newMapping = {'prefixes':prefixes,'mappings':dict(expandedMapping)}
+    return newMapping
+    '''
     for tm in mapping["mappings"]:
         pomcount = 0
         for pom in mapping["mappings"][tm]["po"]:
@@ -178,7 +260,7 @@ def substitutePrefixes(mapping):
                 aux = atomicprefixsubtitution(prefixes, mapping["mappings"][tm]["po"][pomcount][1])
                 mapping["mappings"][tm]["po"][pomcount][1] = aux[0] + aux[1]
             pomcount += 1
-    return mapping
+    '''
 
 
 def atomicprefixsubtitution(prefixes, value):

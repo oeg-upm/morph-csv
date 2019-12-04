@@ -39,10 +39,8 @@ def main():
     # this function creates the rml rules needed to answer query from yarrrml mapping
     #all_columns = [{"source": "person", "columns": ["name","ln2","ln1"]}]
     csvColumns, mapping = fromSPARQLtoMapping(mapping, query, parsedQuery) 
-    print('\n\n\n**************OLD CSV COLUMNS***************\n\n\n')
-    print(csvColumns)
-    print('\n\n\n')
     csvColumns = getColumnsFromFunctions(csvColumns, functions)
+    print('FUCNTIONS:\n\n\n' + str(functions))
     print("Required Columns: "+ str(csvColumns))
     sys.exit()
     csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
@@ -56,11 +54,10 @@ def main():
     mapping = formalizedData['mapping']
     print('QUERY:\n' + str(query))
     formalizer.toThirdNormalForm(mapping)
-    sys.exit()
     print("Data Normalized")
     # create the full cleaning and selection bash script
     # cleaning stuff
-    #print("FilterColumns"+str(csvColumns))
+    #print("FilterColumns: " +  str(csvColumns))
     #csvColumns ={'routes': {'source': 'ROUTES.csv', 'columns': ['route_url','agency_id', 'route_id']}, 'agency': {'source': 'AGENCY.csv', 'columns': ['agency_url', 'agency_name', 'agency_id']}}
     formatter.csvFormatter(csvw)
     print("Data Formatted")
