@@ -1,0 +1,12 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX sidv: <http://bio2rdf.org/sider_vocabulary:>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?se ?label ?desc ?comment
+WHERE {
+        ?se rdf:type sidv:Side-Effect ;
+                rdfs:label ?label ;
+		rdfs:description ?desc ;
+		rdfs:comment ?comment.
+}
+LIMIT 10

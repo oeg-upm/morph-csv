@@ -1,0 +1,13 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX homogv: <http://bio2rdf.org/homologene_vocabulary:>
+PREFIX ncbiv: <http://bio2rdf.org/ncbigene_vocabulary:>
+
+SELECT ?hgroup ?gene ?label ?locus
+WHERE {
+	?hgroup rdf:type homogv:Resource ;
+		homogv:x-ncbigene ?gene .
+	?gene rdfs:label ?label ;
+		ncbiv:locus ?locus .
+}
+LIMIT 10

@@ -1,0 +1,13 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX wbv: <http://bio2rdf.org/wormbase_vocabulary:>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX genagev: <http://bio2rdf.org/genage_vocabulary:>
+
+SELECT ?gene_worm ?tax ?gene_age
+WHERE {
+	?gene_worm rdf:type wbv:Gene ;
+		wbv:x-taxid ?tax .
+	?gene_age rdf:type genagev:Aging-Related-Gene ;
+		genagev:taxon ?tax .
+}
+LIMIT 10
