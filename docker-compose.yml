@@ -1,16 +1,22 @@
 version: "2.2"
 services:
+#Morph-csv  
   morphcsv:
     container_name: morphcsv
-    image: oegdataintegration/morph-csv-sparql:1.0.0
+    image: morph-csv-sparql
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     volumes:
       - ./data:/data
       - ./results/:/results
       - ./mappings:/mappings
       - ./configs:/configs
       - ./queries:/queries
+    restart: always
     depends_on:
        - postgres
+#Postgres
   postgres:
     container_name: postgres
     image: postgres
@@ -19,3 +25,6 @@ services:
       POSTGRES_PASSWORD: csv
       POSTGRES_USER: user
       POSTGRES_DB: morphcsv
+    ports:
+      - "54320:5432"
+    restart: always
