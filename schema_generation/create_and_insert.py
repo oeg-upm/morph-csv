@@ -21,7 +21,6 @@ def create_schema(sql,con):
 
 def insert_data(csvw,con):
     #for i, table in enumerate(csvw["tables"]):
-
     for i,table in enumerate(csvw["tables"]):
         tablename = re.sub(".csv", "", csvw["tables"][i]["url"].split("/")[-1])
         pwd = os.getcwd()
