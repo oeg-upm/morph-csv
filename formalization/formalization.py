@@ -147,12 +147,14 @@ def toThirdNormalForm(mapping, csvColumns, csvw):
     '''
         1º Encontrar Fuentes Duplicadas DONE
         2º Guardar los nombres del TM comparten fuente DONE
-        3º Guardar las csvColumns de cada TM al que hay que aplicar FN3
+        3º Guardar las csvColumns de cada TM al que hay que aplicar FN3 DONE
         4º Llamar al bashScript fn3.sh para generar n CSVs nuevos cada uno con su columna
            correspondiente en base al Mapping
     '''
     print('\n\n\n***********************FN3tm********************\n\n\n')
     print(str(fn3Tm).replace('\'', '"') + '\n\n\n')
+#    csvw = obtainFN3NormalizedCsvw(csvw, fn3Tm) 
+#    script  = getFn3FormalizationScript(csvw, fn3Tm) 
     #TODO: Execute bash script to create target and remove the "remove" columns from source.
     #TODO: MODIFY CSVW TO APPEND THE NEW TABLES 
 
