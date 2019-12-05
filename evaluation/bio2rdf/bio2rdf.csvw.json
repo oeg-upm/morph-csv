@@ -88,6 +88,14 @@
     },
     "tableSchema":{
       "primaryKey": "GeneID",
+      "foreignKey": [{
+        "columnReference": "GeneID",
+        "reference": {
+          "resource": "./configs/Bio2RDF-MorphCSV/data/ncbigene/gene_info",
+          "columnReference": "GeneID"
+        }
+
+      }],
       "columns": [{
         "titles": "Qualifier",
         "null": "-"
@@ -105,6 +113,12 @@
     },
     "tableSchema":{
       "primaryKey": "GeneID",
+      "foreignKey": [{
+        "columnReference": "tax_id",
+        "reference": {
+          "resource": "./configs/Bio2RDF-MorphCSV/data/taxonomy/names.csv",
+          "columnReference": "tax_id"
+        }}],
       "columns": [{
         "titles": "Symbol",
         "null": "NEWENTRY"
@@ -169,7 +183,19 @@
         "titles": "genesymbol",
         "null": ""
       }],
-      "primaryKey": "hid,ncbigene"
+      "primaryKey": "hid,ncbigene",
+      "foreignKey": [{
+        "columnReference": "ncbigene",
+        "reference": {
+          "resource": "./configs/Bio2RDF-MorphCSV/data/ncbigene/gene_info",
+          "columnReference": "GeneID"
+        }},{
+        "columnReference": "taxid",
+        "reference": {
+          "resource": "./configs/Bio2RDF-MorphCSV/data/taxonomy/names.csv",
+          "columnReference": "tax_id"
+        }
+      }]
     }
   },{
     "url": "./configs/Bio2RDF-MorphCSV/data/genage/genage_models.csv",
@@ -178,6 +204,19 @@
       "header": true
     },
     "tableSchema":{
+      "primaryKey": "GenAge_ID",
+      "foreignKey": [{
+        "columnReference": "entrez_gene_id",
+        "reference": {
+          "resource": "./configs/Bio2RDF-MorphCSV/data/ncbigene/gene_info",
+          "columnReference": "GeneID"
+        }},{
+        "columnReference": "organism",
+        "reference": {
+          "resource": "./configs/Bio2RDF-MorphCSV/data/taxonomy/names.csv",
+          "columnReference": "name_txt"
+        }
+      }],
       "columns": [{
         "titles": "symbol",
         "null": ""
@@ -208,6 +247,14 @@
       "header": true
     },
     "tableSchema":{
+      "primaryKey": "GenAge_ID",
+      "foreignKey": [{
+        "columnReference": "entrez_gene_id",
+        "reference": {
+          "resource": "./configs/Bio2RDF-MorphCSV/data/ncbigene/gene_info",
+          "columnReference": "GeneID"
+        }
+      }],
       "columns": [{
         "titles": "symbol",
         "null": ""
@@ -256,7 +303,7 @@
         "titles": "acc_cds",
         "null": ""
       },{
-        "titles": "references",
+        "titles": "references"
       }]
     }
   },{
@@ -267,6 +314,13 @@
     },
     "tableSchema":{
       "primaryKey": "gene_id",
+      "foreignKey": [{
+        "columnReference": "taxid",
+        "reference": {
+          "resource": "./configs/Bio2RDF-MorphCSV/data/taxonomy/names.csv",
+          "columnReference": "tax_id"
+        }
+      }],
       "rowTitles": ["taxid", "gene_id", "symbol", "cosmid", "status", "type"],
       "columns": [{
         "titles": "symbol",
@@ -284,6 +338,18 @@
     },
     "tableSchema":{
       "primaryKey": "WBInteractionID",
+       "foreignKey": [{
+        "columnReference": "Interactor1",
+        "reference": {
+          "resource": "./configs/Bio2RDF-MorphCSV/data/wormbase/WBgeneIDs.csv",
+          "columnReference": "gene_id"
+        }},{
+        "columnReference": "Interactor2",
+        "reference": {
+          "resource": "./configs/Bio2RDF-MorphCSV/data/wormbase/WBgeneIDs.csv",
+          "columnReference": "gene_id"
+        }
+      }],
       "rowTitles": ["WBInteractionID", "Interaction_type", "Interaction_subtype", "Interactor1", "Common-name1", "Role1", "Interactor2", "Common-name2", "Role2"],
       "columns": [{
         "titles": "Interactor2",
@@ -298,6 +364,18 @@
     },
     "tableSchema":{
       "primaryKey": "gene_id",
+       "foreignKey": [{
+        "columnReference": "taxid",
+        "reference": {
+          "resource": "./configs/Bio2RDF-MorphCSV/data/taxonomy/names.csv",
+          "columnReference": "tax_ud"
+        }},{
+        "columnReference": "gene_id",
+        "reference": {
+          "resource": "./configs/Bio2RDF-MorphCSV/data/wormbase/WBgeneIDs.csv",
+          "columnReference": "gene_id"
+        }
+      }],
       "columns": [{
         "titles": "symbol",
         "null": ""
@@ -441,6 +519,19 @@
       "header": true
     },
     "tableSchema":{
+      "primaryKey": "HGNC_ID",
+      "foreignKey": [{
+        "columnReference": "Entrez_Gene_ID",
+        "reference": {
+          "resource": "./configs/Bio2RDF-MorphCSV/data/ncbigene/gene_info",
+          "columnReference": "GeneID"
+        }},{
+        "columnReference": "Entrez_Gene_ID_(supplied_by_NCBI)",
+        "reference": {
+          "resource": "./configs/Bio2RDF-MorphCSV/data/ncbigene/gene_info",
+          "columnReference": "GeneID"
+        }
+      }],
       "columns": [{
         "titles": "Approved_Symbol",
         "null": ""

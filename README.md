@@ -4,6 +4,7 @@
 
 ## What is Morph-CSV?
 
+![Morph-csv workflow](figures/architecture.png?raw=true "Morph-CSV workflow")
 
 ## How to use it?
 We provide two ways to run morph-csv: using the created docker image or directly run with Python3. First of all clone the repository:
