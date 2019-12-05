@@ -16,7 +16,10 @@ def csvwFilter(csvw, selection):
     for table in csvw['tables']:
         title = parser.getTableTitle(table)
         if(title in selection.keys()):
-            table['filteredRowTitles'] = selection[title]
+            table['filteredRowTitles'] = parser.orderAccordingToRowTitles(selection[title])
+            print('TABLE:' + str(parser.getTableTitle(table)))
+            print('ORIGINAL:' + str(table['tableSchema']['rowTitles']))
+            print('FILTERED:' + str(table['filteredRowTitles']))
             result['tables'].append(table)
     return result
 #Function to call the bash Scripts files and send the scvw data.
@@ -34,7 +37,8 @@ def scriptCaller(data):
     titles['header'] = False
     titles['result'] = parser.getFilteredTitles(data)
     insertTitles(titles, url)
-    
+
+
     '''
     #rowSkipper(parser.getSkipRows(data), url)
     print("Skip Rows Done")
@@ -107,11 +111,11 @@ def defaultEmptyStringFormatChanger(data, path):
         os.system('bash ./bash/defaultEmptyStringReplacer.sh \'%s\' %s %s'%(col['default'], col['col'], path))
 
 def replaceCsvFormat(data, path):
+    print('*************************************************')
+    print(data)
     os.system('bash bash/csvFormatter \'%s\' \'%s\' \'%s\' \'%s\' \'%s\''%(str(data['delimiter']), str(data['gsub']),str(data['print']),str(data['split']),str(path)))
 
 def csvFormatter(csvw):
-    #csvw = parser.jsonLoader('./tmp/annotations/annotations.json')
-    #csvw = csvwFilter(csvw, csvSelection)
     #print("Here" +str(csvw).replace('\'', '"'))
     for table in csvw['tables']:
         scriptCaller(table)

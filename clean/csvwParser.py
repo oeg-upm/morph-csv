@@ -1,6 +1,7 @@
 import json
 import sys
 import os
+import logging
 import csv
 
 #Valores nulos que se usan para verificar la validez de los datos.
@@ -65,9 +66,9 @@ def getTableTitles(table):
                 titles = table['tableSchema']['rowTitles']
             elif('rowTitle' in table['tableSchema'].keys() and len(table['tableSchema']['rowTitle']) > 0):
                 titles = table['tableSchema']['rowTitle']
-        #print('TITLES:'  + str(titles))
+        print('TITLES:'  + str(titles))
         if(len(titles) == 0):
-            #print("NO HAY ROW TITLES")
+            print("NO HAY ROW TITLES")
             #TODO BUSCAR LA FORMA DE MANEJAR LOS NOMBRES DE LOS CSVs
             path = './tmp/csv/' + str(table['url'].split("/")[-1:][0]) #.split('.')[0])
             try:
@@ -130,6 +131,10 @@ def getNullValues(table):
             if('null' in col.keys()):
                 arg = 'gsub(/^%s$/,\"null\",$%s);'%(col['null'], str(index+1))
                 result['data'].append({'col':'$%s'%(str(index+1)), 'value':col['null']})
+            else:
+                arg = 'gsub(/^$/,\"null\",$%s);'%( str(index+1))
+                result['data'].append({'col':'$%s'%(str(index+1)), 'value':''})
+
                 '''
                 arg = ''
                 if(index == 0):
@@ -165,7 +170,7 @@ def getFormat(table, dataType):
         if(columnsChecker(table)):
             for col in table['tableSchema']['columns']:
                 title = getColTitle(col)
-                indx = rowTitles.index(title)
+                indx = getRowTitles(table).index(title)
                 if('datatype' in col.keys()):
                     if( str(col['datatype']) == dataType and 'format' in col.keys()):
                         result.append({'col':str(indx + 1),'format':col['format']})
@@ -288,6 +293,18 @@ def getDataType(col):
     except:
         dataType = ''
     return dataType
+def getDataTypeValue(col):
+    try:
+        datatype=''
+        if(type(col['datatype']) is dict):
+            datatype = col['datatype']['base']
+        else:
+            datatype = col['datatype']
+        return datatype
+    except:
+        print('FALLA getDataTypeValue')
+        logging.exception('Falla GetDataTypeValue()')
+        sys.exit()
 def getDelimiterValue(table):
     try:
         delimiter = str(table['dialect']['delimiter'].encode('unicode-escape').decode('ascii'))
@@ -300,16 +317,19 @@ def getCols(table):
         cols = table['tableSchema']['columns']
     return cols
 def getFilteredTitles(table):
-    result = [];
-    for title in table['filteredRowTitles']:
+    result = orderAccordingToRowTitles(table['filteredRowTitles']);
+    result = '"' + ''.join(str(result[i]) + '","' for i in range(0, len(result)))
+    result = result[:-2]
+    return result
+def orderAccordingToRowTitles(titles):
+    result = []
+    for title in titles:
         result.append(rowTitles.index(title))
     result = sorted(result)
     for i,title in enumerate(result):
         result[i] = rowTitles[result[i]]
-
-    result = '"' + ''.join(str(result[i]) + '","' for i in range(0, len(result)))
-    result = result[:-2]
     return result
+
 def getSeparatorScripts(table):
     result = {'columns':[], 'script':''}
     if(columnsChecker(table)):
@@ -322,4 +342,3 @@ def getSeparatorScripts(table):
                 result['script'] += '''len%s=split($%s,data%s,\"%s\");n%s=\"\";for(i=1;i<=len%s;++i){n%s=n%s NR \"%s\" data%s[i];system(\"echo \" n%s \" >> tmp/csv/%s\");n%s=\"\"}$%s=NR;'''%(index,index,index,separator,index,index,index,index,delimiter,index,index,name,index, index)
                 result['columns'].append('$' + str(index))
     return result
-
