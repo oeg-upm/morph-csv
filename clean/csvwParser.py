@@ -289,17 +289,21 @@ def getNullValue(table):
     return nullValue
 def getDataType(col):
     try:
-        dataType = col['datatype']
-    except:
         dataType = ''
-    return dataType
+        if('datatype' in col.keys()):
+            dataType = col['datatype']
+        return dataType
+    except:
+        print('Falla getDataTypeValue()')
+        sys.exit()
 def getDataTypeValue(col):
     try:
         datatype=''
-        if(type(col['datatype']) is dict):
-            datatype = col['datatype']['base']
-        else:
-            datatype = col['datatype']
+        if('datatype' in col.keys()):
+            if(type(col['datatype']) is dict):
+                datatype = col['datatype']['base']
+            else:
+                datatype = col['datatype']
         return datatype
     except:
         print('FALLA getDataTypeValue')

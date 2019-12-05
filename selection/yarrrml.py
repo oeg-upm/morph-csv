@@ -7,8 +7,7 @@ def getCleanYarrrml ():
     """
     Generate RML mapping without functions:
         - yarrrml mapping
-
-    return dict with the functions (mapping and reference where to apply them) and cleaned yarrrml
+    return dict with the functions (mapping and reference where to apply them) and rml mapping in disk
     """
     functions = {}
     data = yaml.load(open("./tmp/annotations/mapping.yaml"), Loader=yaml.FullLoader)
@@ -40,7 +39,7 @@ def getCleanYarrrml ():
                                     data["mappings"][tm]["po"][i]["o"][t]["condition"]["parameters"][j] = [
                                         param["parameter"], "$(" + predicate + "_child)"]
                                 else:
-                                    parent_source = data["mappings"][jc["mapping"]]["source"][0][0]
+                                    parent_source = data["mappings"][jc["mapping"]]["sources"][0][0]
                                     functions[tm].append({"source": parent_source, "params": param, "column": predicate})
                                     data["mappings"][tm]["po"][i]["o"][t]["condition"]["parameters"][j] = [
                                         param["parameter"], "$(" + predicate + "_parent)"]

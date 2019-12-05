@@ -309,22 +309,21 @@ def atomicprefixsubtitution(prefixes, value):
 
 def getColumnsFromFunctions(csvColumns, functions):
     for tm in functions:
-        if(tm in csvColumns.keys()):
-            for csv in csvColumns:
-                sourceColumns = csvColumns[tm]["columns"]
-                for column in sourceColumns:
-                    if column in functions[tm]:
-                        columns = []
-                        extractReferencesFromFno(functions[tm][column], columns)
-                        csvColumns[tm]["columns"].remove(column)
-                        csvColumns[tm]["columns"].extend(columns)
-                        csvColumns[tm]["columns"] = list(dict.fromkeys(csvColumns[tm]["columns"]))
+        for func in functions[tm]:
+            if(tm in csvColumns.keys()):
+                for csv in csvColumns:
+                    sourceColumns = csvColumns[tm]["columns"]
+                    for column in sourceColumns:
+                        if column in func['column']:
+                            columns = cleanColPattern(functions[tm])
+#                            extractReferencesFromFno(functions[tm][column], columns)
+                            csvColumns[tm]["columns"].remove(column)
+                            csvColumns[tm]["columns"].extend(columns)
+                            csvColumns[tm]["columns"] = list(dict.fromkeys(csvColumns[tm]["columns"]))
     return csvColumns
 
 
 def extractReferencesFromFno(functions, columns):
-    print('FUNCTIONS:\n' + str(functions))
-    print('Columns: \n' + str(columns))
     if 'parameter' in functions:
         functions = functions["value"]
     for parameters in functions["parameters"]:
