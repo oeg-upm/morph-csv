@@ -39,8 +39,8 @@ def main():
     # this function creates the rml rules needed to answer query from yarrrml mapping
     #all_columns = [{"source": "person", "columns": ["name","ln2","ln1"]}]
     csvColumns, mapping = fromSPARQLtoMapping(mapping, query, parsedQuery) 
-    csvColumns = getColumnsFromFunctions(csvColumns, functions)
-    print('FUCNTIONS:\n\n\n' + str(functions))
+    print('FUCNTIONS:\n\n\n' + str(functions).replace('\'', '"'))
+    #TODO ESTE CODIGO NO FUNCIONA BIEN csvColumns = getColumnsFromFunctions(csvColumns, functions)
     print("Required Columns: "+ str(csvColumns))
     csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
     csvw = formatter.csvwFilter(csvw,csvColumns)
@@ -52,7 +52,7 @@ def main():
     query = formalizedData['query']
     mapping = formalizedData['mapping']
     print('QUERY:\n' + str(query))
-    formalizer.toThirdNormalForm(mapping)
+    formalizer.toThirdNormalForm(mapping, csvColumns, csvw)
     sys.exit()
     print("Data Normalized")
     # create the full cleaning and selection bash script

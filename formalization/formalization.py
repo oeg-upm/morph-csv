@@ -138,76 +138,50 @@ def find_object_in_query(algebra, predicate):
         elif isinstance(algebra[node], dict) and bool(algebra[node].keys()):
             find_object_in_query(algebra[node], predicate)
 
-def toThirdNormalForm(mapping):
-    #Scope: Encontrar los TM que comparten el mismo source
+def toThirdNormalForm(mapping, csvColumns, csvw):
+    fn3Tm = findTmWithSameSource(csvColumns)
+    fn3Tm = findTmWithDistinctSubject(fn3Tm, mapping)
+    fn3Tm = findColumnsOfFN3Tm(fn3Tm, csvColumns)
+    #Scope: Encontrar los TM que comparten el mismo source y cuyos sujetos son diferentes.
     #HowTo: 
     '''
-        1º Encontrar Fuentes Duplicadas
-        2º Guardar los nombres del TM comparten fuente
-        3º Obtener las columnas del mapping que usa cada TM
-        4º Obtener las columnas del CSVW que hacen referencia a las columnas anteriores
-        5º Llamar al bashScript fn3.sh para generar n CSVs nuevos cada uno con su columna
+        1º Encontrar Fuentes Duplicadas DONE
+        2º Guardar los nombres del TM comparten fuente DONE
+        3º Guardar las csvColumns de cada TM al que hay que aplicar FN3
+        4º Llamar al bashScript fn3.sh para generar n CSVs nuevos cada uno con su columna
            correspondiente en base al Mapping
     '''
-    print('\n\n\n***********************MAPPING********************\n\n\n')
-    print(str(mapping).replace('\'', '"') + '\n\n\n')
-    sources = {}
-    for tm in mapping['mappings']:
-        source = mapping['mappings'][tm]['sources'][0][0]
-        om = {tm:[getColumnsfromOM(o[1]) for o in mapping['mappings'][tm]['po']]}
-        om[tm]= [item for sublist in om[tm] for item in sublist] #Flatting list
-        if(source not in sources.keys()):
-            sources[source] = []
-        sources[source].append(om) #Adding each TM to the source its belogns to
-    print('\n\n\n**************SOURCES******************\n\n\n')
-    print('\n\n\n' + str(sources) + '\n\n\n')
-#    for source in sources:
-#        if(len(sources[sources]) > 1):
-            #Search For The Columns.
-    sys.exit()
-    '''
-    for tm in mapping["mappings"]:
-        for index,pom in enumerate(mapping["mappings"][tm]["po"]):
-            print('POM:\n' + str(pom))
-            if 'p' in pom:
-                source = mapping["mappings"][tm]["sources"][0][0]
-                parent_mapping = pom["o"][0]["mapping"]
-                source_parent = mapping["mappings"][parent_mapping]["sources"][0][0]
-                if source == source_parent:
-                    for i in range(len(mapping["mappings"][tm]["po"]["o"]["condition"]["parameters"])):
-                        if mapping["mappings"][tm]["po"]["o"]["condition"]["parameters"][i][0] == "str2":
-                            reference = getColumnsfromOM(mapping["mappings"][tm]["po"]["o"]["condition"]["parameters"][i][1])
-                            equal[parent_mapping] = reference[0]
-
-    for tm in equal:
-        target = tm
-        source = mapping["mappings"][tm]["sources"][0][0]
-        columns = []
-        pomcount = 0
-        for pom in mapping["mappings"][tm]["pom"]:
-            if 'p' in pom:
-                columns.extend(getColumnsfromJoin(mapping["mappings"][tm]["po"][pomcount]["o"]))
-            else:
-                columns.extend(getColumnsfromOM(mapping["mappings"][tm]["po"][pomcount][1]))
-            pomcount += 1
-
-        remove = columns.copy().pop(equal[tm])
-        mapping["mappings"][tm]["sources"][0][0] = "./tmp/csv/"+target+".csv~csv"
-        normalize.extend({"source": source, "remove": remove, "columns": columns, "target": target})
-    '''
-    """
-        normalize content:
-            - source: the name of the file where you can get the columns
-            - remove: the columns you have to remove from source
-            - target: the name of the new file
-            - columns: the columns you have to add to target
-        
-    """
-#    print('FN3:\n' + str(normalize))
-    # ToDo: execute bash script to create target and remove the "remove" columns from source
+    print('\n\n\n***********************FN3tm********************\n\n\n')
+    print(str(fn3Tm).replace('\'', '"') + '\n\n\n')
+    #TODO: Execute bash script to create target and remove the "remove" columns from source.
+    #TODO: MODIFY CSVW TO APPEND THE NEW TABLES 
 
 
+def findTmWithDistinctSubject(sources, mapping):
+    result =  {}
+    for source in sources:
+        #TODO QUE PASA SI HAY 3 TM CON EL MISMO 
+        #SOURCE PERO SOLO 2 DE ELLOS TIENEN DISTINTO SUBJECT?
+        #DE MOMENTO SUPONEMOS QUE SOLO SE VA A DAR EL CASO DE QUE
+        #SOLO HAY 2 TM QUE COMPARTAN EL MISMO SOURCE. SI FALLA ES POR ESO :)
+        if(mapping['mappings'][sources[source][0]] != mapping['mappings'][sources[source][1]]):
+            result[source] = sources[source]
+    return result
+def findTmWithSameSource(csvColumns):
+    result = {}
+    for tm in csvColumns:
+        if csvColumns[tm]['source'] not in result.keys():
+            result[csvColumns[tm]['source']] = []
+        result[csvColumns[tm]['source']].append(tm)
+    return result
 
+def findColumnsOfFN3Tm(sources, csvColumns):
+    result = {}
+    for source in sources:
+        result[source] = {}
+        for tm in sources[source]:
+            result[source][tm] = csvColumns[tm]['columns']
+    return result
 def getColumnsfromOM(om):
     om = str(om).replace('$(', '').replace(')', '').split(' ')
     print(om)

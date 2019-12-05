@@ -323,8 +323,6 @@ def getColumnsFromFunctions(csvColumns, functions):
 
 
 def extractReferencesFromFno(functions, columns):
-    print('FUNCTIONS:\n' + str(functions))
-    print('Columns: \n' + str(columns))
     if 'parameter' in functions:
         functions = functions["value"]
     for parameters in functions["parameters"]:
