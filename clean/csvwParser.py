@@ -68,9 +68,9 @@ def getTableTitles(table):
                 titles = table['tableSchema']['rowTitles']
             elif('rowTitle' in table['tableSchema'].keys() and len(table['tableSchema']['rowTitle']) > 0):
                 titles = table['tableSchema']['rowTitle']
-        #print('TITLES:'  + str(titles))
+        print('TITLES:'  + str(titles))
         if(len(titles) == 0):
-            #print("NO HAY ROW TITLES")
+            print("NO HAY ROW TITLES")
             #TODO BUSCAR LA FORMA DE MANEJAR LOS NOMBRES DE LOS CSVs
             path = './tmp/csv/' + str(table['url'].split("/")[-1:][0]) #.split('.')[0])
             try:
