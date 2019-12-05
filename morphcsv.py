@@ -48,8 +48,8 @@ def main():
     #TODO ESTE CODIGO NO FUNCIONA BIEN csvColumns = getColumnsFromFunctions(csvColumns, functions)
     print("Required Columns: "+ str(csvColumns))
     csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
-    csvw = formatter.csvwFilter(csvw,csvColumns)
     csvw = csvwParser.insertRowTitles(csvw)
+    csvw = formatter.csvwFilter(csvw,csvColumns)
     print('CSVw:\n' + str(csvw).replace('\'', '"'))
     print("CSVW filtered")
     formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery)
@@ -58,7 +58,6 @@ def main():
     mapping = formalizedData['mapping']
     print('QUERY:\n' + str(query))
     formalizer.toThirdNormalForm(mapping, csvColumns, csvw)
-    sys.exit()
     print("Data Normalized")
     # create the full cleaning and selection bash script
     # cleaning stuff

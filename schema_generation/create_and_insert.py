@@ -1,4 +1,4 @@
-
+import sys
 import psycopg2
 import re
 import os
@@ -6,14 +6,13 @@ def create_and_insert(csvw,sql):
     #con = psycopg2.connect(database="morphcsv", user="user", password="csv", host="127.0.0.1", port="5432")
     try:
         con = psycopg2.connect(database="morphcsv", user="postgres", password="csv", host="127.0.0.1", port="5432")
+        create_schema(sql,con)
+        insert_data(csvw, con)
+        con.close()
         #con = psycopg2.connect(database="morphcsv", user="usr", password="csv", host="postgres")
     except:
-        print
-        "I am unable to connect to the database."
-    create_schema(sql,con)
-    insert_data(csvw, con)
-    con.close()
-
+        print("I am unable to connect to the database.")
+        sys.exit()
 def create_schema(sql,con):
     cur = con.cursor()
     cur.execute(sql)
