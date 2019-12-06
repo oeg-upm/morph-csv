@@ -127,10 +127,10 @@ def getNullValues(table):
             title = getColTitle(col)
             index = rowTitles.index(title)
             if('null' in col.keys()):
-                arg = 'gsub(/^%s$/,\"null\",$%s);'%(col['null'], str(index+1))
+                arg = 'gsub(/^\"%s\"$/,\"null\",$%s);'%(col['null'], str(index+1))
                 result['data'].append({'col':'$%s'%(str(index+1)), 'value':col['null']})
             else:
-                arg = 'gsub(/^$/,\"null\",$%s);'%( str(index+1))
+                arg = 'gsub(/^\"\"$/,\"null\",$%s);'%( str(index+1))
                 result['data'].append({'col':'$%s'%(str(index+1)), 'value':''})
                 fullArg += arg
     result['fullArg'] = fullArg
@@ -210,7 +210,7 @@ def getBooleanFormat(table):
         arg = ''
         col['format'] =  str(col['format'])
         data = col['format'].split("|")
-        arg = 'gsub(/%s/,"true",$%s);gsub(/%s/,"false",$%s);'%(str(data[0]), str(col['col']), str(data[1]), str(col['col']))
+        arg = 'gsub(/\"%s\"/,"true",$%s);gsub(/\"%s\"/,"false",$%s);'%(str(data[0]), str(col['col']), str(data[1]), str(col['col']))
         fullArg += arg
     return fullArg
 
@@ -219,7 +219,7 @@ def getDefaultEmptyStringValue(table):
     if(columnsChecker(table)):
         for index,col in enumerate(table['tableSchema']['columns']):
             if('default' in col.keys()):
-                result['arg'] += 'gsub(/^%s$/,\"null\",$%s);'%(col['default'], str(index+1))
+                result['arg'] += 'gsub(/^\"%s\"$/,\"\",$%s);'%(col['default'], str(index+1))
     return result
 #Check if the table includes Columns
 def columnsChecker(table):
