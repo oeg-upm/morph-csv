@@ -13,6 +13,7 @@ services:
       - ./mappings:/mappings
       - ./configs:/configs
       - ./queries:/queries
+      - ./tmp/csv:/morphcsv/tmp/csv
     restart: always
     depends_on:
        - postgres
