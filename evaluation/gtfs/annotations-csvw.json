@@ -10,45 +10,31 @@
         "columns": [
           {
             "datatype": "string",
-            "titles": [
-              "agency_id"
-            ]
+            "titles": "agency_id"
           },
           {
             "datatype": "string",
-            "titles": [
-              "agency_url"
-            ]
+            "titles": "agency_url"
           },
           {
             "datatype": "string",
-            "titles": [
-              "agency_name"
-            ]
+            "titles": "agency_name"
           },
           {
             "datatype": "string",
-            "titles": [
-              "agency_timezone"
-            ]
+            "titles": "agency_timezone"
           },
           {
             "datatype": "string",
-            "titles": [
-              "agency_lang"
-            ]
+            "titles": "agency_lang"
           },
           {
             "datatype": "string",
-            "titles": [
-              "agency_phone"
-            ]
+            "titles": "agency_phone"
           },
           {
             "datatype": "string",
-            "titles": [
-              "agency_fare_url"
-            ]
+            "titles": "agency_fare_url"
           }
         ]
       }
@@ -60,90 +46,70 @@
         "columns": [
           {
             "datatype": "string",
-            "titles": [
-              "service_id"
-            ]
+            "titles": "service_id"
           },
           {
             "datatype": {
               "base": "boolean",
               "format": "1|0"
             },
-            "titles": [
-              "monday"
-            ]
+            "titles": "monday"
           },
           {
             "datatype": {
               "base": "boolean",
               "format": "1|0"
             },
-            "titles": [
-              "tuesday"
-            ]
+            "titles": "tuesday"
           },
           {
             "datatype": {
               "base": "boolean",
               "format": "1|0"
             },
-            "titles": [
-              "wednesday"
-            ]
+            "titles": "wednesday"
           },
           {
             "datatype": {
               "base": "boolean",
               "format": "1|0"
             },
-            "titles": [
-              "thursday"
-            ]
+            "titles": "thursday"
           },
           {
             "datatype": {
               "base": "boolean",
               "format": "1|0"
             },
-            "titles": [
-              "friday"
-            ]
+            "titles": "friday"
           },
           {
             "datatype": {
               "base": "boolean",
               "format": "1|0"
             },
-            "titles": [
-              "saturday"
-            ]
+            "titles": "saturday"
           },
           {
             "datatype": {
               "base": "boolean",
               "format": "1|0"
             },
-            "titles": [
-              "sunday"
-            ]
+            "titles": "sunday"
           },
           {
             "datatype": {
               "base": "date",
               "format": "yyyyMMdd"
             },
-            "titles": [
-              "start_date"
-            ]
+            "titles": "start_date"
           },
           {
             "datatype": {
               "base": "date",
               "format": "yyyyMMdd"
             },
-            "titles": [
-              "end_date"
-            ]
+            "titles": "end_date"
           }
         ]   
       }
@@ -155,27 +121,21 @@
         "columns": [
           {
             "datatype": "string",
-            "titles": [
-              "service_id"
-            ]
+            "titles": "service_id"
           },
           {
             "datatype": {
               "base": "date",
               "format": "yyyyMMdd"
             },
-            "titles": [
-              "date"
-            ]
+            "titles": "date"
           },
           {
             "datatype": {
               "base": "boolean",
               "format": "1|2"
             },
-            "titles": [
-              "exception_type"
-            ]
+            "titles": "exception_type"
           }
         ]
       }
@@ -187,45 +147,33 @@
         "columns": [
           {
             "datatype": "string",
-            "titles": [
-              "feed_publisher_name"
-            ]
+            "titles": "feed_publisher_name"
           },
           {
             "datatype": "string",
-            "titles": [
-              "feed_publisher_url"
-            ]
+            "titles": "feed_publisher_url"
           },
           {
             "datatype": {
               "base": "date",
               "format": "yyyyMMdd"
             },
-            "titles": [
-              "feed_start_date"
-            ]
+            "titles": "feed_start_date"
           },
           {
             "datatype": {
               "base": "date",
               "format": "yyyyMMdd"
             },
-            "titles": [
-              "feed_end_date"
-            ]
+            "titles": "feed_end_date"
           },
           {
             "datatype": "string",
-            "titles": [
-              "feed_lang"
-            ]
+            "titles": "feed_lang"
           },
           {
             "datatype": "string",
-            "titles": [
-              "feed_version"
-            ]
+            "titles": "feed_version"
           }
         ]
       }
@@ -244,39 +192,29 @@
         "columns": [
           {
             "datatype": "string",
-            "titles": [
-              "trip_id"
-            ]
+            "titles": "trip_id"
           },
           {
             "datatype": {
               "base": "time",
               "format": "HH:MM:SS"
             },
-            "titles": [
-              "start_time"
-            ]
+            "titles": "start_time"
           },
           {
             "datatype": {
               "base": "time",
               "format": "HH:MM:SS"
             },
-            "titles": [
-              "end_time"
-            ]
+            "titles": "end_time"
           },
           {
             "datatype": "integer",
-            "titles": [
-              "headway_secs"
-            ]
+            "titles": "headway_secs"
           },
           {
             "datatype": "boolean",
-            "titles": [
-              "exact_times"
-            ]
+            "titles": "exact_times"
           }
         ]
       }
@@ -295,57 +233,39 @@
         "columns": [
           {
             "datatype": "string",
-            "titles": [
-              "route_id"
-            ]
+            "titles": "route_id"
           },
           {
             "datatype": "string",
-            "titles": [
-              "agency_id"
-            ]
+            "titles": "agency_id"
           },
           {
             "datatype": "string",
-            "titles": [
-              "route_short_name"
-            ]
+            "titles": "route_short_name"
           },
           {
             "datatype": "string",
-            "titles": [
-              "route_long_name"
-            ]
+            "titles": "route_long_name"
           },
           {
             "datatype": "string",
-            "titles": [
-              "route_desc"
-            ]
+            "titles": "route_desc"
           },
           {
             "datatype": "string",
-            "titles": [
-              "route_color"
-            ]
+            "titles": "route_color"
           },
           {
             "datatype": "integer",
-            "titles": [
-              "route_type"
-            ]
+            "titles": "route_type"
           },
           {
             "datatype": "string",
-            "titles": [
-              "route_url"
-            ]
+            "titles": "route_url"
           },
           {
             "datatype": "string",
-            "titles": [
-              "route_text_color"
-            ]
+            "titles": "route_text_color"
           }
         ]
       }
@@ -357,33 +277,23 @@
         "columns": [
           {
             "datatype": "string",
-            "titles": [
-              "shape_id"
-            ]
+            "titles": "shape_id"
           },
           {
-            "datatype": "DECIMAL(18,15)",
-            "titles": [
-              "shape_pt_lat"
-            ]
+            "datatype": "decimal",
+            "titles": "shape_pt_lat"
           },
           {
-            "datatype": "DECIMAL(18,15)",
-            "titles": [
-              "shape_pt_lon"
-            ]
+            "datatype": "decimal",
+            "titles": "shape_pt_lon"
           },
           {
             "datatype": "integer",
-            "titles": [
-              "shape_pt_sequence"
-            ]
+            "titles": "shape_pt_sequence"
           },
           {
-            "datatype": "DECIMAL(18,15)",
-            "titles": [
-              "shape_dist"
-            ]
+            "datatype": "decimal",
+            "titles": "shape_dist"
           }
         ]
       }
@@ -408,51 +318,37 @@
         "columns": [
           {
             "datatype": "string",
-            "titles": [
-              "trip_id"
-            ]
+            "titles": "trip_id"
           },
           {
             "datatype": {
               "base": "time",
               "format": "HH:MM:SS"
             },
-            "titles": [
-              "arrival_time"
-            ]
+            "titles": "arrival_time"
           },
           {
             "datatype": {
               "base": "time",
               "format": "HH:MM:SS"
             },
-            "titles": [
-              "departure_time"
-            ]
+            "titles": "departure_time"
           },
           {
             "datatype": "string",
-            "titles": [
-              "stop_id"
-            ]
+            "titles": "stop_id"
           },
           {
             "datatype": "integer",
-            "titles": [
-              "stop_sequence"
-            ]
+            "titles": "stop_sequence"
           },
           {
             "datatype": "integer",
-            "titles": [
-              "pickup_type"
-            ]
+            "titles": "pickup_type"
           },
           {
             "datatype": "integer",
-            "titles": [
-              "drop_off_type"
-            ]
+            "titles": "drop_off_type"
           },
           {
             "datatype": "string",
@@ -475,76 +371,52 @@
         "columns": [
           {
             "datatype": "string",
-            "titles": [
-              "stop_id"
-            ]
+            "titles": "stop_id"
           },
           {
             "datatype": "string",
-            "titles": [
-              "stop_name"
-            ]
+            "titles": "stop_name"
           },
           {
             "datatype": "string",
-            "titles": [
-              "stop_code"
-            ]
+            "titles": "stop_code"
           },
           {
-            "datatype": "DECIMAL(18,15)",
-            "titles": [
-              "stop_lat"
-            ]
+            "datatype": "decimal",
+            "titles": "stop_lat"
           },
           {
-            "datatype": "DECIMAL(18,15)",
-            "titles": [
-              "stop_lon"
-            ]
+            "datatype": "decimal",
+            "titles": "stop_lon"
           },
           {
             "datatype": "string",
-            "titles": [
-              "stop_url"
-            ]
+            "titles": "stop_url"
           },
           {
             "datatype": "integer",
-            "titles": [
-              "wheelchair_boarding"
-            ]
+            "titles": "wheelchair_boarding"
           },
           {
             "datatype": "string",
             "null": "",
-            "titles": [
-              "parent_station"
-            ]
+            "titles": "parent_station"
           },
           {
             "datatype": "integer",
-            "titles": [
-              "location_type"
-            ]
+            "titles": "location_type"
           },
           {
             "datatype": "string",
-            "titles": [
-              "stop_desc"
-            ]
+            "titles": "stop_desc"
           },
           {
             "datatype": "string",
-            "titles": [
-              "zone_id"
-            ]
+            "titles": "zone_id"
           },
           {
             "datatype": "string",
-            "titles": [
-              "stop_timezone"
-            ]
+            "titles": "stop_timezone"
           }
         ]
       }
@@ -581,58 +453,40 @@
         "columns": [
           {
             "datatype": "string",
-            "titles": [
-              "route_id"
-            ]
+            "titles": "route_id"
           },
           {
             "datatype": "string",
-            "titles": [
-              "trip_id"
-            ]
+            "titles": "trip_id"
           },
           {
             "datatype": "string",
-            "titles": [
-              "service_id"
-            ]
+            "titles": "service_id"
           },
           {
             "datatype": "string",
-            "titles": [
-              "trip_short_name"
-            ]
+            "titles": "trip_short_name"
           },
           {
             "datatype": "integer",
-            "titles": [
-              "direction_id"
-            ]
+            "titles": "direction_id"
           },
           {
             "datatype": "string",
-            "titles": [
-              "shape_id"
-            ]
+            "titles": "shape_id"
           },
           {
             "datatype": "integer",
-            "titles": [
-              "wheelchair_accessible"
-            ]
+            "titles": "wheelchair_accessible"
           },
           {
             "datatype": "string",
-            "titles": [
-              "trip_headsign"
-            ]
+            "titles": "trip_headsign"
           }
           ,
           {
             "datatype": "string",
-            "titles": [
-              "block_id"
-            ]
+            "titles": "block_id"
           }
         ]
       }
