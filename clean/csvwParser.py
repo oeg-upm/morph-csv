@@ -124,16 +124,21 @@ def getNullValues(table):
         fullArg = ''
         result = {'data':[],'fullArg':''}
         for col in table['tableSchema']['columns']:
+            print(col)
             title = getColTitle(col)
             index = rowTitles.index(title)
             if('null' in col.keys()):
-                arg = 'gsub(/^\"%s\"$/,\"null\",$%s);'%(col['null'], str(index+1))
+                print('NULL:\'' + col['null'] +'\'')
+                arg = 'gsub(/^%s$/,\"null\",$%s);'%(str(col['null']), str(index+1))
                 result['data'].append({'col':'$%s'%(str(index+1)), 'value':col['null']})
+
             else:
-                arg = 'gsub(/^\"\"$/,\"null\",$%s);'%( str(index+1))
+                arg = 'gsub(/^$/,\"null\",$%s);'%( str(index+1))
                 result['data'].append({'col':'$%s'%(str(index+1)), 'value':''})
-                fullArg += arg
+            fullArg += arg
     result['fullArg'] = fullArg
+    print('AQUI DESPARECE LA INFO:)')
+    print(result)
     return result
 
 #Get min and Max (Inclusive and exclusive)

@@ -56,9 +56,6 @@ def scriptCaller(data):
 Insert row titles (from csvw:rowTitles)
 '''
 def insertTitles(data, path):
-    print("**********TEST***************")
-    print("Titles: " + str(data['result']))
-    print("Header: " + str(data['header']))
     if not data['header']:
         os.system('bash ./bash/insertTitles.sh \'%s\' %s'%(data['result'], path))
 
@@ -111,8 +108,6 @@ def defaultEmptyStringFormatChanger(data, path):
         os.system('bash ./bash/defaultEmptyStringReplacer.sh \'%s\' %s %s'%(col['default'], col['col'], path))
 
 def replaceCsvFormat(data, path):
-    print('*************************************************')
-    print(data)
     os.system('bash bash/csvFormatter \'%s\' \'%s\' \'%s\' \'%s\' \'%s\''%(str(data['delimiter']), str(data['gsub']),str(data['print']),str(data['split']),str(path)))
 
 def csvFormatter(csvw):
