@@ -1,7 +1,0 @@
-#!/bin/bash
-
-delimiter=$1
-path=$2
-size=0
-time awk -F$delimiter '{for(i=0; i < NF; i++){print "Col:"i"De"NF}}' $path #print $out "\""$NF"\""}' $path
-#mv ./tmp/tmpFile $path

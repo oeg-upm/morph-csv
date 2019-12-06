@@ -1,7 +1,0 @@
-Size,E1,,,,E2,,,
-,Indexing,Execution,Total Time,Number of responses,Indexing,Execution,Total Time,Number of responses
-gtfs-1,1.09,1.21,2.29,2364,1.61,2.36,3.97,2364
-gtfs-5,2.18,28.40,30.58,11820,3.66,3.05,6.71,11820
-gtfs-10,3.44,111.96,115.39,23640,5.89,5.14,11.03,23640
-gtfs-50,11.57,2684.68,2696.25,118200,83.56,22.64,106.20,118200
-gtfs-100,24.37,timeout,timeout,-,730.70,43.30,773.99,236400

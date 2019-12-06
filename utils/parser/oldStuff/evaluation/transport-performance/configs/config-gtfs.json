@@ -1,9 +1,0 @@
-{
-  "sources":[
-    {
-      "csvw":"./evaluation/transport-performance/mappings/gtfs-annotations.json",
-      "yarrrml": "./evaluation/transport-performance/mappings/gtfs.yml",
-      "db": "gtfs"
-    }
-  ]
-}

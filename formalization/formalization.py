@@ -80,7 +80,7 @@ def createJoin(predicate, column):
 def dataTranslation(data, delimiter, path):
     if(len(data['columns'])>0):
         #print('SCRIPT:\n' + str(data['script']) + '\nCOLS:\n' + str(data['columns']))
-        os.system("bash bash/fn1.sh '%s' '%s' '%s'"%(str(delimiter), str(data['script']), str(path)))
+        os.system("bash bash/fn2.sh '%s' '%s' '%s'"%(str(delimiter), str(data['script']), str(path)))
 
 def getPredicateAndObjectFromQuery(query, mapping,parsedQuery,column):
     print('SEARCHING: '  + column)
