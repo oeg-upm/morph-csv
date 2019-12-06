@@ -19,11 +19,8 @@ def main():
         try:
             with open(args.json_config, "r") as json_file:
                 config = json.load(json_file)
-            query = str(args.sparql_query)
+            query_path = str(args.sparql_query)
 
-            sparqlQueryParser(query)
-            parsedQuery = json.loads(open('tmp/annotations/sparql.json').read())
-            print(parsedQuery)
         except ValueError:
             print("No input the correct arguments, run pip3 morphcsv.py -h to see the help")
             sys.exit()
@@ -35,56 +32,35 @@ def main():
     maketmpdirs()
     downloadAnnotations(config)
     downloadCSVfilesFromRML()
-    print('11111111111111111111111111111111111111111111111111111111111111111111111111111111')
-    print(query)
-    print('11111111111111111111111111111111111111111111111111111111111111111111111111111111')
-    query = readQuery(query)
+
+    query = readQuery(query_path)
+    sparqlQueryParser(query_path)
+    parsedQuery = json.loads(open('tmp/annotations/sparql.json').read())
+
     print("Removing FnO functions from RML")
     functions, mapping = getCleanYarrrml()
     print("Selecting RML rules, CSV files and columns for answering the query")
     # this function creates the rml rules needed to answer query from yarrrml mapping
-    #all_columns = [{"source": "person", "columns": ["name","ln2","ln1"]}]
     csvColumns, mapping = fromSPARQLtoMapping(mapping, query, parsedQuery) 
-    print('FUCNTIONS:\n\n\n' + str(functions).replace('\'', '"').replace('True', 'true').replace('false', 'false'))
-    #TODO ESTE CODIGO NO FUNCIONA BIEN 
     csvColumns = getColumnsFromFunctions(csvColumns, functions)
     print("Required Columns: "+ str(csvColumns))
     csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
     csvw = csvwParser.insertRowTitles(csvw)
     csvw = formatter.csvwFilter(csvw,csvColumns)
-    print('CSVw:\n' + str(csvw).replace('\'', '"'))
     print("CSVW filtered")
     formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery)
     csvw = formalizedData['csvw']
     query = formalizedData['query']
     mapping = formalizedData['mapping']
-    print('QUERY:\n' + str(query))
     #TODO formalizer.toThirdNormalForm(mapping, csvColumns, csvw)
     print("Data Normalized")
-    # create the full cleaning and selection bash script
-    # cleaning stuff
-    #print("FilterColumns: " +  str(csvColumns))
-    #csvColumns ={'routes': {'source': 'ROUTES.csv', 'columns': ['route_url','agency_id', 'route_id']}, 'agency': {'source': 'AGENCY.csv', 'columns': ['agency_url', 'agency_name', 'agency_id']}}
     formatter.csvFormatter(csvw)
     print("Data Formatted")
     schema = mapping2Sql.generate_sql_schema(csvw)
     insert.create_and_insert(csvw, schema)
     mapping2Sql.generate_sql_schema(csvw)
-    #csvColumns ={'routes': {'source': 'ROUTES.csv', 'columns': ['route_url','agency_id', 'route_id']}, 'agency': {'source': 'AGENCY.csv', 'columns': ['agency_url', 'agency_name', 'agency_id']}}
-    #csvFormatter(csvw)
-    print("Normalizing CSV files")
-    # normalize
-
-    print("Creating new columns based on FnO functions on RML")
-
-    print("Removing duplicates")
-
-    print("Translating YARRRML to R2RML...")
-    #TODO  fromSourceToTables is void
     #mapping = fromSourceToTables(mapping)
-
     print("Answering query")
-
 
 if __name__ == "__main__":
     main()

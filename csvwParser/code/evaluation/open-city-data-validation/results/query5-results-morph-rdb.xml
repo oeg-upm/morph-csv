@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<sparql>
-    <head>
-        <variable name="stop1"/>
-        <variable name="museumName"/>
-        <variable name="sportCenterName"/>
-    </head>
-    <results/>
-</sparql>

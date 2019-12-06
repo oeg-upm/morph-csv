@@ -52,7 +52,7 @@ def toSecondNormalForm(mapping, column, query):
     queryRewritten(query, getPredicateAndObjectFromQuery(query, column, mapping), column)
 
 def queryRewritten(query, predicate, variable, column):
-    #print('PREDICATE:' + str(predicate) + '\nVARIABLE:' + str(variable) + '\nColumn:' + str(column))
+    ##print('PREDICATE:' + str(predicate) + '\nVARIABLE:' + str(variable) + '\nColumn:' + str(column))
     query = query.replace("?" + variable, "?"+column+".\n\t?"+column+"<ex:"+column+"> ?"+variable)
     return query
 
@@ -79,11 +79,11 @@ def createJoin(predicate, column):
 
 def dataTranslation(data, delimiter, path):
     if(len(data['columns'])>0):
-        #print('SCRIPT:\n' + str(data['script']) + '\nCOLS:\n' + str(data['columns']))
-        os.system("bash bash/fn1.sh '%s' '%s' '%s'"%(str(delimiter), str(data['script']), str(path)))
+        ##print('SCRIPT:\n' + str(data['script']) + '\nCOLS:\n' + str(data['columns']))
+        os.system("bash bash/fn2.sh '%s' '%s' '%s'"%(str(delimiter), str(data['script']), str(path)))
 
 def getPredicateAndObjectFromQuery(query, mapping,parsedQuery,column):
-    print('SEARCHING: '  + column)
+    #print('SEARCHING: '  + column)
     predicate = getPredicateFromQuery(query, column, mapping)
     pObject = getObjectFromQuery(parsedQuery, predicate)
     return predicate, pObject
@@ -97,8 +97,8 @@ def getPredicateFromQuery(query, column,mapping):
                     predicate = pom[0]
         return predicate
     except:
-        print("FALLA getPredicateFromQuery ")
-        print(traceback.format_exc())
+        #print("FALLA getPredicateFromQuery ")
+        #print(traceback.format_exc())
         sys.exit()
 
 
@@ -116,20 +116,20 @@ def queryPrefixRewritter(query, prefixes):
     return query
 
 def atomicprefixsubtitution(prefixes, value):
-    print("PREDICATE: \n" + str(value))
-    print('PREFIXES: \n' + str(prefixes))
+    #print("PREDICATE: \n" + str(value))
+    #print('PREFIXES: \n' + str(prefixes))
     if(len(value.split(":")) == 2):
         aux = value.split(":")
         for prefix in prefixes.keys():
             if aux[0] == prefix:
                 aux[0] = prefixes[prefix]
                 break
-        print('RESULT:\n' + str(aux))
+        #print('RESULT:\n' + str(aux))
         return aux
     return value
 
 def find_object_in_query(algebra, predicate):
-    print('ALGEBRA\n' + str(algebra))
+    #print('ALGEBRA\n' + str(algebra))
     for node in algebra:
         if 'triples' in node:
             for tp in algebra['triples']:
@@ -151,8 +151,8 @@ def toThirdNormalForm(mapping, csvColumns, csvw):
         4º Llamar al bashScript fn3.sh para generar n CSVs nuevos cada uno con su columna
            correspondiente en base al Mapping
     '''
-    print('\n\n\n***********************FN3tm********************\n\n\n')
-    print(str(fn3Tm).replace('\'', '"') + '\n\n\n')
+    #print('\n\n\n***********************FN3tm********************\n\n\n')
+    #print(str(fn3Tm).replace('\'', '"') + '\n\n\n')
 #    csvw = obtainFN3NormalizedCsvw(csvw, fn3Tm) 
 #    script  = getFn3FormalizationScript(csvw, fn3Tm) 
     #TODO: Execute bash script to create target and remove the "remove" columns from source.
@@ -186,7 +186,7 @@ def findColumnsOfFN3Tm(sources, csvColumns):
     return result
 def getColumnsfromOM(om):
     om = str(om).replace('$(', '').replace(')', '').split(' ')
-    print(om)
+    #print(om)
     return om
     '''
     columns = []

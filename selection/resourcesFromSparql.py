@@ -9,14 +9,14 @@ import copy
 
 def fromSPARQLtoMapping(mapping, query, parsedQuery):
     uris = getUrisFromQuery(parsedQuery)
-    print('\n\n\n**********URIS*********\n\n\n')
-    print(str(uris).replace('\'', '"') + '\n\n\n')
+    #print('\n\n\n**********URIS*********\n\n\n')
+    #print(str(uris).replace('\'', '"') + '\n\n\n')
     testUris = {}
 #    find_triples_in_query(prepareQuery(query).algebra, testUris)
     translatedMapping = simplifyMappingAccordingToQuery(uris,mapping)
     csvColumns = findCsvColumnsInsideTheMapping(translatedMapping)
-    print('\n\n\n************NEW MAPPING********\n\n\n' + str(translatedMapping).replace('\'', '"') + '\n\n\n')
-    print('\n\nCSVCOLUMNS:\n' + str(csvColumns) + '\n\n\n')
+    #print('\n\n\n************NEW MAPPING********\n\n\n' + str(translatedMapping).replace('\'', '"') + '\n\n\n')
+    #print('\n\nCSVCOLUMNS:\n' + str(csvColumns) + '\n\n\n')
     return csvColumns, translatedMapping
 
 def getUrisFromQuery(query):
@@ -92,12 +92,12 @@ def addReferencesOfTheJoins(oldMapping, mapping):
 
 def checkIfReferenceIsDefined(mapping, newMapping, o):
     joinReferences = getJoinReferences(o)
-    print('\n\nJoin: \n' + str(o))
-    print('\n\nJOIN REFERENCES: ' + str(joinReferences))
+    #print('\n\nJoin: \n' + str(o))
+    #print('\n\nJOIN REFERENCES: ' + str(joinReferences))
     if joinReferences['outerRef'] not in getColPatterns(newMapping['mappings'][o['mapping']]):
         for i,po in enumerate(mapping['mappings'][o['mapping']]['po']):
             if(joinReferences['outerRef'] in getColPatterns(po)):
-                print('Hay que añadir a: \n' + str(po)) 
+                #print('Hay que añadir a: \n' + str(po)) 
                 newMapping['mappings'][o['mapping']]['po'].append(po)
     return newMapping
 
@@ -164,7 +164,7 @@ def getColPatterns(element):
 
 def cleanColPattern(columns):
     columns = getColPatterns(columns)
-    print('COLUMNS:' + str(columns))
+    #print('COLUMNS:' + str(columns))
     result = []
     for col in columns:
         result.append(str(col)[2:-1])
@@ -177,7 +177,7 @@ def isPoInUris(po, uris):
     return False
 def getRelevantTM(uris, mapping):#Simplificable
     mapping = substitutePrefixes(mapping)
-    #print('\n\n\n\n********************************************MAPPING***************************************\n\n\n\n' + str(mapping).replace('\'', '"') + '\n\n\n\n')
+    ##print('\n\n\n\n********************************************MAPPING***************************************\n\n\n\n' + str(mapping).replace('\'', '"') + '\n\n\n\n')
     relevantTM = {}
     csvColumns = {}
     parentcolumns = {}
@@ -336,8 +336,8 @@ def extractReferencesFromFno(functions, columns):
 
 # From a dict with sources a columns name, return the same dict with the indexes of the columns
 def getIndexFromColumns(csvColumns, all_columns):
-    print(csvColumns)
-    print(all_columns)
+    #print(csvColumns)
+    #print(all_columns)
     result = {}
     for tm in all_columns:
         result[csvColumns[tm['source']]['source']] = []
