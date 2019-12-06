@@ -75,7 +75,7 @@ def getTableTitles(table):
                 delimiter = table['tableSchema']['dialect']['delimiter']
             except:
                 delimiter = ','
-            with open(path, "r") as f:
+            with open(path, "r",encoding='utf-8') as f:
                 reader = csv.reader(f)
                 i = next(reader) 
                 titles  = i
@@ -84,7 +84,8 @@ def getTableTitles(table):
 
         global rowTitles
         rowTitles = titles
-        #print('ROWTITLES:' + str(rowTitles))
+        print('0000000000000000000000000000000000000000000000000000000000')
+        print('ROWTITLES:' + str(rowTitles))
         #SI NO SE ESPECIFICA LOS ROWTITLES EN EL CSVW HAY QUE SACARLOS DEL CSV!!!!!!!
         return {'header':header, 'titles':titles}
 
