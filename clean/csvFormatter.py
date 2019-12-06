@@ -17,9 +17,9 @@ def csvwFilter(csvw, selection):
         title = parser.getTableTitle(table)
         if(title in selection.keys()):
             table['filteredRowTitles'] = parser.orderAccordingToRowTitles(selection[title])
-            print('TABLE:' + str(parser.getTableTitle(table)))
-            print('ORIGINAL:' + str(table['tableSchema']['rowTitles']))
-            print('FILTERED:' + str(table['filteredRowTitles']))
+            #print('TABLE:' + str(parser.getTableTitle(table)))
+            #print('ORIGINAL:' + str(table['tableSchema']['rowTitles']))
+            #print('FILTERED:' + str(table['filteredRowTitles']))
             result['tables'].append(table)
     return result
 #Function to call the bash Scripts files and send the scvw data.

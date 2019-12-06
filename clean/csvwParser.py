@@ -66,15 +66,11 @@ def getTableTitles(table):
                 titles = table['tableSchema']['rowTitles']
             elif('rowTitle' in table['tableSchema'].keys() and len(table['tableSchema']['rowTitle']) > 0):
                 titles = table['tableSchema']['rowTitle']
-        print('TITLES:'  + str(titles))
+        #print('TITLES:'  + str(titles))
         if(len(titles) == 0):
-            print("NO HAY ROW TITLES")
-            #TODO BUSCAR LA FORMA DE MANEJAR LOS NOMBRES DE LOS CSVs
+            ##print("NO HAY ROW TITLES")
             path = './tmp/csv/' + str(table['url'].split("/")[-1:][0]) #.split('.')[0])
-            try:
-                delimiter = table['tableSchema']['dialect']['delimiter']
-            except:
-                delimiter = ','
+            delimiter = getDelimiterValue(table)
             with open(path, "r") as f:
                 reader = csv.reader(f)
                 i = next(reader) 
@@ -84,12 +80,13 @@ def getTableTitles(table):
 
         global rowTitles
         rowTitles = titles
-        #print('ROWTITLES:' + str(rowTitles))
+        ##print('ROWTITLES:' + str(rowTitles))
         #SI NO SE ESPECIFICA LOS ROWTITLES EN EL CSVW HAY QUE SACARLOS DEL CSV!!!!!!!
         return {'header':header, 'titles':titles}
 
     except Exception as e:
         print(e)
+        sys.exit()
 #Devuelve el array de titulos formateado listo para pasarselo directamente al BashScript
 def getTitles(table):
     data = getTableTitles(table)
@@ -110,7 +107,9 @@ def getDelimiter(table):
         result['arg'] ='"\\""'+ result['arg'][:-6] + '\\""'
         return result
     except Exception as e:
+        print('Falla GetDelimiter')
         print(e)
+        sys.exit()
 
 #Devuelve el numero de filas que hay que saltarse por defecto es 0.
 def getSkipRows(table):
@@ -134,16 +133,6 @@ def getNullValues(table):
             else:
                 arg = 'gsub(/^$/,\"null\",$%s);'%( str(index+1))
                 result['data'].append({'col':'$%s'%(str(index+1)), 'value':''})
-
-                '''
-                arg = ''
-                if(index == 0):
-                    arg = 'gsub(/^\\\"%s$/,\"\\\"null\",$1);'%(str(col['null']))
-                elif(index > 0 and index < len(rowTitles) - 1):
-                    arg = 'gsub(/^%s$/,\"null\",$%s);'%(col['null'], str(index+1))
-                else:
-                    arg =  'gsub(/^%s\\\"$/,\"null\\\"\",$%s);'%(col['null'], str(index+1))
-                '''
                 fullArg += arg
     result['fullArg'] = fullArg
     return result
@@ -180,11 +169,12 @@ def getFormat(table, dataType):
         return result
     except Exception as e:
         print(e)
+        sys.exit()
 
 #Lee el Formato de la fecha y manda de la configuracion necesaria para ejecutar el bashScript dateFormatChanger.sh
 def getDateFormat(table):
     data = getFormat(table, 'date')
-    result = {'split':'', 'print':[]}
+    result = {'split':'', '#print':[]}
     for date in data:
         if(str(date['format']).lower() not in ["yyyy-mm-dd", "yyyymmdd"]):
             arrayFormat = ''
@@ -200,14 +190,14 @@ def getDateFormat(table):
                 date['delimiter'] = '/'
             elif('-' in date['format']):
                 date['delimiter'] = '-'
-            result['print'].append({'col':'$%s'%(str(date['col'])),'data':'dateValue%s'%(str(date['col']))})
+            result['#print'].append({'col':'$%s'%(str(date['col'])),'data':'dateValue%s'%(str(date['col']))})
             result['split'] += 'if($%s != \"$%sNULL\")split($%s,date%s,\"%s\");dateValue%s=%s;if($%s == \"$%sNULL\")dateValue%s=\"null\";'%(str(date['col']), str(date['col']),str(date['col']),str(date['col']),str(date['delimiter']),str(date['col']), arrayFormat, str(date['col']),str(date['col']),str(date['col']))
         elif(str(date['format']).lower() == "yyyymmdd"):
             arrayFormat = 'date%s[1] date%s[2] date%s[3] date%s[4]\"-\" date%s[5] date%s[6] \"-\" date%s[7] date%s[8]'%(
                     str(date['col']), str(date['col']), str(date['col']), str(date['col']),
                     str(date['col']),str(date['col']),str(date['col']),str(date['col']))
             date['delimiter'] = ''
-            result['print'].append({'col':'$%s'%(str(date['col'])),'data':'dateValue%s'%(str(date['col']))})
+            result['#print'].append({'col':'$%s'%(str(date['col'])),'data':'dateValue%s'%(str(date['col']))})
             #result['split'] += 'split($%s,date%s,\"%s\");'%(str(date['col']), str(date['col']),str(date['delimiter']))
             result['split'] += '{if($%s != \"$%sNULL\")split($%s,date%s,\"%s\");dateValue%s=%s;if($%s == \"$%sNULL\")dateValue%s=\"null\";}'%(str(date['col']), str(date['col']),str(date['col']),str(date['col']),str(date['delimiter']),str(date['col']), arrayFormat, str(date['col']),str(date['col']),str(date['col']))
            
@@ -226,11 +216,11 @@ def getBooleanFormat(table):
     return fullArg
 
 def getDefaultEmptyStringValue(table):
-    result = []
+    result = {'cols':[], 'arg':''} 
     if(columnsChecker(table)):
         for index,col in enumerate(table['tableSchema']['columns']):
             if('default' in col.keys()):
-                result.append({'col':str(index + 1), 'default':col['default']})
+                result['arg'] += 'gsub(/^%s$/,\"null\",$%s);'%(col['default'], str(index+1))
     return result
 #Check if the table includes Columns
 def columnsChecker(table):
@@ -251,7 +241,7 @@ def getColTitle(col):
     return title
 
 def getGsubPatterns(table):
-    result = {'split': '', 'gsub':'', 'print':'', 'delimiter':''}
+    result = {'split': '', 'gsub':'', '#print':'', 'delimiter':''}
     date = getDateFormat(table) 
     delimiter = getDelimiter(table)
     result['split'] =  str(date['split'])
@@ -259,17 +249,17 @@ def getGsubPatterns(table):
     for col in nullValues['data']:
         result['split'] = result['split'].replace(str(col['col'])+'NULL',col['value'])
     script = nullValues['fullArg']
-   # script += getDefaultStringValue(table)
+    script += getDefaultEmptyStringValue(table)['arg']
     script += getBooleanFormat(table)
     result['gsub'] = str(script)
-    for el in date['print']:
+    for el in date['#print']:
         delimiter['arg'] = delimiter['arg'].replace(el['col'],' ' +  el['data'] + ' ')
     result['print'] = delimiter['arg']
     result['delimiter'] = delimiter['delimiter'].encode('unicode-escape').decode('ascii')
     return result
 
 def getIndexOfCol(col, table):
-    print('SEARCHING:' + str(col) + '\nIN:' + str(rowTitles))
+    #print('SEARCHING:' + str(col) + '\nIN:' + str(rowTitles))
     title = getColTitle(col)
     return getRowTitles(table).index(title) 
 
