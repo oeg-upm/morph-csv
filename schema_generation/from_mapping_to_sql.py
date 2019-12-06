@@ -15,6 +15,7 @@ def decide_schema_based_on_query(mapping):
 
 
 def generate_sql_schema(csvw):
+
     sqlGlobal = ""
     foreignkeys = ""
     for i,table in enumerate(csvw["tables"]):
@@ -42,6 +43,8 @@ def generate_sql_schema(csvw):
             sql += foreignkeys
         sql = sql[:-1] + ");"
         sqlGlobal += sql
+        print('*******************SQL*************************************************')
+        print(sqlGlobal)
     return sqlGlobal
 def find_type_in_csvw(title, csvw_columns):
     datatype = "VARCHAR(200)"

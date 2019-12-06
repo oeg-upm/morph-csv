@@ -20,6 +20,7 @@ def main():
             with open(args.json_config, "r") as json_file:
                 config = json.load(json_file)
             query = str(args.sparql_query)
+
             sparqlQueryParser(query)
             parsedQuery = json.loads(open('tmp/annotations/sparql.json').read())
             print(parsedQuery)
@@ -34,12 +35,12 @@ def main():
     maketmpdirs()
     downloadAnnotations(config)
     downloadCSVfilesFromRML()
+    print('11111111111111111111111111111111111111111111111111111111111111111111111111111111')
+    print(query)
+    print('11111111111111111111111111111111111111111111111111111111111111111111111111111111')
     query = readQuery(query)
     print("Removing FnO functions from RML")
     functions, mapping = getCleanYarrrml()
-    print('*******************************************************')
-    print(functions)
-    print('*******************************************************')
     print("Selecting RML rules, CSV files and columns for answering the query")
     # this function creates the rml rules needed to answer query from yarrrml mapping
     #all_columns = [{"source": "person", "columns": ["name","ln2","ln1"]}]
