@@ -9,6 +9,7 @@ import sys
 
 def fromSPARQLtoMapping(mapping, query, parsedQuery):
     uris = getUrisFromQuery(parsedQuery)
+    print(uris)
     translatedMapping = simplifyMappingAccordingToQuery(uris,mapping)
     csvColumns = findCsvColumnsInsideTheMapping(translatedMapping)
 
@@ -24,9 +25,9 @@ def getUrisFromQuery(query):
                     result[subject] = []
                 uri = tm['predicate']['value']
                 if(uri[:4] == 'http'):
-                    if uri == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
-                        uri = tm['object']['value']
-                        result[subject].append('a')
+                    result[subject].append(uri)
+                if uri == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
+                    uri = tm['object']['value']
                     result[subject].append(uri)
     return result
 
@@ -57,7 +58,9 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
     for tm in mapping['mappings']:
         subject = isTmInQuery(mapping['mappings'][tm], uris)
         if(subject['result']):
+            print('\n**********1************\n')
             if(checkIsUriType(uris[subject['name']])):
+                print('\n**********2************\n')
                 if(tm not in newMapping['mappings'].keys()):
                     newMapping['mappings'][tm] = {
                         'sources':mapping['mappings'][tm]['sources'],
@@ -81,7 +84,7 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
 
 def checkIsUriType(uris):
     return (len(uris) == 2 and
-             "a" in uris
+             "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" in uris
             )
 
 def isTmInQuery(tm, uris):

@@ -24,9 +24,7 @@ def filterCols(table):
                 columns.append(col)
         table['tableSchema']['columns'] = columns
         if('primaryKey' in table['tableSchema']):
-            print(table['tableSchema']['primaryKey'])
             table['tableSchema']['primaryKey'] = removePK(table['tableSchema']['primaryKey'], table['filteredRowTitles'])
-            print(table['tableSchema']['primaryKey'])
     return table
 def removePK(pKeys, cols):
     if(type(pKeys) is str):
