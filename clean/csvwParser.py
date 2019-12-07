@@ -23,8 +23,16 @@ def filterCols(table):
             if(str(getColTitle(col)) in table['filteredRowTitles']):
                 columns.append(col)
         table['tableSchema']['columns'] = columns
+        if('primaryKey' in table['tableSchema']):
+            print(table['tableSchema']['primaryKey'])
+            table['tableSchema']['primaryKey'] = removePK(table['tableSchema']['primaryKey'], table['filteredRowTitles'])
+            print(table['tableSchema']['primaryKey'])
     return table
-
+def removePK(pKeys, cols):
+    if(type(pKeys) is str):
+        pKeys = list(pKeys.split(","))
+    result  = ','.join(pk for pk in list(set(cols)&set(pKeys)))
+    return result
 def insertRowTitles(csvw):
     for i,table in enumerate(csvw['tables']):
         csvw['tables'][i]['tableSchema']['rowTitles'] = getTableTitles(table)['titles']
