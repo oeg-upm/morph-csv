@@ -1,4 +1,5 @@
 import re
+import sys
 import os
 import yaml
 
@@ -47,3 +48,12 @@ def maketmpdirs():
 
 def removetmpdirs():
     os.system("rm -r ./tmp")
+
+def sparqlQueryParser(path):
+    try:
+        os.system("bash bash/sparqlQueryParser.sh %s"%(str(path)))
+        print('Query Parsed')
+    except:
+        print('The Formatt of the query is wrong')
+        sys.exit()
+

@@ -1,7 +1,0 @@
-,E2,,,,E1,,,
-,Indexing,Execution,Total Time,Number of responses,Indexing,Execution,Total Time,Number of responses
-gtfs-1,1.0874,timeout,,,1.61,1221.09,1222.70,7610200
-gtfs-5,2.1828,timeout,,,3.6644,timeout,timeout,
-gtfs-10,3.4386,timeout,,,5.8892,timeout,timeout,
-gtfs-50,11.5694,timeout,,,83.5584,timeout,timeout,
-gtfs-100,24.3736,timeout,,,730.6966,timeout,timeout,

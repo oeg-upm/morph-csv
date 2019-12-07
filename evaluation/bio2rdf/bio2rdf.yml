@@ -450,7 +450,7 @@ mappings:
     po:
       - [rdf:type, hgncv:Resource]
       - [rdf:type, hgncv:Gene-Symbol]
-      - [rdfs:label, Gene Symbol for $(Approved Symbol) [$(HGNC_ID)]]
+      - [rdfs:label, Gene Symbol for $(Approved Symbol) $(HGNC_ID)]
       - [dcterms:title, Gene Symbol for $(Approved_Symbol)]
       - [dcterms:identifier, [$(HGNC_ID)]]
       - [hgncv:approved-symbol, $(Approved_Symbol)]

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<sparql>
-    <head>
-        <variable name="stop"/>
-        <variable name="museumName"/>
-    </head>
-    <results/>
-</sparql>
