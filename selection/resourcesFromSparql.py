@@ -11,27 +11,21 @@ def fromSPARQLtoMapping(mapping, query, parsedQuery):
     uris = getUrisFromQuery(parsedQuery)
     #print('\n\n\n**********URIS*********\n\n\n')
     #print(str(uris).replace('\'', '"') + '\n\n\n')
-    testUris = {}
-#    find_triples_in_query(prepareQuery(query).algebra, testUris)
     translatedMapping = simplifyMappingAccordingToQuery(uris,mapping)
     csvColumns = findCsvColumnsInsideTheMapping(translatedMapping)
-    print('\n\n\n************NEW MAPPING********\n\n\n' + str(translatedMapping).replace('\'', '"') + '\n\n\n')
-    print('\n\nCSVCOLUMNS:\n' + str(csvColumns) + '\n\n\n')
+    #print('\n\n\n************NEW MAPPING********\n\n\n' + str(translatedMapping).replace('\'', '"') + '\n\n\n')
+    #print('\n\nCSVCOLUMNS:\n' + str(csvColumns) + '\n\n\n')
     return csvColumns, translatedMapping
 
 def getUrisFromQuery(query):
     result = []
     for el in query['where']:
-        for tm in el['triples']:
-            uri = tm['predicate']['value']
-            if uri == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
-                uri = tm['object']['value']
-            result.append(uri)
-            '''
-            subject  = tm['subject']['value']
-            if subject not in result.keys():
-                result[subject] = {'predicates':[], 'types':[]}
-            '''
+        if('triples' in el.keys()):
+            for tm in el['triples']:
+                uri = tm['predicate']['value']
+                if uri == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
+                    uri = tm['object']['value']
+                result.append(uri)
     return result
 
 def find_triples_in_query(algebra, uris):
@@ -119,6 +113,7 @@ def removeUnnecesaryTM(mapping):
     return newMapping
 
 def removeEmptyTM(mapping):
+    #print('MAPPING:\n' + str(mapping).replace('\'','"'))
     newMapping = mapping.copy()
     tmToRemove = []
     types = [ po[1] 
@@ -126,7 +121,9 @@ def removeEmptyTM(mapping):
             for po in mapping['mappings'][tm]['po']
             if (type(po) is list and po[0] == 'a')]
     for tm in mapping['mappings']:
+        #print('PO:\n' + str(mapping['mappings'][tm]['po']))
         if(len(mapping['mappings'][tm]['po']) == 1 and 
+            type(mapping['mappings'][tm]['po'][0]) is list and
             mapping['mappings'][tm]['po'][0][0] == 'a'
             and types.count(mapping['mappings'][tm]['po'][0][1]) > 1):
             types.pop(types.index(mapping['mappings'][tm]['po'][0][1]))

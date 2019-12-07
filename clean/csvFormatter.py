@@ -30,8 +30,8 @@ def scriptCaller(data):
     #TODO BUSCAR LA FORMA DE MANEJAR LOS NOMBRE DE LOS CSVs 
     url = parser.getUrl(data).split("/")[-1:][0]
     #url = url.split('.')[0]
-    print("********************" + url + "***************************")
-    print(str(data).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
+    #print("********************" + url + "***************************")
+    #print(str(data).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
     data = parser.filterCols(data)
     #print(str(data).replace('\'', '"'))
     titles = parser.getTitles(data)
