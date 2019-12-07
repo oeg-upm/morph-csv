@@ -5,7 +5,7 @@ from rdflib.plugins.sparql import *
 import re
 import yaml
 import copy
-
+import sys
 
 def fromSPARQLtoMapping(mapping, query, parsedQuery):
     uris = getUrisFromQuery(parsedQuery)
@@ -15,14 +15,17 @@ def fromSPARQLtoMapping(mapping, query, parsedQuery):
     return csvColumns, translatedMapping
 
 def getUrisFromQuery(query):
-    result = []
+    result = {}
     for el in query['where']:
         if('triples' in el.keys()):
             for tm in el['triples']:
+                subject = tm['subject']['value']
+                if(subject not in result.keys()):
+                    result[subject] = []
                 uri = tm['predicate']['value']
                 if uri == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
                     uri = tm['object']['value']
-                result.append(uri)
+                result[subject].append(uri)
     return result
 
 def find_triples_in_query(algebra, uris):
@@ -46,31 +49,43 @@ def obtainURISfromTP(tp, uris):#Simplificable
 
 def simplifyMappingAccordingToQuery(uris, minMapping):
     mapping = substitutePrefixes(minMapping)
+    #print('MAPPING:\n' + str(minMapping).replace('\'', '"'))
+    #sys.exit()
     newMapping = {'prefixes':mapping['prefixes'], 'mappings':{}}
     for tm in mapping['mappings']:
-        for po in mapping['mappings'][tm]['po']:
-            if(type(po) is list):
-                if(isPoInUris(po, uris)):
-                    if(tm not in newMapping['mappings'].keys()):
-                        newMapping['mappings'][tm] = {
-                                'sources':mapping['mappings'][tm]['sources'],
-                                's':mapping['mappings'][tm]['s'],
-                                'po':[]
-                                }
-                    newMapping['mappings'][tm]['po'].append(po)
-            else:
-                if(isPoInUris([po['p']], uris)):
+        subject = isTmInQuery(mapping['mappings'][tm], uris)
+        if(subject['result']):
+            for po in mapping['mappings'][tm]['po']:
+                if(isPoInUris(po, uris[subject['name']])):
                     if(tm not in newMapping['mappings'].keys()):
                         newMapping['mappings'][tm] = {
                             'sources':mapping['mappings'][tm]['sources'],
                             's':mapping['mappings'][tm]['s'],
                             'po':[]
                             }
-
                     newMapping['mappings'][tm]['po'].append(po)
     newMapping = removeUnnecesaryTM(newMapping)
     newMapping  = addReferencesOfTheJoins(mapping, newMapping)
     return newMapping
+def isTmInQuery(tm, uris):
+    tmUris = getUrisFromTM(tm)
+    result = False
+    subjectName = ''
+    for subject in uris.keys():
+        if len(list(set(tmUris) & set(uris[subject]))) == len(uris[subject]):
+            result = True
+            subjectName = subject
+            break
+
+    return {'result':result,'name':subjectName}
+def getUrisFromTM(tm):
+    result = [tm['s']]
+    for po in tm['po']:
+        if(type(po) is list):
+            result.extend(po)
+        else:
+            result.append(po['p'])
+    return result
 
 def addReferencesOfTheJoins(oldMapping, mapping):
     newMapping = mapping.copy()
@@ -104,7 +119,7 @@ def removeUnnecesaryTM(mapping):
                         del newMapping['mappings'][tm]['po'][i]['o'][j]
                 if (len(newMapping['mappings'][tm]['po'][i]['o']) == 0):
                     del newMapping['mappings'][tm]['po'][i]
-    newMapping = removeEmptyTM(newMapping)
+        newMapping = removeEmptyTM(newMapping)
     return newMapping
 
 def removeEmptyTM(mapping):
@@ -114,7 +129,8 @@ def removeEmptyTM(mapping):
     types = [ po[1] 
             for tm in mapping['mappings']
             for po in mapping['mappings'][tm]['po']
-            if (type(po) is list and po[0] == 'a')]
+            if (type(po) is list and po[0] == 'a')
+            ]
     for tm in mapping['mappings']:
         #print('PO:\n' + str(mapping['mappings'][tm]['po']))
         if(len(mapping['mappings'][tm]['po']) == 1 and 
@@ -155,6 +171,8 @@ def getColPatterns(element):
     return result
 
 def cleanColPattern(columns):
+    if type(columns) is dict:
+        columns = [columns]
     columns = getColPatterns(columns)
     #print('COLUMNS:' + str(columns))
     result = []
