@@ -12,10 +12,9 @@ def downloadAnnotations(config):
         elif re.match("yml || yaml", extension):
             name = "mapping.yaml"
         if re.match("^http.*", source):
-
             os.system("wget -O ./tmp/annotations/" + name + " " + source)
         else:
-            os.system("mv " + source + " ./tmp/annotations/" + name)
+            os.system("cp " + source + " ./tmp/annotations/" + name)
 
 
 def downloadCSVfilesFromRML():
