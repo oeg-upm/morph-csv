@@ -23,9 +23,9 @@ def insert_data(csvw,con):
     for i,table in enumerate(csvw["tables"]):
         tablename = re.sub(".csv", "", csvw["tables"][i]["url"].split("/")[-1])
         pwd = os.getcwd()
-        insert = "COPY " + tablename + " FROM '/tmp/csv/" + tablename + ".csv' with NULL as E'null' CSV HEADER;"
+        #insert = "COPY " + tablename + " FROM '/tmp/csv/" + tablename + ".csv' with NULL as E'null' CSV HEADER;"
         #insert = "COPY " + tablename + " FROM '/tmp/csv/" + tablename + ".csv' with CSV HEADER;"
-        #insert = "COPY "+tablename+" FROM '" + str(pwd) + "/tmp/csv/" + tablename + ".csv' CSV HEADER;"
+        insert = "COPY "+tablename+" FROM '" + str(pwd) + "/tmp/csv/" + tablename + ".csv' with NULL as E'null' CSV HEADER;"
 
         cur = con.cursor()
         cur.execute(insert)

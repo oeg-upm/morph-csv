@@ -9,12 +9,9 @@ import copy
 
 def fromSPARQLtoMapping(mapping, query, parsedQuery):
     uris = getUrisFromQuery(parsedQuery)
-    #print('\n\n\n**********URIS*********\n\n\n')
-    #print(str(uris).replace('\'', '"') + '\n\n\n')
     translatedMapping = simplifyMappingAccordingToQuery(uris,mapping)
     csvColumns = findCsvColumnsInsideTheMapping(translatedMapping)
-    #print('\n\n\n************NEW MAPPING********\n\n\n' + str(translatedMapping).replace('\'', '"') + '\n\n\n')
-    #print('\n\nCSVCOLUMNS:\n' + str(csvColumns) + '\n\n\n')
+
     return csvColumns, translatedMapping
 
 def getUrisFromQuery(query):
@@ -86,12 +83,10 @@ def addReferencesOfTheJoins(oldMapping, mapping):
 
 def checkIfReferenceIsDefined(mapping, newMapping, o):
     joinReferences = getJoinReferences(o)
-    #print('\n\nJoin: \n' + str(o))
-    #print('\n\nJOIN REFERENCES: ' + str(joinReferences))
     if joinReferences['outerRef'] not in getColPatterns(newMapping['mappings'][o['mapping']]):
         for i,po in enumerate(mapping['mappings'][o['mapping']]['po']):
             if(joinReferences['outerRef'] in getColPatterns(po)):
-                #print('Hay que añadir a: \n' + str(po)) 
+                #print('Hay que añadir a: \n' + str(po))
                 newMapping['mappings'][o['mapping']]['po'].append(po)
     return newMapping
 

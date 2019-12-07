@@ -124,7 +124,6 @@ def getNullValues(table):
         fullArg = ''
         result = {'data':[],'fullArg':''}
         for col in table['tableSchema']['columns']:
-            print(col)
             title = getColTitle(col)
             index = rowTitles.index(title)
             if('null' in col.keys()):

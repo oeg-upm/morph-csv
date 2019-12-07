@@ -16,13 +16,9 @@ def csvwFilter(csvw, selection):
     for table in csvw['tables']:
         title = parser.getTableTitle(table)
         if(title in selection.keys()):
-            print('SELECTION:' + str(selection))
             table['filteredRowTitles'] = []
             table['filteredRowTitles'].extend(parser.orderAccordingToRowTitles(selection[title]))
-            print('ROW TITLES:' + str(table['filteredRowTitles']))
-            #print('TABLE:' + str(parser.getTableTitle(table)))
-            #print('ORIGINAL:' + str(table['tableSchema']['rowTitles']))
-            #print('FILTERED:' + str(table['filteredRowTitles']))
+
             result['tables'].append(table)
     return result
 #Function to call the bash Scripts files and send the scvw data.
@@ -90,13 +86,10 @@ def dateFormatReplacer(data, path):
         if(len(data) > 0):
             for date in data:
                 if(not date['correct']):
-#                print("%s %s %s %s"%(date['args'],date['col'],date['delimiter'], path))
                     os.system('bash ./bash/optimized/allInOneFile \'%s\' \'%s\' \'%s\' \'%s\' \'%s\''%(date['args'],date['col'],date['delimiter'], date['arg2'], path))
     except:
         sys.exit()
 def booleanFormatReplacer(data, path):
-    print(data)
-    
     for col in data:
         os.system('bash ./bash/booleanFormatChanger.sh %s %s %s %s'%(col['true'], col['false'], col['col'], path))
 
