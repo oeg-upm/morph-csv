@@ -15,8 +15,8 @@ def fromSPARQLtoMapping(mapping, query, parsedQuery):
 #    find_triples_in_query(prepareQuery(query).algebra, testUris)
     translatedMapping = simplifyMappingAccordingToQuery(uris,mapping)
     csvColumns = findCsvColumnsInsideTheMapping(translatedMapping)
-    #print('\n\n\n************NEW MAPPING********\n\n\n' + str(translatedMapping).replace('\'', '"') + '\n\n\n')
-    #print('\n\nCSVCOLUMNS:\n' + str(csvColumns) + '\n\n\n')
+    print('\n\n\n************NEW MAPPING********\n\n\n' + str(translatedMapping).replace('\'', '"') + '\n\n\n')
+    print('\n\nCSVCOLUMNS:\n' + str(csvColumns) + '\n\n\n')
     return csvColumns, translatedMapping
 
 def getUrisFromQuery(query):

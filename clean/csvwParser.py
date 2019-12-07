@@ -198,7 +198,7 @@ def getDateFormat(table):
                     str(date['col']), str(date['col']), str(date['col']), str(date['col']),
                     str(date['col']),str(date['col']),str(date['col']),str(date['col']))
             date['delimiter'] = ''
-            result['#print'].append({'col':'$%s'%(str(date['col'])),'data':'dateValue%s'%(str(date['col']))})
+            result['print'].append({'col':'$%s'%(str(date['col'])),'data':'dateValue%s'%(str(date['col']))})
             #result['split'] += 'split($%s,date%s,\"%s\");'%(str(date['col']), str(date['col']),str(date['delimiter']))
             result['split'] += '{if($%s != \"$%sNULL\")split($%s,date%s,\"%s\");dateValue%s=%s;if($%s == \"$%sNULL\")dateValue%s=\"null\";}'%(str(date['col']), str(date['col']),str(date['col']),str(date['col']),str(date['delimiter']),str(date['col']), arrayFormat, str(date['col']),str(date['col']),str(date['col']))
            
@@ -212,7 +212,7 @@ def getBooleanFormat(table):
         arg = ''
         col['format'] =  str(col['format'])
         data = col['format'].split("|")
-        arg = 'gsub(/\"%s\"/,"true",$%s);gsub(/\"%s\"/,"false",$%s);'%(str(data[0]), str(col['col']), str(data[1]), str(col['col']))
+        arg = 'gsub(/%s/,"true",$%s);gsub(/%s/,"false",$%s);'%(str(data[0]), str(col['col']), str(data[1]), str(col['col']))
         fullArg += arg
     return fullArg
 
@@ -242,7 +242,7 @@ def getColTitle(col):
     return title
 
 def getGsubPatterns(table):
-    result = {'split': '', 'gsub':'', '#print':'', 'delimiter':''}
+    result = {'split': '', 'gsub':'', 'print':'', 'delimiter':''}
     date = getDateFormat(table) 
     delimiter = getDelimiter(table)
     separator = getSeparatorScripts(table)['columns']
