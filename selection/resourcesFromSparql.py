@@ -119,7 +119,7 @@ def removeUnnecesaryTM(mapping):
                         del newMapping['mappings'][tm]['po'][i]['o'][j]
                 if (len(newMapping['mappings'][tm]['po'][i]['o']) == 0):
                     del newMapping['mappings'][tm]['po'][i]
-        newMapping = removeEmptyTM(newMapping)
+    newMapping = removeEmptyTM(newMapping)
     return newMapping
 
 def removeEmptyTM(mapping):

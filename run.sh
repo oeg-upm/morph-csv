@@ -6,7 +6,7 @@
 #python3 morphcsv.py -c test/config.json -q test/query.rq
 
 #GTFS
-python3 morphcsv.py  -c evaluation/gtfs/configGtfs.json -q evaluation/gtfs/query4.rq
+python3 morphcsv.py  -c evaluation/gtfs/configGtfs.json -q evaluation/gtfs/query6.rq
 
 #GENEINFO
 #cp evaluation/bio2rdf/ncbigene/ncbigene.annotations.json tmp/annotations/annotations.json
@@ -15,5 +15,5 @@ python3 morphcsv.py  -c evaluation/gtfs/configGtfs.json -q evaluation/gtfs/query
 #python3 morphcsv.py -c test/config.json -q evaluation/bio2rdf/ncbigene/ncbigene.query.rq
 
 #BIO2RDF:
-python3 morphcsv.py  -c evaluation/bio2rdf/config.json -q evaluation/bio2rdf/queries/query11.rq
+#python3 morphcsv.py  -c evaluation/bio2rdf/config.json -q evaluation/bio2rdf/queries/query11.rq
 
