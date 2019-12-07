@@ -128,7 +128,6 @@ def getNullValues(table):
             title = getColTitle(col)
             index = rowTitles.index(title)
             if('null' in col.keys()):
-                print('NULL:\'' + col['null'] +'\'')
                 arg = 'gsub(/^%s$/,\"null\",$%s);'%(str(col['null']), str(index+1))
                 result['data'].append({'col':'$%s'%(str(index+1)), 'value':col['null']})
 
@@ -137,8 +136,6 @@ def getNullValues(table):
                 result['data'].append({'col':'$%s'%(str(index+1)), 'value':''})
             fullArg += arg
     result['fullArg'] = fullArg
-    print('AQUI DESPARECE LA INFO:)')
-    print(result)
     return result
 
 #Get min and Max (Inclusive and exclusive)
@@ -178,7 +175,7 @@ def getFormat(table, dataType):
 #Lee el Formato de la fecha y manda de la configuracion necesaria para ejecutar el bashScript dateFormatChanger.sh
 def getDateFormat(table):
     data = getFormat(table, 'date')
-    result = {'split':'', '#print':[]}
+    result = {'split':'', 'print':[]}
     for date in data:
         if(str(date['format']).lower() not in ["yyyy-mm-dd", "yyyymmdd"]):
             arrayFormat = ''
@@ -194,7 +191,7 @@ def getDateFormat(table):
                 date['delimiter'] = '/'
             elif('-' in date['format']):
                 date['delimiter'] = '-'
-            result['#print'].append({'col':'$%s'%(str(date['col'])),'data':'dateValue%s'%(str(date['col']))})
+            result['print'].append({'col':'$%s'%(str(date['col'])),'data':'dateValue%s'%(str(date['col']))})
             result['split'] += 'if($%s != \"$%sNULL\")split($%s,date%s,\"%s\");dateValue%s=%s;if($%s == \"$%sNULL\")dateValue%s=\"null\";'%(str(date['col']), str(date['col']),str(date['col']),str(date['col']),str(date['delimiter']),str(date['col']), arrayFormat, str(date['col']),str(date['col']),str(date['col']))
         elif(str(date['format']).lower() == "yyyymmdd"):
             arrayFormat = 'date%s[1] date%s[2] date%s[3] date%s[4]\"-\" date%s[5] date%s[6] \"-\" date%s[7] date%s[8]'%(
@@ -248,17 +245,23 @@ def getGsubPatterns(table):
     result = {'split': '', 'gsub':'', '#print':'', 'delimiter':''}
     date = getDateFormat(table) 
     delimiter = getDelimiter(table)
+    separator = getSeparatorScripts(table)['columns']
     result['split'] =  str(date['split'])
     nullValues = getNullValues(table)
+    #Replacing Real NullValues in date columns splitting
     for col in nullValues['data']:
         result['split'] = result['split'].replace(str(col['col'])+'NULL',col['value'])
+    #Substituting Date Col by his formatted array
+    for el in date['print']:
+        delimiter['arg'] = delimiter['arg'].replace(el['col'],' ' +  el['data'] + ' ')
+    #Substituting FN2 cols by the NR
+    for col in separator:
+       delimiter['arg'] = delimiter['arg'].replace(col, 'NR')
     script = nullValues['fullArg']
     script += getDefaultEmptyStringValue(table)['arg']
     script += getBooleanFormat(table)
-    result['gsub'] = str(script)
-    for el in date['#print']:
-        delimiter['arg'] = delimiter['arg'].replace(el['col'],' ' +  el['data'] + ' ')
-    result['print'] = delimiter['arg']
+    result['gsub'] += '%s$0=%s;gsub(/"null"/, "Null", $0);'%(str(script),str(delimiter['arg']))
+    result['print'] = '$0'
     result['delimiter'] = delimiter['delimiter'].encode('unicode-escape').decode('ascii')
     return result
 
@@ -275,7 +278,7 @@ def getSeparatorValue(col):
 
 def hasSeparator(col):
     return getSeparatorValue(col) != 'NONE'
-def getNullValue(table):
+def getNullValue(col):
     try:
         nullValue = str(col['null'].encode('unicode-escape').decode('ascii'))
     except:

@@ -33,11 +33,15 @@ def addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery):
     return result
 
 def createNewTable(table,col):
-    table = {
+    nullValue = csvwParser.getNullValue(col)
+    delimiter = csvwParser.getDelimiterValue(table)
+    datatype = csvwParser.getDataType(col) 
+    print('NULL:'+ str(nullValue) + '\nDELIMITER:' + str(delimiter) + '\nDATATYPE:\n' +str(datatype))
+    result = {
         'filteredRowTitles':['id', 'value'],       
         'url':'ALGO/%s.csv'%(csvwParser.getColTitle(col)),
         'dialect':{
-            'delimiter':csvwParser.getDelimiterValue(table),
+            'delimiter':',',
             'header':False
             },
         'tableSchema':{
@@ -52,13 +56,16 @@ def createNewTable(table,col):
             'primarykey':'id'
             }
         }
-    return table
+
+    print('************************')
+    print(result)
+    return result
 def generateForeignKey(colName):
     foreignKey = {
         "columnReference": colName,
         "reference": {
           "resource":'tmp/csv/%s.csv'%(colName),
-          "columnReference": "ID"
+          "columnReference": "id"
         }
     }
     return foreignKey
@@ -97,6 +104,7 @@ def dataTranslation(data, delimiter, path):
     if(len(data['columns'])>0):
         ##print('SCRIPT:\n' + str(data['script']) + '\nCOLS:\n' + str(data['columns']))
         os.system("bash bash/fn2.sh '%s' '%s' '%s'"%(str(delimiter), str(data['script']), str(path)))
+#    sys.exit()
 
 def getPredicateAndObjectFromQuery(query, mapping,parsedQuery,column):
     #print('SEARCHING: '  + column)
