@@ -9,11 +9,14 @@ import traceback
 def addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery):
     newTables = []
 #   query = queryPrefixRewritter(query, mapping['prefixes'])
-    for table in csvw['tables']:
+    for i,table in enumerate(csvw['tables']):
         cols = csvwParser.getCols(table)
-        for col in cols:
+        foreignKeys = []
+        for j,col in enumerate(cols):
             if(csvwParser.hasSeparator(col)):
+                #Falta modificar la tabla original, añadir la foreing key 
                 colName = csvwParser.getColTitle(col)
+                foreignKeys.append(generateForeignKey(colName))
                 newTables.append(createNewTable(table,col))
                 predicate,variable =getPredicateAndObjectFromQuery(query, mapping, parsedQuery,colName)
                 #sys.exit()
@@ -22,12 +25,16 @@ def addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery):
         dataTranslation(csvwParser.getSeparatorScripts(table),
                 csvwParser.getDelimiterValue(table),
                 csvwParser.getUrl(table).split("/")[-1:][0])
+        if 'foreignkeys' not in csvw['tables'][i].keys():
+            csvw['tables'][i]['tableSchema']['foreignKeys'] = []
+        csvw['tables'][i]['tableSchema']['foreignKeys'].extend(foreignKeys)
     csvw['tables'].extend(newTables)
     result = {'csvw':csvw, 'mapping':mapping, 'query':query}
     return result
 
 def createNewTable(table,col):
     table = {
+        'filteredRowTitles':['id', 'value'],       
         'url':'ALGO/%s.csv'%(csvwParser.getColTitle(col)),
         'dialect':{
             'delimiter':csvwParser.getDelimiterValue(table),
@@ -41,11 +48,20 @@ def createNewTable(table,col):
                     'null':csvwParser.getNullValue(col),
                     'datatype':csvwParser.getDataType(col)
                     }
-                ]
+                ],
+            'primarykey':'id'
             }
         }
     return table
-        
+def generateForeignKey(colName):
+    foreignKey = {
+        "columnReference": colName,
+        "reference": {
+          "resource":'tmp/csv/%s.csv'%(colName),
+          "columnReference": "ID"
+        }
+    }
+    return foreignKey
 def toSecondNormalForm(mapping, column, query):
     #Requirements for NORMALIZATION: csvw, yarrrmlMapping, sparqlQuery.
     mappingTranslation(mapping, column)

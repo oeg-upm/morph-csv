@@ -1,0 +1,4 @@
+{
+	"csvw":"https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/bio2rdf/data/ncbigene/ncbigene.csvw.json",
+	"yarrrml":"https://raw.githubusercontent.com/oeg-upm/morph-csv/master/evaluation/bio2rdf/data/ncbigene/TMncbigene-gene_info.yml"
+}

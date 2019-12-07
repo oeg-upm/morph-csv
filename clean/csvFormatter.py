@@ -16,7 +16,10 @@ def csvwFilter(csvw, selection):
     for table in csvw['tables']:
         title = parser.getTableTitle(table)
         if(title in selection.keys()):
-            table['filteredRowTitles'] = parser.orderAccordingToRowTitles(selection[title])
+            print('SELECTION:' + str(selection))
+            table['filteredRowTitles'] = []
+            table['filteredRowTitles'].extend(parser.orderAccordingToRowTitles(selection[title]))
+            print('ROW TITLES:' + str(table['filteredRowTitles']))
             #print('TABLE:' + str(parser.getTableTitle(table)))
             #print('ORIGINAL:' + str(table['tableSchema']['rowTitles']))
             #print('FILTERED:' + str(table['filteredRowTitles']))
@@ -27,7 +30,8 @@ def scriptCaller(data):
     #TODO BUSCAR LA FORMA DE MANEJAR LOS NOMBRE DE LOS CSVs 
     url = parser.getUrl(data).split("/")[-1:][0]
     #url = url.split('.')[0]
-    #print("********************" + url + "***************************")
+    print("********************" + url + "***************************")
+    print(str(data).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
     data = parser.filterCols(data)
     #print(str(data).replace('\'', '"'))
     titles = parser.getTitles(data)

@@ -43,8 +43,8 @@ def generate_sql_schema(csvw):
             sql += foreignkeys
         sql = sql[:-1] + ");"
         sqlGlobal += sql
-        print('*******************SQL*************************************************')
-        print(sqlGlobal)
+    print('*******************SQL*************************************************')
+    print(sqlGlobal)
     return sqlGlobal
 def find_type_in_csvw(title, csvw_columns):
     datatype = "VARCHAR(200)"
