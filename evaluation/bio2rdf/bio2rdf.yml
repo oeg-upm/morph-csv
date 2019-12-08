@@ -510,7 +510,7 @@ mappings:
         - function: sql:regexp_like
           parameters:
             - [sql:valueParam, $(Specialist_Database_Links)]
-            - [sql:valueParam2, "href=\"(\S+)\""]
+            - [sql:valueParam2, "href=\"(S+)\""]
             - [sql:valueParam3, "c"]
       - [hgncv:x-pubmed, "http://bio2rdf.org/pubmed:[$(Pubmed_IDs)]"]
       - [hgncv:x-refseq, "http://bio2rdf.org/refseq:$(RefSeq_IDs)"]
