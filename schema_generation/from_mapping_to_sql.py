@@ -7,7 +7,7 @@ import clean.csvwParser as csvwParser
 
 def decide_schema_based_on_query(mapping):
     for tm in mapping["mappings"]:
-        for pom in mapping["mappings"]["po"]:
+        for pom in mapping["mappings"][tm]["po"]:
             # if p in pom means there is a join in the mapping
             if 'p' in pom:
                 return True
@@ -41,7 +41,6 @@ def generate_sql_schema(csvw):
             sql += foreignkeys
         sql = sql[:-1] + ");"
         sqlGlobal += sql
-    print('*******************SQL*************************************************')
     print(sqlGlobal)
     return sqlGlobal
 def find_type_in_csvw(title, csvw_columns):
