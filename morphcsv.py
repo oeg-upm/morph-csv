@@ -53,6 +53,7 @@ def main():
     csvw = formalizedData['csvw']
     query = formalizedData['query']
     mapping = formalizedData['mapping']
+    #print('\n\n\nMAPPING\n\n\n' + str(mapping).replace('\'','"'))
     #TODO formalizer.toThirdNormalForm(mapping, csvColumns, csvw)
     print("Data Normalized")
     formatter.csvFormatter(csvw)

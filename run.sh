@@ -6,7 +6,7 @@
 #python3 morphcsv.py -c test/config.json -q test/query.rq
 
 #GTFS
-python3 morphcsv.py  -c evaluation/gtfs/configGtfs.json -q evaluation/gtfs/query8.rq
+python3 morphcsv.py  -c evaluation/gtfs/configGtfs.json -q evaluation/gtfs/query9.rq
 
 #GENEINFO
 #cp evaluation/bio2rdf/ncbigene/ncbigene.annotations.json tmp/annotations/annotations.json

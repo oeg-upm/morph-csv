@@ -30,6 +30,12 @@ def getUrisFromQuery(query):
                     result[subject].append(uri)
     return result
 
+def checkEmptyUris(uris):
+    for tm in uris:
+        if(len(uris[tm]) > 0):
+            return False
+    return True
+
 def find_triples_in_query(algebra, uris):
     for node in algebra:
         if 'triples' in node:
@@ -53,6 +59,8 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
     mapping = substitutePrefixes(minMapping)
     #print('MAPPING:\n' + str(mapping).replace('\'', '"'))
     #sys.exit()
+    if(checkEmptyUris(uris)):
+        return mapping
     newMapping = {'prefixes':mapping['prefixes'], 'mappings':{}}
     for tm in mapping['mappings']:
         subject = isTmInQuery(mapping['mappings'][tm], uris)
@@ -75,6 +83,7 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
                                 'po':[]
                                 }
                         newMapping['mappings'][tm]['po'].append(po)
+    #print('MAPPING:\n' + str(newMapping).replace('\'', '"'))                       
     newMapping = removeUnnecesaryTM(newMapping)
     newMapping  = addReferencesOfTheJoins(mapping, newMapping)
     return newMapping
@@ -93,8 +102,8 @@ def isTmInQuery(tm, uris):
             result = True
             subjectName = subject
             break
-
     return {'result':result,'name':subjectName}
+
 def getUrisFromTM(tm):
     result = [tm['s']]
     for po in tm['po']:
@@ -105,37 +114,42 @@ def getUrisFromTM(tm):
     return result
 
 def addReferencesOfTheJoins(oldMapping, mapping):
-    newMapping = mapping.copy()
+    #print('***************NO REFERENCES MAPPING**********:\n\n\n' + str(mapping).replace('\'', '"'))
+    newMapping = {'prefixes':mapping['prefixes'], 'mappings':mapping['mappings']}
+    tmReferences = {}
     for tm in mapping['mappings']:
         for po in mapping['mappings'][tm]['po']:
             if type(po) is dict:
                 for o in po['o']:
-                    newMapping = checkIfReferenceIsDefined(mapping, newMapping, o)
+                    tmReferences.update(checkIfReferenceIsDefined(tmReferences,oldMapping,mapping,o))
+    newMapping['mappings'].update(tmReferences)
     return newMapping
 
-def checkIfReferenceIsDefined(mapping, newMapping, o):
+def checkIfReferenceIsDefined(storedTm,oldMapping,mapping,o):
+    newMapping = mapping.copy()
+    #print('\n\nO:\n\n' + str(o))
     joinReferences = getJoinReferences(o)
-    if joinReferences['outerRef'] not in getColPatterns(newMapping['mappings'][o['mapping']]):
-        for i,po in enumerate(mapping['mappings'][o['mapping']]['po']):
+    tmName = o['mapping']
+    tmReference = joinReferences['outerRef']
+    if(tmName not in mapping['mappings'].keys() and tmName not in storedTm.keys()):
+        storedTm[tmName] = oldMapping['mappings'][tmName]
+        storedTm[tmName]['po'] = []
+    #print('\n\n\nJOIN REFERENCES:\n\n\n' + str(joinReferences))
+    if tmName not in mapping.keys() or joinReferences['outerRef'] not in getColPatterns(newMapping['mappings'][tmName]):
+        #print('BUSCAMOS:' + str(joinReferences['outerRef']))
+        for i,po in enumerate(oldMapping['mappings'][o['mapping']]['po']):
             if(joinReferences['outerRef'] in getColPatterns(po)):
                 #print('Hay que añadir a: \n' + str(po))
-                newMapping['mappings'][o['mapping']]['po'].append(po)
-    return newMapping
+                storedTm[tmName]['po'].append(po)
+    return storedTm
 
 def getJoinReferences(join):
     result = {'innerRef': join['condition']['parameters'][1][1], 'outerRef':join['condition']['parameters'][0][1]}
     return result
 def removeUnnecesaryTM(mapping):
+    #print('MAPPING:\n' + str(mapping).replace('\'', '"'))
     tripleMaps = mapping['mappings'].keys()
     newMapping = mapping.copy()
-    for tm in mapping['mappings']:
-        for i,po in enumerate(mapping['mappings'][tm]['po']):
-            if(type(po) is dict):
-                for j,o in enumerate(po['o']):
-                    if(o['mapping'] not in tripleMaps):                             
-                        del newMapping['mappings'][tm]['po'][i]['o'][j]
-                if (len(newMapping['mappings'][tm]['po'][i]['o']) == 0):
-                    del newMapping['mappings'][tm]['po'][i]
     newMapping = removeEmptyTM(newMapping)
     return newMapping
 
@@ -202,71 +216,6 @@ def isPoInUris(po, uris):
         if item in uris:
             return True
     return False
-def getRelevantTM(uris, mapping):#Simplificable
-    mapping = substitutePrefixes(mapping)
-    ##print('\n\n\n\n********************************************MAPPING***************************************\n\n\n\n' + str(mapping).replace('\'', '"') + '\n\n\n\n')
-    relevantTM = {}
-    csvColumns = {}
-    parentcolumns = {}
-    for subject in uris:
-        lensubject = len(uris[subject]["predicates"]) + len(uris[subject]["types"])
-        predicates = uris[subject]["predicates"]
-        types = uris[subject]["types"]
-        for tm in mapping["mappings"]:
-            pomcount = 0
-            equals = 0
-            relevantpos = []
-            columns = []
-            for pom in mapping["mappings"][tm]["po"]:
-                if 'p' in pom:
-                    if mapping["mappings"][tm]["po"][pomcount]["p"] in predicates:
-                        equals += 1
-                        relevantpos.append(pomcount)
-                        aux, auxparentcolumns, parent = getColumnsfromJoin(mapping["mappings"][tm]["po"][pomcount]["o"])
-                        parentcolumns[parent] = auxparentcolumns
-                        columns.extend(aux)
-                elif mapping["mappings"][tm]["po"][pomcount][0] in predicates:
-                    equals += 1
-                    relevantpos.append(pomcount)
-                    columns.extend(getColumnsfromOM(mapping["mappings"][tm]["po"][pomcount][1]))
-                elif mapping["mappings"][tm]["po"][pomcount][0] == "http://www.w3.org/1999/02/22-rdf-syntax-ns#type":
-                    if mapping["mappings"][tm]["po"][pomcount][1] in types:
-                        equals += 1
-                        relevantpos.append(pomcount)
-                pomcount += 1
-            if lensubject == equals:
-                source = re.sub("~csv", "", mapping["mappings"][tm]["sources"][0][0].split("/")[
-                    len(mapping["mappings"][tm]["sources"][0][0].split("/")) - 1])
-                columns.extend(getColumnsfromOM(mapping["mappings"][tm]["s"]))
-                columns = list(dict.fromkeys(columns))
-                relevantTM[tm] = relevantpos
-                csvColumns[tm] = {"source": source, "columns": columns}
-                break
-
-    for parent in parentcolumns:
-        for tm in csvColumns:
-            if parent in csvColumns[tm]:
-                csvColumns[tm]["columns"].extend(parentcolumns[parent])
-                csvColumns[tm]["columns"] = list(dict.fromkeys(csvColumns["columns"][parent]))
-
-    mappingcopy = copy.deepcopy(mapping["mappings"])
-    for tm in mappingcopy:
-        if tm not in relevantTM:
-            del mapping["mappings"][tm]
-        else:
-            pomcount = 0
-            while pomcount < len(mapping["mappings"][tm]["po"]):
-                if pomcount not in relevantTM[tm]:
-                    del mapping["mappings"][tm]["po"][pomcount]
-                    count = 0
-                    for x in relevantTM[tm]:
-                        if x >= pomcount:
-                            relevantTM[tm][count] = x - 1
-                        count += 1
-                else:
-                    pomcount += 1
-
-    return mapping, csvColumns
 
 
 def getColumnsfromOM(om):
@@ -301,29 +250,6 @@ def substitutePrefixes(mapping):
     expandedMapping  = literal_eval(strMapping)
     newMapping = {'prefixes':prefixes,'mappings':dict(expandedMapping)}
     return newMapping
-    '''
-    for tm in mapping["mappings"]:
-        pomcount = 0
-        for pom in mapping["mappings"][tm]["po"]:
-            if 'p' in pom:
-                value = mapping["mappings"][tm]["po"][pomcount]["p"]
-                join = True
-            else:
-                value = mapping["mappings"][tm]["po"][pomcount][0]
-                join = False
-            if re.match(".*:.*", value):
-                aux = atomicprefixsubtitution(prefixes, value)
-                if join:
-                    mapping["mappings"][tm]["po"][pomcount]["p"] = aux[0] + aux[1]
-                else:
-                    mapping["mappings"][tm]["po"][pomcount][0] = aux[0] + aux[1]
-            elif "a" == value:
-                mapping["mappings"][tm]["po"][pomcount][0] = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-                aux = atomicprefixsubtitution(prefixes, mapping["mappings"][tm]["po"][pomcount][1])
-                mapping["mappings"][tm]["po"][pomcount][1] = aux[0] + aux[1]
-            pomcount += 1
-    '''
-
 
 def atomicprefixsubtitution(prefixes, value):
     aux = value.split(":")
