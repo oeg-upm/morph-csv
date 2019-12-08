@@ -9,7 +9,7 @@ import sys
 
 def fromSPARQLtoMapping(mapping, query, parsedQuery):
     uris = getUrisFromQuery(parsedQuery)
-    #print('\n\nURIS:\n\n' + str(uris))
+    print('\n\nURIS:\n\n' + str(uris))
     translatedMapping = simplifyMappingAccordingToQuery(uris,mapping)
     csvColumns = findCsvColumnsInsideTheMapping(translatedMapping)
 
@@ -29,7 +29,7 @@ def getUrisFromQuery(query):
                 if(isUri(uri)):
                     if uri == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
                         uri = tm['object']['value']
-                        result[subject]['uris'].append('a')
+                        result[subject]['uris'].append('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
                     result[subject]['uris'].append(uri)
                 else:
                     uri = tm['object']['value']
@@ -87,6 +87,7 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
             else:
                 for po in mapping['mappings'][tm]['po']:
                     if(isPoInUris(po, uris[subject['name']]['uris'])):
+                        #print('*****************2*******************+')
                         if(tm not in newMapping['mappings'].keys()):
                             newMapping['mappings'][tm] = {
                                 'sources':mapping['mappings'][tm]['sources'],
@@ -108,6 +109,8 @@ def isTmInQuery(tm, uris):
     tmUris = getUrisFromTM(tm)
     result = False
     subjectName = ''
+    #print('********************TM URIS*****************')
+    #print(tmUris)
     for subject in uris.keys():
         if len(list(set(tmUris) & set(uris[subject]['uris']))) == len(uris[subject]['uris']):
             result = True
@@ -262,7 +265,11 @@ def substitutePrefixes(mapping):
     for prefix in prefixes:
         strMapping = strMapping.replace('\'' + prefix + ':', '\'' + prefixes[prefix])
 #    strMapping = strMapping.replace('\'','"')
-    expandedMapping  = literal_eval(strMapping)
+    expandedMapping  = dict(literal_eval(strMapping))
+    for tm in expandedMapping:
+        for index,po in enumerate(expandedMapping[tm]['po']):
+            if type(po) is list and po[0] == 'a':
+                expandedMapping[tm]['po'][index][0] = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
     newMapping = {'prefixes':prefixes,'mappings':dict(expandedMapping)}
     return newMapping
 
