@@ -22,4 +22,4 @@ SELECT * WHERE {
     ?service a gtfs:Service .
     ?service gtfs:serviceRule ?serviceRule .
 }
-
+# Required Columns: {'stoptimes': {'source': 'STOP_TIMES.csv', 'columns': ['arrival_time', 'trip_id', 'stop_id']}, 'trips': {'source': 'TRIPS.csv', 'columns': ['trip_id']}, 'routes': {'source': 'ROUTES.csv', 'columns': ['route_id']}, 'stops': {'source': 'STOPS.csv', 'columns': ['stop_id']}, 'services2': {'source': 'CALENDAR_DATES.csv', 'columns': ['service_id']}}

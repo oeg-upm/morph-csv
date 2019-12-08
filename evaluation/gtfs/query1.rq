@@ -10,3 +10,5 @@ SELECT * WHERE {
     ?shape geo:long ?shape_pt_lon .
     ?shape gtfs:pointSequence ?shape_pt_sequence .
 }
+#RESULT: Required Columns: {'shapes': {'source': 'SHAPES.csv', 'columns': ['shape_pt_lat', 'shape_pt_lon', 'shape_pt_sequence', 'shape_id']}}
+

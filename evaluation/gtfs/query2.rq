@@ -15,4 +15,4 @@ SELECT * WHERE {
     ?serviceRule gtfs:dateAddition "true"^^xsd:boolean .
     #FILTER(?date > %DATE% )
 }
-
+# Required Columns: {'services2': {'source': 'CALENDAR_DATES.csv', 'columns': ['service_id']}, 'calendar_date_rules': {'source': 'CALENDAR_DATES.csv', 'columns': ['date', 'service_id', 'exception_type']}}

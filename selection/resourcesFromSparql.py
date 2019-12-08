@@ -9,6 +9,7 @@ import sys
 
 def fromSPARQLtoMapping(mapping, query, parsedQuery):
     uris = getUrisFromQuery(parsedQuery)
+    #print('\n\nURIS:\n\n' + str(uris))
     translatedMapping = simplifyMappingAccordingToQuery(uris,mapping)
     csvColumns = findCsvColumnsInsideTheMapping(translatedMapping)
 
@@ -74,6 +75,7 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
         subject = isTmInQuery(mapping['mappings'][tm], uris)
         if(subject['result']):
             if(uris[subject['name']]['fullTM']):
+                #print('***********************1*******************')
                 if(tm not in newMapping['mappings'].keys()):
                     newMapping['mappings'][tm] = {
                         'sources':mapping['mappings'][tm]['sources'],
@@ -81,6 +83,7 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
                         'po':[]
                         }
                 newMapping['mappings'][tm]['po'] = mapping['mappings'][tm]['po']
+                #print(str(newMapping).replace('\'', '"'))
             else:
                 for po in mapping['mappings'][tm]['po']:
                     if(isPoInUris(po, uris[subject['name']]['uris'])):
@@ -138,12 +141,16 @@ def checkIfReferenceIsDefined(storedTm,oldMapping,mapping,o):
     #print('\n\nO:\n\n' + str(o))
     joinReferences = getJoinReferences(o)
     tmName = o['mapping']
+    #print('\n\n\nJOIN REFERENCES:\n\n\n' + str(joinReferences))
     tmReference = joinReferences['outerRef']
-    if(tmName not in mapping['mappings'].keys() and tmName not in storedTm.keys()):
+    if(tmName not in storedTm.keys()):
         storedTm[tmName] = oldMapping['mappings'][tmName]
         storedTm[tmName]['po'] = []
-    #print('\n\n\nJOIN REFERENCES:\n\n\n' + str(joinReferences))
-    if tmName not in mapping.keys() or joinReferences['outerRef'] not in getColPatterns(newMapping['mappings'][tmName]):
+        if(tmName in mapping['mappings'].keys()):
+            storedTm[tmName] = mapping['mappings'][tmName]
+    if (joinReferences['outerRef'] not in getColPatterns(newMapping['mappings'][tmName]) and
+        joinReferences['outerRef'] not in getColPatterns(storedTm[tmName])
+            ):
         #print('BUSCAMOS:' + str(joinReferences['outerRef']))
         for i,po in enumerate(oldMapping['mappings'][o['mapping']]['po']):
             if(joinReferences['outerRef'] in getColPatterns(po)):

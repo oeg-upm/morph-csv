@@ -15,3 +15,5 @@ SELECT * WHERE {
     ?agency foaf:name ?agencyName .
     OPTIONAL { ?agency foaf:phone ?agencyPhone . }
 }
+# Required Columns: {'routes': {'source': 'ROUTES.csv', 'columns': ['route_id']}, 'agency': {'source': 'AGENCY.csv', 'columns': ['agency_id', 'agency_name', 'agency_url']}}
+

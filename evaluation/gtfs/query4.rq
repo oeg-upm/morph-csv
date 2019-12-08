@@ -12,3 +12,4 @@ SELECT * WHERE {
     ?stop geo:long ?stopLong .
     FILTER (?stopLat > 40.41) .      
 }
+#Required Columns: {'stops': {'source': 'STOPS.csv', 'columns': ['stop_id', 'stop_lat', 'stop_lon']}}

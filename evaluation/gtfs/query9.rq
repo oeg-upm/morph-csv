@@ -16,3 +16,4 @@ SELECT (count(distinct ?trip) as ?count)  WHERE {
 
 	FILTER (?departureTime >= "00:30:00"^^xsd:duration) .
 }
+#Required Columns: {'stoptimes': {'source': 'STOP_TIMES.csv', 'columns': ['arrival_time', 'departure_time', 'stop_id', 'trip_id']}, 'trips': {'source': 'TRIPS.csv', 'columns': ['trip_id']}}

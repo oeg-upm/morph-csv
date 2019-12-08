@@ -12,3 +12,5 @@ SELECT * WHERE {
 	?stop ?p ?str .
 	FILTER regex (?str, 'Doctor' )
 }
+#Required Columns: {'stops': {'source': 'STOPS.csv', 'columns': ['stop_desc', 'stop_url', 'stop_id', 'zone_id', 'stop_code', 'stop_timezone', 'stop_lat', 'location_type', 'wheelchair_boarding', 'stop_name', 'stop_lon']}}
+
