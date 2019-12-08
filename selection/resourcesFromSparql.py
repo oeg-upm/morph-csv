@@ -21,21 +21,29 @@ def getUrisFromQuery(query):
             for tm in el['triples']:
                 subject = tm['subject']['value']
                 if(subject not in result.keys()):
-                    result[subject] = []
+                    result[subject] = {'uris':[], 'fullTM':False}
+                if(isUri(subject)):
+                    result[subject]['uris'].append(subject)
                 uri = tm['predicate']['value']
-                if(uri[:4] == 'http'):
+                if(isUri(uri)):
                     if uri == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
                         uri = tm['object']['value']
-                        result[subject].append('a')
-                    result[subject].append(uri)
+                        result[subject]['uris'].append('a')
+                    result[subject]['uris'].append(uri)
+                else:
+                    uri = tm['object']['value']
+                    if(isUri(uri)):
+                        result[subject]['uris'].append(uri)
+                    else:
+                        result[subject]['fullTM'] = True
     return result
-
 def checkEmptyUris(uris):
     for tm in uris:
         if(len(uris[tm]) > 0):
             return False
     return True
-
+def isUri(uri):
+    return str(uri)[:4] == 'http'
 def find_triples_in_query(algebra, uris):
     for node in algebra:
         if 'triples' in node:
@@ -65,7 +73,7 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
     for tm in mapping['mappings']:
         subject = isTmInQuery(mapping['mappings'][tm], uris)
         if(subject['result']):
-            if(checkIsUriType(uris[subject['name']])):
+            if(uris[subject['name']]['fullTM']):
                 if(tm not in newMapping['mappings'].keys()):
                     newMapping['mappings'][tm] = {
                         'sources':mapping['mappings'][tm]['sources'],
@@ -75,7 +83,7 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
                 newMapping['mappings'][tm]['po'] = mapping['mappings'][tm]['po']
             else:
                 for po in mapping['mappings'][tm]['po']:
-                    if(isPoInUris(po, uris[subject['name']])):
+                    if(isPoInUris(po, uris[subject['name']]['uris'])):
                         if(tm not in newMapping['mappings'].keys()):
                             newMapping['mappings'][tm] = {
                                 'sources':mapping['mappings'][tm]['sources'],
@@ -98,7 +106,7 @@ def isTmInQuery(tm, uris):
     result = False
     subjectName = ''
     for subject in uris.keys():
-        if len(list(set(tmUris) & set(uris[subject]))) == len(uris[subject]):
+        if len(list(set(tmUris) & set(uris[subject]['uris']))) == len(uris[subject]['uris']):
             result = True
             subjectName = subject
             break
