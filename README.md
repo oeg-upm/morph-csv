@@ -34,5 +34,5 @@ Then choose one of the available options:
 Ontology Engineering Group - Data Integration:
 - David Chaves-Fraga ([dchaves@fi.upm.es](mailto:dchaves@fi.upm.es))
 - Jhon Toledo
-- Luis del Pozo
+- Luis Pozo ([luis.pozo@upm.es](mailto:luis.pozo@upm.es))
 - Freddy Priyatna
