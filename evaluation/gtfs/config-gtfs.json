@@ -1,0 +1,4 @@
+    {
+      "csvw":"/morphcsv/evaluation/gtfs/gtfs.csvw.json",
+      "yarrrml": "/morphcsv/evaluation/gtfs/gtfs-csv.yml"
+    }

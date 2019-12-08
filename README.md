@@ -27,7 +27,13 @@ Then choose one of the available options:
     python3 morphcsv.py -c path-to-config-file.json -q path-to-query-file.rq
     ```
 
-## Scientific Contributions
+### Define your config.json file
+```json
+{
+  "csvw":"PATH OR URL to CSVW annotations",
+  "yarrrml": "PATH OR URL TO YARRRML+FnO Mapping"
+}
+```
 
 
 ## Authors and Contact

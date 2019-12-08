@@ -25,8 +25,8 @@ def csv_basic_generation(mapping,query_path):
         source = re.sub("~csv", "", (mapping["mappings"][tm]["sources"][0][0].split("/")[-1]))
         sources.extend("tmp/csv/"+source+".csv")
 
-    properties += "mappingdocument.file.path=tmp/annotations/mapping.r2rml.ttl\n"
-    properties += "output.file.path=results/results.nt\n"
+    properties += "mappingdocument.file.path=/morphcsv/tmp/annotations/mapping.r2rml.ttl\n"
+    properties += "output.file.path=/results/results.nt\n"
     properties += "output.rdflanguage=N-TRIPLE\n"
     properties += "query.file.path="+query_path
     properties += "csv.file.path="
@@ -43,13 +43,13 @@ def csv_basic_generation(mapping,query_path):
     properties += "database.pwd[0]=\n"
     properties += "database.type[0]=CSV\n"
 
-    f = open("tmp/morph-properties/basic-csv.properties", "w+")
+    f = open("tmp/morph-properties/morph-rdb.properties", "w+")
     f.write(properties)
     f.close()
 
 def postgre_generation(query_path):
     properties = ""
-    properties += "mappingdocument.file.path=tmp/annotations/mapping.r2rml.ttl\n"
+    properties += "mappingdocument.file.path=/morphcsv/tmp/annotations/mapping.r2rml.ttl\n"
     properties += "output.file.path=results/results.nt\n"
     properties += "output.rdflanguage=N-TRIPLE\n"
     properties += "query.file.path=" + query_path
@@ -61,7 +61,7 @@ def postgre_generation(query_path):
     properties += "database.pwd[0]=csv\n"
     properties += "database.type[0]=postgresql\n"
 
-    f = open("tmp/morph-properties/basic-csv.properties", "w+")
+    f = open("tmp/morph-properties/morph-rdb.properties", "w+")
     f.write(properties)
     f.close()
 

@@ -1,6 +1,6 @@
 import yaml
 import re
-import json
+import os
 
 
 def getCleanYarrrml ():
@@ -57,3 +57,8 @@ def fromSourceToTables(mapping):
             len(mapping["mappings"][tm]["sources"][0][0].split("/")) - 1]
         re.sub("\\.csv~csv", "", source)
         mapping["mappings"][tm]["sources"] = [{"table": source.upper()}]
+    f = open("./tmp/annotations/mapping.yaml", "w+")
+    f.write(yaml.dump(mapping, default_flow_style=None))
+    f.close()
+    os.system("bash ./bash/yarrrml-parser.sh")
+

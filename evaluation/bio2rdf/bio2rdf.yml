@@ -16,11 +16,14 @@ prefixes:
   sidv: "http://bio2rdf.org/sider_vocabulary:"
   wbv: "http://bio2rdf.org/wormbase_vocabulary:"
   ndcv: "http://bio2rdf.org/ndc_vocabulary:"
+  hgncv: http://bio2rdf.org/hgnc_vocabulary
+  hsv: "http://bio2rdf.org/hgnc.symbol_vocabulary:"
+  taxv: "http://bio2rdf.org/taxonomy_vocabulary:"
 
 mappings:
   TMncbi-gene2sts:
     sources:
-      - [./evaluation/bio2rdf/data/ncbigene/gene2sts~csv]
+      - [/data/ncbigene/gene2sts.csv~csv]
     s: http://bio2rdf.org/ncbigene:$(GeneID)
     po:
       - [rdf:type, ncbiv:Resource]
@@ -28,7 +31,7 @@ mappings:
 
   TMncbi-gene2unigene:
     sources:
-      - [./evaluation/bio2rdf/data/ncbigene/gene2unigene~csv]
+      - [/data/ncbigene/gene2unigene.csv~csv]
     s: http://bio2rdf.org/ncbigene:$(GeneID)
     po:
       - [rdf:type, ncbiv:Resource]
@@ -36,7 +39,7 @@ mappings:
 
   TMncbi-gene2pubmed:
     sources:
-      - [./evaluation/bio2rdf/data/ncbigene/gene2pubmed~csv]
+      - [/data/ncbigene/gene2pubmed.csv~csv]
     s: http://bio2rdf.org/ncbigene:$(GeneID)
     po:
       - [rdf:type, ncbiv:Resource]
@@ -44,7 +47,7 @@ mappings:
 
   TMncbi-gene2vega:
     sources:
-      - [./evaluation/bio2rdf/data/ncbigene/gene2vega~csv]
+      - [/data/ncbigene/gene2vega.csv~csv]
     s: http://bio2rdf.org/ncbigene:$(GeneID)
     po:
       - [rdf:type, ncbiv:Resource]
@@ -54,7 +57,7 @@ mappings:
 
   TMncbi-gene2ensembl:
     sources:
-      - [./evaluation/bio2rdf/data/ncbigene/gene2ensembl~csv]
+      - [/data/ncbigene/gene2ensembl.csv~csv]
     s: http://bio2rdf.org/ncbigene:$(GeneID)
     po:
       - [rdf:type, ncbiv:Resource]
@@ -67,7 +70,7 @@ mappings:
 
   TMncbigene-gene2go1:
     sources:
-      - [./evaluation/bio2rdf/data/ncbigene/gene2go~csv]
+      - [/data/ncbigene/gene2go.csv~csv]
     s: http://bio2rdf.org/ncbigene:$(GeneID)
     po:
       - [rdf:type, ncbiv:Resource]
@@ -89,7 +92,7 @@ mappings:
 
   TMncbigene-gene2go2:
     sources:
-      - [./evaluation/bio2rdf/data/ncbigene/gene2go~csv]
+      - [/data/ncbigene/gene2go.csv~csv]
     s: http://bio2rdf.org/ncbigene_resource:$(GeneID)_$(GO_ID)
     po:
       - [rdf:type, ncbiv:Resource]
@@ -123,7 +126,7 @@ mappings:
 
   TMncbigene-gene_info:
     sources:
-      - [./evaluation/bio2rdf/data/ncbigene/gene_info~csv]
+      - [/data/ncbigene/gene_info.csv~csv]
     s: http://bio2rdf.org/ncbigene:$(GeneID)
     po:
       - [rdf:type, ncbiv:Resource]
@@ -156,7 +159,7 @@ mappings:
 
   TMhomologene:
     sources:
-      - [./evaluation/bio2rdf/data/homologene/homologene.csv~csv]
+      - [/data/homologene/homologene.csv~csv]
     s: http://bio2rdf.org/homologene:$(hid)
     po:
       - [rdf:type, homogv:Resource]
@@ -186,7 +189,7 @@ mappings:
 
   TMgenage-model:
     sources:
-      - [./evaluation/bio2rdf/data/genage/genage_models.csv~csv]
+      - [/data/genage/genage_models.csv~csv]
     s: http://bio2rdf.org/genage:$(GenAge_ID)
     po:
       - [rdf:type, genagev:Resource]
@@ -217,7 +220,7 @@ mappings:
 
   TMgeneage-human:
     sources:
-      - [./evaluation/bio2rdf/data/genage/genage_human.csv~csv]
+      - [/data/genage/genage_human.csv~csv]
     s: http://bio2rdf.org/hagr:$(GenAge_ID)
     po:
       - [rdf:type, genagev:Resource]
@@ -248,7 +251,7 @@ mappings:
 
   TMwormbase-geneid:
     sources:
-      - [./evaluation/bio2rdf/data/wormbase/WBgeneIDs.csv~csv]
+      - [/data/wormbase/WBgeneIDs.csv~csv]
     s: http://bio2rdf.org/wormbase:$(gene_id)
     po:
       - [rdf:type, wbv:Resource]
@@ -270,7 +273,7 @@ mappings:
 
   TMwormbase-interaction:
     sources:
-      - [./evaluation/bio2rdf/data/wormbase/cutinteractions.csv~csv]
+      - [/data/wormbase/cutinteractions.csv~csv]
     s: http://bio2rdf.org/wormbase:$(WBInteractionID)
     po:
       - [rdf:type, wbv:Resource]
@@ -297,7 +300,7 @@ mappings:
 
   TMwormbase-phenotype_association:
     sources:
-      - [./evaluation/bio2rdf/data/wormbase/WBphenotype_association.csv~csv]
+      - [/data/wormbase/WBphenotype_association.csv~csv]
     s: http://bio2rdf.org/wormbase_resource:$(gene_id)_$(phenotype)_$(variant)
     po:
       - [rdf:type, wbv:Resource]
@@ -331,7 +334,7 @@ mappings:
 
   TMwormbase-gene_association:
     sources:
-      - [./evaluation/bio2rdf/data/wormbase/WBgene_association.csv~csv]
+      - [/data/wormbase/WBgene_association.csv~csv]
     s: http://bio2rdf.org/wormbase_resource:$(gene_id)_$(GO_id)_$(evidence)
     po:
       - [rdf:type, wbv:Resource]
@@ -373,7 +376,7 @@ mappings:
 
   TMtaxonomy-division:
     sources:
-      - [./evaluation/bio2rdf/data/taxonomy/division.csv~csv]
+      - [/data/taxonomy/division.csv~csv]
     s: http://bio2rdf.org/taxonomy_resource:division-id-$(division_id)
     po:
       - [rdf:type, taxv:Division]
@@ -386,7 +389,7 @@ mappings:
 
   TMtaxonomy-gencode:
     sources:
-      - [./evaluation/bio2rdf/data/taxonomy/gencode.csv~csv]
+      - [/data/taxonomy/gencode.csv~csv]
     s: http://bio2rdf.org/taxonomy_resource:genetic-code-id-$(genetic_code_id)
     po:
       - [rdf:type, taxv:Genetic-Code]
@@ -399,7 +402,7 @@ mappings:
 
   TMtaxonomy-names:
     sources:
-      - [./evaluation/bio2rdf/data/taxonomy/names.csv~csv]
+      - [/data/taxonomy/names.csv~csv]
     s: http://bio2rdf.org/taxonomy:$(tax_id)_$(name_txt)
     po:
       - [rdf:type, taxv:Resource]
@@ -409,7 +412,7 @@ mappings:
 
   TMtaxonomy-nodes:
     sources:
-      - [./evaluation/bio2rdf/data/taxonomy/nodes.csv~csv]
+      - [/data/taxonomy/nodes.csv~csv]
     s: http://bio2rdf.org/taxonomy:$(tax_id)
     po:
       - [rdf:type, taxv:Resource]
@@ -446,7 +449,7 @@ mappings:
 
   TMhgnc1:
     sources:
-      - [./evaluation/bio2rdf/data/hgnc/hgnc.csv~csv]
+      - [/data/hgnc/hgnc.csv~csv]
     s: http://bio2rdf.org/$(HGNC_ID)
     po:
       - [rdf:type, hgncv:Resource]
@@ -541,7 +544,7 @@ mappings:
 
   TMhgnc2:
     sources:
-      - [./evaluation/bio2rdf/data/hgnc/hgnc.csv~csv]
+      - [/data/hgnc/hgnc.csv~csv]
     s: http://bio2rdf.org/hgnc.symbol:$(Approved_Symbol)
     po:
       - [rdf:type, hgncv:Approved-Gene-Symbol]
@@ -560,7 +563,7 @@ mappings:
 
   TMhgnc3:
     sources:
-      - [./evaluation/bio2rdf/data/hgnc/hgnc.csv~csv]
+      - [/data/hgnc/hgnc.csv~csv]
     s: http://bio2rdf.org/$(HGNC_ID)_LOCUS
     po:
       - [rdf:type, hgncv:Locus]

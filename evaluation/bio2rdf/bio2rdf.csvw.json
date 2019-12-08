@@ -1,7 +1,7 @@
 {
   "@context": ["http://www.w3.org/ns/csvw"],
   "tables": [{
-    "url": "./evaluation/bio2rdf/data/ncbigene/gene2sts",
+    "url": "/data/ncbigene/gene2sts",
     "dialect": {
       "delimiter": "\t",
       "header": true
@@ -13,7 +13,7 @@
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/ncbigene/gene2unigene",
+    "url": "/data/ncbigene/gene2unigene",
     "dialect": {
       "delimiter": "\t",
       "header": true
@@ -25,7 +25,7 @@
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/ncbigene/gene2pubmed",
+    "url": "/data/ncbigene/gene2pubmed",
     "dialect": {
       "delimiter": "\t",
       "header": true
@@ -37,7 +37,7 @@
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/ncbigene/gene2vega",
+    "url": "/data/ncbigene/gene2vega",
     "dialect": {
       "delimiter": "\t",
       "header": true
@@ -59,7 +59,7 @@
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/ncbigene/gene2ensembl",
+    "url": "/data/ncbigene/gene2ensembl",
     "dialect": {
       "delimiter": "\t",
       "header": true
@@ -81,7 +81,7 @@
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/ncbigene/gene2go",
+    "url": "/data/ncbigene/gene2go",
     "dialect": {
       "delimiter": "\t",
       "header": true
@@ -91,7 +91,7 @@
       "foreignKey": [{
         "columnReference": "GeneID",
         "reference": {
-          "resource": "./evaluation/bio2rdf/data/ncbigene/gene_info",
+          "resource": "/data/ncbigene/gene_info",
           "columnReference": "GeneID"
         }
 
@@ -106,7 +106,7 @@
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/ncbigene/gene_info",
+    "url": "/data/ncbigene/gene_info",
     "dialect": {
       "delimiter": "\t",
       "header": true
@@ -116,7 +116,7 @@
       "foreignKey": [{
         "columnReference": "tax_id",
         "reference": {
-          "resource": "./evaluation/bio2rdf/data/taxonomy/names.csv",
+          "resource": "/data/taxonomy/names.csv",
           "columnReference": "tax_id"
         }}],
       "columns": [{
@@ -172,7 +172,7 @@
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/homologene/homologene.csv",
+    "url": "/data/homologene/homologene.csv",
     "dialect": {
       "delimiter": "\t",
       "header": false
@@ -187,18 +187,18 @@
       "foreignKey": [{
         "columnReference": "ncbigene",
         "reference": {
-          "resource": "./evaluation/bio2rdf/data/ncbigene/gene_info",
+          "resource": "/data/ncbigene/gene_info",
           "columnReference": "GeneID"
         }},{
         "columnReference": "taxid",
         "reference": {
-          "resource": "./evaluation/bio2rdf/data/taxonomy/names.csv",
+          "resource": "/data/taxonomy/names.csv",
           "columnReference": "tax_id"
         }
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/genage/genage_models.csv",
+    "url": "/data/genage/genage_models.csv",
     "dialect": {
       "delimiter": ",",
       "header": true
@@ -208,12 +208,12 @@
       "foreignKey": [{
         "columnReference": "entrez_gene_id",
         "reference": {
-          "resource": "./evaluation/bio2rdf/data/ncbigene/gene_info",
+          "resource": "/data/ncbigene/gene_info",
           "columnReference": "GeneID"
         }},{
         "columnReference": "organism",
         "reference": {
-          "resource": "./evaluation/bio2rdf/data/taxonomy/names.csv",
+          "resource": "/data/taxonomy/names.csv",
           "columnReference": "name_txt"
         }
       }],
@@ -241,7 +241,7 @@
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/genage/genage_human.csv",
+    "url": "/data/genage/genage_human.csv",
     "dialect": {
       "delimiter": ",",
       "header": true
@@ -251,7 +251,7 @@
       "foreignKey": [{
         "columnReference": "entrez_gene_id",
         "reference": {
-          "resource": "./evaluation/bio2rdf/data/ncbigene/gene_info",
+          "resource": "/data/ncbigene/gene_info",
           "columnReference": "GeneID"
         }
       }],
@@ -307,7 +307,7 @@
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/wormbase/WBgeneIDs.csv",
+    "url": "/data/wormbase/WBgeneIDs.csv",
     "dialect": {
       "delimiter": ",",
       "header": false
@@ -317,7 +317,7 @@
       "foreignKey": [{
         "columnReference": "taxid",
         "reference": {
-          "resource": "./evaluation/bio2rdf/data/taxonomy/names.csv",
+          "resource": "/data/taxonomy/names.csv",
           "columnReference": "tax_id"
         }
       }],
@@ -331,7 +331,7 @@
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/wormbase/cutinteractions.csv",
+    "url": "/data/wormbase/cutinteractions.csv",
     "dialect": {
       "delimiter": "\t",
       "header": false
@@ -341,12 +341,12 @@
        "foreignKey": [{
         "columnReference": "Interactor1",
         "reference": {
-          "resource": "./evaluation/bio2rdf/data/wormbase/WBgeneIDs.csv",
+          "resource": "/data/wormbase/WBgeneIDs.csv",
           "columnReference": "gene_id"
         }},{
         "columnReference": "Interactor2",
         "reference": {
-          "resource": "./evaluation/bio2rdf/data/wormbase/WBgeneIDs.csv",
+          "resource": "/data/wormbase/WBgeneIDs.csv",
           "columnReference": "gene_id"
         }
       }],
@@ -357,7 +357,7 @@
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/wormbase/WBphenotype_association.csv",
+    "url": "/data/wormbase/WBphenotype_association.csv",
     "dialect": {
       "delimiter": ",",
       "header": true
@@ -367,12 +367,12 @@
        "foreignKey": [{
         "columnReference": "taxid",
         "reference": {
-          "resource": "./evaluation/bio2rdf/data/taxonomy/names.csv",
+          "resource": "/data/taxonomy/names.csv",
           "columnReference": "tax_ud"
         }},{
         "columnReference": "gene_id",
         "reference": {
-          "resource": "./evaluation/bio2rdf/data/wormbase/WBgeneIDs.csv",
+          "resource": "/data/wormbase/WBgeneIDs.csv",
           "columnReference": "gene_id"
         }
       }],
@@ -391,7 +391,7 @@
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/wormbase/WBgene_association.csv",
+    "url": "/data/wormbase/WBgene_association.csv",
     "dialect": {
       "delimiter": "\t",
       "header": false
@@ -415,7 +415,7 @@
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/taxonomy/division.csv",
+    "url": "/data/taxonomy/division.csv",
     "dialect": {
       "delimiter": ",",
       "header": false
@@ -429,7 +429,7 @@
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/taxonomy/gencode.csv",
+    "url": "/data/taxonomy/gencode.csv",
     "dialect": {
       "delimiter": ",",
       "header": false
@@ -446,7 +446,7 @@
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/taxonomy/names.csv",
+    "url": "/data/taxonomy/names.csv",
     "dialect": {
       "delimiter": ",",
       "header": false
@@ -466,7 +466,7 @@
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/taxonomy/nodes.csv",
+    "url": "/data/taxonomy/nodes.csv",
     "dialect": {
       "delimiter": ",",
       "header": false
@@ -513,7 +513,7 @@
       }]
     }
   },{
-    "url": "./evaluation/bio2rdf/data/hgnc/hgnc.csv",
+    "url": "/data/hgnc/hgnc.csv",
     "dialect": {
       "delimiter": "\t",
       "header": true
@@ -523,12 +523,12 @@
       "foreignKey": [{
         "columnReference": "Entrez_Gene_ID",
         "reference": {
-          "resource": "./evaluation/bio2rdf/data/ncbigene/gene_info",
+          "resource": "/data/ncbigene/gene_info",
           "columnReference": "GeneID"
         }},{
         "columnReference": "Entrez_Gene_ID_(supplied_by_NCBI)",
         "reference": {
-          "resource": "./evaluation/bio2rdf/data/ncbigene/gene_info",
+          "resource": "/data/ncbigene/gene_info",
           "columnReference": "GeneID"
         }
       }],

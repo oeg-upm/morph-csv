@@ -5,11 +5,13 @@ import json
 from selection.resourcesFromSparql import *
 from selection.yarrrml import *
 from utils.utilsresources import *
-from clean import csvFormatter  as formatter
+from clean import csvFormatter as formatter
 from clean import csvwParser as csvwParser
 from formalization import formalization as formalizer
 import schema_generation.from_mapping_to_sql as mapping2Sql
 import schema_generation.create_and_insert as insert
+import schema_generation.morph_properties as genproperties
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--json_config", required=True, help="Input config file with yarrrml and csvw")
@@ -39,29 +41,29 @@ def main():
 
     print("Removing FnO functions from RML")
     functions, mapping = getCleanYarrrml()
-    print("Selecting RML rules, CSV files and columns for answering the query")
-    # this function creates the rml rules needed to answer query from yarrrml mapping
+    print("Selecting RML rules, CSVW annotations and CSV files and columns for answering the query")
     csvColumns, mapping = fromSPARQLtoMapping(mapping, query, parsedQuery) 
     csvColumns = getColumnsFromFunctions(csvColumns, functions)
-    print("Required Columns: "+ str(csvColumns))
-    sys.exit()
     csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
     csvw = csvwParser.insertRowTitles(csvw)
     csvw = formatter.csvwFilter(csvw,csvColumns)
-    print("CSVW filtered")
+    print("Formalizing the data to 2NF")
     formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery)
     csvw = formalizedData['csvw']
     query = formalizedData['query']
     mapping = formalizedData['mapping']
-    #print('\n\n\nMAPPING\n\n\n' + str(mapping).replace('\'','"'))
     #TODO formalizer.toThirdNormalForm(mapping, csvColumns, csvw)
-    print("Data Normalized")
+    print("Preparing the data to execute the query")
     formatter.csvFormatter(csvw)
-    print("Data Formatted")
-    schema = mapping2Sql.generate_sql_schema(csvw)
-    insert.create_and_insert(csvw, schema)
-    mapping2Sql.generate_sql_schema(csvw)
-    #mapping = fromSourceToTables(mapping)
+    print("Generating the SQL schema based on the csvw and the query")
+    if mapping2Sql.decide_schema_based_on_query(mapping):
+        schema = mapping2Sql.generate_sql_schema(csvw)
+        insert.create_and_insert(csvw, schema)
+        genproperties.postgre_generation(query)
+    else:
+        genproperties.csv_basic_generation(mapping, query)
+    print("Tanslating the RML mapping without functions to R2RML")
+    fromSourceToTables(mapping)
     print("Answering query")
 
 if __name__ == "__main__":
