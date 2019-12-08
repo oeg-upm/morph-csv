@@ -28,7 +28,7 @@ def downloadCSVfilesFromRML():
         else:
             #change to move mv
             # cp is only for test
-            os.system("cp ." + re.sub("~csv", "", source) + " ./tmp/csv/")
+            os.system("cp " + re.sub("~csv", "", source) + " ./tmp/csv/")
 
 
 def readQuery(path):
