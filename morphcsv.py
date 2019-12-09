@@ -32,7 +32,7 @@ def main():
 
     print("Downloading mappings, data and query")
     maketmpdirs()
-    downloadAnnotations(config)
+##    downloadAnnotations(config)
 #    downloadCSVfilesFromRML()
 
     query = readQuery(query_path)
