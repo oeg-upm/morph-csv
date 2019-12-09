@@ -33,7 +33,7 @@ def main():
     print("Downloading mappings, data and query")
     maketmpdirs()
     downloadAnnotations(config)
-    downloadCSVfilesFromRML()
+    #downloadCSVfilesFromRML()
 
     query = readQuery(query_path)
     sparqlQueryParser(query_path)
@@ -55,16 +55,12 @@ def main():
     #TODO formalizer.toThirdNormalForm(mapping, csvColumns, csvw)
     print("Preparing the data to execute the query")
     formatter.csvFormatter(csvw)
-    print("Generating the SQL schema based on the csvw and the query")
-    if mapping2Sql.decide_schema_based_on_query(mapping):
-        schema = mapping2Sql.generate_sql_schema(csvw)
-        insert.create_and_insert(csvw, schema)
-        genproperties.postgre_generation()
-    else:
-        genproperties.csv_basic_generation(mapping)
     print("Tanslating the RML mapping without functions to R2RML")
     fromSourceToTables(mapping)
-    print("Answering query")
+    print("Generating the SQL schema based on the csvw and the query")
+    schema = mapping2Sql.generate_sql_schema(csvw, functions, mapping2Sql.decide_schema_based_on_query(mapping))
+    insert.create_and_insert(csvw, schema)
+
 
 if __name__ == "__main__":
     main()
