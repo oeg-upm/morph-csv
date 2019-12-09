@@ -45,10 +45,11 @@ def main():
     csvColumns, mapping = fromSPARQLtoMapping(mapping, query, parsedQuery) 
     csvColumns = getColumnsFromFunctions(csvColumns, functions)
     print('Required Columns: '+ str(csvColumns))
-    sys.exit()
     csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
     csvw = csvwParser.insertRowTitles(csvw)
     csvw = formatter.csvwFilter(csvw,csvColumns)
+    print('***********CSVW************')
+    print(csvw)
     print("Formalizing the data to 2NF")
     formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery)
     csvw = formalizedData['csvw']
@@ -65,7 +66,7 @@ def main():
     else:
         genproperties.csv_basic_generation(mapping)
     print("Tanslating the RML mapping without functions to R2RML")
-    fromSourceToTables(mapping)
+    #fromSourceToTables(mapping)
     print("Answering query")
 
 if __name__ == "__main__":

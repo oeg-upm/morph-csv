@@ -18,7 +18,6 @@ def csvwFilter(csvw, selection):
         if(title in selection.keys()):
             table['filteredRowTitles'] = []
             table['filteredRowTitles'].extend(parser.orderAccordingToRowTitles(selection[title]))
-
             result['tables'].append(table)
     return result
 #Function to call the bash Scripts files and send the scvw data.

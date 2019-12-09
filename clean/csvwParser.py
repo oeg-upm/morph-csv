@@ -24,13 +24,26 @@ def filterCols(table):
                 columns.append(col)
         table['tableSchema']['columns'] = columns
         if('primaryKey' in table['tableSchema']):
-            table['tableSchema']['primaryKey'] = removePK(table['tableSchema']['primaryKey'], table['filteredRowTitles'])
+            table['tableSchema']['primaryKey'] = removePK(table['tableSchema']['primaryKey'],
+                    table['filteredRowTitles'])
+        if('foreignkey' in table['tableSchema'].keys()):
+            table['tableSchema']['foreignKey'] = removeFK(table['tableSchema']['foreignKey'],
+                    table['filteredRowTitles']
+                    )
     return table
 def removePK(pKeys, cols):
     if(type(pKeys) is str):
         pKeys = list(pKeys.split(","))
     result  = ','.join(pk for pk in list(set(cols)&set(pKeys)))
     return result
+
+def removeFK(fKeys, cols):
+    result = []
+    for fKey in fKeys:
+        if fKey['columnReference'] in cols:
+            result.append(fKey)
+    return result
+
 def insertRowTitles(csvw):
     for i,table in enumerate(csvw['tables']):
         csvw['tables'][i]['tableSchema']['rowTitles'] = getTableTitles(table)['titles']
@@ -126,9 +139,9 @@ def getSkipRows(table):
 #Recorre las columnas para almacenar el Null value en un ARRAY si no se encuntra ningun NUllvalue se usa el caracter vacio por defecto.
 def getNullValues(table):
     nullValues  = [] 
+    fullArg = ''
+    result = {'data':[],'fullArg':''}
     if(columnsChecker(table)):
-        fullArg = ''
-        result = {'data':[],'fullArg':''}
         for col in table['tableSchema']['columns']:
             title = getColTitle(col)
             index = rowTitles.index(title)
@@ -140,7 +153,7 @@ def getNullValues(table):
                 arg = 'gsub(/^$/,\"null\",$%s);'%( str(index+1))
                 result['data'].append({'col':'$%s'%(str(index+1)), 'value':''})
             fullArg += arg
-    result['fullArg'] = fullArg
+        result['fullArg'] = fullArg
     return result
 
 #Get min and Max (Inclusive and exclusive)

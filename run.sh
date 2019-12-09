@@ -17,5 +17,5 @@
 #BIO2RDF:
 cp evaluation/bio2rdf/bio2rdf.csvw.json tmp/annotations/annotations.json
 cp evaluation/bio2rdf/bio2rdf.yml tmp/annotations/mapping.yaml
-python3 morphcsv.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bio2rdf/queries/query4.rq
+python3 morphcsv.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bio2rdf/queries/queryTEST.rq
 
