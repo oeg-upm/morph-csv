@@ -49,6 +49,7 @@ def generate_sql_schema(csvw,functions,decision):
     print('***********SCHEMA**************')
     print(sqlGlobal.replace(';', ';\n'))
     return sqlGlobal
+
 def find_type_in_csvw(title, csvw_columns):
     datatype = "VARCHAR(200)"
     for col in csvw_columns["columns"]:
