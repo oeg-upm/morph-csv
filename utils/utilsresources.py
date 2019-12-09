@@ -34,6 +34,7 @@ def downloadCSVfilesFromRML():
 def readQuery(path):
     with open(path, "r") as file:
         content = file.read()
+    os.system("cp "+path+" ./tmp/query.rq")
     return content
 
 
@@ -41,8 +42,6 @@ def maketmpdirs():
     os.system("mkdir ./tmp/")
     os.system("mkdir ./tmp/annotations")
     os.system("mkdir ./tmp/csv")
-    os.system("mkdir ./tmp/morph-properties")
-    os.system("mkdir ./results")
 
 
 def removetmpdirs():

@@ -59,9 +59,9 @@ def main():
     if mapping2Sql.decide_schema_based_on_query(mapping):
         schema = mapping2Sql.generate_sql_schema(csvw)
         insert.create_and_insert(csvw, schema)
-        genproperties.postgre_generation(query)
+        genproperties.postgre_generation()
     else:
-        genproperties.csv_basic_generation(mapping, query)
+        genproperties.csv_basic_generation(mapping)
     print("Tanslating the RML mapping without functions to R2RML")
     fromSourceToTables(mapping)
     print("Answering query")

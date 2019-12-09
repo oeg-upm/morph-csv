@@ -21,6 +21,7 @@ def addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery):
                 predicate,variable =getPredicateAndObjectFromQuery(query, mapping, parsedQuery,colName)
                 #sys.exit()
                 query = queryRewritten(query,predicate,variable,colName)
+                save_rewritten_query(query,"./tmp/query.rq")
                 mapping = mappingTranslation(mapping, colName)
         dataTranslation(csvwParser.getSeparatorScripts(table),
                 csvwParser.getDelimiterValue(table),
@@ -39,7 +40,7 @@ def createNewTable(table,col):
     print('NULL:'+ str(nullValue) + '\nDELIMITER:' + str(delimiter) + '\nDATATYPE:\n' +str(datatype))
     result = {
         'filteredRowTitles':['id', 'value'],       
-        'url':'ALGO/%s.csv'%(csvwParser.getColTitle(col)),
+        'url':'tmp/csv/%s.csv'%(csvwParser.getColTitle(col)),
         'dialect':{
             'delimiter':',',
             'header':False
@@ -229,3 +230,9 @@ def getColumnsfromJoin(join):
                 columns.extend(getColumnsfromOM(join[joinscount]["condition"]["parameters"][i][1]))
         joinscount += 1
     return columns
+
+
+def save_rewritten_query(query, query_path):
+    f = open(query_path,"w+")
+    f.write(query)
+    f.close()

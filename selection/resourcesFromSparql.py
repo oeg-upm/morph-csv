@@ -18,6 +18,8 @@ def fromSPARQLtoMapping(mapping, query, parsedQuery):
 def getUrisFromQuery(query):
     result = {}
     for el in query['where']:
+        if 'patterns' in el.keys():
+            el = el['patterns']
         if('triples' in el.keys()):
             for tm in el['triples']:
                 subject = tm['subject']['value']
@@ -38,13 +40,16 @@ def getUrisFromQuery(query):
                     else:
                         result[subject]['fullTM'] = True
     return result
+
 def checkEmptyUris(uris):
     for tm in uris:
         if(len(uris[tm]) > 0):
             return False
     return True
+
 def isUri(uri):
     return str(uri)[:4] == 'http'
+
 def find_triples_in_query(algebra, uris):
     for node in algebra:
         if 'triples' in node:
@@ -52,7 +57,6 @@ def find_triples_in_query(algebra, uris):
                 obtainURISfromTP(tp, uris)
         elif isinstance(algebra[node], dict) and bool(algebra[node].keys()):
             find_triples_in_query(algebra[node], uris)
-
 
 def obtainURISfromTP(tp, uris):#Simplificable
     if str(tp[0]) not in uris.keys():
