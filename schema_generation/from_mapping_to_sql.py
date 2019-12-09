@@ -42,12 +42,12 @@ def generate_sql_schema(csvw,functions,decision):
                     foreignkeys += "FOREIGN KEY ("+column+") REFERENCES "+table+" ("+reference+"),"
                 sql += foreignkeys
         sql = sql[:-1] + ");"
-        sql = sql + function.translate_fno_to_sql(functions)
         sqlGlobal += sql
-    print('***********FUNCTIIONS**********')
-    print(str(functions).replace('\'','"'))
+    sqlGlobal += function.translate_fno_to_sql(functions)
+    #print('***********FUNCTIIONS**********')
+    #print(str(functions).replace('\'','"'))
     print('***********SCHEMA**************')
-    print(sqlGlobal)
+    print(sqlGlobal.replace(';', ';\n'))
     return sqlGlobal
 def find_type_in_csvw(title, csvw_columns):
     datatype = "VARCHAR(200)"

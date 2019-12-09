@@ -4,32 +4,32 @@ import re
 def translate_fno_to_sql(functions):
     sql = ""
     for tm in functions:
-        if 'query' in functions[tm]:
-            f = ""
-            function = functions[tm]["fno"]["params"]
-            column = function[tm]["fno"]["column"]
-            source = re.sub("\\.csv~csv", "", functions["tm"]["fno"]["source"].split("/")[-1]).upper()
-            sql += "ALTER TABLE " + source + "ADD COLUMN (" + column + " VARCHAR(200));\n"
-            sql += "UPDATE " + source + "SET " + column + "=" + translate_function_to_sql(function, f) + ";\n"
+        #if 'query' in functions[tm]
+        for func in functions[tm]:
+            parameters = func["params"]
+            column = func["column"]
+            source = func["source"].split("/")[-1].split('.')[0]
+            sql += "ALTER TABLE " + source + " ADD COLUMN (" + column + " VARCHAR(200));"
+            sql += "UPDATE " + source + " SET " + column + "=" + translate_function_to_sql(parameters, sql) + ";\n"
 
     return sql
 
 
-def translate_function_to_sql(function, sql):
-    for f, func in enumerate(len(function)):
-        sql += translate_f_to_sql(function[f]) + "("
-        for i,param_ in enumerate(function[f]["parameters"]):
-            if type(function[f]["parameters"][i]) is dict:
-                translate_function_to_sql(function[f]["parameters"][i]["value"], sql)
+def translate_function_to_sql(parameters, sql):
+    function = translate_f_to_sql(parameters['function'])
+    sql = function + '('
+    for i,param in enumerate(parameters['parameters']):
+        if(type(param) is dict):
+            sql += translate_function_to_sql(param['value'], sql)
+        else:
+            value = param[1]
+            col = re.findall('\$\(([^)]+)\)', value)
+            if(len(col) > 0):
+                value = col[0]
+            if i < len(parameters['parameters']) - 1:
+                sql += '"' + value + '",'
             else:
-                param = function[f]["parameters"][i][1]
-                if re.match("\\$\\(.*\\)", param):
-                    param = re.sub("\\)", "", re.sub("\\$\\(", "", param))
-                if i == len(function[f]["parameters"])-1:
-                    sql += param + ")"
-                else:
-                    sql += param + ","
-
+                sql += '"' + value + '")'
     return sql
 
 def translate_f_to_sql(value):

@@ -53,9 +53,7 @@ def getCleanYarrrml ():
 def fromSourceToTables(mapping):
 
     for tm in mapping["mappings"]:
-        source = mapping["mappings"][tm]["sources"][0][0].split("/")[
-            len(mapping["mappings"][tm]["sources"][0][0].split("/")) - 1]
-        re.sub("\\.csv~csv", "", source)
+        source = mapping["mappings"][tm]["sources"][0][0].split("/")[-1].replace(".csv~csv","")
         mapping["mappings"][tm]["sources"] = [{"table": source.upper()}]
     f = open("./tmp/annotations/mapping.yaml", "w+")
     f.write(yaml.dump(mapping, default_flow_style=None))
