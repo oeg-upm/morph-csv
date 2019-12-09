@@ -9,8 +9,9 @@ import sys
 
 def fromSPARQLtoMapping(mapping, query, parsedQuery):
     uris = getUrisFromQuery(parsedQuery)
-    print('\n\nURIS:\n\n' + str(uris))
+    print('\n\nURIS:\n\n' + str(uris) + '\n\n\n')
     translatedMapping = simplifyMappingAccordingToQuery(uris,mapping)
+#    print('\n\n****************+MAPPNIG************\n\n' + str(translatedMapping).replace('\'', '"'))
     csvColumns = findCsvColumnsInsideTheMapping(translatedMapping)
 
     return csvColumns, translatedMapping
@@ -23,27 +24,6 @@ def getUrisFromQuery(query):
                 result.update(extractTriplePatternUris(result, tp))
         else:
             result.update(extractTriplePatternUris(result, el))
-        '''
-        if('triples' in el.keys()):
-            for tm in el['triples']:
-                subject = tm['subject']['value']
-                if(subject not in result.keys()):
-                    result[subject] = {'uris':[], 'fullTM':False}
-                if(isUri(subject)):
-                    result[subject]['uris'].append(subject)
-                uri = tm['predicate']['value']
-                if(isUri(uri)):
-                    if uri == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
-                        uri = tm['object']['value']
-                        result[subject]['uris'].append('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
-                    result[subject]['uris'].append(uri)
-                else:
-                    uri = tm['object']['value']
-                    if(isUri(uri)):
-                        result[subject]['uris'].append(uri)
-                    else:
-                        result[subject]['fullTM'] = True
-        '''
     return result
 def extractTriplePatternUris(result, el):
     if('triples' in el.keys()):
@@ -126,7 +106,7 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
                                 }
                         newMapping['mappings'][tm]['po'].append(po)
     #print('MAPPING:\n' + str(newMapping).replace('\'', '"'))                       
-    newMapping = removeUnnecesaryTM(newMapping)
+    newMapping = removeEmptyTM(newMapping)
     newMapping  = addReferencesOfTheJoins(mapping, newMapping)
     return newMapping
 
@@ -192,7 +172,7 @@ def checkIfReferenceIsDefined(storedTm,oldMapping,mapping,o):
     return storedTm
 
 def getJoinReferences(join):
-    result = {'innerRef': join['condition']['parameters'][1][1], 'outerRef':join['condition']['parameters'][0][1]}
+    result = {'innerRef': join['condition']['parameters'][0][1], 'outerRef':join['condition']['parameters'][1][1]}
     return result
 def removeUnnecesaryTM(mapping):
     #print('MAPPING:\n' + str(mapping).replace('\'', '"'))

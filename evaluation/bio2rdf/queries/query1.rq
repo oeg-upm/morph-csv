@@ -10,3 +10,5 @@ WHERE {
 		homogv:x-refseq ?refseq .
 }
 LIMIT 10
+#Required Columns: {'TMhomologene': {'source': 'homologene.csv', 'columns': ['refseq', 'hid', 'genesymbol']}}
+

@@ -32,7 +32,7 @@ def main():
 
     print("Downloading mappings, data and query")
     maketmpdirs()
-##    downloadAnnotations(config)
+#    downloadAnnotations(config)
 #    downloadCSVfilesFromRML()
 
     query = readQuery(query_path)
@@ -44,7 +44,7 @@ def main():
     print("Selecting RML rules, CSVW annotations and CSV files and columns for answering the query")
     csvColumns, mapping = fromSPARQLtoMapping(mapping, query, parsedQuery) 
     csvColumns = getColumnsFromFunctions(csvColumns, functions)
-    print('Requuired Columns: '+ str(csvColumns))
+    print('Required Columns: '+ str(csvColumns))
     sys.exit()
     csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
     csvw = csvwParser.insertRowTitles(csvw)

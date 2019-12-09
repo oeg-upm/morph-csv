@@ -11,3 +11,5 @@ WHERE {
 		ncbiv:locus ?locus .
 }
 LIMIT 10
+#Required Columns: {'TMncbigene-gene_info': {'source': 'gene_info.csv', 'columns': ['LocusTag', 'tax_id', 'description', 'Symbol', 'GeneID']}, 'TMhomologene': {'source': 'homologene.csv', 'columns': ['hid']}}
+
