@@ -17,6 +17,7 @@ cp /morphcsv/evaluation/gtfs/gtfs-csv.yaml /mappings/
 cp /morphcsv/evaluation/gtfs/config-gtfs.json /mappings/
 mkdir /queries/gtfs
 cp -r /morphcsv/evaluation/gtfs/queries/ /queries/gtfs/
+cp /morphcsv/evaluation/gtfs/evaluate.sh /evaluate-gtfs.sh
 
 #bio2rdf
 cp /morphcsv/evaluation/bio2rdf/bio2rdf.csvw.json /mappings/
@@ -24,6 +25,6 @@ cp /morphcsv/evaluation/gtfs/bio2rdf.yml /mappings/
 cp /morphcsv/evaluation/gtfs/config-bio2rdf.json /mappings/
 mkdir /queries/bio2rdf
 cp -r /morphcsv/evaluation/bio2rdf/queries/ /queries/bio2rdf/
-
+cp /morphcsv/evaluation/gtfs/evaluate.sh /evaluate-bio2rdf.sh
 #data
 #use the csv with links inside the evaluation folders to download the data manually
