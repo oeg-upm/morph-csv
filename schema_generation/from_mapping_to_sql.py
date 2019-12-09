@@ -1,6 +1,7 @@
 import re
 import sys
 import clean.csvwParser as csvwParser
+import schema_generation.creation_sql_alters as function
 
 
 # return true if there is a join in the mapping, hence, in the query, if not morph-rdb in csv mode should be run
@@ -14,7 +15,7 @@ def decide_schema_based_on_query(mapping):
     return False
 
 
-def generate_sql_schema(csvw):
+def generate_sql_schema(csvw,functions,decision):
 
     sqlGlobal = ""
     foreignkeys = ""
@@ -26,22 +27,24 @@ def generate_sql_schema(csvw):
         sql += "CREATE TABLE " + source + "("
         for columName in columns:
             sql += columName + " " + find_type_in_csvw(columName, table["tableSchema"]) + ","
-        try:
-            primarykeys = table["tableSchema"]["primaryKey"]
-        except:
-            primarykeys = ''
-        if len(primarykeys) > 0:
-            sql += "PRIMARY KEY (" + primarykeys + "),"
-        if 'foreignKeys' in table['tableSchema'].keys():
-            for fk in table["tableSchema"]["foreignKeys"]:
-                column = fk["columnReference"]
-                table = fk["reference"]["resource"]
-                reference = fk["reference"]["columnReference"]
-                foreignkeys += "FOREIGN KEY ("+column+") REFERENCES "+table+" ("+reference+"),"
-            sql += foreignkeys
+        if decision:
+            try:
+                primarykeys = table["tableSchema"]["primaryKey"]
+            except:
+                primarykeys = ''
+            if len(primarykeys) > 0:
+                sql += "PRIMARY KEY (" + primarykeys + "),"
+            if 'foreignKeys' in table['tableSchema'].keys():
+                for fk in table["tableSchema"]["foreignKeys"]:
+                    column = fk["columnReference"]
+                    table = fk["reference"]["resource"]
+                    reference = fk["reference"]["columnReference"]
+                    foreignkeys += "FOREIGN KEY ("+column+") REFERENCES "+table+" ("+reference+"),"
+                sql += foreignkeys
         sql = sql[:-1] + ");"
+        sql = sql + function.translate_fno_to_sql(functions)
         sqlGlobal += sql
-    print(sqlGlobal)
+    #print(sqlGlobal)
     return sqlGlobal
 def find_type_in_csvw(title, csvw_columns):
     datatype = "VARCHAR(200)"
