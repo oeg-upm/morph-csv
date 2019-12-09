@@ -18,7 +18,6 @@ def csvwFilter(csvw, selection):
         if(title in selection.keys()):
             table['filteredRowTitles'] = []
             table['filteredRowTitles'].extend(parser.orderAccordingToRowTitles(selection[title]))
-
             result['tables'].append(table)
     return result
 #Function to call the bash Scripts files and send the scvw data.
@@ -39,19 +38,6 @@ def scriptCaller(data):
     insertTitles(titles, url)
 
 
-    '''
-    #rowSkipper(parser.getSkipRows(data), url)
-    print("Skip Rows Done")
-    replaceDelimiter(parser.getDelimiter(data), url)
-    print("Replace Delimiter Done")
-    dateFormatReplacer(parser.getDateFormat(data), url)
-    print("DateFormat Changer Done")
-    #booleanFormatReplacer(parser.getBooleanFormat(data), url)
-    print("BooleanFormat Changer Done")
-    nullFormatChanger(parser.getNullValues(data), url)
-    print("NullFormat Changer Done")
-    defaultEmptyStringFormatChanger(parser.getDefaultEmptyStringValue(data), url)
-    '''
 '''
 Insert row titles (from csvw:rowTitles)
 '''

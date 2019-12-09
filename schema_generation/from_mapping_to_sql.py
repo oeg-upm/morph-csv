@@ -43,9 +43,13 @@ def generate_sql_schema(csvw,functions,decision):
                 sql += foreignkeys
         sql = sql[:-1] + ");"
         sqlGlobal += sql
-    #print(sqlGlobal)
     sqlGlobal += function.translate_fno_to_sql(functions)
+    #print('***********FUNCTIIONS**********')
+    #print(str(functions).replace('\'','"'))
+    print('***********SCHEMA**************')
+    print(sqlGlobal.replace(';', ';\n'))
     return sqlGlobal
+
 def find_type_in_csvw(title, csvw_columns):
     datatype = "VARCHAR(200)"
     for col in csvw_columns["columns"]:
