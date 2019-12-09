@@ -296,6 +296,7 @@ def atomicprefixsubtitution(prefixes, value):
 
 
 def getColumnsFromFunctions(csvColumns, functions):
+    filteredFunctions = {}
     for tm in functions:
         for func in functions[tm]:
             if(tm in csvColumns.keys()):
@@ -303,12 +304,15 @@ def getColumnsFromFunctions(csvColumns, functions):
                     sourceColumns = csvColumns[tm]["columns"]
                     for column in sourceColumns:
                         if column in func['column']:
+                            if(tm not in filteredFunctions.keys()):
+                                filteredFunctions[tm] = []
+                            filteredFunctions[tm].append(func)
                             columns = cleanColPattern(functions[tm])
 #                            extractReferencesFromFno(functions[tm][column], columns)
                             csvColumns[tm]["columns"].remove(column)
                             csvColumns[tm]["columns"].extend(columns)
                             csvColumns[tm]["columns"] = list(dict.fromkeys(csvColumns[tm]["columns"]))
-    return csvColumns
+    return csvColumns,filteredFunctions
 
 
 def extractReferencesFromFno(functions, columns):

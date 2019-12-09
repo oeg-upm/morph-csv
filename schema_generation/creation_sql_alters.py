@@ -16,11 +16,10 @@ def translate_fno_to_sql(functions):
 
 
 def translate_function_to_sql(function, sql):
-
-    for f in range(len(function)):
+    for f, func in enumerate(len(function)):
         sql += translate_f_to_sql(function[f]) + "("
-        for i in range(len(function[f]["parameters"])):
-            if isinstance(function[f]["parameters"][i], dict):
+        for i,param_ in enumerate(function[f]["parameters"]):
+            if type(function[f]["parameters"][i]) is dict:
                 translate_function_to_sql(function[f]["parameters"][i]["value"], sql)
             else:
                 param = function[f]["parameters"][i][1]

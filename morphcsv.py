@@ -43,13 +43,14 @@ def main():
     functions, mapping = getCleanYarrrml()
     print("Selecting RML rules, CSVW annotations and CSV files and columns for answering the query")
     csvColumns, mapping = fromSPARQLtoMapping(mapping, query, parsedQuery) 
-    csvColumns = getColumnsFromFunctions(csvColumns, functions)
+    csvColumns,functions = getColumnsFromFunctions(csvColumns, functions)
+    #functions = filterFunctionsAccording2Query(functions, mapping)
     print('Required Columns: '+ str(csvColumns))
     csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
     csvw = csvwParser.insertRowTitles(csvw)
     csvw = formatter.csvwFilter(csvw,csvColumns)
-    print('***********CSVW************')
-    print(csvw)
+    #print('***********CSVW************')
+    #print(csvw)
     print("Formalizing the data to 2NF")
     formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery)
     csvw = formalizedData['csvw']
@@ -58,15 +59,11 @@ def main():
     #TODO formalizer.toThirdNormalForm(mapping, csvColumns, csvw)
     print("Preparing the data to execute the query")
     formatter.csvFormatter(csvw)
-    print("Generating the SQL schema based on the csvw and the query")
-    if mapping2Sql.decide_schema_based_on_query(mapping):
-        schema = mapping2Sql.generate_sql_schema(csvw)
-        insert.create_and_insert(csvw, schema)
-        genproperties.postgre_generation()
-    else:
-        genproperties.csv_basic_generation(mapping)
     print("Tanslating the RML mapping without functions to R2RML")
-    #fromSourceToTables(mapping)
+    fromSourceToTables(mapping)
+    print("Generating the SQL schema based on the csvw and the query")
+    schema = mapping2Sql.generate_sql_schema(csvw,functions,mapping2Sql.decide_schema_based_on_query(mapping))
+    insert.create_and_insert(csvw, schema)
     print("Answering query")
 
 if __name__ == "__main__":

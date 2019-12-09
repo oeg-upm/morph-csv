@@ -37,7 +37,7 @@ def createNewTable(table,col):
     nullValue = csvwParser.getNullValue(col)
     delimiter = csvwParser.getDelimiterValue(table)
     datatype = csvwParser.getDataType(col) 
-    print('NULL:'+ str(nullValue) + '\nDELIMITER:' + str(delimiter) + '\nDATATYPE:\n' +str(datatype))
+#    print('NULL:'+ str(nullValue) + '\nDELIMITER:' + str(delimiter) + '\nDATATYPE:\n' +str(datatype))
     result = {
         'filteredRowTitles':['id', 'value'],       
         'url':'tmp/csv/%s.csv'%(csvwParser.getColTitle(col)),
@@ -58,8 +58,8 @@ def createNewTable(table,col):
             }
         }
 
-    print('************************')
-    print(result)
+#    print('************************')
+#    print(result)
     return result
 def generateForeignKey(colName):
     foreignKey = {

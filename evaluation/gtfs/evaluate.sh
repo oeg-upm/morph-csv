@@ -2,8 +2,6 @@
 
 
 echo "gtfs-size,query,time,morphcsv,morphrdb,ontop" >> /results/results-time.csv
-mkdir /morphcsv/tmp
-mkdir /morphcsv/tmp/csv
 cp -r /morphcsv/evaluation/engines/* /morphcsv/tmp/
 type="original"
 for i in 1 10 100 1000
