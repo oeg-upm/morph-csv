@@ -42,7 +42,7 @@ def generate_sql_schema(csvw,functions,decision):
                     foreignkeys += "FOREIGN KEY ("+column+") REFERENCES "+table+" ("+reference+"),"
                 sql += foreignkeys
         sql = sql[:-1] + ");"
-        sql = sql + function.translate_fno_to_sql(functions)
+        sql += function.translate_fno_to_sql(functions)
         sqlGlobal += sql
     #print(sqlGlobal)
     return sqlGlobal

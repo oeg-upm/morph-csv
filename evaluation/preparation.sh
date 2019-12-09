@@ -1,6 +1,7 @@
 #!/bin/bash
 cd ..
 cp -r /morphcsv/evaluation/engines/* /morphcsv/tmp/
+chmod +x /morphcsv/tmp/*.sh
 cd /morphcsv/tmp/
 wget https://github.com/ontop/ontop/releases/download/ontop-3.0.0/ontop-cli-3.0.0.zip
 unzip ontop-cli-3.0.0.zip -d ontop

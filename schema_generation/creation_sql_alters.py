@@ -8,7 +8,7 @@ def translate_fno_to_sql(functions):
             f = ""
             function = functions[tm]["fno"]["params"]
             column = function[tm]["fno"]["column"]
-            source = re.sub("\\.csv~csv", "", functions["tm"]["fno"]["source"].split("/")[-1]).upper()
+            source = functions["tm"]["fno"]["source"].split("/")[-1].upper().replace(".csv~csv","")
             sql += "ALTER TABLE " + source + "ADD COLUMN (" + column + " VARCHAR(200));\n"
             sql += "UPDATE " + source + "SET " + column + "=" + translate_function_to_sql(function, f) + ";\n"
 
