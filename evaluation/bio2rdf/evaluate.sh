@@ -2,9 +2,7 @@
 
 
 echo "dataset,query,time,morphcsv,morphrdb,ontop" >> /results/results-time.csv
-mkdir /morphcsv/tmp
-mkdir /morphcsv/tmp/csv
-cp -r /morphcsv/evaluation/engines/* /morphcsv/tmp/
+
 cp -r /data/bio2rdf/* /data/
 cp -r /data/bio2rdf/* /morphcsv/tmp/csv
 for j in 1 2 3 4 5 6 7 8 9 10
