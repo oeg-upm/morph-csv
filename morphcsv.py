@@ -32,8 +32,8 @@ def main():
 
     print("Downloading mappings, data and query")
     maketmpdirs()
-##    downloadAnnotations(config)
-#    downloadCSVfilesFromRML()
+    downloadAnnotations(config)
+#   downloadCSVfilesFromRML()
 
     query = readQuery(query_path)
     sparqlQueryParser(query_path)
