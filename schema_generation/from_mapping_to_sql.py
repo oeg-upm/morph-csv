@@ -63,7 +63,7 @@ def translate_type_to_sql(dataType):
     elif re.match("boolean", dataType):
         translated_type = "BOOLEAN"
     elif re.match("decimal", dataType):
-        translated_type = "DECIMAL(18,15)"
+        translated_type = "DECIMAL(40,15)"
     elif re.match("date", dataType):
         translated_type = "DATE"
     else:
