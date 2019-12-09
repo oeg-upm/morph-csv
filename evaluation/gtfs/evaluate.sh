@@ -24,8 +24,8 @@ do
             ontop=$(echo "$finish - $start" | bc)
             echo "gtfs-$i,$j,$t,$morphcsv,$morphrdb,$ontop" >> /results/results-time.csv
           done
-          mv /results/results.xml /results/bio2rdf-q$j-morphrdb.xml
-          mv /morphcsv/tmp/ontop/output.csv /results/bio2rdf-q$j-ontop.csv
+          mv /results/results.xml /results/gtfs-$i-q$j-morphrdb.xml
+          mv /morphcsv/tmp/ontop/output.csv /results/gtfs-$i-q$j-ontop.csv
   done
   type="vig"
 done
