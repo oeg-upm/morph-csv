@@ -3,6 +3,7 @@ cd ..
 cp -r /morphcsv/evaluation/engines/* /morphcsv/tmp/
 chmod +x /morphcsv/tmp/*.sh
 cd /morphcsv/tmp/
+cp morph-rdb.properties csv
 wget https://github.com/ontop/ontop/releases/download/ontop-3.0.0/ontop-cli-3.0.0.zip
 unzip ontop-cli-3.0.0.zip -d ontop
 mv /morphcsv/tmp/run-ontop.sh /morphcsv/tmp/ontop/
