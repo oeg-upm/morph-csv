@@ -1,4 +1,4 @@
 {
-	"yarrrml":"/morphcsv/evaluation/bio2rdf/bio2rdf.yml",
-	"csvw":"/morphcsv/evaluation/bio2rdf/bio2rdf.csvw.json"
+	"yarrrml":"/mappings/bio2rdf.yml",
+	"csvw":"/mappings/bio2rdf.csvw.json"
 }

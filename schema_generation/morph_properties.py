@@ -26,8 +26,7 @@ def csv_basic_generation(mapping,query_path):
         sources.extend("tmp/csv/"+source+".csv")
 
     properties += "mappingdocument.file.path=/morphcsv/tmp/annotations/mapping.r2rml.ttl\n"
-    properties += "output.file.path=/results/results.nt\n"
-    properties += "output.rdflanguage=N-TRIPLE\n"
+    properties += "output.file.path=/results/results.xml\n"
     properties += "query.file.path="+query_path
     properties += "csv.file.path="
     for i in range(len(sources)):
@@ -50,18 +49,17 @@ def csv_basic_generation(mapping,query_path):
 def postgre_generation(query_path):
     properties = ""
     properties += "mappingdocument.file.path=/morphcsv/tmp/annotations/mapping.r2rml.ttl\n"
-    properties += "output.file.path=results/results.nt\n"
-    properties += "output.rdflanguage=N-TRIPLE\n"
+    properties += "output.file.path=/results/results.xml\n"
     properties += "query.file.path=" + query_path
     properties += "no_of_database=1\n"
     properties += "database.name[0]=morphcsv\n"
     properties += "database.driver[0]=org.postgresql.Driver\n"
-    properties += "database.url[0]=jdbc:postgresql://localhost:/morphcsv\n"
+    properties += "database.url[0]=jdbc:postgresql://postgres/morphcsv\n"
     properties += "database.user[0]=user\n"
     properties += "database.pwd[0]=csv\n"
     properties += "database.type[0]=postgresql\n"
 
-    f = open("tmp/morph-properties/morph-rdb.properties", "w+")
+    f = open("tmp/morph-rdb.properties", "w+")
     f.write(properties)
     f.close()
 
