@@ -19,7 +19,11 @@ def getUrisFromQuery(query):
     result = {}
     for el in query['where']:
         if 'patterns' in el.keys():
-            el = el['patterns']
+            for tp in el['patterns']:
+                result.update(extractTriplePatternUris(result, tp))
+        else:
+            result.update(extractTriplePatternUris(result, el))
+        '''
         if('triples' in el.keys()):
             for tm in el['triples']:
                 subject = tm['subject']['value']
@@ -39,6 +43,28 @@ def getUrisFromQuery(query):
                         result[subject]['uris'].append(uri)
                     else:
                         result[subject]['fullTM'] = True
+        '''
+    return result
+def extractTriplePatternUris(result, el):
+    if('triples' in el.keys()):
+        for tm in el['triples']:
+            subject = tm['subject']['value']
+            if(subject not in result.keys()):
+                result[subject] = {'uris':[], 'fullTM':False}
+            if(isUri(subject)):
+                result[subject]['uris'].append(subject)
+            uri = tm['predicate']['value']
+            if(isUri(uri)):
+                if uri == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type':
+                    uri = tm['object']['value']
+                    result[subject]['uris'].append('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
+                result[subject]['uris'].append(uri)
+            else:
+                uri = tm['object']['value']
+                if(isUri(uri)):
+                    result[subject]['uris'].append(uri)
+                else:
+                    result[subject]['fullTM'] = True
     return result
 
 def checkEmptyUris(uris):
