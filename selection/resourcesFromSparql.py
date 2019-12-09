@@ -9,9 +9,9 @@ import sys
 
 def fromSPARQLtoMapping(mapping, query, parsedQuery):
     uris = getUrisFromQuery(parsedQuery)
-    print('\n\nURIS:\n\n' + str(uris) + '\n\n\n')
+#    print('\n\nURIS:\n\n' + str(uris) + '\n\n\n')
     translatedMapping = simplifyMappingAccordingToQuery(uris,mapping)
-#    print('\n\n****************+MAPPNIG************\n\n' + str(translatedMapping).replace('\'', '"'))
+#    print('\n\n****************+MAPPNIG************\n\n' + str(mapping).replace('\'', '"'))
     csvColumns = findCsvColumnsInsideTheMapping(translatedMapping)
 
     return csvColumns, translatedMapping
@@ -105,7 +105,7 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
                                 'po':[]
                                 }
                         newMapping['mappings'][tm]['po'].append(po)
-    #print('MAPPING:\n' + str(newMapping).replace('\'', '"'))                       
+#    print('MAPPING:\n' + str(newMapping).replace('\'', '"'))                       
     newMapping = removeEmptyTM(newMapping)
     newMapping  = addReferencesOfTheJoins(mapping, newMapping)
     return newMapping
@@ -161,7 +161,8 @@ def checkIfReferenceIsDefined(storedTm,oldMapping,mapping,o):
         storedTm[tmName]['po'] = []
         if(tmName in mapping['mappings'].keys()):
             storedTm[tmName] = mapping['mappings'][tmName]
-    if (joinReferences['outerRef'] not in getColPatterns(newMapping['mappings'][tmName]) and
+    if ((tmName not in newMapping['mappings'].keys() or 
+        joinReferences['outerRef'] not in getColPatterns(newMapping['mappings'][tmName])) and
         joinReferences['outerRef'] not in getColPatterns(storedTm[tmName])
             ):
         #print('BUSCAMOS:' + str(joinReferences['outerRef']))
@@ -240,6 +241,8 @@ def cleanColPattern(columns):
     return result
 
 def isPoInUris(po, uris):
+    if(type(po) is dict):
+        po = [po['p']]
     for item in po:
         if item in uris:
             return True
