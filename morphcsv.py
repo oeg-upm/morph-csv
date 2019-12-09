@@ -41,7 +41,6 @@ def main():
 
     print("Removing FnO functions from RML")
     functions, mapping = getCleanYarrrml()
-    print(functions)
     print("Selecting RML rules, CSVW annotations and CSV files and columns for answering the query")
     csvColumns, mapping = fromSPARQLtoMapping(mapping, query, parsedQuery) 
     csvColumns = getColumnsFromFunctions(csvColumns, functions)
