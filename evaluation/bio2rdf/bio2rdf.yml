@@ -150,6 +150,7 @@ mappings:
       - [ncbiv:symbol-synonym, $(Synonyms)]
       - [ncbiv:dbxref, $(dbXrefs)]
       - [ncbiv:chromosome, $(chromosome)]
+      - [ncbiv:type-of-gene, $(type_of_gene)]
       - [ncbiv:map-location, $(map_location)]
       - [ncbiv:nomenclature-authority, $(Symbol_from_nomenclature_authority)]
       - [ncbiv:nomenclature-authority-fullname, $(Full_name_from_nomenclature_authority)]
