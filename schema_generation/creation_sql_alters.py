@@ -9,8 +9,8 @@ def translate_fno_to_sql(functions):
             parameters = func["params"]
             column = func["column"]
             source = func["source"].split("/")[-1].split('.')[0]
-            sql += "ALTER TABLE " + source + " ADD COLUMN (" + column + " VARCHAR(200));"
-            sql += "UPDATE " + source + " SET " + column + "=" + translate_function_to_sql(parameters, sql) + ";\n"
+            sql += "ALTER TABLE \"" + source + "\" ADD COLUMN " + column + " VARCHAR(500);"
+            sql += "UPDATE \"" + source + "\" SET " + column + "=" + translate_function_to_sql(parameters, sql) + ");\n"
 
     return sql
 
@@ -27,9 +27,9 @@ def translate_function_to_sql(parameters, sql):
             if(len(col) > 0):
                 value = col[0]
             if i < len(parameters['parameters']) - 1:
-                sql += '"' + value + '",'
+                sql += '\'' + value + '\','
             else:
-                sql += '"' + value + '")'
+                sql += '\'' + value + '\')'
     return sql
 
 def translate_f_to_sql(value):

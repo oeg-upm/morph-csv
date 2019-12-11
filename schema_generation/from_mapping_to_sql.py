@@ -23,10 +23,11 @@ def generate_sql_schema(csvw,functions,decision):
         sql = ''
         source = csvwParser.getUrl(table).split("/")[-1:][0].replace(".csv","")
         columns = csvw["tables"][i]["filteredRowTitles"]
-        sql += "DROP TABLE IF EXISTS " + source + ";"
-        sql += "CREATE TABLE " + source + "("
+        sql += "DROP TABLE IF EXISTS \"" + source + "\";"
+        sql += "CREATE TABLE \"" + source + "\"("
         for columName in columns:
             sql += columName + " " + find_type_in_csvw(columName, table["tableSchema"]) + ","
+
         if decision:
             try:
                 primarykeys = table["tableSchema"]["primaryKey"]
@@ -41,6 +42,7 @@ def generate_sql_schema(csvw,functions,decision):
                     reference = fk["reference"]["columnReference"]
                     foreignkeys += "FOREIGN KEY ("+column+") REFERENCES "+table+" ("+reference+"),"
                 sql += foreignkeys
+
         sql = sql[:-1] + ");"
         sqlGlobal += sql
     sqlGlobal += function.translate_fno_to_sql(functions)
