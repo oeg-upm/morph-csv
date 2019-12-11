@@ -102,10 +102,16 @@ def createJoin(predicate, column):
     return join
 
 def dataTranslation(data, delimiter, path):
-    if(len(data['columns'])>0):
-        ##print('SCRIPT:\n' + str(data['script']) + '\nCOLS:\n' + str(data['columns']))
-        os.system("bash bash/fn2.sh '%s' '%s' '%s'"%(str(delimiter), str(data['script']), str(path)))
-#    sys.exit()
+    try:
+        if(len(data['columns'])>0):
+            print('SCRIPT:\n' + str(data['script']) + '\nCOLS:\n' + str(data['columns']))
+            os.system("bash bash/fn2.sh '%s' '%s' '%s'"%(str(delimiter), str(data['script']), str(path)))
+    except:
+        print('Falla DataTranslation')
+        print(traceback.format_exc())
+        sys.exit()
+
+
 
 def getPredicateAndObjectFromQuery(query, mapping,parsedQuery,column):
     #print('SEARCHING: '  + column)
@@ -118,12 +124,12 @@ def getPredicateFromQuery(query, column,mapping):
     try:
         for tm in mapping["mappings"]:
             for pom in mapping["mappings"][tm]["po"]:
-                if re.match("\\$\\("+column+"\\)", pom[1]):
+                if type(pom) is list and len(pom) > 1 and re.match("\\$\\("+column+"\\)", pom[1]):
                     predicate = pom[0]
         return predicate
     except:
-        #print("FALLA getPredicateFromQuery ")
-        #print(traceback.format_exc())
+        print("FALLA getPredicateFromQuery ")
+        print(traceback.format_exc())
         sys.exit()
 
 

@@ -17,9 +17,6 @@ def csvwFilter(csvw, selection):
         title = parser.getTableTitle(table)
         if(title in selection.keys()):
             table['filteredRowTitles'] = []
-            print('\n\n\n*************'+ table['url'] + '******************')
-            print(table['tableSchema']['rowTitles'])
-            print('\n\n\n')
             table['filteredRowTitles'].extend(parser.orderAccordingToRowTitles(selection[title]))
             result['tables'].append(table)
     return result
