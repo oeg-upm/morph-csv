@@ -12,4 +12,3 @@ WHERE {
 
         FILTER (?date >= '2016-01-15'^^xsd:date) .
 }
-LIMIT 10

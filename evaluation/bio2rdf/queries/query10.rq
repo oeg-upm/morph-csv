@@ -13,4 +13,3 @@ WHERE {
         ctv:measurement ?measurement ;
         ctv:type ?type .
 }
-LIMIT 10

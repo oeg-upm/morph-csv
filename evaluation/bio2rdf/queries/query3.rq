@@ -12,4 +12,3 @@ WHERE {
 
 		FILTER (?type="tRNA")
 }
-LIMIT 10
