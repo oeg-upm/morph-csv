@@ -9,4 +9,3 @@ WHERE {
 		rdfs:description ?desc ;
 		rdfs:comment ?comment.
 }
-LIMIT 10

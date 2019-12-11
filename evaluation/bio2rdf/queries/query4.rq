@@ -10,4 +10,3 @@ WHERE {
 	?gene_age rdf:type genagev:Aging-Related-Gene ;
 		genagev:taxon ?tax .
 }
-LIMIT 10

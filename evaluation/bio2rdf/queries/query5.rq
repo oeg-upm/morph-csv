@@ -11,4 +11,3 @@ WHERE {
 	?gene dcterms:title ?title ;
 		wbv:cosmid ?cosmid .
 }
-LIMIT 10
