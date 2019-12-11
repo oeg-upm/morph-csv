@@ -81,7 +81,7 @@
       }]
     }
   },{
-    "url": "/data/ncbigene/gene2go,csv",
+    "url": "/data/ncbigene/gene2go.csv",
     "dialect": {
       "delimiter": "\t",
       "header": true

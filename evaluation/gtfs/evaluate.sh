@@ -20,7 +20,8 @@ do
             finish=$(date +%s.%N)
             morphrdb=$(echo "$finish - $start" | bc)
             start=$(date +%s.%N)
-            ./tmp/ontop/run-ontop.sh
+            ./tmp/ontop/run-ontop.sh $j
+            finish=$(date +%s.%N)
             ontop=$(echo "$finish - $start" | bc)
             echo "gtfs-$i,$j,$t,$morphcsv,$morphrdb,$ontop" >> /results/results-time.csv
           done
