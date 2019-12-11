@@ -1,7 +1,7 @@
 {
   "@context": ["http://www.w3.org/ns/csvw"],
   "tables": [{
-    "url": "/data/ncbigene/gene2sts",
+    "url": "/data/ncbigene/gene2sts.csv",
     "dialect": {
       "delimiter": "\t",
       "header": true
@@ -13,7 +13,7 @@
       }]
     }
   },{
-    "url": "/data/ncbigene/gene2unigene",
+    "url": "/data/ncbigene/gene2unigene.csv",
     "dialect": {
       "delimiter": "\t",
       "header": true
@@ -25,7 +25,7 @@
       }]
     }
   },{
-    "url": "/data/ncbigene/gene2pubmed",
+    "url": "/data/ncbigene/gene2pubmed.csv",
     "dialect": {
       "delimiter": "\t",
       "header": true
@@ -37,7 +37,7 @@
       }]
     }
   },{
-    "url": "/data/ncbigene/gene2vega",
+    "url": "/data/ncbigene/gene2vega.csv",
     "dialect": {
       "delimiter": "\t",
       "header": true
@@ -59,7 +59,7 @@
       }]
     }
   },{
-    "url": "/data/ncbigene/gene2ensembl",
+    "url": "/data/ncbigene/gene2ensembl.csv",
     "dialect": {
       "delimiter": "\t",
       "header": true
@@ -81,7 +81,7 @@
       }]
     }
   },{
-    "url": "/data/ncbigene/gene2go",
+    "url": "/data/ncbigene/gene2go,csv",
     "dialect": {
       "delimiter": "\t",
       "header": true
@@ -106,7 +106,7 @@
       }]
     }
   },{
-    "url": "/data/ncbigene/gene_info",
+    "url": "/data/ncbigene/gene_info.csv",
     "dialect": {
       "delimiter": "\t",
       "header": true
