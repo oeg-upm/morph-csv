@@ -6,7 +6,8 @@
 #python3 morphcsv.py -c test/config.json -q test/query.rq
 
 #GTFS
-#python3 morphcsv.py  -c evaluation/gtfs/config-gtfs.json -q test/queries/query4.rq
+#cp ~/Datasets/Gtfs/* tmp/csv/
+#python3 morphcsv.py  -c test/configGtfs.json -q evaluation/gtfs/queries/vig/q14.rq
 
 #GENEINFO
 #cp evaluation/bio2rdf/ncbigene/ncbigene.annotations.json tmp/annotations/annotations.json
@@ -18,5 +19,5 @@
 cp evaluation/bio2rdf/bio2rdf.csvw.json tmp/annotations/annotations.json
 cp evaluation/bio2rdf/bio2rdf.yml tmp/annotations/mapping.yaml
 cp /home/w0xter/Datasets/minBio2Rdf/* /home/w0xter/Desktop/oeg/morph-csv-sparql/tmp/csv
-python3 morphcsv.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bio2rdf/queries/queryTEST.rq
+python3 morphcsv.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bio2rdf/queries/query7.rq
 

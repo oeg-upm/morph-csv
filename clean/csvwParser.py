@@ -145,13 +145,15 @@ def getNullValues(table):
         for col in table['tableSchema']['columns']:
             title = getColTitle(col)
             index = rowTitles.index(title)
+            arg = ''
             if('null' in col.keys()):
                 arg = 'gsub(/^%s$/,\"null\",$%s);'%(str(col['null']), str(index+1))
                 result['data'].append({'col':'$%s'%(str(index+1)), 'value':col['null']})
-
+            '''
             else:
                 arg = 'gsub(/^$/,\"null\",$%s);'%( str(index+1))
                 result['data'].append({'col':'$%s'%(str(index+1)), 'value':''})
+            '''
             fullArg += arg
         result['fullArg'] = fullArg
     return result
@@ -278,6 +280,7 @@ def getGsubPatterns(table):
     script = nullValues['fullArg']
     script += getDefaultEmptyStringValue(table)['arg']
     script += getBooleanFormat(table)
+    result['gsub'] = 'gsub(/"/,"",$0);'
     result['gsub'] += '%s$0=%s;gsub(/"null"/, "Null", $0);'%(str(script),str(delimiter['arg']))
     result['print'] = '$0'
     result['delimiter'] = delimiter['delimiter'].encode('unicode-escape').decode('ascii')
