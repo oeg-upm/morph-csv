@@ -6,8 +6,10 @@ SELECT ?prod ?prod_type ?date ?package ?pack_label
 WHERE {
         ?prod rdf:type ndcv:Product ;
                 ndcv:product-type ?prod_type ;
-		ndcv:start-marketing-date ?date;
+	        	ndcv:start-marketing-date ?date;
                 ndcv:has-package ?package .
         ?package rdfs:label ?pack_label .
+
+        FILTER (?date >= '2016-01-15'^^xsd:date) .
 }
 LIMIT 10

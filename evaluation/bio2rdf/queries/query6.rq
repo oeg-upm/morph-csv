@@ -12,5 +12,8 @@ WHERE {
 		taxv:mit-genetic-code-id ?mitcode ;
 		rdfs:subClassOf ?parent .
 	?gencode taxv:translation-table ?cde .
+	?div dcterms:title ?div_title .
+
+	FILTER (?div_title="Viruses")
 }
 
