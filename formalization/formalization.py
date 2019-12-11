@@ -14,7 +14,7 @@ def addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery):
         foreignKeys = []
         for j,col in enumerate(cols):
             if(csvwParser.hasSeparator(col)):
-                #Falta modificar la tabla original, añadir la foreing key 
+                #Falta modificar la tabla original, añadir la )foreing key 
                 colName = csvwParser.getColTitle(col)
                 foreignKeys.append(generateForeignKey(colName))
                 newTables.append(createNewTable(table,col))
@@ -40,7 +40,7 @@ def createNewTable(table,col):
 #    print('NULL:'+ str(nullValue) + '\nDELIMITER:' + str(delimiter) + '\nDATATYPE:\n' +str(datatype))
     result = {
         'filteredRowTitles':['id', 'value'],       
-        'url':'tmp/csv/%s.csv'%(csvwParser.getColTitle(col)),
+        'url':'tmp/csv/%s.csv'%(str(csvwParser.getColTitle(col)).replace(' ', '')),
         'dialect':{
             'delimiter':',',
             'header':False
@@ -65,7 +65,7 @@ def generateForeignKey(colName):
     foreignKey = {
         "columnReference": colName,
         "reference": {
-          "resource":'tmp/csv/%s.csv'%(colName),
+          "resource":'tmp/csv/%s.csv'%(colName.replace(' ', '')),
           "columnReference": "id"
         }
     }
@@ -130,9 +130,10 @@ def getPredicateFromQuery(query, column,mapping):
 def getObjectFromQuery(parsedQuery, predicate):
     pObject = ''
     for tp in parsedQuery['where']:
-        for bgp in tp['triples']:
-            if(predicate == str(bgp['predicate']['value'])):
-                pObject = bgp['object']['value']
+        if 'triples' in tp.keys():
+            for bgp in tp['triples']:
+                if(predicate == str(bgp['predicate']['value'])):
+                    pObject = bgp['object']['value']
     return pObject
 
 def queryPrefixRewritter(query, prefixes):

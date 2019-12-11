@@ -95,8 +95,7 @@ def getTableTitles(table):
                 i = next(reader) 
                 titles  = i
                 if(delimiter != ','):
-                    titles = i[0].split(delimiter)
-
+                    titles = str(i[0]).encode('unicode-escape').decode('ascii').split(delimiter)
         global rowTitles
         rowTitles = titles
         #SI NO SE ESPECIFICA LOS ROWTITLES EN EL CSVW HAY QUE SACARLOS DEL CSV!!!!!!!
@@ -358,7 +357,7 @@ def getSeparatorScripts(table):
         for col in table['tableSchema']['columns']:
             if(hasSeparator(col)):
                 index = str(getIndexOfCol(col, table) + 1)
-                name = str(getColTitle(col)) + '.csv'
+                name = str(getColTitle(col)).replace(' ','') + '.csv'
                 separator = str(getSeparatorValue(col))
                 delimiter = str(getDelimiterValue(col))
                 result['script'] += '''len%s=split($%s,data%s,\"%s\");n%s=\"\";for(i=1;i<=len%s;++i){n%s=n%s NR \"%s\" data%s[i];system(\"echo \" n%s \" >> tmp/csv/%s\");n%s=\"\"}$%s=NR;'''%(index,index,index,separator,index,index,index,index,delimiter,index,index,name,index, index)

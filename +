@@ -519,7 +519,6 @@
       "header": true
     },
     "tableSchema":{
-      "rowTitles":["HGNC_ID", "Approved_Symbol", "Approved_Name", "Status", "Locus_Type", "Locus_Group", "Previous_Symbols", "Previous_Names", "Synonyms", "Name_Synonyms", "Chromosome", "Date_Approved", "Date_Modified", "Date_Symbol_Changed", "Date_Name_Changed", "Accession_Numbers", "Enzyme_IDs", "Entrez_Gene_ID", "Ensembl_Gene_ID", "Mouse_Genome_Database_ID", "Specialist_Database_Links", "Specialist_Database_IDs", "Pubmed_IDs", "RefSeq_IDs", "Gene_Family_Tag", "Gene_family_description", "Record_Type", "Primary_IDs", "Secondary_IDs", "CCDS_IDs", "VEGA_IDs", "Locus_Specific_Databases", "Entrez_Gene_ID_(supplied_by_NCBI)", "OMIM_ID_(supplied_by_NCBI)", "RefSeq_(supplied_by_NCBI)", "UniProt_ID_(supplied_by_UniProt)", "Ensembl_ID_(supplied_by_Ensembl)", "Vega_ID_(supplied_by_Vega)", "UCSC_ID_(supplied_by_UCSC)", "Mouse_Genome_Database_ID_(supplied_by_MGI)", "Rat_Genome_Database_ID_(supplied_by_RGD)", "RNAcentral_IDs_(supplied_by_RNAcentral)", "LNCipedia_symbol_(supplied_by_LNCipedia)"],
       "primaryKey": "HGNC_ID",
       "foreignKey": [{
         "columnReference": "Entrez_Gene_ID",
@@ -534,26 +533,26 @@
         }
       }],
       "columns": [{
-        "titles": "Approved_Symbol",
+        "titles": "Approved Symbol",
         "null": ""
       },{
-        "titles": "Approved_Name",
+        "titles": "Approved Name",
         "null": ""
       },{
         "titles": "Status",
         "null": ""
       },{
-        "titles": "Locus_Type",
+        "titles": "Locus Type",
         "null": ""
       },{
-        "titles": "Locus_Group",
+        "titles": "Locus Group",
         "null": ""
       },{
-        "titles": "Previous_Symbols",
+        "titles": "Previous Symbols",
         "separator": ", ",
         "null": ""
       },{
-        "titles": "Previous_Names",
+        "titles": "Previous Names",
         "separator": ", ",
         "null": ""
       },{
@@ -561,132 +560,132 @@
         "separator": ", ",
         "null": ""
       },{
-        "titles": "Name_Synonyms",
+        "titles": "Name Synonyms",
         "separator": ", ",
         "null": ""
       },{
         "titles": "Chromosome",
         "null": ""
       },{
-        "titles": "Date_Approved",
+        "titles": "Date Approved",
         "null": "",
         "datatype": {
                "base": "date",
                "format": "YYYY-MM-DD"
         }
       },{
-        "titles": "Date_Modified",
+        "titles": "Date Modified",
         "null": "",
         "datatype": {
                "base": "date",
                "format": "YYYY-MM-DD"
         }
       },{
-        "titles": "Date_Symbol_Changed",
+        "titles": "Date Symbol Changed",
         "null": "",
         "datatype": {
                "base": "date",
                "format": "YYYY-MM-DD"
         }
       },{
-        "titles": "Date_Name_Changed",
+        "titles": "Date Name Changed",
         "null": "",
         "datatype": {
                "base": "date",
                "format": "YYYY-MM-DD"
         }
       },{
-        "titles": "Accession_Numbers",
+        "titles": "Accession Numbers",
         "separator": ", ",
         "null": ""
       },{
-        "titles": "Enzyme_IDs",
+        "titles": "Enzyme IDs",
         "null": ""
       },{
-        "titles": "Entrez_Gene_ID",
+        "titles": "Entrez Gene ID",
         "null": ""
       },{
-        "titles": "Ensembl_Gene_ID",
+        "titles": "Ensembl Gene ID",
         "null": ""
       },{
-        "titles": "Mouse_Genome_Database_ID",
+        "titles": "Mouse Genome Database ID",
         "null": ""
       },{
-        "titles": "Specialist_Database_Links",
+        "titles": "Specialist Database Links",
         "separator": "</a> ",
         "null": ""
       },{
-        "titles": "Specialist_Database_IDs",
+        "titles": "Specialist Database IDs",
         "separator": ", ",
         "null": ""
       },{
-        "titles": "Pubmed_IDs",
+        "titles": "Pubmed IDs",
         "separator": ", ",
         "null": ""
       },{
-        "titles": "RefSeq_IDs",
+        "titles": "RefSeq IDs",
         "null": ""
       },{
-        "titles": "Gene_Family_Tag",
+        "titles": "Gene Family Tag",
         "separator": ", ",
         "null": ""
       },{
-        "titles": "Gene_family_description",
+        "titles": "Gene family description",
         "null": ""
       },{
-        "titles": "Record_Type",
+        "titles": "Record Type",
         "null": ""
       },{
-        "titles": "Primary_IDs",
+        "titles": "Primary IDs",
         "separator": ", ",
         "null": ""
       },{
-        "titles": "Secondary_IDs",
+        "titles": "Secondary IDs",
         "separator": ", ",
         "null": ""
       },{
-        "titles": "CCDS_IDs",
+        "titles": "CCDS IDs",
         "separator": ", ",
         "null": ""
       },{
-        "titles": "VEGA_IDs",
+        "titles": "VEGA IDs",
         "separator": ", ",
         "null": ""
       },{
-        "titles": "Locus_Specific_Databases",
+        "titles": "Locus Specific Databases",
         "null": ""
       },{
-        "titles": "Entrez_Gene_ID_(supplied_by_NCBI)",
+        "titles": "Entrez Gene ID (supplied by NCBI)",
         "null": ""
       },{
-        "titles": "OMIM_ID_(supplied_by_NCBI)",
+        "titles": "OMIM ID (supplied by NCBI)",
         "null": ""
       },{
-        "titles": "RefSeq_(supplied_by_NCBI)",
+        "titles": "RefSeq (supplied by NCBI)",
         "null": ""
       },{
-        "titles": "UniProt_ID_(supplied_by_UniProt)",
+        "titles": "UniProt ID (supplied by UniProt)",
         "null": ""
       },{
-        "titles": "Ensembl_ID_(supplied_by_Ensembl)",
+        "titles": "Ensembl ID (supplied by Ensembl)",
         "null": ""
       },{
-        "titles": "Vega_ID_(supplied_by_Vega)",
+        "titles": "Vega ID (supplied by Vega)",
         "null": ""
       },{
-        "titles": "UCSC_ID_(supplied_by_UCSC)",
+        "titles": "UCSC ID (supplied by UCSC)",
         "null": ""
       },{
-        "titles": "Mouse_Genome_Database_ID_(supplied_by_MGI)",
+        "titles": "Mouse Genome Database ID (supplied by MGI)",
         "null": ""
       },{
-        "titles": "Rat_Genome_Database_ID_(supplied_by_RGD)",
+        "titles": "Rat Genome Database ID (supplied by RGD)",
         "null": ""
       },{
-        "titles": "RNACentral_IDs_(supplied_by_RNACentral)",
+        "titles": "RNACentral IDs (supplied by RNACentral)",
         "null": ""
       },{
-        "titles": "LNCipedia_symbol_(supplied_by_LNCipedia)",
+        "titles": "LNCipedia symbol (supplied by LNCipedia)",
         "null": ""
       }]
     }
