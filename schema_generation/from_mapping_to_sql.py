@@ -67,6 +67,6 @@ def translate_type_to_sql(dataType):
     elif re.match("date", dataType):
         translated_type = "DATE"
     else:
-        translated_type = "VARCHAR(200)"
+        translated_type = "VARCHAR(500)"
 
     return translated_type
