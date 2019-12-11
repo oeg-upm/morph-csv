@@ -1,11 +1,12 @@
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX sidv: <http://bio2rdf.org/sider_vocabulary:>
+PREFIX wgv: <http://bio2rdf.org/wormbase_vocabulary:>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
 
-SELECT ?se ?label ?desc ?comment
+SELECT ?se ?label ?title ?id
 WHERE {
-        ?se rdf:type sidv:Side-Effect ;
+        ?se rdf:type wbv:Gene ;
                 rdfs:label ?label ;
-		rdfs:description ?desc ;
-		rdfs:comment ?comment.
+		dcterms:title ?title ;
+		dcterms:identifier ?id.
 }
