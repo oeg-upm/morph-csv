@@ -54,7 +54,7 @@ def createNewTable(table,col):
                     'datatype':csvwParser.getDataType(col)
                     }
                 ],
-            'primarykey':'id'
+            'primarykey':'id,value'
             }
         }
 
