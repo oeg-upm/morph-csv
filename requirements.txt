@@ -15,7 +15,7 @@ rfc3986==1.1.0
 scandir==1.9.0
 six==1.11.0
 uritemplate==3.0.0
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 PyYaml==5.1
 rdflib==4.2.2
 #psycopg2==2.8.4
