@@ -48,8 +48,8 @@ def generate_sql_schema(csvw,functions,decision):
     sqlGlobal += function.translate_fno_to_sql(functions)
     #print('***********FUNCTIIONS**********')
     #print(str(functions).replace('\'','"'))
-    print('***********SCHEMA**************')
-    print(sqlGlobal.replace(';', ';\n'))
+#    print('***********SCHEMA**************')
+#    print(sqlGlobal.replace(';', ';\n'))
     return sqlGlobal
 
 def find_type_in_csvw(title, csvw_columns):

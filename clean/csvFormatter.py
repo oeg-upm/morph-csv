@@ -16,8 +16,16 @@ def csvwFilter(csvw, selection):
     for table in csvw['tables']:
         title = parser.getTableTitle(table)
         if(title in selection.keys()):
+            print('Table: ' + title)
             table['filteredRowTitles'] = []
-            table['filteredRowTitles'].extend(parser.orderAccordingToRowTitles(selection[title]))
+            table['filteredRowTitles'].extend(
+                    parser.orderAccordingToRowTitles(
+                        selection[title], 
+                        table['tableSchema']['rowTitles']
+                        )
+                    )
+
+            table = parser.filterCols(table)
             result['tables'].append(table)
     return result
 #Function to call the bash Scripts files and send the scvw data.
@@ -27,7 +35,6 @@ def scriptCaller(data):
     #url = url.split('.')[0]
     #print("********************" + url + "***************************")
     #print(str(data).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
-    data = parser.filterCols(data)
     #print(str(data).replace('\'', '"'))
     titles = parser.getTitles(data)
     insertTitles(titles, url)

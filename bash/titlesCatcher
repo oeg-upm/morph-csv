@@ -1,5 +1,4 @@
 #!/bin/bash
 file=$1
 delimiter=$2
-head -n 1 $file | sed -r -e "s/$delimiter/\",\"/g" -e "s/$/\"/" -e "s/^/\"/"
-
+head -n 1 $file | sed -r -e "s/$delimiter/,/g" > tmp/titles.tmp

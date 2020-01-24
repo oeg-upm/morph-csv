@@ -32,7 +32,7 @@ def main():
 
     print("Downloading mappings, data and query")
     maketmpdirs()
-    downloadAnnotations(config)
+#    downloadAnnotations(config)
 #   downloadCSVfilesFromRML()
 
     query = readQuery(query_path)
@@ -48,6 +48,8 @@ def main():
     print('Required Columns: '+ str(csvColumns))
     csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
     csvw = csvwParser.insertRowTitles(csvw)
+#    print('++++++++++++++++CSVW++++++++++++++++')
+#    print(str(csvw).replace('\'','"').replace('True', 'true').replace('False', 'false'))
     csvw = formatter.csvwFilter(csvw,csvColumns)
     #print('***********CSVW************')
     #print(csvw)
