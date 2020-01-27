@@ -3,7 +3,9 @@ services:
 #Morph-csv  
   morphcsv:
     container_name: morphcsv
-    image: oegdatainteration/morphcsv-sparql:1.0.0
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     volumes:
       - ./data:/data
       - ./results/:/results

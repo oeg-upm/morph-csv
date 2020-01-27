@@ -21,7 +21,7 @@ def generate_sql_schema(csvw,functions,decision):
     foreignkeys = ""
     for i,table in enumerate(csvw["tables"]):
         sql = ''
-        source = csvwParser.getUrl(table).split("/")[-1:][0].replace(".csv","")
+        source = csvwParser.getUrl(table).split("/")[-1:][0].replace(".csv","").lower()
         columns = csvw["tables"][i]["filteredRowTitles"]
         sql += "DROP TABLE IF EXISTS \"" + source + "\";"
         sql += "CREATE TABLE " + source + "("

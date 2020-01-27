@@ -32,7 +32,8 @@ def insert_data(csvw,con):
         #Insert local db
         #pwd = os.getcwd()
         #insert = "COPY "+tablename+" FROM '" + str(pwd) + "/tmp/csv/" + tablename + ".csv' with NULL as E'null' CSV HEADER;"
-
+        print('Inserting:')
+        print(insert)
         cur = con.cursor()
         cur.execute(insert)
         con.commit()

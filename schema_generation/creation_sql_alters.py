@@ -7,8 +7,8 @@ def translate_fno_to_sql(functions):
         #if 'query' in functions[tm]
         for func in functions[tm]:
             parameters = func["params"]
-            column = func["column"]
-            source = func["source"].split("/")[-1].split('.')[0]
+            column = func["column"].lower()
+            source = func["source"].split("/")[-1].split('.')[0].lower()
             sql += "ALTER TABLE \"" + source + "\" ADD COLUMN " + column + " VARCHAR(500);"
             sql += "UPDATE \"" + source + "\" SET " + column + "=" + translate_function_to_sql(parameters, sql) + ");\n"
 

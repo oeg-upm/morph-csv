@@ -1,0 +1,263 @@
+QUERY: 1
+Downloading mappings, data and query
+Query Parsed
+Removing FnO functions from RML
+Selecting RML rules, CSVW annotations and CSV files and columns for answering the query
+Required Columns: {'TMhomologene': {'source': 'homologene.csv', 'columns': ['hid', 'genesymbol', 'refseq']}}
+Table: homologene.csv
+Formalizing the data to 2NF
+Preparing the data to execute the query
+Tanslating the RML mapping without functions to R2RML
+Generating the SQL schema based on the csvw and the query
+DROP TABLE IF EXISTS "homologene";
+CREATE TABLE homologene(hid VARCHAR(200),genesymbol VARCHAR(500),refseq VARCHAR(200));
+
+Answering query
+--------------------------------------------------------------------------
+QUERY: 2
+Downloading mappings, data and query
+Query Parsed
+Removing FnO functions from RML
+Selecting RML rules, CSVW annotations and CSV files and columns for answering the query
+Required Columns: {'TMncbigene-gene_info': {'source': 'gene_info.csv', 'columns': ['LocusTag', 'Symbol', 'GeneID', 'description', 'tax_id']}, 'TMhomologene': {'source': 'homologene.csv', 'columns': ['hid', 'ncbigene']}}
+Table: gene_info.csv
+Table: homologene.csv
+Formalizing the data to 2NF
+Preparing the data to execute the query
+Tanslating the RML mapping without functions to R2RML
+Generating the SQL schema based on the csvw and the query
+DROP TABLE IF EXISTS "gene_info";
+CREATE TABLE gene_info(tax_id VARCHAR(200),GeneID VARCHAR(200),Symbol VARCHAR(500),LocusTag VARCHAR(500),description VARCHAR(500),PRIMARY KEY (GeneID));
+DROP TABLE IF EXISTS "homologene";
+CREATE TABLE homologene(hid VARCHAR(200),ncbigene VARCHAR(200),PRIMARY KEY (hid,ncbigene));
+
+Answering query
+--------------------------------------------------------------------------
+QUERY: 4
+Downloading mappings, data and query
+Query Parsed
+Removing FnO functions from RML
+Selecting RML rules, CSVW annotations and CSV files and columns for answering the query
+Required Columns: {'TMgenage-model': {'source': 'genage_models.csv', 'columns': ['organism', 'GenAge_ID']}, 'TMwormbase-geneid': {'source': 'WBgeneIDs.csv', 'columns': ['gene_id', 'taxid']}, 'TMtaxonomy-names': {'source': 'names.csv', 'columns': ['name_txt', 'tax_id']}}
+Table: genage_models.csv
+Table: WBgeneIDs.csv
+Table: names.csv
+Formalizing the data to 2NF
+Preparing the data to execute the query
+Tanslating the RML mapping without functions to R2RML
+Generating the SQL schema based on the csvw and the query
+DROP TABLE IF EXISTS "genage_models";
+CREATE TABLE genage_models(GenAge_ID VARCHAR(200),organism VARCHAR(500),PRIMARY KEY (GenAge_ID));
+DROP TABLE IF EXISTS "wbgeneids";
+CREATE TABLE wbgeneids(taxid VARCHAR(200),gene_id VARCHAR(200),PRIMARY KEY (gene_id));
+DROP TABLE IF EXISTS "names";
+CREATE TABLE names(tax_id VARCHAR(200),name_txt VARCHAR(500),PRIMARY KEY (name_txt));
+
+Answering query
+--------------------------------------------------------------------------
+QUERY: 5
+Downloading mappings, data and query
+Query Parsed
+Removing FnO functions from RML
+Selecting RML rules, CSVW annotations and CSV files and columns for answering the query
+Required Columns: {'TMwormbase-geneid': {'source': 'WBgeneIDs.csv', 'columns': ['cosmid', 'gene_id', 'symbol']}, 'TMwormbase-interaction': {'source': 'cutinteractions.csv', 'columns': ['Interaction_type', 'Interactor1', 'WBInteractionID', 'Interaction_subtype', 'Interactor2']}}
+Table: WBgeneIDs.csv
+Table: cutinteractions.csv
+Formalizing the data to 2NF
+Preparing the data to execute the query
+Tanslating the RML mapping without functions to R2RML
+Generating the SQL schema based on the csvw and the query
+DROP TABLE IF EXISTS "wbgeneids";
+CREATE TABLE wbgeneids(gene_id VARCHAR(200),symbol VARCHAR(500),cosmid VARCHAR(500),PRIMARY KEY (gene_id));
+DROP TABLE IF EXISTS "cutinteractions";
+CREATE TABLE cutinteractions(WBInteractionID VARCHAR(200),Interaction_type VARCHAR(200),Interaction_subtype VARCHAR(200),Interactor1 VARCHAR(200),Interactor2 VARCHAR(500),PRIMARY KEY (WBInteractionID));
+
+Answering query
+--------------------------------------------------------------------------
+QUERY: 6
+Downloading mappings, data and query
+Query Parsed
+Removing FnO functions from RML
+Selecting RML rules, CSVW annotations and CSV files and columns for answering the query
+Required Columns: {'TMncbigene-gene2go2': {'source': 'gene2go.csv', 'columns': ['GO_ID', 'GeneID']}, 'TMncbigene-gene_info': {'source': 'gene_info.csv', 'columns': ['description', 'GeneID', 'Symbol', 'tax_id']}, 'TMhomologene': {'source': 'homologene.csv', 'columns': ['hid']}, 'TMgenage-model': {'source': 'genage_models.csv', 'columns': ['GenAge_ID', 'name_gene']}, 'TMgeneage-human': {'source': 'genage_human.csv', 'columns': ['GenAge_ID']}, 'TMwormbase-geneid': {'source': 'WBgeneIDs.csv', 'columns': ['gene_id', 'symbol']}, 'TMwormbase-interaction': {'source': 'cutinteractions.csv', 'columns': ['WBInteractionID', 'Interactor1', 'Interaction_subtype', 'Interactor2', 'Interaction_type']}, 'TMwormbase-phenotype_association': {'source': 'WBphenotype_association.csv', 'columns': ['gene_id', 'phenotype', 'variant']}, 'TMwormbase-gene_association': {'source': 'WBgene_association.csv', 'columns': ['gene_id', 'GO_id', 'evidence']}, 'TMtaxonomy-division': {'source': 'division.csv', 'columns': ['division_id', 'division_name']}, 'TMtaxonomy-gencode': {'source': 'gencode.csv', 'columns': ['cde', 'genetic_code_id']}, 'TMtaxonomy-nodes': {'source': 'nodes.csv', 'columns': ['mitochondrial_genetic_code_id', 'division_id', 'parent_tax_id', 'tax_id', 'genetic_code_id']}, 'TMhgnc1': {'source': 'hgnc.csv', 'columns': ['HGNC_ID', 'Approved_Symbol']}, 'TMhgnc2': {'source': 'hgnc.csv', 'columns': ['Approved_Symbol']}}
+Table: gene2go.csv
+Table: gene_info.csv
+Table: homologene.csv
+Table: genage_models.csv
+Table: genage_human.csv
+Table: WBgeneIDs.csv
+Table: cutinteractions.csv
+Table: WBphenotype_association.csv
+Table: WBgene_association.csv
+Table: division.csv
+Table: gencode.csv
+Table: nodes.csv
+Table: hgnc.csv
+Formalizing the data to 2NF
+Preparing the data to execute the query
+Tanslating the RML mapping without functions to R2RML
+Generating the SQL schema based on the csvw and the query
+DROP TABLE IF EXISTS "gene2go";
+CREATE TABLE gene2go(GeneID VARCHAR(200),GO_ID VARCHAR(200),PRIMARY KEY (GeneID));
+DROP TABLE IF EXISTS "gene_info";
+CREATE TABLE gene_info(tax_id VARCHAR(200),GeneID VARCHAR(200),Symbol VARCHAR(500),description VARCHAR(500),PRIMARY KEY (GeneID));
+DROP TABLE IF EXISTS "homologene";
+CREATE TABLE homologene(hid VARCHAR(200),PRIMARY KEY (hid));
+DROP TABLE IF EXISTS "genage_models";
+CREATE TABLE genage_models(GenAge_ID VARCHAR(200),name_gene VARCHAR(500),PRIMARY KEY (GenAge_ID));
+DROP TABLE IF EXISTS "genage_human";
+CREATE TABLE genage_human(GenAge_ID VARCHAR(200),PRIMARY KEY (GenAge_ID));
+DROP TABLE IF EXISTS "wbgeneids";
+CREATE TABLE wbgeneids(gene_id VARCHAR(200),symbol VARCHAR(500),PRIMARY KEY (gene_id));
+DROP TABLE IF EXISTS "cutinteractions";
+CREATE TABLE cutinteractions(WBInteractionID VARCHAR(200),Interaction_type VARCHAR(200),Interaction_subtype VARCHAR(200),Interactor1 VARCHAR(200),Interactor2 VARCHAR(500),PRIMARY KEY (WBInteractionID));
+DROP TABLE IF EXISTS "wbphenotype_association";
+CREATE TABLE wbphenotype_association(gene_id VARCHAR(200),phenotype VARCHAR(200),variant VARCHAR(500),PRIMARY KEY (gene_id));
+DROP TABLE IF EXISTS "wbgene_association";
+CREATE TABLE wbgene_association(gene_id VARCHAR(200),GO_id VARCHAR(500),evidence VARCHAR(500),PRIMARY KEY (gene_id));
+DROP TABLE IF EXISTS "division";
+CREATE TABLE division(division_id VARCHAR(200),division_name VARCHAR(200),PRIMARY KEY (division_id));
+DROP TABLE IF EXISTS "gencode";
+CREATE TABLE gencode(genetic_code_id VARCHAR(200),cde VARCHAR(500),PRIMARY KEY (genetic_code_id));
+DROP TABLE IF EXISTS "nodes";
+CREATE TABLE nodes(tax_id VARCHAR(200),parent_tax_id VARCHAR(500),division_id VARCHAR(500),genetic_code_id VARCHAR(500),mitochondrial_genetic_code_id VARCHAR(500),PRIMARY KEY (tax_id));
+DROP TABLE IF EXISTS "hgnc";
+CREATE TABLE hgnc(Approved_Symbol VARCHAR(500));
+
+--------------------------------------------------------------------------
+QUERY: 7
+Downloading mappings, data and query
+Query Parsed
+Removing FnO functions from RML
+Selecting RML rules, CSVW annotations and CSV files and columns for answering the query
+Required Columns: {'TMgenage-model': {'source': 'genage_models.csv', 'columns': ['organism', 'name_gene', 'GenAge_ID']}, 'TMtaxonomy-names': {'source': 'names.csv', 'columns': ['name_txt', 'tax_id', 'unique_name', 'name_class']}}
+Table: genage_models.csv
+Table: names.csv
+Formalizing the data to 2NF
+Preparing the data to execute the query
+Tanslating the RML mapping without functions to R2RML
+Generating the SQL schema based on the csvw and the query
+DROP TABLE IF EXISTS "genage_models";
+CREATE TABLE genage_models(GenAge_ID VARCHAR(200),name_gene VARCHAR(500),organism VARCHAR(500),PRIMARY KEY (GenAge_ID));
+DROP TABLE IF EXISTS "names";
+CREATE TABLE names(tax_id VARCHAR(200),name_txt VARCHAR(500),unique_name VARCHAR(500),name_class VARCHAR(500),PRIMARY KEY (name_txt,name_class));
+
+Answering query
+--------------------------------------------------------------------------
+QUERY: 8
+Downloading mappings, data and query
+Query Parsed
+Removing FnO functions from RML
+Selecting RML rules, CSVW annotations and CSV files and columns for answering the query
+Required Columns: {'TMwormbase-geneid': {'source': 'WBgeneIDs.csv', 'columns': ['gene_id', 'symbol']}}
+Table: WBgeneIDs.csv
+Formalizing the data to 2NF
+Preparing the data to execute the query
+Tanslating the RML mapping without functions to R2RML
+Generating the SQL schema based on the csvw and the query
+DROP TABLE IF EXISTS "wbgeneids";
+CREATE TABLE wbgeneids(gene_id VARCHAR(200),symbol VARCHAR(500));
+
+Answering query
+--------------------------------------------------------------------------
+QUERY: 9
+Downloading mappings, data and query
+Query Parsed
+Removing FnO functions from RML
+Selecting RML rules, CSVW annotations and CSV files and columns for answering the query
+Required Columns: {'TMncbigene-gene2go2': {'source': 'gene2go.csv', 'columns': ['GO_ID', 'GeneID']}, 'TMncbigene-gene_info': {'source': 'gene_info.csv', 'columns': ['tax_id', 'description', 'Symbol', 'GeneID']}, 'TMhomologene': {'source': 'homologene.csv', 'columns': ['hid']}, 'TMgenage-model': {'source': 'genage_models.csv', 'columns': ['GenAge_ID', 'name_gene']}, 'TMgeneage-human': {'source': 'genage_human.csv', 'columns': ['GenAge_ID']}, 'TMwormbase-geneid': {'source': 'WBgeneIDs.csv', 'columns': ['symbol', 'gene_id']}, 'TMwormbase-interaction': {'source': 'cutinteractions.csv', 'columns': ['Interactor1', 'WBInteractionID', 'Interactor2', 'Interaction_type', 'Interaction_subtype']}, 'TMwormbase-phenotype_association': {'source': 'WBphenotype_association.csv', 'columns': ['gene_id', 'phenotype', 'variant']}, 'TMwormbase-gene_association': {'source': 'WBgene_association.csv', 'columns': ['gene_id', 'evidence', 'GO_id']}, 'TMtaxonomy-division': {'source': 'division.csv', 'columns': ['division_name', 'division_id']}, 'TMtaxonomy-gencode': {'source': 'gencode.csv', 'columns': ['genetic_code_id', 'name']}, 'TMtaxonomy-names': {'source': 'names.csv', 'columns': ['tax_id', 'name_txt', 'name_class']}, 'TMhgnc1': {'source': 'hgnc.csv', 'columns': ['HGNC_ID', 'Approved Symbol']}, 'TMhgnc2': {'source': 'hgnc.csv', 'columns': ['Approved_Symbol']}}
+Table: gene2go.csv
+Table: gene_info.csv
+Table: homologene.csv
+Table: genage_models.csv
+Table: genage_human.csv
+Table: WBgeneIDs.csv
+Table: cutinteractions.csv
+Table: WBphenotype_association.csv
+Table: WBgene_association.csv
+Table: division.csv
+Table: gencode.csv
+Table: names.csv
+Table: hgnc.csv
+Formalizing the data to 2NF
+Preparing the data to execute the query
+Tanslating the RML mapping without functions to R2RML
+Generating the SQL schema based on the csvw and the query
+DROP TABLE IF EXISTS "gene2go";
+CREATE TABLE gene2go(GeneID VARCHAR(200),GO_ID VARCHAR(200));
+DROP TABLE IF EXISTS "gene_info";
+CREATE TABLE gene_info(tax_id VARCHAR(200),GeneID VARCHAR(200),Symbol VARCHAR(500),description VARCHAR(500));
+DROP TABLE IF EXISTS "homologene";
+CREATE TABLE homologene(hid VARCHAR(200));
+DROP TABLE IF EXISTS "genage_models";
+CREATE TABLE genage_models(GenAge_ID VARCHAR(200),name_gene VARCHAR(500));
+DROP TABLE IF EXISTS "genage_human";
+CREATE TABLE genage_human(GenAge_ID VARCHAR(200));
+DROP TABLE IF EXISTS "wbgeneids";
+CREATE TABLE wbgeneids(gene_id VARCHAR(200),symbol VARCHAR(500));
+DROP TABLE IF EXISTS "cutinteractions";
+CREATE TABLE cutinteractions(WBInteractionID VARCHAR(200),Interaction_type VARCHAR(200),Interaction_subtype VARCHAR(200),Interactor1 VARCHAR(200),Interactor2 VARCHAR(500));
+DROP TABLE IF EXISTS "wbphenotype_association";
+CREATE TABLE wbphenotype_association(gene_id VARCHAR(200),phenotype VARCHAR(200),variant VARCHAR(500));
+DROP TABLE IF EXISTS "wbgene_association";
+CREATE TABLE wbgene_association(gene_id VARCHAR(200),GO_id VARCHAR(500),evidence VARCHAR(500));
+DROP TABLE IF EXISTS "division";
+CREATE TABLE division(division_id VARCHAR(200),division_name VARCHAR(200));
+DROP TABLE IF EXISTS "gencode";
+CREATE TABLE gencode(genetic_code_id VARCHAR(200),name VARCHAR(200));
+DROP TABLE IF EXISTS "names";
+CREATE TABLE names(tax_id VARCHAR(200),name_txt VARCHAR(500),name_class VARCHAR(500));
+DROP TABLE IF EXISTS "hgnc";
+CREATE TABLE hgnc(Approved_Symbol VARCHAR(500));
+
+Answering query
+--------------------------------------------------------------------------
+QUERY: 10
+Downloading mappings, data and query
+Query Parsed
+Removing FnO functions from RML
+Selecting RML rules, CSVW annotations and CSV files and columns for answering the query
+Required Columns: {}
+Formalizing the data to 2NF
+Preparing the data to execute the query
+Tanslating the RML mapping without functions to R2RML
+Generating the SQL schema based on the csvw and the query
+
+--------------------------------------------------------------------------
+QUERY: 11
+Downloading mappings, data and query
+Query Parsed
+Removing FnO functions from RML
+Selecting RML rules, CSVW annotations and CSV files and columns for answering the query
+Required Columns: {'TMhomologene': {'source': 'homologene.csv', 'columns': ['refseq', 'hid', 'genesymbol']}}
+Table: homologene.csv
+Formalizing the data to 2NF
+Preparing the data to execute the query
+Tanslating the RML mapping without functions to R2RML
+Generating the SQL schema based on the csvw and the query
+DROP TABLE IF EXISTS "homologene";
+CREATE TABLE homologene(hid VARCHAR(200),genesymbol VARCHAR(500),refseq VARCHAR(200));
+
+Answering query
+--------------------------------------------------------------------------
+QUERY: 12
+Downloading mappings, data and query
+Query Parsed
+Removing FnO functions from RML
+Selecting RML rules, CSVW annotations and CSV files and columns for answering the query
+Required Columns: {'TMwormbase-geneid': {'source': 'WBgeneIDs.csv', 'columns': ['gene_id']}, 'TMwormbase-gene_association': {'source': 'WBgene_association.csv', 'columns': ['gene_id', 'evidence', 'GO_id']}}
+Table: WBgeneIDs.csv
+Table: WBgene_association.csv
+Formalizing the data to 2NF
+Preparing the data to execute the query
+Tanslating the RML mapping without functions to R2RML
+Generating the SQL schema based on the csvw and the query
+DROP TABLE IF EXISTS "wbgeneids";
+CREATE TABLE wbgeneids(gene_id VARCHAR(200));
+DROP TABLE IF EXISTS "wbgene_association";
+CREATE TABLE wbgene_association(gene_id VARCHAR(200),GO_id VARCHAR(500),evidence VARCHAR(500));
+ALTER TABLE "WBgene_association" ADD COLUMN seeAlso VARCHAR(500);
+UPDATE "WBgene_association" SET seeAlso=concat('http://purl.obolibrary.org/obo/',replace('GO_id',':','_'));
+
+
+--------------------------------------------------------------------------

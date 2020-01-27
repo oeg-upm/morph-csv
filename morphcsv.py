@@ -45,7 +45,7 @@ def main():
     csvColumns, mapping = fromSPARQLtoMapping(mapping, query, parsedQuery) 
     csvColumns,functions = getColumnsFromFunctions(csvColumns, functions)
     #functions = filterFunctionsAccording2Query(functions, mapping)
-    print('Required Columns: '+ str(csvColumns))
+    print('Required Columns: '+ str(csvColumns).replace("'", "\""))
     csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
     csvw = csvwParser.insertRowTitles(csvw)
 #    print('++++++++++++++++CSVW++++++++++++++++')
@@ -65,6 +65,7 @@ def main():
     fromSourceToTables(mapping)
     print("Generating the SQL schema based on the csvw and the query")
     schema = mapping2Sql.generate_sql_schema(csvw,functions,mapping2Sql.decide_schema_based_on_query(mapping))
+    print(str(schema).replace(';',';\n'))
     insert.create_and_insert(csvw, schema)
     print("Answering query")
 
