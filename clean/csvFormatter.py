@@ -30,15 +30,9 @@ def csvwFilter(csvw, selection):
     return result
 #Function to call the bash Scripts files and send the scvw data.
 def scriptCaller(data):
-    #TODO BUSCAR LA FORMA DE MANEJAR LOS NOMBRE DE LOS CSVs 
     url = parser.getUrl(data).split("/")[-1:][0]
-    #url = url.split('.')[0]
-    #print("********************" + url + "***************************")
-    #print(str(data).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
-    #print(str(data).replace('\'', '"'))
     titles = parser.getTitles(data)
     insertTitles(titles, url)
-    #print("InsertTitles Done")
     replaceCsvFormat(parser.getGsubPatterns(data), url)
     titles['header'] = False
     titles['result'] = parser.getFilteredTitles(data)

@@ -45,7 +45,7 @@ def generate_sql_schema(csvw,functions,decision):
 
         sql = sql[:-1] + ");"
         sqlGlobal += sql
-    sqlGlobal += function.translate_fno_to_sql(functions)
+#    sqlGlobal += function.translate_fno_to_sql(functions)
     #print('***********FUNCTIIONS**********')
     #print(str(functions).replace('\'','"'))
 #    print('***********SCHEMA**************')

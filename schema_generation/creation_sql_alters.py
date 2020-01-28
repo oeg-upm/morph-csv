@@ -22,14 +22,14 @@ def translate_function_to_sql(parameters, sql):
         if(type(param) is dict):
             sql += translate_function_to_sql(param['value'], sql)
         else:
-            value = param[1]
+            value = "'" + param[1]  + "'"
             col = re.findall('\$\(([^)]+)\)', value)
             if(len(col) > 0):
-                value = col[0]
+                value = col[0].lower()
             if i < len(parameters['parameters']) - 1:
-                sql += '\'' + value + '\','
+                sql += value + ','
             else:
-                sql += '\'' + value + '\')'
+                sql += value + ')'
     return sql
 
 def translate_f_to_sql(value):

@@ -10,6 +10,7 @@ from clean import csvwParser as csvwParser
 from formalization import formalization as formalizer
 import schema_generation.from_mapping_to_sql as mapping2Sql
 import schema_generation.create_and_insert as insert
+import schema_generation.creation_sql_alters as sqlAlters
 import schema_generation.morph_properties as genproperties
 
 def main():
@@ -66,7 +67,7 @@ def main():
     print("Generating the SQL schema based on the csvw and the query")
     schema = mapping2Sql.generate_sql_schema(csvw,functions,mapping2Sql.decide_schema_based_on_query(mapping))
     print(str(schema).replace(';',';\n'))
-    insert.create_and_insert(csvw, schema)
+    insert.create_and_insert(csvw, schema, sqlAlters.translate_fno_to_sql(functions))
     print("Answering query")
 
 if __name__ == "__main__":
