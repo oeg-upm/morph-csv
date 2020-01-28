@@ -1,3 +1,4 @@
+import argparse
 import sys
 import json
 import subprocess
@@ -10,6 +11,9 @@ import schema_generation.from_mapping_to_sql as mapping2Sql
 import schema_generation.create_and_insert as insert
 import schema_generation.morph_properties as genproperties
 import utils.utilsresources as utils
+import schema_generation.create_and_insert as insert
+import schema_generation.creation_sql_alters as sqlAlters
+
 def runTest(csvwPath, mappingPath, queryPath,expectedResults):
 	print('Testing Query: '  + queryPath)
 	csvw = json.loads(open(csvwPath).read())
@@ -40,6 +44,38 @@ def runTest(csvwPath, mappingPath, queryPath,expectedResults):
 	checkSchema(schema, expectedResults['schema'])
 	print('The Schema is Correct')
 
+def generateData(csvwPath, mappingPath, queryPath):
+	csvw = json.loads(open(csvwPath).read())
+	csvw = csvwParser.insertRowTitles(csvw)
+	sparqlQuery = utils.readQuery(queryPath)
+	utils.sparqlQueryParser(queryPath)
+	parsedQuery = json.loads(open('tmp/annotations/sparql.json').read())
+	functions, mapping = yarrrml.getCleanYarrrml(mappingPath)
+	csvColumns, mapping = resourcesFromSparql.fromSPARQLtoMapping(mapping, sparqlQuery, parsedQuery)
+	csvColumns, functions = resourcesFromSparql.getColumnsFromFunctions(csvColumns, functions)
+	csvw = csvFormatter.csvwFilter(csvw, csvColumns)
+	formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, sparqlQuery, parsedQuery)
+	csvw = formalizedData['csvw']
+	query = formalizedData['query']
+	mapping = formalizedData['mapping']
+	csvFormatter.csvFormatter(csvw)
+	yarrrml.fromSourceToTables(mapping)
+	schema = mapping2Sql.generate_sql_schema(csvw, 
+			functions, 
+			mapping2Sql.decide_schema_based_on_query(mapping))
+	sqlFunctions = sqlAlters.translate_fno_to_sql(functions)
+	try:
+		insert.create_and_insert(csvw, schema, sqlFunctions)
+	except:
+		sys.exit()
+	print('csvColumns:\n' + str(csvColumns).replace("'",'"'))
+	print('CSV Format:\n' + str(readFormat(csvw)).replace("'", '"'))
+	print('SQL Schema:\n' + schema)
+	if(len(str(sqlFunctions)) > 0):
+		print('SQL Functions:\n' + str(sqlFunctions))
+	
+
+
 def checkColumns(columns, result):
 	#{TmName:{sourceName:[colName]}}
 	try:
@@ -54,15 +90,19 @@ def checkColumns(columns, result):
 	except Exception as e:
 		print(e)
 		sys.exit()
-
+def readFormat(csvw):
+	result = {}
+	for table in csvw['tables']:
+		path = 'tmp/csv/' + csvwParser.getUrl(table).split("/")[-1:][0]
+		with open(path, "r") as f:
+			result[path] =  ''.join(f.readline() for i in range(2))
+	return result
 def checkFormat(csvw, result):
 	try:
-		for table in csvw['tables']:
-			path = 'tmp/csv/' + csvwParser.getUrl(table).split("/")[-1:][0]
-			with open(path, "r") as f:
-				data = ''.join(f.readline() for i in range(2))
-			if(data != result):
-				raise Exception('The Format is wrong: ' + path)
+		data = readFormat(csvw)
+		for table in result:
+			if(data[table] != result[table]):
+				raise Exception('The Format is wrong: ' + table)
 	except Exception as e:
 		print('Falla CheckFormat')
 		print(e)
@@ -77,7 +117,7 @@ def checkSchema(schema, result):
 		print(e)
 		sys.exit()
 
-
+'''
 def main():
 	testConfig = json.loads(open('test/testConfig.json').read())
 	for dataset in testConfig:
@@ -86,6 +126,29 @@ def main():
 			csvwPath = testConfig[dataset]["csvwPath"]
 			mappingPath = testConfig[dataset]["mappingPath"]
 			expectedResult = query
-			runTest(csvwPath, mappingPath, queryPath, expectedResult)
+			#runTest(csvwPath, mappingPath, queryPath, expectedResult)
+'''	
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--json_config", required=True, help="Input config file with yarrrml and csvw")
+    parser.add_argument("-q", "--sparql_query", required=True, help="SPARQL query")
+    args = parser.parse_args()
+    if len(sys.argv) == 5:
+        try:
+            with open(args.json_config, "r") as json_file:
+                config = json.load(json_file)
+            queryPath = str(args.sparql_query)
+
+        except ValueError:
+            print("No input the correct arguments, run pip3 morphcsv.py -h to see the help")
+            sys.exit()
+    else:
+        print("No input the correct arguments, run pip3 morphcsv.py -h to see the help)")
+        sys.exit()
+
+    utils.maketmpdirs()
+    generateData('tmp/annotations/annotations.json','tmp/annotations/mapping.yaml',queryPath)
+
 if __name__ == '__main__':
 	main()

@@ -15,7 +15,8 @@ def create_and_insert(csvw,sql, sqlFunctions):
         sys.exit()
     create_schema(sql, con)
     insert_data(csvw, con)
-    insert_functions(sqlFunctions, con)
+    if(len(sqlFunctions) > 0):
+      insert_functions(sqlFunctions, con)
     con.close()
 def create_schema(sql,con):
     cur = con.cursor()
@@ -33,14 +34,14 @@ def insert_data(csvw,con):
         #Insert local db
         pwd = os.getcwd()
         insert = "COPY "+tablename+" FROM '" + str(pwd) + "/tmp/csv/" + tablename + ".csv' with NULL as E'null' CSV HEADER;"
-        print('Inserting:')
-        print(insert)
+#        print('Inserting:')
+ #       print(insert)
         cur = con.cursor()
         cur.execute(insert)
         con.commit()
 
 def insert_functions(sqlFunctions, con):
-    print('sqlFnuctions: \n' + sqlFunctions)
+#    print('sqlFnuctions: \n' + sqlFunctions)
     cur = con.cursor()
     cur.execute(sqlFunctions)
     con.commit()
