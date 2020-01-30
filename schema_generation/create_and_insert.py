@@ -2,7 +2,7 @@ import sys
 import psycopg2
 import re
 import os
-def create_and_insert(csvw,sql, sqlFunctions):
+def create_and_insert(csvw,sql, sqlFunctions, alters):
 
     try:
         # Local connection
@@ -17,6 +17,7 @@ def create_and_insert(csvw,sql, sqlFunctions):
     insert_data(csvw, con)
     if(len(sqlFunctions) > 0):
       insert_functions(sqlFunctions, con)
+    insert_alters(alters, con)
     con.close()
 def create_schema(sql,con):
     cur = con.cursor()
@@ -39,7 +40,10 @@ def insert_data(csvw,con):
         cur = con.cursor()
         cur.execute(insert)
         con.commit()
-
+def insert_alters(alters, con):
+    cur = con.cursor()
+    cur.execute(alters)
+    con.commit()
 def insert_functions(sqlFunctions, con):
 #    print('sqlFnuctions: \n' + sqlFunctions)
     cur = con.cursor()

@@ -20,6 +20,7 @@ def generate_sql_schema(csvw,mapping,decision):
     sqlGlobal = ""
     foreignkeys = ""
     indexes = ""
+    alters = ""
     for i,table in enumerate(csvw["tables"]):
         sql = ''
         source = csvwParser.getUrl(table).split("/")[-1:][0].replace(".csv","").lower()
@@ -53,14 +54,14 @@ def generate_sql_schema(csvw,mapping,decision):
 
         sql = sql[:-1] + ");"
         sqlGlobal += sql
-    sqlGlobal+= foreignkeys
-    sqlGlobal += indexes
+    alters += foreignkeys
+    alters += indexes
 #    sqlGlobal += function.translate_fno_to_sql(functions)
     #print('***********FUNCTIIONS**********')
     #print(str(functions).replace('\'','"'))
 #    print('***********SCHEMA**************')
 #    print(sqlGlobal.replace(';', ';\n'))
-    return sqlGlobal
+    return sqlGlobal, alters
 
 def isPrimaryKey(csvw,column, tableName):
     for table in csvw['tables']:
