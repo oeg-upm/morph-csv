@@ -3,7 +3,10 @@
 #query=$2 
 
 #MotivatingExample
-#python3 morphcsv.py -c test/config.json -q test/query.rq
+#cp evaluation/motivating-example/annotations.json tmp/annotations/
+#cp evaluation/motivating-example/mapping.yaml tmp/annotations/
+#cp evaluation/motivating-example/data/* tmp/csv/
+#python3 morphcsv.py -c test/config.json -q evaluation/motivating-example/queries/query1.rq
 
 #GTFS
 #cp ~/Datasets/Gtfs/* tmp/csv/
@@ -21,4 +24,4 @@
 cp evaluation/bio2rdf/bio2rdf.csvw.json tmp/annotations/annotations.json
 cp evaluation/bio2rdf/bio2rdf.yml tmp/annotations/mapping.yaml
 cp /home/w0xter/Datasets/minBio2Rdf/* tmp/csv/
-python3 morphcsv.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bio2rdf/queries/query5.rq
+python3 morphcsv.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bio2rdf/queries/query4.rq

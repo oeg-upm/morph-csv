@@ -27,7 +27,7 @@ def filterCols(table):
         if('primaryKey' in table['tableSchema']):
             table['tableSchema']['primaryKey'] = removePK(table['tableSchema']['primaryKey'],
                     table['filteredRowTitles'])
-        if('foreignkey' in table['tableSchema'].keys()):
+        if('foreignKey' in table['tableSchema'].keys()):
             table['tableSchema']['foreignKey'] = removeFK(table['tableSchema']['foreignKey'],
                     table['filteredRowTitles']
                     )
@@ -303,7 +303,7 @@ def getGsubPatterns(table):
     script = nullValues['fullArg']
     script += getDefaultEmptyStringValue(table)['arg']
     script += getBooleanFormat(table)
-    result['gsub'] = 'gsub(/"/,"",$0);'
+    result['gsub'] = 'gsub(/\\"/,"",$0);'
     result['gsub'] += '%s$0=%s;gsub(/"null"/, "Null", $0);'%(str(script),str(delimiter['arg']))
     result['print'] = '$0'
     result['delimiter'] = delimiter['delimiter'].encode('unicode-escape').decode('ascii')

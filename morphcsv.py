@@ -65,8 +65,8 @@ def main():
     print("Tanslating the RML mapping without functions to R2RML")
     fromSourceToTables(mapping)
     print("Generating the SQL schema based on the csvw and the query")
-    schema = mapping2Sql.generate_sql_schema(csvw,functions,mapping2Sql.decide_schema_based_on_query(mapping))
-    print(str(schema).replace(';',';\n'))
+    schema = mapping2Sql.generate_sql_schema(csvw,mapping,mapping2Sql.decide_schema_based_on_query(mapping))
+    print(str(schema).replace(';',';\n\n').replace(',',',\n'))
     insert.create_and_insert(csvw, schema, sqlAlters.translate_fno_to_sql(functions))
     print("Answering query")
 
