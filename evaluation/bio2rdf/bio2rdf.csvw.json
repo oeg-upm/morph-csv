@@ -453,7 +453,7 @@
     },
     "tableSchema":{
       "rowTitles": ["tax_id", "name_txt", "unique_name", "name_class"],
-      "primaryKey": "name_txt,name_class",
+      "primaryKey": "name_txt,tax_id",
       "columns": [{
         "titles": "name_txt",
         "null": ""
