@@ -127,7 +127,7 @@ mappings:
 
     productfeatureproduct:
       sources:
-        - [/data/CALENDAR.csv~csv]
+        - [productfeactureproduct.csv~csv]
       s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature$(productFeature)
       po:
         - [a, bsbm:Product]
