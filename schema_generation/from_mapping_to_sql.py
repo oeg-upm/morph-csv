@@ -67,7 +67,7 @@ def isPrimaryKey(csvw,column, tableName):
     for table in csvw['tables']:
         if(csvwParser.getUrl(table).split("/")[-1].replace(".csv", "") == tableName and 
           'primaryKey' in table['tableSchema'].keys() and
-          column in table['tableSchema']['primaryKey']
+          column == table['tableSchema']['primaryKey']
           ):
             return True
     return False
