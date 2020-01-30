@@ -354,6 +354,10 @@
       "columns": [{
         "titles": "Interactor2",
         "null": ""
+      },
+      {
+        "titles": "Interactor1",
+        "null": ""
       }]
     }
   },{
