@@ -1,231 +1,223 @@
 prefixes:
-    rr: http://www.w3.org/ns/r2rml#
-    foaf: http://xmlns.com/foaf/0.1/
-    xsd: http://www.w3.org/2001/XMLSchema#
-    rdfs: http://www.w3.org/2000/01/rdf-schema#
-    dc: http://purl.org/dc/elements/1.1/
-    rev: http://purl.org/stuff/rev#
-    gtfs: http://vocab.gtfs.org/terms#
-    geo: http://www.w3.org/2003/01/geo/wgs84_pos#
-    schema: http://schema.org/
-    dct: http://purl.org/dc/terms/
-    rml: http://semweb.mmlab.be/ns/rml#
-    ql: http://semweb.mmlab.be/ns/ql#
-    rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
-    bsbm: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/
-    bsbm-inst: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/
-  
+  rr: http://www.w3.org/ns/r2rml#
+  foaf: http://xmlns.com/foaf/0.1/
+  xsd: http://www.w3.org/2001/XMLSchema#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  dc: http://purl.org/dc/elements/1.1/
+  rev: http://purl.org/stuff/rev#
+  gtfs: http://vocab.gtfs.org/terms#
+  geo: http://www.w3.org/2003/01/geo/wgs84_pos#
+  schema: http://schema.org/
+  dct: http://purl.org/dc/terms/
+  rml: http://semweb.mmlab.be/ns/rml#
+  ql: http://semweb.mmlab.be/ns/ql#
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  bsbm: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/
+  bsbm-inst: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/
 mappings:
-    productfeature:
-      sources:
-        - [productfeature.csv~csv]
-      s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature$(nr)
-      po:
-        - [a, bsbm:ProductFeature]
-        - [rdfs:label, $(label)]
-        - [rdfs:comment, $(comment)]
-        - [dc:publisher, http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/StandardizationInstitution$(publisher)]
-        - [dc:date, $(publishDate)]
-
-    producttype:
-      sources:
-        - [producttype.csv~csv]
-      s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType$(nr)
-      po:
-        - [a, bsbm:ProductType]
-        - [rdfs:label, $(label)]
-        - [rdfs:comment, $(comment)]
-        - [dc:publisher, http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/StandardizationInstitution$(publisher)]
-        - [dc:date, $(publishDate)]
-        - p: rdfs:subClassOf
-          o:
-            - mapping: producttype
-              condition:
-                function: equal
-                parameters:
-                  - [str1, $(parent)]
-                  - [str2, $(nr)]
-    producer:
-      sources:
-        - [producer.csv~csv]
-      s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer$(nr)/Producer$(nr)
-      po:
-        - [a, bsbm:Producer]
-        - [rdfs:label, $(label)]
-        - [rdfs:comment, $(comment)]
-        - [foaf:homepage, $(homepage)~iri]
-        - [bsbm:country, http://downlode.org/rdf/iso-3166/countries#$(country)]
-        - [dc:date, $(publishDate)]
-        - p: dc:publisher
-          o:
-            - mapping: producer
-              condition:
-                function: equal
-                parameters:
-                  - [str1, $(publisher)]
-                  - [str2, $(nr)]
-    product:
-      sources:
-        - [product.csv~csv]
-      s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer$(producer)/Product$(nr)
-      po:
-        - [a, bsbm:Product]
-        - [rdfs:label, $(label)]
-        - [rdfs:comment,$(comment)]
-        - [bsbm:productPropertyNumeric1, $(propertyNum1)]
-        - [bsbm:productPropertyNumeric2, $(propertyNum2)]
-        - [bsbm:productPropertyNumeric3, $(propertyNum3)]
-        - [bsbm:productPropertyNumeric4, $(propertyNum4)]
-        - [bsbm:productPropertyNumeric5, $(propertyNum5)]
-        - [bsbm:productPropertyTextual6, $(propertyNum6)]
-        - [bsbm:productPropertyTextual1, $(propertyTex1)]
-        - [bsbm:productPropertyTextual2, $(propertyTex2)]
-        - [bsbm:productPropertyTextual3, $(propertyTex3)]
-        - [bsbm:productPropertyTextual4, $(propertyTex4)]
-        - [bsbm:productPropertyTextual5, $(propertyTex5)]
-        - [bsbm:productPropertyTextual6, $(propertyTex6)]
-        - [dc:date, $(publishDate)]
-        - p: bsbm:producer
-          o: 
-            - mapping: producer
-              condition:
-                function: equal
-                parameters:
-                    - [str1, $(producer)]
-                    - [str1, $(nr)]
-        - p: dc:publisher
-          o: 
-            - mapping: producer
-              condition:
-                function: equal
-                parameters:
-                    - [str1, $(publisher)]
-                    - [str1, $(nr)]
-
-        - p: bsbm:productFeature
-          o: 
-            - mapping: productfeatureproduct
-              condition:
-                function: equal
-                parameters:
-                    - [str1, $(nr)]
-                    - [str1, $(product)]
-
-        - p: bsbm:productType
-          o: 
-            - mapping: producttypeproduct
-              condition:
-                function: equal
-                parameters:
-                    - [str1, $(nr)]
-                    - [str1, $(product)]
-
-    producttypeproduct:
-      sources:
-        - [producttypeproduct.csv~csv]
-      s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType$(productType)
-
-    productfeatureproduct:
-      sources:
-        - [productfeactureproduct.csv~csv]
-      s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature$(productFeature)
-      po:
-        - [a, bsbm:Product]
-        - p: bsbm:productFeature
-          o:
-            - mapping: productfeature
-              condition:
-                function: equal
-                parameters:
-                  - [str1, $(productFeature)]
-                  - [str2, $(nr)]
-    vendor:
-      sources:
-        - [vendor.csv~csv]
-      s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/Vendor$(nr)
-      po:
-        - [a, bsbm:Vendor]
-        - [rdfs:label, $(label)]
-        - [rdfs:comment, $(comment)]
-        - [foaf:homepage, $(homepage)~iri]
-        - [bsbm:country, http://downlode.org/rdf/iso-3166/countries#$(country)]
-        - [dc:date, $(publishDate)]
-        - p: dc:publisher
-          o:
-            - mapping: vendor
-              condition:
-                function: equal
-                parameters:
-                  - [str1, $(publisher)]
-                  - [str2, $(nr)] 
-    offer:
-      sources:
-        - [offer.csv~csv]
-      s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/Offer$(nr)
-      po:
-        - [a, bsbm:Offer]
-        - [bsbm:price, $(price)]
-        - [bsbm:validFrom, $(validFrom)]
-        - [bsbm:validTo,validTo]
-        - [bsbm:deliveryDays, deliveryDays]
-        - [bsbm:offerWebpage, $/(offerWebpage)~iri]
-        - [dc:date, $(publishDate)]
-        - p: bsbm:product
-          o:
-            - mapping: product
-              condition:
-                function: equal
-                parameters:
-                  - [str1, $(product)]
-                  - [str2, $(nr)] 
-        - p: bsbm:producer
-          o:
-            - mapping: producer
-              condition:
-                function: equal
-                parameters:
+  productfeature:
+    sources:
+      - [/app/data/productfeature.csv~csv]
+    s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature$(nr)
+    po:
+      - [a, bsbm:ProductFeature]
+      - [rdfs:label, $(label)]
+      - [rdfs:comment, $(comment)]
+      - [dc:publisher, http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/StandardizationInstitution$(publisher)]
+      - [dc:date, $(publishDate)]
+  producttype:
+    sources:
+      - [/app/data/producttype.csv~csv]
+    s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType$(nr)
+    po:
+      - [a, bsbm:ProductType]
+      - [rdfs:label, $(label)]
+      - [rdfs:comment, $(comment)]
+      - [dc:publisher, http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/StandardizationInstitution$(publisher)]
+      - [dc:date, $(publishDate)]
+      - p: rdfs:subClassOf
+        o:
+          - mapping: producttype
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(nr)]
+                - [str2, $(parent)]
+  producer:
+    sources:
+      - [/app/data/producer.csv~csv]
+    s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer$(nr)/Producer$(nr)
+    po:
+      - [a, bsbm:Producer]
+      - [rdfs:label, $(label)]
+      - [rdfs:comment, $(comment)]
+      - [foaf:homepage, $(homepage)~iri]
+      - [bsbm:country, http://downlode.org/rdf/iso-3166/countries#$(country)]
+      - [dc:date, $(publishDate)]
+      - p: dc:publisher
+        o:
+          - mapping: producer
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(nr)]
+                - [str2, $(publisher)]
+  product:
+    sources:
+      - [/app/data/product.csv~csv]
+    s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer$(producer)/Product$(nr)
+    po:
+      - [a, bsbm:Product]
+      - [rdfs:label, $(label)]
+      - [rdfs:comment,$(comment)]
+      - [bsbm:productPropertyNumeric1, $(propertyNum1)]
+      - [bsbm:productPropertyNumeric2, $(propertyNum2)]
+      - [bsbm:productPropertyNumeric3, $(propertyNum3)]
+      - [bsbm:productPropertyNumeric4, $(propertyNum4)]
+      - [bsbm:productPropertyNumeric5, $(propertyNum5)]
+      - [bsbm:productPropertyTextual6, $(propertyNum6)]
+      - [bsbm:productPropertyTextual1, $(propertyTex1)]
+      - [bsbm:productPropertyTextual2, $(propertyTex2)]
+      - [bsbm:productPropertyTextual3, $(propertyTex3)]
+      - [bsbm:productPropertyTextual4, $(propertyTex4)]
+      - [bsbm:productPropertyTextual5, $(propertyTex5)]
+      - [bsbm:productPropertyTextual6, $(propertyTex6)]
+      - [dc:date, $(publishDate)]
+      - p: bsbm:producer
+        o: 
+          - mapping: producer
+            condition:
+              function: equal
+              parameters:
                   - [str1, $(producer)]
-                  - [str2, $(nr)] 
-        - p: bsbm:vendor
-          o:
-            - mapping: vendor
-              condition:
-                function: equal
-                parameters:
-                  - [str1, $(vendor)]
-                  - [str2, $(nr)] 
-        - p: dc:publisher
-          o:
-            - mapping: vendor
-              condition:
-                function: equal
-                parameters:
-                  - [str1, $(publisher)]
-                  - [str2, $(nr)] 
-
-    person:
-      sources:
-        - [person.csv~csv]
-      s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/Reviewer$(nr)
-      po:
-        - [a, bsbm:Person]
-        - [foaf:name, $(name)]
-        - [foaf:mbox_sha1sum, mbox_sha1sum]
-        - [bsbm:country, http://downlode.org/rdf/iso-3166/countries#$(country)]
-        - [dc:publisher, http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/RatingSite$(publisher)]
-        - [dc:date, publishDate]
-
-    review:
-      sources:
-        - [review.csv~csv]
-      s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/Review$(nr)
-      po:
-        - [a, bsbm:Review]
-        - [bsbm:reviewDate, $(reviewDate)]
-        - [rev:text, $(text)@en]
-        - [bsbm:rating1 , $(rating1)]
-        - [bsbm:rating2 , $(rating2)]
-        - [bsbm:rating3 , $(rating3)]
-        - [bsbm:rating4 , $(rating4)]
-        - [dc:publisher, http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/RatingSite$(publisher)]
-        - [dc:date, $(publishDate)]
+                  - [str2, $(nr)]
+      - p: dc:publisher
+        o: 
+          - mapping: producer
+            condition:
+              function: equal
+              parameters:
+                  - [str1, $(nr)]
+                  - [str2, $(publisher)]
+      - p: bsbm:productFeature
+        o: 
+          - mapping: productfeatureproduct
+            condition:
+              function: equal
+              parameters:
+                  - [str1, $(nr)]
+                  - [str2, $(product)]
+      - p: bsbm:productType
+        o: 
+          - mapping: producttypeproduct
+            condition: 
+              function: equal
+              parameters:
+                  - [str1, $(product)]
+                  - [str2, $(nr)]
+  producttypeproduct:
+    sources:
+      - [/app/data/producttypeproduct.csv~csv]
+    s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType$(productType)
+  productfeatureproduct:
+    sources:
+      - [/app/data/productfeactureproduct.csv~csv]
+    s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature$(productFeature)
+    po:
+      - [a, bsbm:Product]
+      - p: bsbm:productFeature
+        o:
+          - mapping: productfeature
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(productFeature)]
+                - [str2, $(nr)]
+  vendor:
+    sources:
+      - [/app/data/vendor.csv~csv]
+    s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/Vendor$(nr)
+    po:
+      - [a, bsbm:Vendor]
+      - [rdfs:label, $(label)]
+      - [rdfs:comment, $(comment)]
+      - [foaf:homepage, $(homepage)~iri]
+      - [bsbm:country, http://downlode.org/rdf/iso-3166/countries#$(country)]
+      - [dc:date, $(publishDate)]
+      - p: dc:publisher
+        o:
+          - mapping: vendor
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(nr)]
+                - [str2, $(publisher)] 
+  offer:
+    sources:
+      - [/app/data/offer.csv~csv]
+    s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/Offer$(nr)
+    po:
+      - [a, bsbm:Offer]
+      - [bsbm:price, $(price)]
+      - [bsbm:validFrom, $(validFrom)]
+      - [bsbm:validTo,validTo]
+      - [bsbm:deliveryDays, deliveryDays]
+      - [bsbm:offerWebpage, $/(offerWebpage)~iri]
+      - [dc:date, $(publishDate)]
+      - p: bsbm:product
+        o:
+          - mapping: product
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(nr)]
+                - [str2, $(product)] 
+      - p: bsbm:producer
+        o:
+          - mapping: producer
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(nr)]
+                - [str2, $(producer)] 
+      - p: bsbm:vendor
+        o:
+          - mapping: vendor
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(nr)]
+                - [str2, $(vendor)] 
+      - p: dc:publisher
+        o:
+          - mapping: vendor
+            condition:
+              function: equal
+              parameters:
+                - [str1, $(nr)]
+                - [str2, $(publisher)] 
+  person:
+    sources:
+      - [/app/data/person.csv~csv]
+    s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/Reviewer$(nr)
+    po:
+      - [a, bsbm:Person]
+      - [foaf:name, $(name)]
+      - [foaf:mbox_sha1sum, mbox_sha1sum]
+      - [bsbm:country, http://downlode.org/rdf/iso-3166/countries#$(country)]
+      - [dc:publisher, http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/RatingSite$(publisher)]
+      - [dc:date, publishDate]
+  review:
+    sources:
+      - [/app/data/review.csv~csv]
+    s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/Review$(nr)
+    po:
+      - [a, bsbm:Review]
+      - [bsbm:reviewDate, $(reviewDate)]
+      - [rev:text, $(text)@en]
+      - [bsbm:rating1 , $(rating1)]
+      - [bsbm:rating2 , $(rating2)]
+      - [bsbm:rating3 , $(rating3)]
+      - [bsbm:rating4 , $(rating4)]
+      - [dc:publisher, http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/RatingSite$(publisher)]
+      - [dc:date, $(publishDate)]
