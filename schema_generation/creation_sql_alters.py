@@ -9,7 +9,7 @@ def translate_fno_to_sql(functions):
             parameters = func["params"]
             column = func["column"].lower()
             source = func["source"].split("/")[-1].split('.')[0].lower()
-            sql += "ALTER TABLE \"" + source + "\" ADD COLUMN " + column + " VARCHAR(500);"
+            sql += "ALTER TABLE \"" + source + "\" ADD COLUMN " + column + " VARCHAR;"
             sql += "UPDATE \"" + source + "\" SET " + column + "=" + translate_function_to_sql(parameters, sql) + ");\n"
 
     return sql

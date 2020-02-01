@@ -6,7 +6,7 @@ def create_and_insert(csvw,sql, sqlFunctions, alters):
 
     try:
         # Local connection
-        con = psycopg2.connect(database="morphcsv", user="w0xter", password="1234", host="127.0.0.1", port="5432")
+#        con = psycopg2.connect(database="morphcsv", user="w0xter", password="1234", host="127.0.0.1", port="5432")
 
         #Docker connection
         con = psycopg2.connect(database="morphcsv", user="user", password="csv", host="postgres")
@@ -30,13 +30,13 @@ def insert_data(csvw,con):
         tablename = re.sub(".csv", "", csvw["tables"][i]["url"].split("/")[-1])
 
         # Insert docker db
-        #insert = "COPY " + tablename + " FROM '/tmp/csv/" + tablename + ".csv' with NULL as E'null' CSV HEADER;"
+        insert = "COPY " + tablename + " FROM '/tmp/csv/" + tablename + ".csv' with NULL as E'Null' CSV HEADER;"
 
         #Insert local db
 #        pwd = os.getcwd()
-#        insert = "COPY "+tablename+" FROM '" + str(pwd) + "/tmp/csv/" + tablename + ".csv' with NULL as E'null' CSV HEADER;"
+#        insert = "COPY "+tablename+" FROM '" + str(pwd) + "/tmp/csv/" + tablename + ".csv' with NULL as E'Null' CSV HEADER;"
 #        print('Inserting:')
- #       print(insert)
+#        print(insert)
         cur = con.cursor()
         cur.execute(insert)
         con.commit()
