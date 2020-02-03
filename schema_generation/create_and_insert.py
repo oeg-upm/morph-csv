@@ -17,7 +17,8 @@ def create_and_insert(csvw,sql, sqlFunctions, alters):
     insert_data(csvw, con)
     if(len(sqlFunctions) > 0):
       insert_functions(sqlFunctions, con)
-    insert_alters(alters, con)
+    if(len(alters) > 0):
+            insert_alters(alters, con)
     con.close()
 def create_schema(sql,con):
     cur = con.cursor()
