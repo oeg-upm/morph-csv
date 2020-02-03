@@ -39,7 +39,7 @@ def runTest(csvwPath, mappingPath, queryPath,expectedResults):
 	print('The format is correct')
 	yarrrml.fromSourceToTables(mapping)
 	schema,alters = mapping2Sql.generate_sql_schema(csvw, 
-			functions, 
+                        mapping,
 			mapping2Sql.decide_schema_based_on_query(mapping))
 	checkSchema(schema, expectedResults['schema'])
 	print('The Schema is Correct')
@@ -61,7 +61,7 @@ def generateData(csvwPath, mappingPath, queryPath):
 	csvFormatter.csvFormatter(csvw)
 	yarrrml.fromSourceToTables(mapping)
 	schema,alters = mapping2Sql.generate_sql_schema(csvw, 
-			functions, 
+                        mapping,
 			mapping2Sql.decide_schema_based_on_query(mapping))
 	sqlFunctions = sqlAlters.translate_fno_to_sql(functions)
 	try:
