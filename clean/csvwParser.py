@@ -1,6 +1,7 @@
 import json
 import sys
 import os
+import subprocess
 import logging
 import csv
 
@@ -26,7 +27,7 @@ def filterCols(table):
         if('primaryKey' in table['tableSchema']):
             table['tableSchema']['primaryKey'] = removePK(table['tableSchema']['primaryKey'],
                     table['filteredRowTitles'])
-        if('foreignkey' in table['tableSchema'].keys()):
+        if('foreignKey' in table['tableSchema'].keys()):
             table['tableSchema']['foreignKey'] = removeFK(table['tableSchema']['foreignKey'],
                     table['filteredRowTitles']
                     )
@@ -46,7 +47,11 @@ def removeFK(fKeys, cols):
 
 def insertRowTitles(csvw):
     for i,table in enumerate(csvw['tables']):
-        csvw['tables'][i]['tableSchema']['rowTitles'] = getTableTitles(table)['titles']
+        titles = getTableTitles(table)['titles']
+        titles = [str(title).replace('"','') for title in titles]
+       # print('*****************TITLES' + table['url']+'**********************\n\n\n')
+       # print(titles)
+        csvw['tables'][i]['tableSchema']['rowTitles'] = titles
     return csvw
 def getRowTitles(table):
     try:
@@ -76,32 +81,25 @@ def getTableTitles(table):
     try:
         titles = []
         header = True
-
         if('dialect' in table.keys() and 'header' in table['dialect'].keys()):
             header =  table['dialect']['header']
-
         if('tableSchema' in table.keys()):
             if('rowTitles' in table['tableSchema'].keys() and len(table['tableSchema']['rowTitles']) > 0):
                 titles = table['tableSchema']['rowTitles']
             elif('rowTitle' in table['tableSchema'].keys() and len(table['tableSchema']['rowTitle']) > 0):
                 titles = table['tableSchema']['rowTitle']
-        #print('TITLES:'  + str(titles))
         if(len(titles) == 0):
-            ##print("NO HAY ROW TITLES")
-            path = './tmp/csv/' + str(table['url'].split("/")[-1:][0]) #.split('.')[0])
+            path = 'tmp/csv/' + str(table['url'].split("/")[-1:][0]) #.split('.')[0])
             delimiter = getDelimiterValue(table)
-            with open(path, "r",encoding='utf-8') as f:
-                reader = csv.reader(f)
-                i = next(reader) 
-                titles  = i
-                if(delimiter != ','):
-                    titles = str(i[0]).encode('unicode-escape').decode('ascii').split(delimiter)
+            os.system("bash bash/titlesCatcher '%s' '%s'"%(path, delimiter))
+            strTitles = str(open('tmp/titles.tmp').read())
+            titles = ['"' + title.replace('\n', '')  + '"' for title in  strTitles.split(',')]
         global rowTitles
         rowTitles = titles
-        #SI NO SE ESPECIFICA LOS ROWTITLES EN EL CSVW HAY QUE SACARLOS DEL CSV!!!!!!!
         return {'header':header, 'titles':titles}
 
     except Exception as e:
+        print('Falla csvwParser.getTableTitles()')
         print(e)
         sys.exit()
 #Devuelve el array de titulos formateado listo para pasarselo directamente al BashScript
@@ -210,16 +208,42 @@ def getDateFormat(table):
                 date['delimiter'] = '/'
             elif('-' in date['format']):
                 date['delimiter'] = '-'
+
             result['print'].append({'col':'$%s'%(str(date['col'])),'data':'dateValue%s'%(str(date['col']))})
-            result['split'] += 'if($%s != \"$%sNULL\")split($%s,date%s,\"%s\");dateValue%s=%s;if($%s == \"$%sNULL\")dateValue%s=\"null\";'%(str(date['col']), str(date['col']),str(date['col']),str(date['col']),str(date['delimiter']),str(date['col']), arrayFormat, str(date['col']),str(date['col']),str(date['col']))
+            result['split'] += 'if($%s != \"$%sNULL\")split($%s,date%s,\"%s\");dateValue%s=%s;if($%s == \"$%sNULL\")dateValue%s=\"null\";'%(
+                    str(date['col']), 
+                    str(date['col']),
+                    str(date['col']),
+                    str(date['col']),
+                    str(date['delimiter']),
+                    str(date['col']),
+                    arrayFormat,
+                    str(date['col']),
+                    str(date['col']),
+                    str(date['col']))
         elif(str(date['format']).lower() == "yyyymmdd"):
             arrayFormat = 'date%s[1] date%s[2] date%s[3] date%s[4]\"-\" date%s[5] date%s[6] \"-\" date%s[7] date%s[8]'%(
-                    str(date['col']), str(date['col']), str(date['col']), str(date['col']),
-                    str(date['col']),str(date['col']),str(date['col']),str(date['col']))
+                    str(date['col']),
+                    str(date['col']), 
+                    str(date['col']), 
+                    str(date['col']),
+                    str(date['col']),
+                    str(date['col']),
+                    str(date['col']),
+                    str(date['col']))
             date['delimiter'] = ''
             result['print'].append({'col':'$%s'%(str(date['col'])),'data':'dateValue%s'%(str(date['col']))})
-            #result['split'] += 'split($%s,date%s,\"%s\");'%(str(date['col']), str(date['col']),str(date['delimiter']))
-            result['split'] += '{if($%s != \"$%sNULL\")split($%s,date%s,\"%s\");dateValue%s=%s;if($%s == \"$%sNULL\")dateValue%s=\"null\";}'%(str(date['col']), str(date['col']),str(date['col']),str(date['col']),str(date['delimiter']),str(date['col']), arrayFormat, str(date['col']),str(date['col']),str(date['col']))
+            result['split'] += '{if($%s != \"$%sNULL\")split($%s,date%s,\"%s\");dateValue%s=%s;if($%s == \"$%sNULL\")dateValue%s=\"null\";}'%(
+                    str(date['col']), 
+                    str(date['col']),
+                    str(date['col']),
+                    str(date['col']),
+                    str(date['delimiter']),
+                    str(date['col']), 
+                    arrayFormat, 
+                    str(date['col']),
+                    str(date['col']),
+                    str(date['col']))
            
     return result
 
@@ -279,7 +303,7 @@ def getGsubPatterns(table):
     script = nullValues['fullArg']
     script += getDefaultEmptyStringValue(table)['arg']
     script += getBooleanFormat(table)
-    result['gsub'] = 'gsub(/"/,"",$0);'
+    result['gsub'] = 'gsub(/\\"/,"",$0);'
     result['gsub'] += '%s$0=%s;gsub(/"null"/, "Null", $0);'%(str(script),str(delimiter['arg']))
     result['print'] = '$0'
     result['delimiter'] = delimiter['delimiter'].encode('unicode-escape').decode('ascii')
@@ -338,18 +362,16 @@ def getCols(table):
         cols = table['tableSchema']['columns']
     return cols
 def getFilteredTitles(table):
-    result = orderAccordingToRowTitles(table['filteredRowTitles']);
+    result = orderAccordingToRowTitles(table['filteredRowTitles'], table['tableSchema']['rowTitles']);
     result = '"' + ''.join(str(result[i]) + '","' for i in range(0, len(result)))
     result = result[:-2]
     return result
-def orderAccordingToRowTitles(titles):
-    result = []
-    for title in titles:
-        result.append(rowTitles.index(title))
-    result = sorted(result)
-    for i,title in enumerate(result):
-        result[i] = rowTitles[result[i]]
-    return result
+def orderAccordingToRowTitles(titles, rowT):
+		result = [rowTitles.index(title) for title in titles]
+		result = sorted(result)
+		for i,title in enumerate(result):
+				result[i] = rowTitles[result[i]]
+		return result
 
 def getSeparatorScripts(table):
     result = {'columns':[], 'script':''}

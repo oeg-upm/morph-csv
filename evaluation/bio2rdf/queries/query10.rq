@@ -3,13 +3,12 @@ PREFIX ctv: <http://bio2rdf.org/clinicaltrials_vocabulary:>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 
-SELECT ?study ?label ?summary ?outcome ?measurement ?type
-WHERE {
+SELECT ?study ?label ?summary ?outcome ?measurement ?type WHERE {
 	?study rdf:type ctv:Clinical-Study ;
 		rdfs:label ?label ;
         ctv:brief-summary ?summary ;
         ctv:outcome ?outcome .
-    ?outcome ctv:analysis ?analysis ;
-        ctv:measurement ?measurement ;
-        ctv:type ?type .
+	?outcome ctv:analysis ?analysis ;
+        	ctv:measurement ?measurement ;
+        	ctv:type ?type .
 }

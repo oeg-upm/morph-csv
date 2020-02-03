@@ -50,7 +50,7 @@ def removetmpdirs():
 def sparqlQueryParser(path):
     try:
         os.system("bash bash/sparqlQueryParser.sh %s"%(str(path)))
-        print('Query Parsed')
+#        print('Query Parsed')
     except:
         print('The Formatt of the query is wrong')
         sys.exit()

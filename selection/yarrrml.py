@@ -3,14 +3,14 @@ import re
 import os
 
 
-def getCleanYarrrml ():
+def getCleanYarrrml (mappingPath="./tmp/annotations/mapping.yaml"):
     """
     Generate RML mapping without functions:
         - yarrrml mapping
     return dict with the functions (mapping and reference where to apply them) and rml mapping in disk
     """
     functions = {}
-    data = yaml.load(open("./tmp/annotations/mapping.yaml"), Loader=yaml.FullLoader)
+    data = yaml.load(open(mappingPath), Loader=yaml.FullLoader)
     for tm in data["mappings"]:
         i = 0
         source = data["mappings"][tm]["sources"][0][0]

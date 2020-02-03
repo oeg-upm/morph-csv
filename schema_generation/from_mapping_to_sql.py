@@ -15,18 +15,23 @@ def decide_schema_based_on_query(mapping):
     return False
 
 
-def generate_sql_schema(csvw,functions,decision):
-
+def generate_sql_schema(csvw,mapping,decision):
+#print('****************MAPPNIG********************\n' + str(mapping).replace("'", '"'))
     sqlGlobal = ""
     foreignkeys = ""
+    indexes = ""
+    alters = ""
     for i,table in enumerate(csvw["tables"]):
         sql = ''
-        source = csvwParser.getUrl(table).split("/")[-1:][0].replace(".csv","")
+        source = csvwParser.getUrl(table).split("/")[-1:][0].replace(".csv","").lower()
         columns = csvw["tables"][i]["filteredRowTitles"]
-        sql += "DROP TABLE IF EXISTS \"" + source + "\";"
+        sql += "DROP TABLE IF EXISTS \"" + source + "\" CASCADE;"
         sql += "CREATE TABLE " + source + "("
-        for columName in columns:
+        foreignKeyList = getForeignKeys(table)
+        for columName in columns :
             sql += columName + " " + find_type_in_csvw(columName, table["tableSchema"]) + ","
+#            if(columName in foreignKeyList and not ('primaryKey' in table['tableSchema'].keys() and columName in table['tableSchema']['primaryKey'])):
+#                sql = sql[:-1] + " UNIQUE,"
 
         if decision:
             try:
@@ -35,25 +40,58 @@ def generate_sql_schema(csvw,functions,decision):
                 primarykeys = ''
             if len(primarykeys) > 0:
                 sql += "PRIMARY KEY (" + primarykeys + "),"
-            if 'foreignKeys' in table['tableSchema'].keys():
-                for fk in table["tableSchema"]["foreignKeys"]:
+            if 'foreignKey' in table['tableSchema'].keys():
+                for fk in table["tableSchema"]["foreignKey"]:
                     column = fk["columnReference"]
-                    table = fk["reference"]["resource"]
+                    refTable = fk["reference"]["resource"].split("/")[-1].replace(".csv","")
                     reference = fk["reference"]["columnReference"]
-                    foreignkeys += "FOREIGN KEY ("+column+") REFERENCES "+table+" ("+reference+"),"
-                sql += foreignkeys
+                    if(isDefinedReference(mapping,findTMofTable(mapping, refTable), reference)):
+                        if(isPrimaryKey(csvw, reference, refTable)):
+                                foreignkeys += "ALTER TABLE " + source +  " ADD FOREIGN KEY ("+column.lower()+") REFERENCES "+refTable.lower()+" ("+reference.lower()+");"
+                        else:
+                             indexes += "CREATE INDEX " + reference + "_index ON " + refTable.lower() + " (" + reference + ");"  
+
 
         sql = sql[:-1] + ");"
         sqlGlobal += sql
-    sqlGlobal += function.translate_fno_to_sql(functions)
+    alters += foreignkeys
+    alters += indexes
+#    sqlGlobal += function.translate_fno_to_sql(functions)
     #print('***********FUNCTIIONS**********')
     #print(str(functions).replace('\'','"'))
-    print('***********SCHEMA**************')
-    print(sqlGlobal.replace(';', ';\n'))
-    return sqlGlobal
+#    print('***********SCHEMA**************')
+#    print(sqlGlobal.replace(';', ';\n'))
+    return sqlGlobal, alters
 
+def isPrimaryKey(csvw,column, tableName):
+    for table in csvw['tables']:
+        if(csvwParser.getUrl(table).split("/")[-1].replace(".csv", "") == tableName and 
+          'primaryKey' in table['tableSchema'].keys() and
+          column == table['tableSchema']['primaryKey']
+          ):
+            return True
+    return False
+
+def getForeignKeys(table):
+    result = []
+    if 'foreignKey' in table['tableSchema']:
+        for fk in table['tableSchema']['foreignKey']:
+                result.append(fk["columnReference"])
+    return result
+def findTMofTable(mapping, table):
+        for tm in mapping['mappings']:
+                if(table.lower() in str(mapping['mappings'][tm]['sources']).lower()):
+                        return tm
+        return 'Null'
+def isDefinedReference(mapping,tm, reference):
+        if tm is not 'Null':
+                colPattern = '\$\(([^)]+)\)'
+                matches = re.findall(colPattern, str(mapping['mappings'][tm]))
+                if(reference in matches):
+                        return True
+        return False
 def find_type_in_csvw(title, csvw_columns):
-    datatype = "VARCHAR(200)"
+    datatype = "VARCHAR"
     for col in csvw_columns["columns"]:
         if csvwParser.getColTitle(col) == title:
             datatype = translate_type_to_sql(csvwParser.getDataTypeValue(col))
@@ -69,6 +107,6 @@ def translate_type_to_sql(dataType):
     elif re.match("date", dataType):
         translated_type = "DATE"
     else:
-        translated_type = "VARCHAR(500)"
+        translated_type = "VARCHAR"
 
     return translated_type

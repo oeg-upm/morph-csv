@@ -1,4 +1,4 @@
 {
-	"yarrrml":"/mappings/bio2rdf.yml",
-	"csvw":"/mappings/bio2rdf.csvw.json"
+	"yarrrml":"https://raw.githubusercontent.com/w0xter/morph-csv-sparql/master/evaluation/bio2rdf/bio2rdf.yml",
+	"csvw":"https://raw.githubusercontent.com/w0xter/morph-csv-sparql/master/evaluation/bio2rdf/bio2rdf.csvw.json"
 }
