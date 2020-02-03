@@ -38,7 +38,7 @@ def runTest(csvwPath, mappingPath, queryPath,expectedResults):
 	checkFormat(csvw, expectedResults['format'])
 	print('The format is correct')
 	yarrrml.fromSourceToTables(mapping)
-	schema = mapping2Sql.generate_sql_schema(csvw, 
+	schema,alters = mapping2Sql.generate_sql_schema(csvw, 
 			functions, 
 			mapping2Sql.decide_schema_based_on_query(mapping))
 	checkSchema(schema, expectedResults['schema'])
@@ -60,14 +60,16 @@ def generateData(csvwPath, mappingPath, queryPath):
 	mapping = formalizedData['mapping']
 	csvFormatter.csvFormatter(csvw)
 	yarrrml.fromSourceToTables(mapping)
-	schema = mapping2Sql.generate_sql_schema(csvw, 
+	schema,alters = mapping2Sql.generate_sql_schema(csvw, 
 			functions, 
 			mapping2Sql.decide_schema_based_on_query(mapping))
 	sqlFunctions = sqlAlters.translate_fno_to_sql(functions)
 	try:
-		insert.create_and_insert(csvw, schema, sqlFunctions)
-	except:
-		sys.exit()
+		insert.create_and_insert(csvw, schema, sqlFunctions, alters)
+	except Exception as e:
+                print('HA FALLADO')
+                print(e)
+                sys.exit()
 	print('csvColumns:\n' + str(csvColumns).replace("'",'"'))
 	print('CSV Format:\n' + str(readFormat(csvw)).replace("'", '"'))
 	print('SQL Schema:\n' + schema)
