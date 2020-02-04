@@ -6,7 +6,7 @@ def create_and_insert(csvw,sql, sqlFunctions, alters):
 
     try:
         # Local connection
-        con = psycopg2.connect(database="morphcsv", user="w0xter", password="1234", host="127.0.0.1", port="5432")
+        con = psycopg2.connect(database="morphcsv", user="user", password="1234", host="127.0.0.1", port="5432")
 
         #Docker connection
 #        con = psycopg2.connect(database="morphcsv", user="user", password="csv", host="postgres")
