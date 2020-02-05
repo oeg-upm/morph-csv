@@ -222,4 +222,8 @@ mappings:
       - [bsbm:rating3 , $(rating3)]
       - [bsbm:rating4 , $(rating4)]
       - [dc:publisher, http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/RatingSite$(publisher)]
+<<<<<<< HEAD
       - [dc:date, $(publishDate)]
+=======
+      - [dc:date, $(publishDate)]
+>>>>>>> dfd38abd9a69cda9be1de54bb4ad35dbd1959961
