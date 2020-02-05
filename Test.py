@@ -72,7 +72,7 @@ def generateData(csvwPath, mappingPath, queryPath):
                 sys.exit()
 	print('csvColumns:\n' + str(csvColumns).replace("'",'"'))
 	print('CSV Format:\n' + str(readFormat(csvw)).replace("'", '"'))
-	print('SQL Schema:\n' + schema)
+	print('SQL Schema:\n' + schema + alters)
 	if(len(str(sqlFunctions)) > 0):
 		print('SQL Functions:\n' + str(sqlFunctions))
 	

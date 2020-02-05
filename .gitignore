@@ -5,3 +5,4 @@ csvwParser/code/tmp/*
 .idea
 tmp
 */__pycache__/*
+data/*
