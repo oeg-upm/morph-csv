@@ -19,6 +19,7 @@ def runTest(csvwPath, mappingPath, queryPath,expectedResults):
 	csvw = json.loads(open(csvwPath).read())
 	csvw = csvwParser.insertRowTitles(csvw)
 	sparqlQuery = utils.readQuery(queryPath)
+	print(sparqlQuery)
 	utils.sparqlQueryParser(queryPath)
 	parsedQuery = json.loads(open('tmp/annotations/sparql.json').read())
 	#Extracting the functions from the mapping:
