@@ -34,8 +34,8 @@ def extractTriplePatternUris(result, el):
             uri = tm['predicate']['value']
             if(subject not in result.keys()):
                 result[subject] = {'uris':[], 'fullTM':False}
-            # if(isUri(subject)):
-                # result[subject]['uris'].append(subject)
+            if(isUri(subject)):
+                result[subject]['uris'].append(subject)
             if(isUri(uri)):
                 if(uri == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'):
                     uri = tm['object']['value']
@@ -43,7 +43,6 @@ def extractTriplePatternUris(result, el):
                     result[subject]['uris'].append('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
                 if(not uri in result[subject]['uris']):
                     result[subject]['uris'].append(uri)
-    '''		    
             else:
                 uri = tm['object']['value']
                 if(isUri(uri)):
@@ -51,7 +50,6 @@ def extractTriplePatternUris(result, el):
 	                    result[subject]['uris'].append(uri)
                 else:
                     result[subject]['fullTM'] = True
-    '''	    
     return result
 
 def checkEmptyUris(uris):
@@ -112,7 +110,7 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
                                 'po':[]
                                 }
                         newMapping['mappings'][tm]['po'].append(po)
-#    print('MAPPING:\n' + str(newMapping).replace('\'', '"'))                       
+#    print('MAPPING:\n' + str(newMapping).replace('\'', '"'))
     newMapping = removeEmptyTM(newMapping)
     newMapping  = addReferencesOfTheJoins(mapping, newMapping)
     return newMapping
@@ -168,7 +166,7 @@ def checkIfReferenceIsDefined(storedTm,oldMapping,mapping,o):
         storedTm[tmName]['po'] = []
         if(tmName in mapping['mappings'].keys()):
             storedTm[tmName] = mapping['mappings'][tmName]
-    if ((tmName not in newMapping['mappings'].keys() or 
+    if ((tmName not in newMapping['mappings'].keys() or
         joinReferences['outerRef'] not in getColPatterns(newMapping['mappings'][tmName])) and
         joinReferences['outerRef'] not in getColPatterns(storedTm[tmName])
             ):
@@ -193,14 +191,14 @@ def removeEmptyTM(mapping):
     #print('MAPPING:\n' + str(mapping).replace('\'','"'))
     newMapping = mapping.copy()
     tmToRemove = []
-    types = [ po[1] 
+    types = [ po[1]
             for tm in mapping['mappings']
             for po in mapping['mappings'][tm]['po']
             if (type(po) is list and po[0] == 'a')
             ]
     for tm in mapping['mappings']:
         #print('PO:\n' + str(mapping['mappings'][tm]['po']))
-        if(len(mapping['mappings'][tm]['po']) == 1 and 
+        if(len(mapping['mappings'][tm]['po']) == 1 and
             type(mapping['mappings'][tm]['po'][0]) is list and
             mapping['mappings'][tm]['po'][0][0] == 'a'
             and types.count(mapping['mappings'][tm]['po'][0][1]) > 1):
@@ -231,7 +229,7 @@ def findCsvColumnsInsideTheMapping(mapping):
         columns[tm]['columns'] = list(set(columns[tm]['columns']))
     return columns
 
-def getColPatterns(element): 
+def getColPatterns(element):
     colPattern  = '\$\(([^)]+)\)'
     matches = re.findall(colPattern, str(element))
     result = [ '$(' + str(match) + ')' for match in matches]

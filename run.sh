@@ -1,6 +1,6 @@
 #!/bin/bash
 #source=$1
-#query=$2 
+#query=$2
 
 #MotivatingExample
 #cp evaluation/motivating-example/annotations.json tmp/annotations/
@@ -29,4 +29,4 @@
 #BSBM
 cp evaluation/bsbm/bsbm.csv.yml tmp/annotations/mapping.yaml
 cp evaluation/bsbm/bsbm.csvw.json tmp/annotations/annotations.json
-python3 Test.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bsbm/queries/q11.rq
+python3 Test.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bsbm/queries/q2.rq

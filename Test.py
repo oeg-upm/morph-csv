@@ -39,7 +39,7 @@ def runTest(csvwPath, mappingPath, queryPath,expectedResults):
 	checkFormat(csvw, expectedResults['format'])
 	print('The format is correct')
 	yarrrml.fromSourceToTables(mapping)
-	schema,alters = mapping2Sql.generate_sql_schema(csvw, 
+	schema,alters = mapping2Sql.generate_sql_schema(csvw,
                         mapping,
 			mapping2Sql.decide_schema_based_on_query(mapping))
 	checkSchema(schema, expectedResults['schema'])
@@ -63,7 +63,7 @@ def generateData(csvwPath, mappingPath, queryPath):
 	mapping = formalizedData['mapping']
 	csvFormatter.csvFormatter(csvw)
 	yarrrml.fromSourceToTables(mapping)
-	schema,alters = mapping2Sql.generate_sql_schema(csvw, 
+	schema,alters = mapping2Sql.generate_sql_schema(csvw,
                         mapping,
 			mapping2Sql.decide_schema_based_on_query(mapping))
 	sqlFunctions = sqlAlters.translate_fno_to_sql(functions)
@@ -78,7 +78,7 @@ def generateData(csvwPath, mappingPath, queryPath):
 	print('SQL Schema:\n' + schema + alters)
 	if(len(str(sqlFunctions)) > 0):
 		print('SQL Functions:\n' + str(sqlFunctions))
-	
+
 
 
 def checkColumns(columns, result):
@@ -117,7 +117,7 @@ def checkSchema(schema, result):
 	try:
 		if(schema != result):
 			raise Exception('The Schema is wrong: \n' + schema)
-	except Exception as e: 
+	except Exception as e:
 		print('Falla checkSchema')
 		print(e)
 		sys.exit()
@@ -132,7 +132,7 @@ def main():
 			mappingPath = testConfig[dataset]["mappingPath"]
 			expectedResult = query
 			#runTest(csvwPath, mappingPath, queryPath, expectedResult)
-'''	
+'''
 
 def main():
     parser = argparse.ArgumentParser()
