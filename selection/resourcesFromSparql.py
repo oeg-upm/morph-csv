@@ -34,8 +34,8 @@ def extractTriplePatternUris(result, el):
             uri = tm['predicate']['value']
             if(subject not in result.keys()):
                 result[subject] = {'uris':[], 'fullTM':False}
-            if(isUri(subject)):
-                result[subject]['uris'].append(subject)
+#            if(isUri(subject)):
+#                result[subject]['uris'].append(subject)
             if(isUri(uri)):
                 if(uri == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'):
                     uri = tm['object']['value']
@@ -43,13 +43,13 @@ def extractTriplePatternUris(result, el):
                     result[subject]['uris'].append('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
                 if(not uri in result[subject]['uris']):
                     result[subject]['uris'].append(uri)
-            else:
-                uri = tm['object']['value']
-                if(isUri(uri)):
-                    if(not uri in result[subject]['uris']):
-	                    result[subject]['uris'].append(uri)
-                else:
-                    result[subject]['fullTM'] = True
+#            else:
+#                uri = tm['object']['value']
+#                if(isUri(uri)):
+#                    if(not uri in result[subject]['uris']):
+#	                    result[subject]['uris'].append(uri)
+#                else:
+#                    result[subject]['fullTM'] = True
     return result
 
 def checkEmptyUris(uris):
