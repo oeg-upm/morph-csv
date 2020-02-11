@@ -47,15 +47,15 @@ def runTest(csvwPath, mappingPath, queryPath,expectedResults):
 
 def generateData(csvwPath, mappingPath, queryPath):
 	csvw = json.loads(open(csvwPath).read())
-#	csvw = csvwParser.insertRowTitles(csvw)
+	csvw = csvwParser.insertRowTitles(csvw)
 	sparqlQuery = utils.readQuery(queryPath)
 	utils.sparqlQueryParser(queryPath)
 	parsedQuery = json.loads(open('tmp/annotations/sparql.json').read())
 	functions, mapping = yarrrml.getCleanYarrrml(mappingPath)
 	csvColumns, mapping = resourcesFromSparql.fromSPARQLtoMapping(mapping, sparqlQuery, parsedQuery)
 	csvColumns, functions = resourcesFromSparql.getColumnsFromFunctions(csvColumns, functions)
-	print(str(mapping).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
-	sys.exit()
+#	print(str(mapping).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
+#	sys.exit()
 	csvw = csvFormatter.csvwFilter(csvw, csvColumns)
 	formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, sparqlQuery, parsedQuery)
 	csvw = formalizedData['csvw']
