@@ -112,7 +112,6 @@
       "header": false
     },
     "tableSchema":{
-      "primaryKey": "GeneID",
       "foreignKey": [{
         "columnReference": "tax_id",
         "reference": {
@@ -313,7 +312,6 @@
       "header": false
     },
     "tableSchema":{
-      "primaryKey": "gene_id",
       "foreignKey": [{
         "columnReference": "taxid",
         "reference": {
@@ -401,7 +399,6 @@
       "header": false
     },
     "tableSchema":{
-      "primaryKey": "gene_id,GO_id,evidence",
       "rowTitles": ["database", "gene_id", "symbol", "association", "GO_id", "references", "evidence", "dbxrefs", "ud1", "ud2", "cosmid", "type", "taxid", "mod_date", "db"],
       "columns": [{
         "titles": "symbol",
@@ -457,7 +454,6 @@
     },
     "tableSchema":{
       "rowTitles": ["tax_id", "name_txt", "unique_name", "name_class"],
-      "primaryKey": "name_txt,tax_id",
       "columns": [{
         "titles": "name_txt",
         "null": ""
