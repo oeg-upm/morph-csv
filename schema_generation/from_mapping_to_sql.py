@@ -2,7 +2,7 @@ import re
 import sys
 import clean.csvwParser as csvwParser
 import schema_generation.creation_sql_alters as function
-
+import selection.resourcesFormSparql as resourcesFromSparql
 
 # return true if there is a join in the mapping, hence, in the query, if not morph-rdb in csv mode should be run
 
@@ -40,6 +40,9 @@ def generate_sql_schema(csvw,mapping,decision):
                 primarykeys = ''
             if len(primarykeys) > 0:
                 sql += "PRIMARY KEY (" + primarykeys + "),"
+            else:
+                indexes += "CREATE INDEX SubjectColsIndex"+ source " on "
+                + source + " ( " + getColumnsFromSubect(mapping, source)  + " );"
             if 'foreignKey' in table['tableSchema'].keys():
                 for fk in table["tableSchema"]["foreignKey"]:
                     column = fk["columnReference"]
@@ -49,7 +52,7 @@ def generate_sql_schema(csvw,mapping,decision):
                         if(isPrimaryKey(csvw, reference, refTable)):
                                 foreignkeys += "ALTER TABLE " + source +  " ADD FOREIGN KEY ("+column.lower()+") REFERENCES "+refTable.lower()+" ("+reference.lower()+");"
                         else:
-                             indexes += "CREATE INDEX " + reference + "_index ON " + refTable.lower() + " (" + reference + ");"  
+                             indexes += "CREATE INDEX " + reference + "_index ON " + refTable.lower() + " (" + reference + ");"
 
 
         sql = sql[:-1] + ");"
@@ -65,7 +68,7 @@ def generate_sql_schema(csvw,mapping,decision):
 
 def isPrimaryKey(csvw,column, tableName):
     for table in csvw['tables']:
-        if(csvwParser.getUrl(table).split("/")[-1].replace(".csv", "") == tableName and 
+        if(csvwParser.getUrl(table).split("/")[-1].replace(".csv", "") == tableName and
           'primaryKey' in table['tableSchema'].keys() and
           column == table['tableSchema']['primaryKey']
           ):
@@ -78,6 +81,10 @@ def getForeignKeys(table):
         for fk in table['tableSchema']['foreignKey']:
                 result.append(fk["columnReference"])
     return result
+def getColumnsFromSubject(mapping, TM):
+    subject = mapping['mappings'][TM]['subject']
+    return str(resourceFromSparql.cleanColPattern(subject))[1:-1]
+
 def findTMofTable(mapping, table):
         for tm in mapping['mappings']:
                 if(table.lower() in str(mapping['mappings'][tm]['sources']).lower()):
