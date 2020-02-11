@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y nodejs npm wget unzip python3 bc vim bu
 
 RUN npm i -g @rmlio/yarrrml-parser
 RUN npm -g install sparqljs
-RUN mkdir /morphcsv && mkdir /results && mkdir /data && mkdir /mappings && mkdir /queries
+RUN mkdir /morphcsv && mkdir /results && mkdir -p /data/bsbm && mkdir /mappings && mkdir /queries
 
 COPY . /morphcsv
 
