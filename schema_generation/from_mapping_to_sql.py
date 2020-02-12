@@ -2,7 +2,7 @@ import re
 import sys
 import clean.csvwParser as csvwParser
 import schema_generation.creation_sql_alters as function
-import selection.resourcesFormSparql as resourcesFromSparql
+import selection.resourcesFromSparql as resourcesFromSparql
 
 # return true if there is a join in the mapping, hence, in the query, if not morph-rdb in csv mode should be run
 
@@ -41,8 +41,8 @@ def generate_sql_schema(csvw,mapping,decision):
             if len(primarykeys) > 0:
                 sql += "PRIMARY KEY (" + primarykeys + "),"
             else:
-                indexes += "CREATE INDEX SubjectColsIndex"+ source " on "
-                + source + " ( " + getColumnsFromSubect(mapping, source)  + " );"
+                indexes += "CREATE INDEX SubjectColsIndex"+ source + " ON "
+                + source + " ( " + getColumnsFromSubject(mapping, source)  + " );"
             if 'foreignKey' in table['tableSchema'].keys():
                 for fk in table["tableSchema"]["foreignKey"]:
                     column = fk["columnReference"]

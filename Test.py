@@ -72,7 +72,7 @@ def generateData(csvwPath, mappingPath, queryPath):
 	except Exception as e:
                 print('HA FALLADO')
                 print(e)
-                sys.exit()
+       #         sys.exit()
 	print('csvColumns:\n' + str(csvColumns).replace("'",'"'))
 	print('CSV Format:\n' + str(readFormat(csvw)).replace("'", '"'))
 	print('SQL Schema:\n' + schema + alters)

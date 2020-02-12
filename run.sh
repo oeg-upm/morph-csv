@@ -9,11 +9,10 @@
 #python3 morphcsv.py -c test/config.json -q evaluation/motivating-example/queries/query1.rq
 
 #GTFS
-#cp ~/Datasets/Gtfs/* tmp/csv/
-#cp evaluation/gtfs/gtfs.csvw.json tmp/annotations/annotations.json
-#cp evaluation/gtfs/gtfs-csv.yaml tmp/annotations/mapping.yaml
-#python3 morphcsv.py  -c evaluation/gtfs/config-gtfs.json -q evaluation/gtfs/queries/original/q4.rq
-#python3 Test.py  -c evaluation/gtfs/config-gtfs.json -q evaluation/gtfs/queries/original/q1.rq
+cp ~/Datasets/Gtfs-1/* tmp/csv/
+cp evaluation/gtfs/gtfs.csvw.json tmp/annotations/annotations.json
+cp evaluation/gtfs/gtfs-csv.yaml tmp/annotations/mapping.yaml
+python3 Test.py  -c evaluation/gtfs/config-gtfs.json -q evaluation/gtfs/queries/original/q4.rq
 
 #GENEINFO
 #cp evaluation/bio2rdf/ncbigene/ncbigene.annotations.json tmp/annotations/annotations.json
@@ -27,6 +26,6 @@
 #cp /home/w0xter/Datasets/minBio2Rdf/* tmp/csv/
 #python3 Test.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bio2rdf/queries/query4.rq
 #BSBM
-cp evaluation/bsbm/bsbm.csv.yml tmp/annotations/mapping.yaml
-cp evaluation/bsbm/bsbm.csvw.json tmp/annotations/annotations.json
-python3 Test.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bsbm/queries/q2.rq
+#cp evaluation/bsbm/bsbm.csv.yml tmp/annotations/mapping.yaml
+#cp evaluation/bsbm/bsbm.csvw.json tmp/annotations/annotations.json
+#python3 Test.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bsbm/queries/q2.rq
