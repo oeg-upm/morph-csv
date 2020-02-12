@@ -80,7 +80,7 @@ def getTableTitle(table):
 def getTableTitles(table):
     try:
         titles = []
-        header = True
+        header = False
         if('dialect' in table.keys() and 'header' in table['dialect'].keys()):
             header =  table['dialect']['header']
         if('tableSchema' in table.keys()):
@@ -94,6 +94,8 @@ def getTableTitles(table):
             os.system("bash bash/titlesCatcher '%s' '%s'"%(path, delimiter))
             strTitles = str(open('tmp/titles.tmp').read())
             titles = ['"' + title.replace('\n', '')  + '"' for title in  strTitles.split(',')]
+        elif header:
+            os.system("bash bash/deleteTitles '%s'"%(path))
         global rowTitles
         rowTitles = titles
         return {'header':header, 'titles':titles}
@@ -110,14 +112,14 @@ def getTitles(table):
     result = result[:-1]
     return {'result':result, 'header':data['header']}
 
-#Devuelve el delimitador, por defecto(Si no encuetra ningun delimitador en el csvw) es ',' 
+#Devuelve el delimitador, por defecto(Si no encuetra ningun delimitador en el csvw) es ','
 def getDelimiter(table):
     try:
         result = {'delimiter':getDelimiterValue(table), 'arg':''}
 #        result['arg'] = ''.join('$' + str(i) + ' ' for i in range(1, len(rowTitles) + 1))
         colsToPrint = []
         for i in table['filteredRowTitles']:
-            colsToPrint.append(rowTitles.index(i)) 
+            colsToPrint.append(rowTitles.index(i))
         result['arg'] = ''.join('$' + str(i + 1) + '"\\",\\""' for i in sorted(colsToPrint))
         result['arg'] ='"\\""'+ result['arg'][:-6] + '\\""'
         return result
@@ -135,7 +137,7 @@ def getSkipRows(table):
 
 #Recorre las columnas para almacenar el Null value en un ARRAY si no se encuntra ningun NUllvalue se usa el caracter vacio por defecto.
 def getNullValues(table):
-    nullValues  = [] 
+    nullValues  = []
     fullArg = ''
     result = {'data':[],'fullArg':''}
     if(columnsChecker(table)):
@@ -181,7 +183,7 @@ def getFormat(table, dataType):
                 if('datatype' in col.keys()):
                     if( str(col['datatype']) == dataType and 'format' in col.keys()):
                         result.append({'col':str(indx + 1),'format':col['format']})
-                    elif(type(col['datatype']) is dict and 'base' in col['datatype'] and 
+                    elif(type(col['datatype']) is dict and 'base' in col['datatype'] and
                         'format' in col['datatype'] and col['datatype']['base'] == dataType):
                         result.append({'col':str(indx + 1), 'format':col['datatype']['format']})
         return result
@@ -211,7 +213,7 @@ def getDateFormat(table):
 
             result['print'].append({'col':'$%s'%(str(date['col'])),'data':'dateValue%s'%(str(date['col']))})
             result['split'] += 'if($%s != \"$%sNULL\")split($%s,date%s,\"%s\");dateValue%s=%s;if($%s == \"$%sNULL\")dateValue%s=\"null\";'%(
-                    str(date['col']), 
+                    str(date['col']),
                     str(date['col']),
                     str(date['col']),
                     str(date['col']),
@@ -224,8 +226,8 @@ def getDateFormat(table):
         elif(str(date['format']).lower() == "yyyymmdd"):
             arrayFormat = 'date%s[1] date%s[2] date%s[3] date%s[4]\"-\" date%s[5] date%s[6] \"-\" date%s[7] date%s[8]'%(
                     str(date['col']),
-                    str(date['col']), 
-                    str(date['col']), 
+                    str(date['col']),
+                    str(date['col']),
                     str(date['col']),
                     str(date['col']),
                     str(date['col']),
@@ -234,17 +236,17 @@ def getDateFormat(table):
             date['delimiter'] = ''
             result['print'].append({'col':'$%s'%(str(date['col'])),'data':'dateValue%s'%(str(date['col']))})
             result['split'] += '{if($%s != \"$%sNULL\")split($%s,date%s,\"%s\");dateValue%s=%s;if($%s == \"$%sNULL\")dateValue%s=\"null\";}'%(
-                    str(date['col']), 
+                    str(date['col']),
                     str(date['col']),
                     str(date['col']),
                     str(date['col']),
                     str(date['delimiter']),
-                    str(date['col']), 
-                    arrayFormat, 
+                    str(date['col']),
+                    arrayFormat,
                     str(date['col']),
                     str(date['col']),
                     str(date['col']))
-           
+
     return result
 
 #Lee el formato de los booleans y manda la informacion necesaria para ejecutar el BashScript booleanFormatChanger.sh
@@ -260,7 +262,7 @@ def getBooleanFormat(table):
     return fullArg
 
 def getDefaultEmptyStringValue(table):
-    result = {'cols':[], 'arg':''} 
+    result = {'cols':[], 'arg':''}
     if(columnsChecker(table)):
         for index,col in enumerate(table['tableSchema']['columns']):
             if('default' in col.keys()):
@@ -281,12 +283,12 @@ def getColTitle(col):
         if(type(col['title']) is list and len(col['title']) > 0):
             title = str(col['title'][0])
         elif(str(col['title']) not in emptyValues):
-            title = col['title'] 
+            title = col['title']
     return title
 
 def getGsubPatterns(table):
     result = {'split': '', 'gsub':'', 'print':'', 'delimiter':''}
-    date = getDateFormat(table) 
+    date = getDateFormat(table)
     delimiter = getDelimiter(table)
     separator = getSeparatorScripts(table)['columns']
     result['split'] =  str(date['split'])
@@ -312,7 +314,7 @@ def getGsubPatterns(table):
 def getIndexOfCol(col, table):
     #print('SEARCHING:' + str(col) + '\nIN:' + str(rowTitles))
     title = getColTitle(col)
-    return getRowTitles(table).index(title) 
+    return getRowTitles(table).index(title)
 
 def getSeparatorValue(col):
     try:

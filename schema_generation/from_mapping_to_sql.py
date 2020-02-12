@@ -41,8 +41,8 @@ def generate_sql_schema(csvw,mapping,decision):
             if len(primarykeys) > 0:
                 sql += "PRIMARY KEY (" + primarykeys + "),"
             else:
-                indexes += "CREATE INDEX SubjectColsIndex"+ source + " ON "
-                + source + " ( " + getColumnsFromSubject(mapping, source)  + " );"
+                indexes += ''.join("CREATE INDEX IF NOT EXISTS " + col + "_index ON " + source + " ( " + col + ");" for col in getColumnsFromSubject(mapping, findTMofTable(mapping,source)))
+#                indexes += "CREATE INDEX IF NOT EXISTS subject_cols_index_"+ source + "  ON " + source + " ( " + getColumnsFromSubject(mapping, findTMofTable(mapping,source))  + " );"
             if 'foreignKey' in table['tableSchema'].keys():
                 for fk in table["tableSchema"]["foreignKey"]:
                     column = fk["columnReference"]
@@ -52,7 +52,7 @@ def generate_sql_schema(csvw,mapping,decision):
                         if(isPrimaryKey(csvw, reference, refTable)):
                                 foreignkeys += "ALTER TABLE " + source +  " ADD FOREIGN KEY ("+column.lower()+") REFERENCES "+refTable.lower()+" ("+reference.lower()+");"
                         else:
-                             indexes += "CREATE INDEX " + reference + "_index ON " + refTable.lower() + " (" + reference + ");"
+                             indexes += "CREATE INDEX IF NOT EXISTS " + reference + "_index  ON " + refTable.lower() + " (" + reference + ");"
 
 
         sql = sql[:-1] + ");"
@@ -82,8 +82,8 @@ def getForeignKeys(table):
                 result.append(fk["columnReference"])
     return result
 def getColumnsFromSubject(mapping, TM):
-    subject = mapping['mappings'][TM]['subject']
-    return str(resourceFromSparql.cleanColPattern(subject))[1:-1]
+    subject = mapping['mappings'][TM]['s']
+    return resourcesFromSparql.cleanColPattern(subject)
 
 def findTMofTable(mapping, table):
         for tm in mapping['mappings']:

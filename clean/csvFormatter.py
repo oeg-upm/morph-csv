@@ -19,7 +19,7 @@ def csvwFilter(csvw, selection):
             table['filteredRowTitles'] = []
             table['filteredRowTitles'].extend(
                     parser.orderAccordingToRowTitles(
-                        selection[title], 
+                        selection[title],
                         table['tableSchema']['rowTitles']
                         )
                     )
@@ -33,7 +33,8 @@ def scriptCaller(data):
     titles = parser.getTitles(data)
     insertTitles(titles, url)
     replaceCsvFormat(parser.getGsubPatterns(data), url)
-    titles['header'] = False
+#    titles['header'] = False
+    titles['header'] = parser.getTableTitles(data)['header']
     titles['result'] = parser.getFilteredTitles(data)
     insertTitles(titles, url)
 
