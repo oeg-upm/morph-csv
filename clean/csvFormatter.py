@@ -30,11 +30,8 @@ def csvwFilter(csvw, selection):
 #Function to call the bash Scripts files and send the scvw data.
 def scriptCaller(data):
     url = parser.getUrl(data).split("/")[-1:][0]
-    titles = parser.getTitles(data)
-    insertTitles(titles, url)
     replaceCsvFormat(parser.getGsubPatterns(data), url)
-    titles['header'] = False
-    titles['result'] = parser.getFilteredTitles(data)
+    titles = {'header':False, 'result':parser.getFilteredTitles(data)}
     insertTitles(titles, url)
 
 
@@ -42,7 +39,10 @@ def scriptCaller(data):
 Insert row titles (from csvw:rowTitles)
 '''
 def insertTitles(data, path):
-    if not data['header']:
+    #print('*****************************')
+    #print(data)
+    #print(path)
+    if data['header'] is False:
         os.system('bash ./bash/insertTitles.sh \'%s\' %s'%(data['result'], path))
 
 

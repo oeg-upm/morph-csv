@@ -106,8 +106,6 @@ def getTableTitles(table):
             os.system("bash bash/titlesCatcher '%s' '%s'"%(path, delimiter))
             strTitles = str(open('tmp/titles.tmp').read())
             titles = ['"' + title.replace('\n', '')  + '"' for title in  strTitles.split(',')]
-
-            header = False
         global rowTitles
         rowTitles = titles
         return {'header':header, 'titles':titles}
