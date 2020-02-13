@@ -24,7 +24,7 @@
 cp evaluation/bio2rdf/bio2rdf.csvw.json tmp/annotations/annotations.json
 cp evaluation/bio2rdf/bio2rdf.yml tmp/annotations/mapping.yaml
 cp ~/Datasets/bio2rdf/* tmp/csv/
-python3 Test.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bio2rdf/queries/query9.rq
+python3 Test.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bio2rdf/queries/query7.rq
 
 #BSBM
 #cp evaluation/bsbm/bsbm.csv.yml tmp/annotations/mapping.yaml

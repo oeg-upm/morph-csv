@@ -44,7 +44,11 @@ def removeFK(fKeys, cols):
         if fKey['columnReference'] in cols:
             result.append(fKey)
     return result
-
+def findTableByUrl(url, csvw):
+    for table in csvw['tables']:
+        if(url in getTableTitle(table)):
+            return table
+    return None
 def insertRowTitles(csvw):
 
     for i,table in enumerate(csvw['tables']):
@@ -319,9 +323,10 @@ def getGsubPatterns(table):
     result['delimiter'] = delimiter['delimiter'].encode('unicode-escape').decode('ascii')
     return result
 
-def getIndexOfCol(col, table):
+def getIndexOfCol(col, table, title=""):
     #print('SEARCHING:' + str(col) + '\nIN:' + str(rowTitles))
-    title = getColTitle(col)
+    if(title is ""):
+        title = getColTitle(col)
     return getRowTitles(table).index(title)
 
 def getSeparatorValue(col):
