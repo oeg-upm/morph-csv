@@ -1,0 +1,252 @@
+
+QUERY: 1
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX homogv: <http://bio2rdf.org/homologene_vocabulary:>
+
+SELECT ?hgroup ?label ?symbol ?refseq
+WHERE {
+	?hgroup rdf:type homogv:Resource ;
+		rdfs:label ?label ;
+		homogv:gene-symbol ?symbol ;
+		homogv:x-refseq ?refseq .
+}
+#Required Columns: {'TMhomologene': {'source': 'homologene.csv', 'columns': ['refseq', 'hid', 'genesymbol']}}
+
+csvColumns:
+{"TMhomologene": {"source": "homologene.csv", "columns": ["hid", "refseq", "genesymbol"]}}
+CSV Format:
+{"tmp/csv/homologene.csv": ""hid","genesymbol","refseq"\n"100","AGOS_AGL054W","NP_986612.1"\n"}
+SQL Schema:
+DROP TABLE IF EXISTS "homologene" CASCADE;CREATE TABLE homologene(hid VARCHAR,genesymbol VARCHAR,refseq VARCHAR);
+----------------------------------------------------
+QUERY: 2
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX homogv: <http://bio2rdf.org/homologene_vocabulary:>
+PREFIX ncbiv: <http://bio2rdf.org/ncbigene_vocabulary:>
+
+SELECT ?hgroup ?gene ?label
+WHERE {
+	?hgroup rdf:type homogv:Resource ;
+		homogv:x-ncbigene ?gene .
+	?gene rdfs:label ?label ;
+		ncbiv:locus ?locus .
+
+	FILTER (?div_title="pLeuDn_01")
+}
+#Required Columns: {'TMncbigene-gene_info': {'source': 'gene_info.csv', 'columns': ['LocusTag', 'tax_id', 'description', 'Symbol', 'GeneID']}, 'TMhomologene': {'source': 'homologene.csv', 'columns': ['hid']}}
+
+La columna GeneID pertencoiente a gene_info tiene una selectividad de:1.0
+La columna GeneID pertencoiente a gene_info tiene una selectividad de:1.0
+csvColumns:
+{"TMncbigene-gene_info": {"source": "gene_info.csv", "columns": ["GeneID", "type_of_gene", "LocusTag", "description", "tax_id", "Symbol"]}, "TMhomologene": {"source": "homologene.csv", "columns": ["hid", "ncbigene"]}}
+CSV Format:
+{"tmp/csv/gene_info.csv": ""tax_id","GeneID","Symbol","LocusTag","description","type_of_gene"\n"1000373","11569613","RdRp","RnQV1s3_gp1","RNA dependent RNA polymerase","protein-coding"\n", "tmp/csv/homologene.csv": ""hid","ncbigene"\n"100","110842"\n"}
+SQL Schema:
+DROP TABLE IF EXISTS "gene_info" CASCADE;CREATE TABLE gene_info(tax_id VARCHAR,GeneID VARCHAR,Symbol VARCHAR,LocusTag VARCHAR,description VARCHAR,type_of_gene VARCHAR);DROP TABLE IF EXISTS "homologene" CASCADE;CREATE TABLE homologene(hid VARCHAR,ncbigene VARCHAR,PRIMARY KEY (hid,ncbigene));CREATE INDEX IF NOT EXISTS GeneID_index ON gene_info ( GeneID);CREATE INDEX IF NOT EXISTS GeneID_index  ON gene_info (GeneID);
+----------------------------------------------------
+QUERY: 4
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX wbv: <http://bio2rdf.org/wormbase_vocabulary:>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX genagev: <http://bio2rdf.org/genage_vocabulary:>
+
+SELECT ?gene_worm ?tax ?gene_age
+WHERE {
+	?gene_worm rdf:type wbv:Gene ;
+		wbv:x-taxid ?tax .
+	?gene_age rdf:type genagev:Aging-Related-Gene ;
+		genagev:taxon ?tax .
+}
+La columna name_txt pertencoiente a names tiene una selectividad de:0.99
+La columna gene_id pertencoiente a wbgeneids tiene una selectividad de:0.0
+La columna tax_id pertencoiente a names tiene una selectividad de:0.7
+La columna tax_id pertencoiente a names tiene una selectividad de:0.7
+La columna name_txt pertencoiente a names tiene una selectividad de:0.99
+csvColumns:
+{"TMgenage-model": {"source": "genage_models.csv", "columns": ["organism", "GenAge_ID"]}, "TMwormbase-geneid": {"source": "WBgeneIDs.csv", "columns": ["taxid", "gene_id"]}, "TMtaxonomy-names": {"source": "names.csv", "columns": ["tax_id", "name_txt"]}}
+CSV Format:
+{"tmp/csv/genage_models.csv": ""GenAge_ID","organism"\n"10","Caenorhabditis elegans"\n", "tmp/csv/WBgeneIDs.csv": ""taxid","gene_id"\n"6239","PRJEB28388_chrIII_pilon.g6685"\n", "tmp/csv/names.csv": ""tax_id","name_txt"\n"1","root"\n"}
+SQL Schema:
+DROP TABLE IF EXISTS "genage_models" CASCADE;CREATE TABLE genage_models(GenAge_ID VARCHAR,organism VARCHAR,PRIMARY KEY (GenAge_ID));DROP TABLE IF EXISTS "wbgeneids" CASCADE;CREATE TABLE wbgeneids(taxid VARCHAR,gene_id VARCHAR);DROP TABLE IF EXISTS "names" CASCADE;CREATE TABLE names(tax_id VARCHAR,name_txt VARCHAR);CREATE INDEX IF NOT EXISTS name_txt_index  ON names (name_txt);CREATE INDEX IF NOT EXISTS tax_id_index  ON names (tax_id);CREATE INDEX IF NOT EXISTS tax_id_index ON names ( tax_id);CREATE INDEX IF NOT EXISTS name_txt_index ON names ( name_txt);
+----------------------------------------------------
+QUERY: 5
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX wbv: <http://bio2rdf.org/wormbase_vocabulary:>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX genagev: <http://bio2rdf.org/genage_vocabulary:>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT ?interaction ?gene ?title ?cosmid
+WHERE {
+	?interaction rdf:type wbv:Resource ;
+		wbv:involves ?gene .
+	?gene dcterms:title ?title ;
+		wbv:cosmid ?cosmid .
+}
+La columna gene_id pertencoiente a wbgeneids tiene una selectividad de:0.0
+La columna gene_id pertencoiente a WBgeneIDs tiene una selectividad de:0.39
+La columna gene_id pertencoiente a WBgeneIDs tiene una selectividad de:0.39
+csvColumns:
+{"TMwormbase-geneid": {"source": "WBgeneIDs.csv", "columns": ["gene_id", "symbol", "cosmid"]}, "TMwormbase-interaction": {"source": "cutinteractions.csv", "columns": ["Interactor2", "Interaction_subtype", "Interactor1", "WBInteractionID", "Interaction_type"]}}
+CSV Format:
+{"tmp/csv/WBgeneIDs.csv": ""gene_id","symbol","cosmid"\n"PRJEB28388_chrIII_pilon.g6685",Null,Null\n", "tmp/csv/cutinteractions.csv": ""WBInteractionID","Interaction_type","Interaction_subtype","Interactor1","Interactor2"\n"WBInteraction000000001","Genetic","Genetic_interaction","WBGene00001080","WBGene00003003"\n"}
+SQL Schema:
+DROP TABLE IF EXISTS "wbgeneids" CASCADE;CREATE TABLE wbgeneids(gene_id VARCHAR,symbol VARCHAR,cosmid VARCHAR);DROP TABLE IF EXISTS "cutinteractions" CASCADE;CREATE TABLE cutinteractions(WBInteractionID VARCHAR,Interaction_type VARCHAR,Interaction_subtype VARCHAR,Interactor1 VARCHAR,Interactor2 VARCHAR,PRIMARY KEY (WBInteractionID));
+----------------------------------------------------
+QUERY: 6
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ncbiv: <http://bio2rdf.org/ncbigene_vocabulary:>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX taxv: <http://bio2rdf.org/taxonomy_vocabulary:>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT ?tax ?div ?gencode ?mitcode ?parent ?cde
+WHERE {
+	?tax rdf:type taxv:Resource ;
+		taxv:division-id ?div ;
+		taxv:genetic-code-id ?gencode ;
+		taxv:mit-genetic-code-id ?mitcode ;
+		rdfs:subClassOf ?parent .
+	?gencode taxv:translation-table ?cde .
+	?div dcterms:title ?div_title .
+
+	FILTER (?div_title="Viruses")
+}
+
+La columna GeneID pertencoiente a gene_info tiene una selectividad de:1.0
+La columna GeneID pertencoiente a gene_info tiene una selectividad de:1.0
+La columna gene_id pertencoiente a wbgeneids tiene una selectividad de:0.0
+La columna gene_id pertencoiente a WBgeneIDs tiene una selectividad de:0.39
+La columna gene_id pertencoiente a WBgeneIDs tiene una selectividad de:0.39
+La columna gene_id pertencoiente a WBgeneIDs tiene una selectividad de:0.39
+La columna gene_id pertencoiente a wbgene_association tiene una selectividad de:0.0
+La columna GO_id pertencoiente a wbgene_association tiene una selectividad de:0.0
+La columna evidence pertencoiente a wbgene_association tiene una selectividad de:0.0
+La columna HGNC_ID pertencoiente a hgnc tiene una selectividad de:1.0
+HA FALLADO
+null value in column "variant" violates not-null constraint
+DETAIL:  Failing row contains (WBGene00000001, , WBPhenotype:0000964, null).
+CONTEXT:  COPY wbphenotype_association, line 2: ""WBGene00000001","","WBPhenotype:0000964",Null"
+
+csvColumns:
+{"TMncbigene-gene2go2": {"source": "gene2go.csv", "columns": ["GO_ID", "GeneID"]}, "TMncbigene-gene_info": {"source": "gene_info.csv", "columns": ["description", "tax_id", "GeneID", "type_of_gene", "Symbol"]}, "TMhomologene": {"source": "homologene.csv", "columns": ["hid"]}, "TMgenage-model": {"source": "genage_models.csv", "columns": ["GenAge_ID", "name_gene"]}, "TMgeneage-human": {"source": "genage_human.csv", "columns": ["GenAge_ID"]}, "TMwormbase-geneid": {"source": "WBgeneIDs.csv", "columns": ["gene_id", "symbol"]}, "TMwormbase-interaction": {"source": "cutinteractions.csv", "columns": ["Interaction_type", "Interactor2", "Interaction_subtype", "WBInteractionID", "Interactor1"]}, "TMwormbase-phenotype_association": {"source": "WBphenotype_association.csv", "columns": ["phenotype", "gene_id", "variant", "association"]}, "TMwormbase-gene_association": {"source": "WBgene_association.csv", "columns": ["GO_id", "gene_id", "evidence"]}, "TMtaxonomy-division": {"source": "division.csv", "columns": ["division_id", "division_name"]}, "TMtaxonomy-gencode": {"source": "gencode.csv", "columns": ["cde", "genetic_code_id"]}, "TMtaxonomy-nodes": {"source": "nodes.csv", "columns": ["tax_id", "genetic_code_id", "parent_tax_id", "division_id", "mitochondrial_genetic_code_id"]}, "TMhgnc1": {"source": "hgnc.csv", "columns": ["HGNC_ID", "Approved_Symbol"]}, "TMhgnc2": {"source": "hgnc.csv", "columns": ["Approved_Symbol"]}}
+CSV Format:
+{"tmp/csv/gene2go.csv": ""GeneID","GO_ID"\n"1","GO:0002576"\n", "tmp/csv/gene_info.csv": ""tax_id","GeneID","Symbol","description","type_of_gene"\n"1000373","11569613","RdRp","RNA dependent RNA polymerase","protein-coding"\n", "tmp/csv/homologene.csv": ""hid"\n"100"\n", "tmp/csv/genage_models.csv": ""GenAge_ID","name_gene"\n"10","AKT kinase family"\n", "tmp/csv/genage_human.csv": ""GenAge_ID"\n"10"\n", "tmp/csv/WBgeneIDs.csv": ""gene_id","symbol"\n"PRJEB28388_chrIII_pilon.g6685",Null\n", "tmp/csv/cutinteractions.csv": ""WBInteractionID","Interaction_type","Interaction_subtype","Interactor1","Interactor2"\n"WBInteraction000000001","Genetic","Genetic_interaction","WBGene00001080","WBGene00003003"\n", "tmp/csv/WBphenotype_association.csv": ""gene_id","association","phenotype","variant"\n"WBGene00000001","","WBPhenotype:0000964",Null\n", "tmp/csv/WBgene_association.csv": ""gene_id","GO_id","evidence"\n"WBGene00000001","GO:0005942","IDA"\n", "tmp/csv/division.csv": ""division_id","division_name"\n"1","Invertebrates"\n", "tmp/csv/gencode.csv": ""genetic_code_id","cde"\n"1","FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG "\n", "tmp/csv/nodes.csv": ""tax_id","parent_tax_id","division_id","genetic_code_id","mitochondrial_genetic_code_id"\n"10","1706371","0","11","0"\n", "tmp/csv/hgnc.csv": ""Approved_Symbol"\n"A12M1"\n"}
+SQL Schema:
+DROP TABLE IF EXISTS "gene2go" CASCADE;CREATE TABLE gene2go(GeneID VARCHAR,GO_ID VARCHAR,PRIMARY KEY (GeneID,GO_ID));DROP TABLE IF EXISTS "gene_info" CASCADE;CREATE TABLE gene_info(tax_id VARCHAR,GeneID VARCHAR,Symbol VARCHAR,description VARCHAR,type_of_gene VARCHAR);DROP TABLE IF EXISTS "homologene" CASCADE;CREATE TABLE homologene(hid VARCHAR,PRIMARY KEY (hid));DROP TABLE IF EXISTS "genage_models" CASCADE;CREATE TABLE genage_models(GenAge_ID VARCHAR,name_gene VARCHAR,PRIMARY KEY (GenAge_ID));DROP TABLE IF EXISTS "genage_human" CASCADE;CREATE TABLE genage_human(GenAge_ID VARCHAR,PRIMARY KEY (GenAge_ID));DROP TABLE IF EXISTS "wbgeneids" CASCADE;CREATE TABLE wbgeneids(gene_id VARCHAR,symbol VARCHAR);DROP TABLE IF EXISTS "cutinteractions" CASCADE;CREATE TABLE cutinteractions(WBInteractionID VARCHAR,Interaction_type VARCHAR,Interaction_subtype VARCHAR,Interactor1 VARCHAR,Interactor2 VARCHAR,PRIMARY KEY (WBInteractionID));DROP TABLE IF EXISTS "wbphenotype_association" CASCADE;CREATE TABLE wbphenotype_association(gene_id VARCHAR,association VARCHAR,phenotype VARCHAR,variant VARCHAR,PRIMARY KEY (variant));DROP TABLE IF EXISTS "wbgene_association" CASCADE;CREATE TABLE wbgene_association(gene_id VARCHAR,GO_id VARCHAR,evidence VARCHAR);DROP TABLE IF EXISTS "division" CASCADE;CREATE TABLE division(division_id VARCHAR,division_name VARCHAR,PRIMARY KEY (division_id));DROP TABLE IF EXISTS "gencode" CASCADE;CREATE TABLE gencode(genetic_code_id VARCHAR,cde VARCHAR,PRIMARY KEY (genetic_code_id));DROP TABLE IF EXISTS "nodes" CASCADE;CREATE TABLE nodes(tax_id VARCHAR,parent_tax_id VARCHAR,division_id VARCHAR,genetic_code_id VARCHAR,mitochondrial_genetic_code_id VARCHAR,PRIMARY KEY (tax_id));DROP TABLE IF EXISTS "hgnc" CASCADE;CREATE TABLE hgnc(Approved_Symbol VARCHAR);CREATE INDEX IF NOT EXISTS GeneID_index  ON gene_info (GeneID);CREATE INDEX IF NOT EXISTS GeneID_index ON gene_info ( GeneID);CREATE INDEX IF NOT EXISTS HGNC_ID_index ON hgnc ( HGNC_ID);
+SQL Functions:
+ALTER TABLE "wbphenotype_association" ADD COLUMN type VARCHAR;UPDATE "wbphenotype_association" SET type=replace(replace(association,'NOT','wbv:Negative-Gene-Phenotype-Association')'YES','wbv:Gene-Phenotype-Association'));
+----------------------------------------------------
+QUERY: 7
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX genagev: <http://bio2rdf.org/genage_vocabulary:>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX taxv: <http://bio2rdf.org/taxonomy_vocabulary:>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT ?gene ?label ?tax ?name ?uname
+WHERE {
+	?gene rdf:type genagev:Aging-Related-Gene ;
+		rdfs:label ?label ;
+		genagev:taxon ?tax .
+	?tax rdfs:label ?name ;
+		taxv:unique-name ?uname .
+}
+La columna name_txt pertencoiente a names tiene una selectividad de:0.99
+La columna tax_id pertencoiente a names tiene una selectividad de:0.7
+La columna name_txt pertencoiente a names tiene una selectividad de:0.99
+csvColumns:
+{"TMgenage-model": {"source": "genage_models.csv", "columns": ["name_gene", "GenAge_ID", "organism"]}, "TMtaxonomy-names": {"source": "names.csv", "columns": ["tax_id", "name_class", "unique_name", "name_txt"]}}
+CSV Format:
+{"tmp/csv/genage_models.csv": ""GenAge_ID","name_gene","organism"\n"10","AKT kinase family","Caenorhabditis elegans"\n", "tmp/csv/names.csv": ""tax_id","name_txt","unique_name","name_class"\n"1","root",Null,"scientific name"\n"}
+SQL Schema:
+DROP TABLE IF EXISTS "genage_models" CASCADE;CREATE TABLE genage_models(GenAge_ID VARCHAR,name_gene VARCHAR,organism VARCHAR,PRIMARY KEY (GenAge_ID));DROP TABLE IF EXISTS "names" CASCADE;CREATE TABLE names(tax_id VARCHAR,name_txt VARCHAR,unique_name VARCHAR,name_class VARCHAR);CREATE INDEX IF NOT EXISTS name_txt_index  ON names (name_txt);CREATE INDEX IF NOT EXISTS tax_id_index ON names ( tax_id);CREATE INDEX IF NOT EXISTS name_txt_index ON names ( name_txt);
+----------------------------------------------------
+QUERY: 8
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX wbv: <http://bio2rdf.org/wormbase_vocabulary:>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT ?se ?label ?title ?id
+WHERE {
+        ?se rdf:type wbv:Gene ;
+                rdfs:label ?label ;
+		dcterms:title ?title ;
+		dcterms:identifier ?id.
+}
+csvColumns:
+{"TMwormbase-geneid": {"source": "WBgeneIDs.csv", "columns": ["gene_id", "symbol"]}}
+CSV Format:
+{"tmp/csv/WBgeneIDs.csv": ""gene_id","symbol"\n"PRJEB28388_chrIII_pilon.g6685",Null\n"}
+SQL Schema:
+DROP TABLE IF EXISTS "wbgeneids" CASCADE;CREATE TABLE wbgeneids(gene_id VARCHAR,symbol VARCHAR);
+----------------------------------------------------
+QUERY: 9
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ndcv: <http://bio2rdf.org/ndc_vocabulary:>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?prod ?prod_type ?date ?package ?pack_label
+WHERE {
+        ?prod rdf:type ndcv:Product ;
+                ndcv:product-type ?prod_type ;
+	        	ndcv:start-marketing-date ?date;
+                ndcv:has-package ?package .
+        ?package rdfs:label ?pack_label .
+
+        FILTER (?date >= '2016-01-15'^^xsd:date) .
+}
+HA FALLADO
+syntax error at or near ")"
+LINE 1: ...otype-Association')'YES','wbv:Gene-Phenotype-Association'));
+                                                                     ^
+
+csvColumns:
+{"TMncbigene-gene2go2": {"source": "gene2go.csv", "columns": ["GO_ID", "GeneID"]}, "TMncbigene-gene_info": {"source": "gene_info.csv", "columns": ["description", "type_of_gene", "tax_id", "GeneID", "Symbol"]}, "TMhomologene": {"source": "homologene.csv", "columns": ["hid"]}, "TMgenage-model": {"source": "genage_models.csv", "columns": ["GenAge_ID", "name_gene"]}, "TMgeneage-human": {"source": "genage_human.csv", "columns": ["GenAge_ID"]}, "TMwormbase-geneid": {"source": "WBgeneIDs.csv", "columns": ["gene_id", "symbol"]}, "TMwormbase-interaction": {"source": "cutinteractions.csv", "columns": ["Interaction_subtype", "Interactor1", "WBInteractionID", "Interactor2", "Interaction_type"]}, "TMwormbase-phenotype_association": {"source": "WBphenotype_association.csv", "columns": ["phenotype", "variant", "gene_id", "association"]}, "TMwormbase-gene_association": {"source": "WBgene_association.csv", "columns": ["GO_id", "evidence", "gene_id"]}, "TMtaxonomy-division": {"source": "division.csv", "columns": ["division_id", "division_name"]}, "TMtaxonomy-gencode": {"source": "gencode.csv", "columns": ["name", "genetic_code_id"]}, "TMtaxonomy-names": {"source": "names.csv", "columns": ["name_class", "tax_id", "name_txt"]}, "TMhgnc1": {"source": "hgnc.csv", "columns": ["HGNC_ID", "Approved_Symbol"]}, "TMhgnc2": {"source": "hgnc.csv", "columns": ["Approved_Symbol"]}}
+CSV Format:
+{"tmp/csv/gene2go.csv": ""GeneID","GO_ID"\n"1","GO:0002576"\n", "tmp/csv/gene_info.csv": ""tax_id","GeneID","Symbol","description","type_of_gene"\n"1000373","11569613","RdRp","RNA dependent RNA polymerase","protein-coding"\n", "tmp/csv/homologene.csv": ""hid"\n"100"\n", "tmp/csv/genage_models.csv": ""GenAge_ID","name_gene"\n"10","AKT kinase family"\n", "tmp/csv/genage_human.csv": ""GenAge_ID"\n"10"\n", "tmp/csv/WBgeneIDs.csv": ""gene_id","symbol"\n"PRJEB28388_chrIII_pilon.g6685",Null\n", "tmp/csv/cutinteractions.csv": ""WBInteractionID","Interaction_type","Interaction_subtype","Interactor1","Interactor2"\n"WBInteraction000000001","Genetic","Genetic_interaction","WBGene00001080","WBGene00003003"\n", "tmp/csv/WBphenotype_association.csv": ""gene_id","association","phenotype","variant"\n"WBGene00000001","","WBPhenotype:0000964",Null\n", "tmp/csv/WBgene_association.csv": ""gene_id","GO_id","evidence"\n"WBGene00000001","GO:0005942","IDA"\n", "tmp/csv/division.csv": ""division_id","division_name"\n"1","Invertebrates"\n", "tmp/csv/gencode.csv": ""genetic_code_id","name"\n"1","Standard"\n", "tmp/csv/names.csv": ""tax_id","name_txt","name_class"\n"1","root","scientific name"\n", "tmp/csv/hgnc.csv": ""Approved_Symbol"\n"A12M1"\n"}
+SQL Schema:
+DROP TABLE IF EXISTS "gene2go" CASCADE;CREATE TABLE gene2go(GeneID VARCHAR,GO_ID VARCHAR);DROP TABLE IF EXISTS "gene_info" CASCADE;CREATE TABLE gene_info(tax_id VARCHAR,GeneID VARCHAR,Symbol VARCHAR,description VARCHAR,type_of_gene VARCHAR);DROP TABLE IF EXISTS "homologene" CASCADE;CREATE TABLE homologene(hid VARCHAR);DROP TABLE IF EXISTS "genage_models" CASCADE;CREATE TABLE genage_models(GenAge_ID VARCHAR,name_gene VARCHAR);DROP TABLE IF EXISTS "genage_human" CASCADE;CREATE TABLE genage_human(GenAge_ID VARCHAR);DROP TABLE IF EXISTS "wbgeneids" CASCADE;CREATE TABLE wbgeneids(gene_id VARCHAR,symbol VARCHAR);DROP TABLE IF EXISTS "cutinteractions" CASCADE;CREATE TABLE cutinteractions(WBInteractionID VARCHAR,Interaction_type VARCHAR,Interaction_subtype VARCHAR,Interactor1 VARCHAR,Interactor2 VARCHAR);DROP TABLE IF EXISTS "wbphenotype_association" CASCADE;CREATE TABLE wbphenotype_association(gene_id VARCHAR,association VARCHAR,phenotype VARCHAR,variant VARCHAR);DROP TABLE IF EXISTS "wbgene_association" CASCADE;CREATE TABLE wbgene_association(gene_id VARCHAR,GO_id VARCHAR,evidence VARCHAR);DROP TABLE IF EXISTS "division" CASCADE;CREATE TABLE division(division_id VARCHAR,division_name VARCHAR);DROP TABLE IF EXISTS "gencode" CASCADE;CREATE TABLE gencode(genetic_code_id VARCHAR,name VARCHAR);DROP TABLE IF EXISTS "names" CASCADE;CREATE TABLE names(tax_id VARCHAR,name_txt VARCHAR,name_class VARCHAR);DROP TABLE IF EXISTS "hgnc" CASCADE;CREATE TABLE hgnc(Approved_Symbol VARCHAR);
+SQL Functions:
+ALTER TABLE "wbphenotype_association" ADD COLUMN type VARCHAR;UPDATE "wbphenotype_association" SET type=replace(replace(association,'NOT','wbv:Negative-Gene-Phenotype-Association')'YES','wbv:Gene-Phenotype-Association'));
+----------------------------------------------------
+QUERY: 11
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX homogv: <http://bio2rdf.org/homologene_vocabulary:>
+SELECT ?hgroup ?label ?symbol ?refseq
+WHERE {
+   ?hgroup rdf:type homogv:Resource .
+   ?hgroup   rdfs:label ?label .
+   ?hgroup   homogv:gene-symbol ?symbol .
+   ?hgroup  homogv:x-refseq ?refseq .
+}
+csvColumns:
+{"TMhomologene": {"source": "homologene.csv", "columns": ["hid", "refseq", "genesymbol"]}}
+CSV Format:
+{"tmp/csv/homologene.csv": ""hid","genesymbol","refseq"\n"100","AGOS_AGL054W","NP_986612.1"\n"}
+SQL Schema:
+DROP TABLE IF EXISTS "homologene" CASCADE;CREATE TABLE homologene(hid VARCHAR,genesymbol VARCHAR,refseq VARCHAR);
+----------------------------------------------------
+QUERY: 12
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX wbv: <http://bio2rdf.org/wormbase_vocabulary:>
+
+
+SELECT * WHERE {
+    ?s rdf:type wbv:Resource .
+    ?s rdfs:seeAlso ?seeAlso
+}csvColumns:
+{"TMwormbase-geneid": {"source": "WBgeneIDs.csv", "columns": ["gene_id"]}, "TMwormbase-gene_association": {"source": "WBgene_association.csv", "columns": ["GO_id", "gene_id", "evidence"]}}
+CSV Format:
+{"tmp/csv/WBgeneIDs.csv": ""gene_id"\n"PRJEB28388_chrIII_pilon.g6685"\n", "tmp/csv/WBgene_association.csv": ""gene_id","GO_id","evidence"\n"WBGene00000001","GO:0005942","IDA"\n"}
+SQL Schema:
+DROP TABLE IF EXISTS "wbgeneids" CASCADE;CREATE TABLE wbgeneids(gene_id VARCHAR);DROP TABLE IF EXISTS "wbgene_association" CASCADE;CREATE TABLE wbgene_association(gene_id VARCHAR,GO_id VARCHAR,evidence VARCHAR);
+SQL Functions:
+ALTER TABLE "wbgene_association" ADD COLUMN seealso VARCHAR;UPDATE "wbgene_association" SET seealso=concat('http://purl.obolibrary.org/obo/',replace(go_id,':','_'));
+----------------------------------------------------

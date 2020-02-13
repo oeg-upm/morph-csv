@@ -1,0 +1,59 @@
+mkdir: cannot create directory './tmp/': File exists
+mkdir: cannot create directory './tmp/annotations': File exists
+mkdir: cannot create directory './tmp/csv': File exists
+prefix homologene group {hid} [homologene was not found.
+mkdir: cannot create directory './tmp/': File exists
+mkdir: cannot create directory './tmp/annotations': File exists
+mkdir: cannot create directory './tmp/csv': File exists
+prefix {description} (symbol was not found.
+mkdir: cannot create directory './tmp/': File exists
+mkdir: cannot create directory './tmp/annotations': File exists
+mkdir: cannot create directory './tmp/csv': File exists
+awk: cannot open tmp/csv/wbgeneids.csv (No such file or directory)
+awk: cannot open tmp/csv/wbgeneids.csv (No such file or directory)
+Runtime error (func=(main), adr=9): Divide by zero
+mkdir: cannot create directory './tmp/': File exists
+mkdir: cannot create directory './tmp/annotations': File exists
+mkdir: cannot create directory './tmp/csv': File exists
+awk: cannot open tmp/csv/wbgeneids.csv (No such file or directory)
+awk: cannot open tmp/csv/wbgeneids.csv (No such file or directory)
+Runtime error (func=(main), adr=9): Divide by zero
+mkdir: cannot create directory './tmp/': File exists
+mkdir: cannot create directory './tmp/annotations': File exists
+mkdir: cannot create directory './tmp/csv': File exists
+The input file contains invalid YAML.
+line 125: Malformed inline YAML string (['http://purl.org/dc/terms/title', $(Interaction_subtype) $(Interaction_type)).
+awk: cannot open tmp/csv/wbgeneids.csv (No such file or directory)
+awk: cannot open tmp/csv/wbgeneids.csv (No such file or directory)
+Runtime error (func=(main), adr=9): Divide by zero
+awk: cannot open tmp/csv/wbgene_association.csv (No such file or directory)
+awk: cannot open tmp/csv/wbgene_association.csv (No such file or directory)
+Runtime error (func=(main), adr=9): Divide by zero
+awk: cannot open tmp/csv/wbgene_association.csv (No such file or directory)
+awk: cannot open tmp/csv/wbgene_association.csv (No such file or directory)
+Runtime error (func=(main), adr=9): Divide by zero
+awk: cannot open tmp/csv/wbgene_association.csv (No such file or directory)
+awk: cannot open tmp/csv/wbgene_association.csv (No such file or directory)
+Runtime error (func=(main), adr=9): Divide by zero
+mkdir: cannot create directory './tmp/': File exists
+mkdir: cannot create directory './tmp/annotations': File exists
+mkdir: cannot create directory './tmp/csv': File exists
+prefix Aging related gene {GenAge_ID}
+{name_gene} [genage-model was not found.
+mkdir: cannot create directory './tmp/': File exists
+mkdir: cannot create directory './tmp/annotations': File exists
+mkdir: cannot create directory './tmp/csv': File exists
+prefix {gene_id} ({symbol}) [wormbase was not found.
+prefix wormbase was not found.
+mkdir: cannot create directory './tmp/': File exists
+mkdir: cannot create directory './tmp/annotations': File exists
+mkdir: cannot create directory './tmp/csv': File exists
+The input file contains invalid YAML.
+line 24: Malformed inline YAML string (['http://www.w3.org/2000/01/rdf-schema#label', Gene Symbol for $(Approved_Symbol)).
+mkdir: cannot create directory './tmp/': File exists
+mkdir: cannot create directory './tmp/annotations': File exists
+mkdir: cannot create directory './tmp/csv': File exists
+prefix homologene group {hid} [homologene was not found.
+mkdir: cannot create directory './tmp/': File exists
+mkdir: cannot create directory './tmp/annotations': File exists
+mkdir: cannot create directory './tmp/csv': File exists
