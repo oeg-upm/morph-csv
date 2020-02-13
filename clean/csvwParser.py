@@ -46,9 +46,17 @@ def removeFK(fKeys, cols):
     return result
 
 def insertRowTitles(csvw):
+
     for i,table in enumerate(csvw['tables']):
-        titles = getTableTitles(table)['titles']
-        titles = [str(title).replace('"','') for title in titles]
+        data = getTableTitles(table)
+        titles = [str(title).replace('"','') for title in data['titles']]
+        path = 'tmp/csv/' + str(table['url'].split("/")[-1:][0]) #.split('.')[0])
+        if(data['header']):
+            os.system("bash bash/removeCsvHeader.sh '%s'"%(path))
+            try:
+                csvw['tables'][i]['tableSchema']['dialect']['header'] = False
+            except:
+                pass
        # print('*****************TITLES' + table['url']+'**********************\n\n\n')
        # print(titles)
         csvw['tables'][i]['tableSchema']['rowTitles'] = titles
@@ -88,14 +96,14 @@ def getTableTitles(table):
                 titles = table['tableSchema']['rowTitles']
             elif('rowTitle' in table['tableSchema'].keys() and len(table['tableSchema']['rowTitle']) > 0):
                 titles = table['tableSchema']['rowTitle']
+        path = 'tmp/csv/' + str(table['url'].split("/")[-1:][0]) #.split('.')[0])
         if(len(titles) == 0):
-            path = 'tmp/csv/' + str(table['url'].split("/")[-1:][0]) #.split('.')[0])
             delimiter = getDelimiterValue(table)
             os.system("bash bash/titlesCatcher '%s' '%s'"%(path, delimiter))
             strTitles = str(open('tmp/titles.tmp').read())
             titles = ['"' + title.replace('\n', '')  + '"' for title in  strTitles.split(',')]
-        elif header:
-            os.system("bash bash/deleteTitles '%s'"%(path))
+
+            header = False
         global rowTitles
         rowTitles = titles
         return {'header':header, 'titles':titles}

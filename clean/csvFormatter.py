@@ -33,8 +33,7 @@ def scriptCaller(data):
     titles = parser.getTitles(data)
     insertTitles(titles, url)
     replaceCsvFormat(parser.getGsubPatterns(data), url)
-#    titles['header'] = False
-    titles['header'] = parser.getTableTitles(data)['header']
+    titles['header'] = False
     titles['result'] = parser.getFilteredTitles(data)
     insertTitles(titles, url)
 
