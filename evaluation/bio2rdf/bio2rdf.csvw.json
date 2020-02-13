@@ -656,7 +656,7 @@
                                             
                   },
                   "tableSchema": {
-                              "primaryKey": "gene_id<Plug>PeepOpenhenotype,variant",
+                              "primaryKey": "",
                               "foreignKey": [
                                   {
                                                   "columnReference": "taxid",

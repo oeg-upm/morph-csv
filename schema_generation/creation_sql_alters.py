@@ -10,17 +10,24 @@ def translate_fno_to_sql(functions):
             column = func["column"].lower()
             source = func["source"].split("/")[-1].split('.')[0].lower()
             sql += "ALTER TABLE \"" + source + "\" ADD COLUMN " + column + " VARCHAR;"
-            sql += "UPDATE \"" + source + "\" SET " + column + "=" + translate_function_to_sql(parameters, sql) + ");"
+            sql += "UPDATE \"" + source + "\" SET " + column + "=" + translate_function_to_sql(parameters, sql)
+            if(sql[-1] == ','):
+                sql = sql[:-1]
+            if(sql[-1] != ')'):
+                sql += ')'
+            sql += ';'
 
     return sql
 
 
 def translate_function_to_sql(parameters, sql):
-    function = translate_f_to_sql(parameters['function'])
+   function = translate_f_to_sql(parameters['function'])
     sql = function + '('
     for i,param in enumerate(parameters['parameters']):
         if(type(param) is dict):
             sql += translate_function_to_sql(param['value'], sql)
+            if(sql[-1] == ')'):
+                sql += ','
         else:
             value = "'" + param[1]  + "'"
             col = re.findall('\$\(([^)]+)\)', value)
