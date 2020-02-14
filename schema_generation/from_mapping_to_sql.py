@@ -74,7 +74,7 @@ def generateSubjectIndexes(source, mapping, table):
 def calculateSelectivity(source, colName, table):
     if(not table is None):
         source = csvwParser.getUrl(table).split("/")[-1]
-        awkCol = "$" + str(csvwParser.getIndexOfCol(0,table, colName) + 1)
+        awkCol = "$" + str(table['filteredRowTitles'].index(colName) + 1)
         path = 'tmp/csv/' + source
         selectivity = 0.0
         os.system('bash bash/selectivityCalculator.sh \'%s\' \'%s\''%(path, awkCol))
