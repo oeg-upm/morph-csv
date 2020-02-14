@@ -8,7 +8,12 @@ import sys
 def selectionFormatter(selection):
     result = {}
     for tm in selection:
-        result[selection[tm]['source']] = selection[tm]['columns']
+        source = selection[tm]['source']
+        if source not in result.keys():
+            result[source] = []
+        for col in selection[tm]['columns']:
+            if col not in result[source]:
+                result[source].append(col)
     return result
 def csvwFilter(csvw, selection):
     selection = selectionFormatter(selection)

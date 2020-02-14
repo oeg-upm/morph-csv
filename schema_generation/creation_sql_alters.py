@@ -7,6 +7,8 @@ def translate_fno_to_sql(functions):
         #if 'query' in functions[tm]
         for func in functions[tm]:
             parameters = func["params"]
+#            print('**********************************')
+#            print(str(parameters).replace("'", '"'))
             column = func["column"].lower()
             source = func["source"].split("/")[-1].split('.')[0].lower()
             sql += "ALTER TABLE \"" + source + "\" ADD COLUMN " + column + " VARCHAR;"
@@ -21,7 +23,7 @@ def translate_fno_to_sql(functions):
 
 
 def translate_function_to_sql(parameters, sql):
-   function = translate_f_to_sql(parameters['function'])
+    function = translate_f_to_sql(parameters['function'])
     sql = function + '('
     for i,param in enumerate(parameters['parameters']):
         if(type(param) is dict):
@@ -35,8 +37,7 @@ def translate_function_to_sql(parameters, sql):
                 value = col[0].lower()
             if i < len(parameters['parameters']) - 1:
                 sql += value + ','
-            else:
-                sql += value + ')'
+    sql += value + ')'
     return sql
 
 def translate_f_to_sql(value):

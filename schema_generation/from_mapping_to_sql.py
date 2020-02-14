@@ -75,12 +75,12 @@ def calculateSelectivity(source, colName, table):
     if(not table is None):
         source = csvwParser.getUrl(table).split("/")[-1]
         awkCol = "$" + str(csvwParser.getIndexOfCol(0,table, colName) + 1)
-        path = 'tmp/csv/' + source + '.csv'
+        path = 'tmp/csv/' + source
         selectivity = 0.0
         os.system('bash bash/selectivityCalculator.sh \'%s\' \'%s\''%(path, awkCol))
         with open('tmp/selectivity.tmp.txt', "r") as f:
             selectivity = float(f.readline())
-        print("La columna %s pertencoiente a %s tiene una selectividad de:%s"%(colName, source, selectivity))
+        print("La columna %s perteneciente a %s tiene una selectividad de:%s"%(colName, source, selectivity))
         return selectivity >= 0.70
     else:
         return False

@@ -9,32 +9,36 @@ import sys
 
 def fromSPARQLtoMapping(mapping, query, parsedQuery):
     uris = getUrisFromQuery(parsedQuery)
-#    print('\n\nURIS:\n\n' + str(uris).replace(',', ',\n') + '\n\n\n')
+    print('\n\nURIS:\n\n' + str(uris).replace(',', ',\n') + '\n\n\n')
     translatedMapping = simplifyMappingAccordingToQuery(uris,mapping)
 #    print('\n\n****************+MAPPNIG************\n\n' + str(mapping).replace('\'', '"'))
     csvColumns = findCsvColumnsInsideTheMapping(translatedMapping)
 
     return csvColumns, translatedMapping
 
-def getUrisFromQuery(query):
+def getUrisFromQuery(query, mapping=None):
     result = {}
     for el in query['where']:
         if 'patterns' in el.keys():
             for tp in el['patterns']:
                 result.update(extractTriplePatternUris(result, tp))
         else:
-            result.update(extractTriplePatternUris(result, el))
+            result.update(extractTriplePatternUris(result, el, query, mapping))
     for subject in result:
         result[subject]['fullTM'] = len(result[subject]['uris']) == 0
     return result
-def extractTriplePatternUris(result, el):
+def extractTriplePatternUris(result, el, query=None, mapping=None):
     if('triples' in el.keys()):
         for tm in el['triples']:
             subject = tm['subject']['value']
             uri = tm['predicate']['value']
             if(subject not in result.keys()):
                 result[subject] = {'uris':[], 'fullTM':False}
+#                TMOfJoin = getSubjectInsideTPO(s,query)
+#                if(TMOfJoin != '')):
+#                    findSubjectOfJoin(TMOfJoin, mapping)
 #            if(isUri(subject)):
+#               subjectUri = findSubjectInMapping(subject, mapping) TODO
 #                result[subject]['uris'].append(subject)
             if(isUri(uri)):
                 if(uri == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'):
@@ -51,7 +55,13 @@ def extractTriplePatternUris(result, el):
 #                else:
 #                    result[subject]['fullTM'] = True
     return result
-
+#def getTMof
+def getSubjectInsideTPO(s,query):
+    for el in query['where']:
+        if(el['object'] == s):
+            return el['predicate']
+    return ''
+#def findSubjectOfJoin(s, )
 def checkEmptyUris(uris):
     for tm in uris:
         if(len(uris[tm]) > 0):
