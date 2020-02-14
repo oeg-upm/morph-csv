@@ -2,7 +2,7 @@
 date=$(date "+%F-%T")
 file="logs/bio2rdf/bio2rdf$date.log.txt"
 echo ''> $file
-for i in 1 2 4 5 6 7 8 9 11 12
+for i in $(seq 1 10)
 do
 echo "QUERY: $i" >> $file
 cat evaluation/bio2rdf/queries/query$i.rq >> $file
