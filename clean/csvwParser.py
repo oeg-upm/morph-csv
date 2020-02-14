@@ -55,7 +55,7 @@ def insertRowTitles(csvw):
         data = getTableTitles(table)
         titles = [str(title).replace('"','') for title in data['titles']]
         path = 'tmp/csv/' + str(table['url'].split("/")[-1:][0]) #.split('.')[0])
-        if(data['header']):
+        if(data['header'] is True):
             os.system("bash bash/removeCsvHeader.sh '%s'"%(path))
             try:
                 csvw['tables'][i]['tableSchema']['dialect']['header'] = False

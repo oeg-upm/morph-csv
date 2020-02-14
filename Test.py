@@ -73,11 +73,11 @@ def generateData(csvwPath, mappingPath, queryPath):
                 print('HA FALLADO')
                 print(e)
 #                sys.exit()
-	print('csvColumns:\n' + str(csvColumns).replace("'",'"'))
-	print('CSV Format:\n' + str(readFormat(csvw)).replace("'", '"'))
-	print('SQL Schema:\n' + schema + alters)
+	print('csvColumns:\n' + str(csvColumns).replace("'",'"').replace('}', '}\n') + '\n\n*****************************\n\n')
+	print('CSV Format:\n' + str(readFormat(csvw)).replace("'", '"') + '\n\n*****************************\n\n')
+	print('SQL Schema:\n' + str(schema).replace(';', ';\n') + str(alters).replace(';', ';\n') + '\n\n*****************************\n\n')
 	if(len(str(sqlFunctions)) > 0):
-		print('SQL Functions:\n' + str(sqlFunctions))
+		print('SQL Functions:\n' + str(sqlFunctions).replace(';', ';\n') + '\n\n*****************************\n\n')
 
 
 

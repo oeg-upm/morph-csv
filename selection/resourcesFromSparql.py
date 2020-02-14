@@ -9,7 +9,7 @@ import sys
 
 def fromSPARQLtoMapping(mapping, query, parsedQuery):
     uris = getUrisFromQuery(parsedQuery)
-    print('\n\nURIS:\n\n' + str(uris).replace(',', ',\n') + '\n\n\n')
+#    print('\n\nURIS:\n\n' + str(uris).replace(',', ',\n') + '\n\n\n')
     translatedMapping = simplifyMappingAccordingToQuery(uris,mapping)
 #    print('\n\n****************+MAPPNIG************\n\n' + str(mapping).replace('\'', '"'))
     csvColumns = findCsvColumnsInsideTheMapping(translatedMapping)
