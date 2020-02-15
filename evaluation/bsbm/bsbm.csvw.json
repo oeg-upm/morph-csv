@@ -8,8 +8,9 @@
         "dialect":{
           "header":false
         },
-        "rowTitles":["nr","label","comment","publisher","publishDate"],
         "tableSchema": {
+        "rowTitles":["nr","label","comment","publisher","publishDate"],
+
           "primaryKey": "nr",
           "columns": [
             {

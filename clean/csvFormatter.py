@@ -21,6 +21,7 @@ def csvwFilter(csvw, selection):
     for table in csvw['tables']:
         title = parser.getTableTitle(table)
         if(title in selection.keys()):
+            print('***************%s************'%(title))
             table['filteredRowTitles'] = []
             table['filteredRowTitles'].extend(
                     parser.orderAccordingToRowTitles(
