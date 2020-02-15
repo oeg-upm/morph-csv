@@ -113,8 +113,8 @@ mappings:
             condition: 
               function: equal
               parameters:
-                  - [str1, $(product)]
-                  - [str2, $(nr)]
+                  - [str1, $(nr)]
+                  - [str2, $(product)]
   producttypeproduct:
     sources:
       - [/app/data/producttypeproduct.csv~csv]

@@ -5,6 +5,9 @@ import clean.csvwParser as csvwParser
 import schema_generation.creation_sql_alters as function
 import selection.resourcesFromSparql as resourcesFromSparql
 
+#IndexTrigger is the minimum selectivity value required to create an index
+indexTrigger = 0.70
+
 # return true if there is a join in the mapping, hence, in the query, if not morph-rdb in csv mode should be run
 
 def decide_schema_based_on_query(mapping):
@@ -22,6 +25,7 @@ def generate_sql_schema(csvw,mapping,decision):
     foreignkeys = ""
     indexes = ""
     alters = ""
+    calculatedSelectivity = {}
     for i,table in enumerate(csvw["tables"]):
         sql = ''
         source = csvwParser.getUrl(table).split("/")[-1:][0].replace(".csv","").lower()
@@ -42,17 +46,29 @@ def generate_sql_schema(csvw,mapping,decision):
             if len(primarykeys) > 0:
                 sql += "PRIMARY KEY (" + primarykeys + "),"
             else:
-                indexes += generateSubjectIndexes(source, mapping, table)
+                result = generateSubjectIndexes(source, mapping, table, calculatedSelectivity)
+                indexes += result["indexes"]
+                calculatedSelctivity = result["selectivity"]
             if 'foreignKey' in table['tableSchema'].keys():
                 for fk in table["tableSchema"]["foreignKey"]:
                     column = fk["columnReference"]
-                    refTable = fk["reference"]["resource"].split("/")[-1].replace(".csv","")
+                    refTable = fk["reference"]["resource"].split("/")[-1].replace(".csv","").lower()
                     reference = fk["reference"]["columnReference"]
                     if(isDefinedReference(mapping,findTMofTable(mapping, refTable), reference)):
                         if(isPrimaryKey(csvw, reference, refTable)):
-                            foreignkeys += "ALTER TABLE " + source +  " ADD FOREIGN KEY ("+column.lower()+") REFERENCES "+refTable.lower()+" ("+reference.lower()+");"
-                        elif(calculateSelectivity(refTable, reference, csvwParser.findTableByUrl(refTable, csvw))):
-                             indexes += "CREATE INDEX IF NOT EXISTS " + reference + "_index  ON " + refTable.lower() + " (" + reference + ");"
+                            foreignkeys += "ALTER TABLE " + source +  " ADD FOREIGN KEY ("+column.lower()+") REFERENCES "+refTable+" ("+reference.lower()+");"
+                        else:
+                            if(refTable not in calculatedSelectivity.keys()):
+                                calculatedSelectivity[refTable] = []
+                            selectivity = 0.0
+                            if(reference not in calculatedSelectivity[refTable]):
+                                selectivity = calculateSelectivity(refTable, reference, csvwParser.findTableByUrl(refTable, csvw))
+                                calculatedSelectivity[refTable].append(reference)
+                            if  selectivity >= indexTrigger:
+                                indexes += "CREATE"
+                                if selectivity == 1.0:
+                                    indexes += " UNIQUE"
+                                indexes += " INDEX IF NOT EXISTS " + reference + "_index_" + refTable + "  ON " + refTable.lower() + " (" + reference + ");"
 
 
         sql = sql[:-1] + ");"
@@ -62,15 +78,27 @@ def generate_sql_schema(csvw,mapping,decision):
 #    sqlGlobal += function.translate_fno_to_sql(functions)
     #print('***********FUNCTIIONS**********')
     #print(str(functions).replace('\'','"'))
-#    print('***********SCHEMA**************')
+    print('***********SELECTIVITY**************')
 #    print(sqlGlobal.replace(';', ';\n'))
+    print(calculatedSelectivity)
     return sqlGlobal, alters
-def generateSubjectIndexes(source, mapping, table):
+def generateSubjectIndexes(source, mapping, table, calculatedSelectivity):
     indexes = ""
+    selectivity = 0.0
     for col in  getColumnsFromSubject(mapping, findTMofTable(mapping,source)):
-        if calculateSelectivity(source,col, table):
-            indexes += "CREATE INDEX IF NOT EXISTS " + col + "_index ON " + source + " ( " + col + ");"
-    return indexes
+        if(source.lower() not in calculatedSelectivity.keys()):
+            calculatedSelectivity[source] = []
+        if col not in calculatedSelectivity[source.lower()]:
+            selectivity = calculateSelectivity(source,col, table)
+            calculatedSelectivity[source.lower()].append(col)
+        else:
+            selectivity = 0.0
+        if  selectivity >= indexTrigger:
+            indexes += "CREATE"
+            if selectivity == 1.0:
+                indexes += " UNIQUE"
+            indexes += " INDEX IF NOT EXISTS " + col + "_index_" + source  + " ON " + source + " (" + col + ");"
+    return {"indexes":indexes, "selectivity":calculatedSelectivity}
 def calculateSelectivity(source, colName, table):
     if(not table is None):
         source = csvwParser.getUrl(table).split("/")[-1]
@@ -80,8 +108,8 @@ def calculateSelectivity(source, colName, table):
         os.system('bash bash/selectivityCalculator.sh \'%s\' \'%s\''%(path, awkCol))
         with open('tmp/selectivity.tmp.txt', "r") as f:
             selectivity = float(f.readline())
-        print("La columna %s perteneciente a %s tiene una selectividad de:%s"%(colName, source, selectivity))
-        return selectivity >= 0.70
+        print("The column %s from  %s has a selecivity of: %s"%(colName, source, selectivity))
+        return selectivity
     else:
         return False
 def isPrimaryKey(csvw,column, tableName):

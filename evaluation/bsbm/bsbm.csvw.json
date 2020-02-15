@@ -5,6 +5,10 @@
     "tables": [
       {
         "url": "productfeature.csv",      
+        "dialect":{
+          "header":false
+        },
+        "rowTitles":["nr","label","comment","publisher","publishDate"],
         "tableSchema": {
           "primaryKey": "nr",
           "columns": [
@@ -33,8 +37,12 @@
       },
       {
         "url": "producttype.csv",
+        "dialect":{
+          "header":false
+        },
         "tableSchema": { 
           "primaryKey": "nr",
+          "rowTitles":["nr","label","comment","parent","publisher","publishDate"],
           "columns": [
             {
               "datatype": "integer",
@@ -65,8 +73,12 @@
       },
       {
         "url": "producer.csv",
+        "dialect":{
+          "header":false
+        },
         "tableSchema": {
           "primaryKey": "nr",
+          "rowTitles":["nr","label","comment","homepage","country","publisher","publishDate"],
           "columns": [
             {
               "datatype": "integer",
@@ -100,8 +112,13 @@
       },
       {
         "url": "product.csv",
+        "dialect":{
+          "header":false
+        },
         "tableSchema": {
           "primaryKey": "nr",
+          "rowTitles":["nr","label","comment","producer","propertyNum1","propertyNum2","propertyNum3","propertyNum4","propertyNum5","propertyNum6","propertyTex1","propertyTex2","propertyTex3","propertyTex4","propertyTex5","propertyTex6","publisher","publishDate"
+          ],
           "columns": [
             {
                 "titles":"nr",
@@ -180,7 +197,11 @@
       },
       {
         "url": "producttypeproduct.csv",
+        "dialect":{
+          "header":false
+        },
         "tableSchema": {
+          "rowTitles":["product","productType"],
           "primaryKey": "product,productType",
           "columns": [
             {
@@ -196,7 +217,11 @@
       },
       {
         "url": "productfeatureproduct.csv",
+        "dialect":{
+          "header":false
+        },
         "tableSchema": {
+          "rowTitles":["product","productFeature"],
           "primaryKey": "product,productFeature",
           "columns": [
             {
@@ -212,7 +237,11 @@
       },
       {
         "url": "vendor.csv",
+        "dialect":{
+          "header":false
+        },
         "tableSchema": {
+          "rowTitles":["nr","label","comment","homepage","country","publisher","publishDate"],
           "primaryKey":"nr",
           "columns": [
             {
@@ -248,8 +277,12 @@
       },
       {
         "url": "offer.csv",
+        "dialect":{
+          "header":false
+        },
         "tableSchema": {
           "primaryKey": "nr",
+          "rowTitles":["nr","product","producer","vendor","price","validFrom","validTo","deliveryDays","offerWebpage","publisher","publishDate"],
           "columns": [
             {
             "titles": "nr",
@@ -300,8 +333,12 @@
       },
       {
         "url": "person.csv",
+        "dialect":{
+          "header":false
+        },
         "tableSchema": {
           "primaryKey": "nr",
+          "rowTitles":["nr","name","mbox_sha1sum","country","publisher","publishDate"],
           "columns": [
             {
                 "datatype": "integer",
@@ -332,8 +369,12 @@
       },
       {
         "url": "review.csv",
+        "dialect":{
+          "header":false
+        },
         "tableSchema": {
           "primaryKey": "nr",
+          "rowTitles":["nr","product","producer","person","reviewDate","title","text","language","rating1","rating2","rating3","rating4","publisher","publishDate"],
           "columns": [
             {
               "datatype": "integer",

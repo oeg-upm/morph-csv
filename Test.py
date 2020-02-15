@@ -54,7 +54,7 @@ def generateData(csvwPath, mappingPath, queryPath):
 	functions, mapping = yarrrml.getCleanYarrrml(mappingPath)
 	csvColumns, mapping = resourcesFromSparql.fromSPARQLtoMapping(mapping, sparqlQuery, parsedQuery)
 	csvColumns, functions = resourcesFromSparql.getColumnsFromFunctions(csvColumns, functions)
-#	print(str(mapping).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
+#	print(str(csvColumns).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
 #	sys.exit()
 	csvw = csvFormatter.csvwFilter(csvw, csvColumns)
 	formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, sparqlQuery, parsedQuery)
@@ -75,9 +75,9 @@ def generateData(csvwPath, mappingPath, queryPath):
 #                sys.exit()
 	print('csvColumns:\n' + str(csvColumns).replace("'",'"').replace('}', '}\n') + '\n\n*****************************\n\n')
 	print('CSV Format:\n' + str(readFormat(csvw)).replace("'", '"') + '\n\n*****************************\n\n')
-	print('SQL Schema:\n' + str(schema).replace(';', ';\n') + str(alters).replace(';', ';\n') + '\n\n*****************************\n\n')
+	print('SQL Schema:\n' + str(schema).replace(';', ';\n') + str(alters).replace(';', ';\n'))
 	if(len(str(sqlFunctions)) > 0):
-		print('SQL Functions:\n' + str(sqlFunctions).replace(';', ';\n') + '\n\n*****************************\n\n')
+		print(str(sqlFunctions).replace(';', ';\n') + '\n\n*****************************\n\n')
 
 
 

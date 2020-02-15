@@ -7,7 +7,7 @@ SELECT DISTINCT ?product ?label ?propertyTextual
 WHERE {
     { 
        ?product rdfs:label ?label .
-       ?product rdf:type <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType60> .
+       ?product bsbm:ProductType <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType60> .
        ?product bsbm:productFeature <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature20> .
 	   ?product bsbm:productFeature <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature214> .
        ?product bsbm:productPropertyTextual1 ?propertyTextual .
@@ -15,7 +15,7 @@ WHERE {
 	   FILTER ( ?p1 > 114 )
     } UNION {
        ?product rdfs:label ?label .
-       ?product rdf:type <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType60> .
+       ?product bsbm:ProductType <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType60> .
        ?product bsbm:productFeature <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature20> .
 	   ?product bsbm:productFeature <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature1777> .
        ?product bsbm:productPropertyTextual1 ?propertyTextual .
