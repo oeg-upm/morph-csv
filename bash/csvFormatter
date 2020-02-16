@@ -10,4 +10,5 @@ newDelimiter="'\",\"'"
 { rm tmp/csv/$file && awk -F "$delimiter" " FNR>1 {$split{$arg print $cols}}" | tr -d "\r"|sort -u > tmp/csv/$file;} < tmp/csv/$file
 #{ rm tmp/csv/$file && awk -F "$delimiter" " FNR>1 {{gsub(/\"/,\"\",$0)};$split{$arg print $cols}}" | tr -d "\r"|sort -u > tmp/csv/$file;} < tmp/csv/$file
 
-#echo  awk -F "$delimiter" "{{gsub(/\\\"/,"",\$0);}$split{$arg print $cols}}" tmp/$file
+#echo "*************$file****************"
+#echo  awk -F "$delimiter" "{$split{$arg print $cols}}" tmp/$file

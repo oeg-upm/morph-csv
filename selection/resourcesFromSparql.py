@@ -24,8 +24,6 @@ def getUrisFromQuery(query, mapping=None):
                 result.update(extractTriplePatternUris(result, tp))
         else:
             result.update(extractTriplePatternUris(result, el, query, mapping))
-    for subject in result:
-        result[subject]['fullTM'] = len(result[subject]['uris']) == 0
     return result
 def extractTriplePatternUris(result, el, query=None, mapping=None):
     if('triples' in el.keys()):
@@ -47,13 +45,8 @@ def extractTriplePatternUris(result, el, query=None, mapping=None):
                     result[subject]['uris'].append('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
                 if(not uri in result[subject]['uris']):
                     result[subject]['uris'].append(uri)
-#            else:
-#                uri = tm['object']['value']
-#                if(isUri(uri)):
-#                    if(not uri in result[subject]['uris']):
-#	                    result[subject]['uris'].append(uri)
-#                else:
-#                    result[subject]['fullTM'] = True
+            else:
+                result[subject]['fullTM'] = True
     return result
 #def getTMof
 def getSubjectInsideTPO(s,query):

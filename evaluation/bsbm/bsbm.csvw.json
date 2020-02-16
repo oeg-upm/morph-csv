@@ -411,19 +411,24 @@
             },
             {
               "datatype": "integer",
-              "titles": "rating1"
+              "titles": "rating1",
+              "null":"\\\\N"
             },
             {
               "datatype": "integer",
-              "titles": "rating2"
+              "titles": "rating2",
+              "null":"\\\\N"
+
             },
             {
               "datatype": "integer",
-              "titles": "rating3"
+              "titles": "rating3",
+              "null":"\\\\N"
             },
             {
               "datatype": "integer",
-              "titles": "rating4"
+              "titles": "rating4",
+              "null":"\\\\N"
             },
             {
               "datatype": "integer",

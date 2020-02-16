@@ -78,9 +78,9 @@ def generate_sql_schema(csvw,mapping,decision):
 #    sqlGlobal += function.translate_fno_to_sql(functions)
     #print('***********FUNCTIIONS**********')
     #print(str(functions).replace('\'','"'))
-    print('***********SELECTIVITY**************')
+#    print('***********SELECTIVITY**************')
 #    print(sqlGlobal.replace(';', ';\n'))
-    print(calculatedSelectivity)
+#    print(calculatedSelectivity)
     return sqlGlobal, alters
 def generateSubjectIndexes(source, mapping, table, calculatedSelectivity):
     indexes = ""

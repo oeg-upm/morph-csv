@@ -107,7 +107,7 @@ mappings:
               parameters:
                   - [str1, $(nr)]
                   - [str2, $(product)]
-      - p: bsbm:productType
+      - p: bsbm:ProductType
         o: 
           - mapping: producttypeproduct
             condition: 

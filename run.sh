@@ -29,5 +29,5 @@
 #BSBM
 cp evaluation/bsbm/bsbm.csv.yml tmp/annotations/mapping.yaml
 cp evaluation/bsbm/bsbm.csvw.json tmp/annotations/annotations.json
-#cp ~/Datasets/bsbm/scale100000/* tmp/csv/
-python3 Test.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bsbm/queries/q2.rq
+cp ~/Datasets/bsbm/scale100000/* tmp/csv/
+python3 Test.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bsbm/queries/q10.rq

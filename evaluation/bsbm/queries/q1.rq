@@ -6,7 +6,7 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 SELECT DISTINCT ?product ?label
 WHERE { 
     ?product rdfs:label ?label .
-    ?product bsbm:productType <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType105> .
+    ?product bsbm:ProductType <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType105> .
     ?product bsbm:productFeature <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature815> . 
     ?product bsbm:productFeature <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature814> . 
     ?product bsbm:productPropertyNumeric1 ?value1 . 
