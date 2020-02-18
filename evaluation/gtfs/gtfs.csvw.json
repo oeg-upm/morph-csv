@@ -182,7 +182,7 @@
       "url": "/data/FREQUENCIES.csv",
       "tableSchema": {
         "primaryKey": "trip_id,start_time",
-        "foreignKeys": [{
+        "foreignKey": [{
           "columnReference": "trip_id",
           "reference": {
             "resource": "/data/TRIPS.csv",
@@ -223,7 +223,7 @@
       "url": "/data/ROUTES.csv",
       "tableSchema": {
         "primaryKey": "route_id",
-        "foreignKeys": [{
+        "foreignKey": [{
           "columnReference": "agency_id",
           "reference": {
             "resource": "/data/AGENCY.csv",
@@ -302,7 +302,7 @@
       "url": "/data/STOP_TIMES.csv",
       "tableSchema": {
         "primaryKey": "trip_id,stop_id,arrival_time",
-        "foreignKeys": [{
+        "foreignKey": [{
           "columnReference": "trip_id",
           "reference": {
             "resource": "/data/TRIPS.csv",
@@ -361,7 +361,7 @@
       "url": "/data/STOPS.csv",
       "tableSchema": {
         "primaryKey": "stop_id",
-        "foreignKeys": [{
+        "foreignKey": [{
           "columnReference": "parent_station",
           "reference": {
             "resource": "/data/STOPS.csv",
@@ -425,7 +425,7 @@
       "url": "/data/TRIPS.csv",
       "tableSchema": {
         "primaryKey": "trip_id",
-        "foreignKeys": [{
+        "foreignKey": [{
           "columnReference": "route_id",
           "reference": {
             "resource": "/data/ROUTES.csv",
