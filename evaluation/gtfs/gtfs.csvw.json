@@ -429,7 +429,7 @@
           "columnReference": "route_id",
           "reference": {
             "resource": "/data/ROUTES.csv",
-            "columnReference": "routes_id"
+            "columnReference": "route_id"
           }},
           {
           "columnReference": "shape_id",
