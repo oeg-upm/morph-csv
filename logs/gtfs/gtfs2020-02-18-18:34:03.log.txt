@@ -1,0 +1,883 @@
+
+QUERY: 1
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+
+SELECT * WHERE {
+	?shape a gtfs:Shape .
+	?shape geo:lat ?shape_pt_lat .
+	?shape geo:long ?shape_pt_lon .
+	?shape gtfs:pointSequence ?shape_pt_sequence .
+}
+csvColumns:
+{"shapes": {"source": "SHAPES.csv", "columns": ["shape_id", "shape_pt_lat", "shape_pt_sequence", "shape_pt_lon"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/SHAPES.csv": ""shape_id","shape_pt_lat","shape_pt_lon","shape_pt_sequence"\n"4__10_A___1__IT_1","40.3452092520339","-3.8120436071956","20000036"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "shapes" CASCADE;
+CREATE TABLE shapes(shape_id VARCHAR,shape_pt_lat DECIMAL(40,15),shape_pt_lon DECIMAL(40,15),shape_pt_sequence INT);
+
+----------------------------------------------------
+QUERY: 2
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+
+SELECT * WHERE {
+	?stop a gtfs:Stop . 
+	OPTIONAL { ?stop dct:description ?stopDescription . }
+	OPTIONAL { ?stop gtfs:wheelchairAccessible ?wheelchairAccesible }
+	?stop geo:lat ?stopLat . 
+	?stop geo:long ?stopLong .
+	FILTER (?stopLat > 40.41) .		
+}
+csvColumns:
+{"stops": {"source": "STOPS.csv", "columns": ["stop_lat", "stop_desc", "stop_id", "stop_lon", "wheelchair_boarding"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/STOPS.csv": ""stop_id","stop_desc","stop_lat","stop_lon","wheelchair_boarding"\n"acc_4_100_271","Avda de los Poblados 41","40.38582","-3.76105","0"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "stops" CASCADE;
+CREATE TABLE stops(stop_id VARCHAR,stop_desc VARCHAR,stop_lat DECIMAL(40,15),stop_lon DECIMAL(40,15),wheelchair_boarding INT);
+
+----------------------------------------------------
+QUERY: 3
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX gtfsstop: <http://transport.linkeddata.es/madrid/metro/stops/>
+
+SELECT * WHERE {
+	?stop a gtfs:Stop . 
+        ?stop gtfs:locationType ?location .
+	OPTIONAL { ?stop dct:description ?stopDescription . }
+
+	OPTIONAL { 
+		?stop geo:lat ?stopLat . 
+		?stop geo:long ?stopLong .
+	}
+	OPTIONAL {?stop gtfs:wheelchairAccessible ?wheelchairAccessible .  }
+	FILTER (?location=<http://transport.linkeddata.es/resource/LocationType/2>)
+}
+csvColumns:
+{"stops": {"source": "STOPS.csv", "columns": ["stop_lon", "stop_lat", "location_type", "stop_id", "wheelchair_boarding", "stop_desc"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/STOPS.csv": ""stop_id","stop_desc","stop_lat","stop_lon","location_type","wheelchair_boarding"\n"acc_4_100_271","Avda de los Poblados 41","40.38582","-3.76105","2","0"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "stops" CASCADE;
+CREATE TABLE stops(stop_id VARCHAR,stop_desc VARCHAR,stop_lat DECIMAL(40,15),stop_lon DECIMAL(40,15),location_type INT,wheelchair_boarding INT);
+
+----------------------------------------------------
+QUERY: 4
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+
+SELECT * WHERE {
+	?route a gtfs:Route .
+	OPTIONAL { ?route gtfs:shortName ?routeShortName . }
+	OPTIONAL { ?route gtfs:longName ?routeLongName . } 
+	OPTIONAL { ?route dct:description ?routeDescription . } 
+	?route gtfs:agency ?agency .
+
+	?agency a gtfs:Agency .
+	?agency foaf:page ?agencyPage .
+	?agency foaf:name ?agencyName .
+	OPTIONAL { ?agency foaf:phone ?agencyPhone . }
+}
+csvColumns:
+{"routes": {"source": "ROUTES.csv", "columns": ["agency_id", "route_short_name", "route_long_name", "route_desc", "route_id"]}
+, "agency": {"source": "AGENCY.csv", "columns": ["agency_phone", "agency_id", "agency_name", "agency_url"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/AGENCY.csv": ""agency_id","agency_name","agency_url","agency_phone"\n"CRTM","Consorcio Regional de Transportes de Madrid","http://www.crtm.es",""\n", "tmp/csv/ROUTES.csv": ""route_id","agency_id","route_short_name","route_long_name","route_desc"\n"4__10___","CRTM","10","Hospital del Norte-Puerta del Sur",""\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "agency" CASCADE;
+CREATE TABLE agency(agency_id VARCHAR,agency_name VARCHAR,agency_url VARCHAR,agency_phone VARCHAR,PRIMARY KEY (agency_id));
+DROP TABLE IF EXISTS "routes" CASCADE;
+CREATE TABLE routes(route_id VARCHAR,agency_id VARCHAR,route_short_name VARCHAR,route_long_name VARCHAR,route_desc VARCHAR,PRIMARY KEY (route_id));
+ALTER TABLE routes ADD FOREIGN KEY (agency_id) REFERENCES agency (agency_id);
+
+----------------------------------------------------
+QUERY: 5
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX schema: <http://schema.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT * WHERE {
+	?service a gtfs:Service .
+
+	?service gtfs:serviceRule ?serviceRule .
+        
+	?serviceRule a gtfs:CalendarDateRule .
+	?serviceRule dct:date ?date .
+	?serviceRule gtfs:dateAddition "true"^^xsd:boolean .
+	FILTER(?date > "2016-06-01"^^xsd:date)
+}
+csvColumns:
+{"services1": {"source": "CALENDAR.csv", "columns": ["service_id"]}
+, "services2": {"source": "CALENDAR_DATES.csv", "columns": ["service_id"]}
+, "calendar_date_rules": {"source": "CALENDAR_DATES.csv", "columns": ["exception_type", "service_id", "date"]}
+, "calendar_rules": {"source": "CALENDAR.csv", "columns": ["service_id"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/CALENDAR.csv": ""service_id"\n"4_I12"\n", "tmp/csv/CALENDAR_DATES.csv": ""service_id","date","exception_type"\n"4_I12","2017-01-06","false"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "calendar" CASCADE;
+CREATE TABLE calendar(service_id VARCHAR,PRIMARY KEY (service_id));
+DROP TABLE IF EXISTS "calendar_dates" CASCADE;
+CREATE TABLE calendar_dates(service_id VARCHAR,date DATE,exception_type BOOLEAN,PRIMARY KEY (service_id,date));
+
+----------------------------------------------------
+QUERY: 6
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX gtfsagency: <http://transport.linkeddata.es/madrid/agency/>
+
+SELECT (count(?route) as ?nRoutes) WHERE {
+	?route a gtfs:Route .
+	?route gtfs:agency ?agency .
+	FILTER (?agency=gtfsagency:CRTM)
+}
+csvColumns:
+{"routes": {"source": "ROUTES.csv", "columns": ["agency_id", "route_id"]}
+, "agency": {"source": "AGENCY.csv", "columns": ["agency_id"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/AGENCY.csv": ""agency_id"\n"CRTM"\n", "tmp/csv/ROUTES.csv": ""route_id","agency_id"\n"4__10___","CRTM"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "agency" CASCADE;
+CREATE TABLE agency(agency_id VARCHAR,PRIMARY KEY (agency_id));
+DROP TABLE IF EXISTS "routes" CASCADE;
+CREATE TABLE routes(route_id VARCHAR,agency_id VARCHAR,PRIMARY KEY (route_id));
+ALTER TABLE routes ADD FOREIGN KEY (agency_id) REFERENCES agency (agency_id);
+
+----------------------------------------------------
+QUERY: 7
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX gtfsroute: <http://transport.linkeddata.es/madrid/metro/routes/>
+PREFIX gtfsaccessible: <http://transport.linkeddata.es/resource/WheelchairBoardingStatus/>
+
+SELECT DISTINCT ?routeShortName ?routeDescription ?tripShortName ?stopDescription ?stopLat ?stopLong   WHERE {
+	?route a gtfs:Route .
+	OPTIONAL { ?route gtfs:shortName ?routeShortName . }
+	OPTIONAL { ?route dct:description ?routeDescription . }
+
+	?trip a gtfs:Trip .
+	OPTIONAL { ?trip gtfs:shortName ?tripShortName . }
+	?trip gtfs:service ?service .
+	?trip gtfs:route ?route .
+
+	?stopTime a gtfs:StopTime . 
+	?stopTime gtfs:trip ?trip . 
+	?stopTime gtfs:stop ?stop . 
+
+	?stop a gtfs:Stop . 
+	OPTIONAL { ?stop dct:description ?stopDescription . }
+	OPTIONAL {
+		?stop geo:lat ?stopLat . 
+		?stop geo:long ?stopLong . 
+	}
+	?stop gtfs:wheelchairAccessible gtfsaccessible:1 .
+	FILTER (?route=gtfsroute:4__1___)
+}csvColumns:
+{"stoptimes": {"source": "STOP_TIMES.csv", "columns": ["arrival_time", "stop_id", "trip_id"]}
+, "trips": {"source": "TRIPS.csv", "columns": ["trip_short_name", "service_id", "route_id", "trip_id"]}
+, "routes": {"source": "ROUTES.csv", "columns": ["route_desc", "route_short_name", "route_id"]}
+, "stops": {"source": "STOPS.csv", "columns": ["wheelchair_boarding", "stop_desc", "stop_lon", "stop_lat", "stop_id"]}
+, "services1": {"source": "CALENDAR.csv", "columns": ["service_id"]}
+, "services2": {"source": "CALENDAR_DATES.csv", "columns": ["service_id"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/CALENDAR.csv": ""service_id"\n"4_I12"\n", "tmp/csv/CALENDAR_DATES.csv": ""service_id"\n"4_I12"\n", "tmp/csv/ROUTES.csv": ""route_id","route_short_name","route_desc"\n"4__10___","10",""\n", "tmp/csv/STOP_TIMES.csv": ""trip_id","arrival_time","stop_id"\n"4_I12-001_2016I12_1_1_4__1___","00:00:00","par_4_263"\n", "tmp/csv/STOPS.csv": ""stop_id","stop_desc","stop_lat","stop_lon","wheelchair_boarding"\n"acc_4_100_271","Avda de los Poblados 41","40.38582","-3.76105","0"\n", "tmp/csv/TRIPS.csv": ""route_id","service_id","trip_id","trip_short_name"\n"4__10___","4_I12","4_I12-101_2016I12_1_1_4__10_A__","Hospital del Norte - Puerta del Sur"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "calendar" CASCADE;
+CREATE TABLE calendar(service_id VARCHAR,PRIMARY KEY (service_id));
+DROP TABLE IF EXISTS "calendar_dates" CASCADE;
+CREATE TABLE calendar_dates(service_id VARCHAR,PRIMARY KEY (service_id));
+DROP TABLE IF EXISTS "routes" CASCADE;
+CREATE TABLE routes(route_id VARCHAR,route_short_name VARCHAR,route_desc VARCHAR,PRIMARY KEY (route_id));
+DROP TABLE IF EXISTS "stop_times" CASCADE;
+CREATE TABLE stop_times(trip_id VARCHAR,arrival_time VARCHAR,stop_id VARCHAR,PRIMARY KEY (trip_id,arrival_time,stop_id));
+DROP TABLE IF EXISTS "stops" CASCADE;
+CREATE TABLE stops(stop_id VARCHAR,stop_desc VARCHAR,stop_lat DECIMAL(40,15),stop_lon DECIMAL(40,15),wheelchair_boarding INT,PRIMARY KEY (stop_id));
+DROP TABLE IF EXISTS "trips" CASCADE;
+CREATE TABLE trips(route_id VARCHAR,service_id VARCHAR,trip_id VARCHAR,trip_short_name VARCHAR,PRIMARY KEY (trip_id));
+ALTER TABLE stop_times ADD FOREIGN KEY (trip_id) REFERENCES trips (trip_id);
+ALTER TABLE stop_times ADD FOREIGN KEY (stop_id) REFERENCES stops (stop_id);
+ALTER TABLE trips ADD FOREIGN KEY (route_id) REFERENCES routes (route_id);
+ALTER TABLE trips ADD FOREIGN KEY (service_id) REFERENCES calendar (service_id);
+ALTER TABLE trips ADD FOREIGN KEY (service_id) REFERENCES calendar_dates (service_id);
+
+----------------------------------------------------
+QUERY: 8
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX gtfsstop: <http://transport.linkeddata.es/madrid/metro/stops/>
+
+SELECT * WHERE {
+	?route a gtfs:Route .
+	OPTIONAL { ?route gtfs:shortName ?routeShortName . }
+	OPTIONAL { ?route dct:description ?routeDescription . }
+
+	?trip a gtfs:Trip .
+	OPTIONAL { ?trip gtfs:shortName ?tripShortName . }
+	?trip gtfs:service ?service .
+	?trip gtfs:route ?route .
+
+	?stopTime a gtfs:StopTime . 
+	?stopTime gtfs:trip ?trip . 
+	?stopTime gtfs:stop ?stop . 
+
+	?stop a gtfs:Stop . 
+	OPTIONAL {?stop dct:description ?stopDescription . }
+
+	?service a gtfs:Service .
+	?service gtfs:serviceRule ?serviceRule .
+}
+
+csvColumns:
+{"stoptimes": {"source": "STOP_TIMES.csv", "columns": ["arrival_time", "trip_id", "stop_id"]}
+, "trips": {"source": "TRIPS.csv", "columns": ["trip_short_name", "trip_id", "route_id", "service_id"]}
+, "routes": {"source": "ROUTES.csv", "columns": ["route_id", "route_short_name", "route_desc"]}
+, "stops": {"source": "STOPS.csv", "columns": ["stop_id", "stop_desc"]}
+, "services1": {"source": "CALENDAR.csv", "columns": ["service_id"]}
+, "services2": {"source": "CALENDAR_DATES.csv", "columns": ["service_id"]}
+, "calendar_rules": {"source": "CALENDAR.csv", "columns": ["service_id"]}
+, "calendar_date_rules": {"source": "CALENDAR_DATES.csv", "columns": ["service_id"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/CALENDAR.csv": ""service_id"\n"4_I12"\n", "tmp/csv/CALENDAR_DATES.csv": ""service_id"\n"4_I12"\n", "tmp/csv/ROUTES.csv": ""route_id","route_short_name","route_desc"\n"4__10___","10",""\n", "tmp/csv/STOP_TIMES.csv": ""trip_id","arrival_time","stop_id"\n"4_I12-001_2016I12_1_1_4__1___","00:00:00","par_4_263"\n", "tmp/csv/STOPS.csv": ""stop_id","stop_desc"\n"acc_4_100_271","Avda de los Poblados 41"\n", "tmp/csv/TRIPS.csv": ""route_id","service_id","trip_id","trip_short_name"\n"4__10___","4_I12","4_I12-101_2016I12_1_1_4__10_A__","Hospital del Norte - Puerta del Sur"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "calendar" CASCADE;
+CREATE TABLE calendar(service_id VARCHAR,PRIMARY KEY (service_id));
+DROP TABLE IF EXISTS "calendar_dates" CASCADE;
+CREATE TABLE calendar_dates(service_id VARCHAR,PRIMARY KEY (service_id));
+DROP TABLE IF EXISTS "routes" CASCADE;
+CREATE TABLE routes(route_id VARCHAR,route_short_name VARCHAR,route_desc VARCHAR,PRIMARY KEY (route_id));
+DROP TABLE IF EXISTS "stop_times" CASCADE;
+CREATE TABLE stop_times(trip_id VARCHAR,arrival_time VARCHAR,stop_id VARCHAR,PRIMARY KEY (arrival_time,stop_id,trip_id));
+DROP TABLE IF EXISTS "stops" CASCADE;
+CREATE TABLE stops(stop_id VARCHAR,stop_desc VARCHAR,PRIMARY KEY (stop_id));
+DROP TABLE IF EXISTS "trips" CASCADE;
+CREATE TABLE trips(route_id VARCHAR,service_id VARCHAR,trip_id VARCHAR,trip_short_name VARCHAR,PRIMARY KEY (trip_id));
+ALTER TABLE stop_times ADD FOREIGN KEY (trip_id) REFERENCES trips (trip_id);
+ALTER TABLE stop_times ADD FOREIGN KEY (stop_id) REFERENCES stops (stop_id);
+ALTER TABLE trips ADD FOREIGN KEY (route_id) REFERENCES routes (route_id);
+ALTER TABLE trips ADD FOREIGN KEY (service_id) REFERENCES calendar (service_id);
+ALTER TABLE trips ADD FOREIGN KEY (service_id) REFERENCES calendar_dates (service_id);
+
+----------------------------------------------------
+QUERY: 9
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX gtfsstop: <http://transport.linkeddata.es/madrid/metro/stops/>
+
+SELECT * WHERE {
+	?trip a gtfs:Trip .
+	OPTIONAL { ?trip gtfs:shortName ?tripShortName . }
+	?trip gtfs:service ?service .
+	?trip gtfs:route ?route .
+	?trip gtfs:shape ?shape .
+
+	?shape a gtfs:Shape .
+	?shape geo:lat ?lat .
+	FILTER (?lat > 40.40)
+}
+csvColumns:
+{"trips": {"source": "TRIPS.csv", "columns": ["shape_id", "route_id", "service_id", "trip_id", "trip_short_name"]}
+, "shapes": {"source": "SHAPES.csv", "columns": ["shape_id", "shape_pt_sequence", "shape_pt_lat"]}
+, "services1": {"source": "CALENDAR.csv", "columns": ["service_id"]}
+, "services2": {"source": "CALENDAR_DATES.csv", "columns": ["service_id"]}
+, "routes": {"source": "ROUTES.csv", "columns": ["route_id"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/CALENDAR.csv": ""service_id"\n"4_I12"\n", "tmp/csv/CALENDAR_DATES.csv": ""service_id"\n"4_I12"\n", "tmp/csv/ROUTES.csv": ""route_id"\n"4__10___"\n", "tmp/csv/SHAPES.csv": ""shape_id","shape_pt_lat","shape_pt_sequence"\n"4__10_A___1__IT_1","40.3452092520339","20000036"\n", "tmp/csv/TRIPS.csv": ""route_id","service_id","trip_id","trip_short_name","shape_id"\n"4__10___","4_I12","4_I12-101_2016I12_1_1_4__10_A__","Hospital del Norte - Puerta del Sur","4__10_A___1__IT_1"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "calendar" CASCADE;
+CREATE TABLE calendar(service_id VARCHAR,PRIMARY KEY (service_id));
+DROP TABLE IF EXISTS "calendar_dates" CASCADE;
+CREATE TABLE calendar_dates(service_id VARCHAR,PRIMARY KEY (service_id));
+DROP TABLE IF EXISTS "routes" CASCADE;
+CREATE TABLE routes(route_id VARCHAR,PRIMARY KEY (route_id));
+DROP TABLE IF EXISTS "shapes" CASCADE;
+CREATE TABLE shapes(shape_id VARCHAR,shape_pt_lat DECIMAL(40,15),shape_pt_sequence INT,PRIMARY KEY (shape_id,shape_pt_sequence));
+DROP TABLE IF EXISTS "trips" CASCADE;
+CREATE TABLE trips(route_id VARCHAR,service_id VARCHAR,trip_id VARCHAR,trip_short_name VARCHAR,shape_id VARCHAR,PRIMARY KEY (trip_id));
+ALTER TABLE trips ADD FOREIGN KEY (route_id) REFERENCES routes (route_id);
+ALTER TABLE trips ADD FOREIGN KEY (service_id) REFERENCES calendar (service_id);
+ALTER TABLE trips ADD FOREIGN KEY (service_id) REFERENCES calendar_dates (service_id);
+
+----------------------------------------------------
+QUERY: 10
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX gtfsroute: <http://transport.linkeddata.es/madrid/metro/routes/>
+
+SELECT (count(distinct ?trip) as ?count)  WHERE {
+	?trip a gtfs:Trip .
+
+	?stopTime a gtfs:StopTime . 
+	?stopTime gtfs:trip ?trip . 
+	?stopTime gtfs:departureTime ?departureTime .
+
+	FILTER (?departureTime >= "00:30:00"^^xsd:duration) .
+}
+csvColumns:
+{"stoptimes": {"source": "STOP_TIMES.csv", "columns": ["stop_id", "trip_id", "arrival_time", "departure_time"]}
+, "trips": {"source": "TRIPS.csv", "columns": ["trip_id"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/STOP_TIMES.csv": ""trip_id","arrival_time","departure_time","stop_id"\n"4_I12-001_2016I12_1_1_4__1___","00:00:00","00:00:00","par_4_263"\n", "tmp/csv/TRIPS.csv": ""trip_id"\n"4_I12-001_2016I12_1_1_4__1___"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "stop_times" CASCADE;
+CREATE TABLE stop_times(trip_id VARCHAR,arrival_time VARCHAR,departure_time VARCHAR,stop_id VARCHAR,PRIMARY KEY (stop_id,trip_id,arrival_time));
+DROP TABLE IF EXISTS "trips" CASCADE;
+CREATE TABLE trips(trip_id VARCHAR,PRIMARY KEY (trip_id));
+ALTER TABLE stop_times ADD FOREIGN KEY (trip_id) REFERENCES trips (trip_id);
+
+----------------------------------------------------
+QUERY: 11
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX schema: <http://schema.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX gtfsroute: <http://transport.linkeddata.es/madrid/metro/routes/>
+
+SELECT * WHERE {
+        ?service a gtfs:Service .
+        ?service gtfs:serviceRule ?calendarRule .
+		
+		?trip gtfs:service ?service .
+		
+		?calendarRule a gtfs:CalendarRule .
+        ?calendarRule schema:startDate ?startDate .
+        ?calendarRule schema:endDate ?endDate .
+        FILTER (?startDate < "2017-07-02"^^xsd:date) .
+        FILTER (?endDate > "2017-07-02"^^xsd:date) .
+		
+        FILTER NOT EXISTS {
+		    ?service gtfs:serviceRule ?calendarDateRule . 
+            ?calendarDateRule a gtfs:CalendarDateRule .
+	        ?calendarDateRule dct:date "2017-07-02"^^xsd:date .
+	        ?calendarDateRule gtfs:dateAddition "false"^^xsd:boolean 
+        }
+}
+csvColumns:
+{"trips": {"source": "TRIPS.csv", "columns": ["trip_id", "service_id"]}
+, "services1": {"source": "CALENDAR.csv", "columns": ["service_id"]}
+, "services2": {"source": "CALENDAR_DATES.csv", "columns": ["service_id"]}
+, "calendar_rules": {"source": "CALENDAR.csv", "columns": ["service_id", "end_date", "start_date"]}
+, "calendar_date_rules": {"source": "CALENDAR_DATES.csv", "columns": ["service_id"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/CALENDAR.csv": ""service_id","start_date","end_date"\n"4_I12","2017-06-29","2018-06-29"\n", "tmp/csv/CALENDAR_DATES.csv": ""service_id"\n"4_I12"\n", "tmp/csv/TRIPS.csv": ""service_id","trip_id"\n"4_I12","4_I12-001_2016I12_1_1_4__1___"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "calendar" CASCADE;
+CREATE TABLE calendar(service_id VARCHAR,start_date DATE,end_date DATE,PRIMARY KEY (service_id));
+DROP TABLE IF EXISTS "calendar_dates" CASCADE;
+CREATE TABLE calendar_dates(service_id VARCHAR,PRIMARY KEY (service_id));
+DROP TABLE IF EXISTS "trips" CASCADE;
+CREATE TABLE trips(service_id VARCHAR,trip_id VARCHAR,PRIMARY KEY (trip_id));
+ALTER TABLE trips ADD FOREIGN KEY (service_id) REFERENCES calendar (service_id);
+ALTER TABLE trips ADD FOREIGN KEY (service_id) REFERENCES calendar_dates (service_id);
+
+----------------------------------------------------
+QUERY: 12
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX gtfsaccessible: <http://transport.linkeddata.es/resource/WheelchairBoardingStatus/>
+PREFIX gtfslocation: <http://transport.linkeddata.es/resource/LocationType/>
+
+SELECT ?longName (count(?name) as ?count)
+WHERE { 	
+	?route a gtfs:Route .
+	?route gtfs:longName ?longName .
+ 
+	?trip a gtfs:Trip .
+	?trip gtfs:route ?route .
+ 
+	?stopTime a gtfs:StopTime .
+	?stopTime gtfs:trip ?trip .
+	?stopTime gtfs:stop ?stop .
+ 
+ 	?stop a gtfs:Stop .
+ 	?stop foaf:name  ?name .
+ 	?stop gtfs:wheelchairAccessible gtfsaccessible:1 .	
+}
+GROUP BY ?longName
+csvColumns:
+{"stoptimes": {"source": "STOP_TIMES.csv", "columns": ["trip_id", "stop_id", "arrival_time"]}
+, "trips": {"source": "TRIPS.csv", "columns": ["trip_id", "route_id"]}
+, "routes": {"source": "ROUTES.csv", "columns": ["route_id", "route_long_name"]}
+, "stops": {"source": "STOPS.csv", "columns": ["stop_id", "stop_name", "wheelchair_boarding"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/ROUTES.csv": ""route_id","route_long_name"\n"4__10___","Hospital del Norte-Puerta del Sur"\n", "tmp/csv/STOP_TIMES.csv": ""trip_id","arrival_time","stop_id"\n"4_I12-001_2016I12_1_1_4__1___","00:00:00","par_4_263"\n", "tmp/csv/STOPS.csv": ""stop_id","stop_name","wheelchair_boarding"\n"acc_4_100_271","Avda. Poblados","0"\n", "tmp/csv/TRIPS.csv": ""route_id","trip_id"\n"4__10___","4_I12-101_2016I12_1_1_4__10_A__"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "routes" CASCADE;
+CREATE TABLE routes(route_id VARCHAR,route_long_name VARCHAR,PRIMARY KEY (route_id));
+DROP TABLE IF EXISTS "stop_times" CASCADE;
+CREATE TABLE stop_times(trip_id VARCHAR,arrival_time VARCHAR,stop_id VARCHAR,PRIMARY KEY (trip_id,stop_id,arrival_time));
+DROP TABLE IF EXISTS "stops" CASCADE;
+CREATE TABLE stops(stop_id VARCHAR,stop_name VARCHAR,wheelchair_boarding INT,PRIMARY KEY (stop_id));
+DROP TABLE IF EXISTS "trips" CASCADE;
+CREATE TABLE trips(route_id VARCHAR,trip_id VARCHAR,PRIMARY KEY (trip_id));
+ALTER TABLE stop_times ADD FOREIGN KEY (trip_id) REFERENCES trips (trip_id);
+ALTER TABLE stop_times ADD FOREIGN KEY (stop_id) REFERENCES stops (stop_id);
+ALTER TABLE trips ADD FOREIGN KEY (route_id) REFERENCES routes (route_id);
+
+----------------------------------------------------
+QUERY: 13
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX gtfslocation: <http://transport.linkeddata.es/resource/LocationType/>
+
+SELECT  * WHERE {     
+    ?stop a gtfs:Stop .
+    ?stop gtfs:parentStation ?parStation .
+    OPTIONAL {?stop foaf:name ?accName} .
+    ?stop gtfs:locationType gtfslocation:2 .
+    ?parStation a gtfs:Stop .
+    ?parStation foaf:name ?name      
+}
+
+csvColumns:
+{"stops": {"source": "STOPS.csv", "columns": ["location_type", "parent_station", "stop_name", "stop_id"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/STOPS.csv": ""stop_id","stop_name","location_type","parent_station"\n"acc_4_100_271","Avda. Poblados","2","est_90_1"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "stops" CASCADE;
+CREATE TABLE stops(stop_id VARCHAR,stop_name VARCHAR,location_type INT,parent_station VARCHAR,PRIMARY KEY (stop_id));
+ALTER TABLE stops ADD FOREIGN KEY (parent_station) REFERENCES stops (stop_id);
+
+----------------------------------------------------
+QUERY: 14
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX gtfsservice: <http://transport.linkeddata.es/madrid/metro/services/>
+
+SELECT * WHERE {
+    ?stopTime a gtfs:StopTime .
+    ?stopTime gtfs:trip ?trip .
+    ?stopTime gtfs:stop ?stop .
+    ?stopTime gtfs:stopSequence ?sequence .
+
+    ?stop a gtfs:Stop .
+
+    ?trip a gtfs:Trip .
+    ?trip gtfs:route ?route .
+
+    OPTIONAL {?stop foaf:name ?stopName} 
+}
+ ORDER BY ?sequencecsvColumns:
+{"stoptimes": {"source": "STOP_TIMES.csv", "columns": ["arrival_time", "trip_id", "stop_id", "stop_sequence"]}
+, "trips": {"source": "TRIPS.csv", "columns": ["route_id", "trip_id"]}
+, "stops": {"source": "STOPS.csv", "columns": ["stop_name", "stop_id"]}
+, "routes": {"source": "ROUTES.csv", "columns": ["route_id"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/ROUTES.csv": ""route_id"\n"4__10___"\n", "tmp/csv/STOP_TIMES.csv": ""trip_id","arrival_time","stop_id","stop_sequence"\n"4_I12-001_2016I12_1_1_4__1___","00:00:00","par_4_263","0"\n", "tmp/csv/STOPS.csv": ""stop_id","stop_name"\n"acc_4_100_271","Avda. Poblados"\n", "tmp/csv/TRIPS.csv": ""route_id","trip_id"\n"4__10___","4_I12-101_2016I12_1_1_4__10_A__"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "routes" CASCADE;
+CREATE TABLE routes(route_id VARCHAR,PRIMARY KEY (route_id));
+DROP TABLE IF EXISTS "stop_times" CASCADE;
+CREATE TABLE stop_times(trip_id VARCHAR,arrival_time VARCHAR,stop_id VARCHAR,stop_sequence INT,PRIMARY KEY (arrival_time,trip_id,stop_id));
+DROP TABLE IF EXISTS "stops" CASCADE;
+CREATE TABLE stops(stop_id VARCHAR,stop_name VARCHAR,PRIMARY KEY (stop_id));
+DROP TABLE IF EXISTS "trips" CASCADE;
+CREATE TABLE trips(route_id VARCHAR,trip_id VARCHAR,PRIMARY KEY (trip_id));
+ALTER TABLE stop_times ADD FOREIGN KEY (trip_id) REFERENCES trips (trip_id);
+ALTER TABLE stop_times ADD FOREIGN KEY (stop_id) REFERENCES stops (stop_id);
+ALTER TABLE trips ADD FOREIGN KEY (route_id) REFERENCES routes (route_id);
+
+----------------------------------------------------
+QUERY: 15
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+
+SELECT * WHERE { 
+	?stop a gtfs:Stop .
+	?stop ?p ?str .
+	FILTER regex (?str, 'Doctor')
+}
+csvColumns:
+{"stops": {"source": "STOPS.csv", "columns": ["stop_id", "stop_timezone", "stop_code", "stop_desc", "zone_id", "stop_lat", "parent_station", "stop_url", "wheelchair_boarding", "stop_name", "location_type", "stop_lon"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/STOPS.csv": ""stop_id","stop_code","stop_name","stop_desc","stop_lat","stop_lon","zone_id","stop_url","location_type","parent_station","stop_timezone","wheelchair_boarding"\n"acc_4_100_271","100","Avda. Poblados","Avda de los Poblados 41","40.38582","-3.76105","","http://www.crtm.es","2","est_90_1","","0"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "stops" CASCADE;
+CREATE TABLE stops(stop_id VARCHAR,stop_code VARCHAR,stop_name VARCHAR,stop_desc VARCHAR,stop_lat DECIMAL(40,15),stop_lon DECIMAL(40,15),zone_id VARCHAR,stop_url VARCHAR,location_type INT,parent_station VARCHAR,stop_timezone VARCHAR,wheelchair_boarding INT,PRIMARY KEY (stop_id));
+ALTER TABLE stops ADD FOREIGN KEY (parent_station) REFERENCES stops (stop_id);
+
+----------------------------------------------------
+QUERY: 16
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT * WHERE {
+	?trip a gtfs:Trip .
+	?trip gtfs:service ?service .
+	?trip gtfs:route ?route . 
+
+	?service a gtfs:Service .
+	?service gtfs:serviceRule ?serviceRule .
+
+	?serviceRule a gtfs:CalendarDateRule .
+	?serviceRule  dct:date ?servDate .
+	?serviceRule  gtfs:dateAddition "true"^^xsd:boolean .
+	FILTER (?servDate >= '2017-03-01'^^xsd:date) .
+	FILTER (?servDate <= '2017-03-31'^^xsd:date) .
+}
+csvColumns:
+{"trips": {"source": "TRIPS.csv", "columns": ["trip_id", "service_id", "route_id"]}
+, "services1": {"source": "CALENDAR.csv", "columns": ["service_id"]}
+, "services2": {"source": "CALENDAR_DATES.csv", "columns": ["service_id"]}
+, "calendar_date_rules": {"source": "CALENDAR_DATES.csv", "columns": ["date", "exception_type", "service_id"]}
+, "routes": {"source": "ROUTES.csv", "columns": ["route_id"]}
+, "calendar_rules": {"source": "CALENDAR.csv", "columns": ["service_id"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/CALENDAR.csv": ""service_id"\n"4_I12"\n", "tmp/csv/CALENDAR_DATES.csv": ""service_id","date","exception_type"\n"4_I12","2017-01-06","false"\n", "tmp/csv/ROUTES.csv": ""route_id"\n"4__10___"\n", "tmp/csv/TRIPS.csv": ""route_id","service_id","trip_id"\n"4__10___","4_I12","4_I12-101_2016I12_1_1_4__10_A__"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "calendar" CASCADE;
+CREATE TABLE calendar(service_id VARCHAR,PRIMARY KEY (service_id));
+DROP TABLE IF EXISTS "calendar_dates" CASCADE;
+CREATE TABLE calendar_dates(service_id VARCHAR,date DATE,exception_type BOOLEAN,PRIMARY KEY (date,service_id));
+DROP TABLE IF EXISTS "routes" CASCADE;
+CREATE TABLE routes(route_id VARCHAR,PRIMARY KEY (route_id));
+DROP TABLE IF EXISTS "trips" CASCADE;
+CREATE TABLE trips(route_id VARCHAR,service_id VARCHAR,trip_id VARCHAR,PRIMARY KEY (trip_id));
+ALTER TABLE trips ADD FOREIGN KEY (route_id) REFERENCES routes (route_id);
+ALTER TABLE trips ADD FOREIGN KEY (service_id) REFERENCES calendar (service_id);
+
+----------------------------------------------------
+QUERY: 17
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?routeName ?routeType ?trip ?startTime ?endTime WHERE {
+    ?trip a gtfs:Trip .
+    ?trip gtfs:route ?route .
+
+    ?frequency a gtfs:Frequency .
+    ?frequency gtfs:startTime ?startTime .
+    ?frequency gtfs:endTime ?endTime .
+    ?frequency gtfs:trip ?trip .
+
+    ?route a gtfs:Route .
+    ?route gtfs:shortName ?routeName .
+    ?route gtfs:routeType ?routeType .
+
+}
+ 
+
+
+csvColumns:
+{"trips": {"source": "TRIPS.csv", "columns": ["trip_id", "route_id"]}
+, "routes": {"source": "ROUTES.csv", "columns": ["route_type", "route_short_name", "route_id"]}
+, "frequencies": {"source": "FREQUENCIES.csv", "columns": ["trip_id", "end_time", "start_time"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/FREQUENCIES.csv": ""trip_id","start_time","end_time"\n"4_I12-001_2016I12_1_1_4__1___","00:00:00","01:00:00"\n", "tmp/csv/ROUTES.csv": ""route_id","route_short_name","route_type"\n"4__10___","10","1"\n", "tmp/csv/TRIPS.csv": ""route_id","trip_id"\n"4__10___","4_I12-101_2016I12_1_1_4__10_A__"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "frequencies" CASCADE;
+CREATE TABLE frequencies(trip_id VARCHAR,start_time VARCHAR,end_time VARCHAR,PRIMARY KEY (trip_id,start_time));
+DROP TABLE IF EXISTS "routes" CASCADE;
+CREATE TABLE routes(route_id VARCHAR,route_short_name VARCHAR,route_type INT,PRIMARY KEY (route_id));
+DROP TABLE IF EXISTS "trips" CASCADE;
+CREATE TABLE trips(route_id VARCHAR,trip_id VARCHAR,PRIMARY KEY (trip_id));
+ALTER TABLE frequencies ADD FOREIGN KEY (trip_id) REFERENCES trips (trip_id);
+ALTER TABLE trips ADD FOREIGN KEY (route_id) REFERENCES routes (route_id);
+
+----------------------------------------------------
+QUERY: 18
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX schema: <http://schema.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT * WHERE {
+	?service a gtfs:Service .
+	?service gtfs:serviceRule ?serviceRule .
+
+	?serviceRule a gtfs:CalendarRule .
+	?serviceRule gtfs:sunday "true"^^xsd:boolean . 
+        
+	?trip gtfs:service ?service .
+	?trip gtfs:route ?route  .
+  
+	{  ?route gtfs:longName ?longName} 
+	UNION
+	{  ?route gtfs:shortName ?shortName} 
+	.                                             
+}
+csvColumns:
+{"trips": {"source": "TRIPS.csv", "columns": ["trip_id", "service_id", "route_id"]}
+, "routes": {"source": "ROUTES.csv", "columns": ["route_long_name", "route_short_name", "route_id"]}
+, "services1": {"source": "CALENDAR.csv", "columns": ["service_id"]}
+, "services2": {"source": "CALENDAR_DATES.csv", "columns": ["service_id"]}
+, "calendar_rules": {"source": "CALENDAR.csv", "columns": ["service_id", "sunday"]}
+, "calendar_date_rules": {"source": "CALENDAR_DATES.csv", "columns": ["service_id"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/CALENDAR.csv": ""service_id","sunday"\n"4_I12","false"\n", "tmp/csv/CALENDAR_DATES.csv": ""service_id"\n"4_I12"\n", "tmp/csv/ROUTES.csv": ""route_id","route_short_name","route_long_name"\n"4__10___","10","Hospital del Norte-Puerta del Sur"\n", "tmp/csv/TRIPS.csv": ""route_id","service_id","trip_id"\n"4__10___","4_I12","4_I12-101_2016I12_1_1_4__10_A__"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "calendar" CASCADE;
+CREATE TABLE calendar(service_id VARCHAR,sunday BOOLEAN,PRIMARY KEY (service_id));
+DROP TABLE IF EXISTS "calendar_dates" CASCADE;
+CREATE TABLE calendar_dates(service_id VARCHAR,PRIMARY KEY (service_id));
+DROP TABLE IF EXISTS "routes" CASCADE;
+CREATE TABLE routes(route_id VARCHAR,route_short_name VARCHAR,route_long_name VARCHAR,PRIMARY KEY (route_id));
+DROP TABLE IF EXISTS "trips" CASCADE;
+CREATE TABLE trips(route_id VARCHAR,service_id VARCHAR,trip_id VARCHAR,PRIMARY KEY (trip_id));
+ALTER TABLE trips ADD FOREIGN KEY (route_id) REFERENCES routes (route_id);
+ALTER TABLE trips ADD FOREIGN KEY (service_id) REFERENCES calendar (service_id);
+ALTER TABLE trips ADD FOREIGN KEY (service_id) REFERENCES calendar_dates (service_id);
+
+----------------------------------------------------

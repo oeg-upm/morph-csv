@@ -113,10 +113,12 @@ def calculateSelectivity(source, colName, table):
     else:
         return False
 def isPrimaryKey(csvw,column, tableName):
+#    print('TABLE NAME:%s'%(tableName))
+#    print('COLUMN:%s'%(column))
     for table in csvw['tables']:
-        if(csvwParser.getUrl(table).split("/")[-1].replace(".csv", "") == tableName and
+        if(csvwParser.getUrl(table).split("/")[-1].replace(".csv", "").lower() == tableName and
           'primaryKey' in table['tableSchema'].keys() and
-          column == table['tableSchema']['primaryKey']
+          column == table['tableSchema']['primaryKey'].lower()
           ):
             return True
     return False

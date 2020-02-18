@@ -9,10 +9,10 @@
 #python3 morphcsv.py -c test/config.json -q evaluation/motivating-example/queries/query1.rq
 
 #GTFS
-#cp ~/Datasets/Gtfs-1/* tmp/csv/
-#cp evaluation/gtfs/gtfs.csvw.json tmp/annotations/annotations.json
-#cp evaluation/gtfs/gtfs-csv.yaml tmp/annotations/mapping.yaml
-#python3 Test.py  -c evaluation/gtfs/config-gtfs.json -q evaluation/gtfs/queries/original/q12.rq
+cp ~/Datasets/Gtfs/* tmp/csv/
+cp evaluation/gtfs/gtfs.csvw.json tmp/annotations/annotations.json
+cp evaluation/gtfs/gtfs-csv.yaml tmp/annotations/mapping.yaml
+python3 Test.py  -c evaluation/gtfs/config-gtfs.json -q evaluation/gtfs/queries/original/q9.rq
 
 #GENEINFO
 #cp evaluation/bio2rdf/ncbigene/ncbigene.annotations.json tmp/annotations/annotations.json
@@ -24,10 +24,10 @@
 #cp evaluation/bio2rdf/bio2rdf.csvw.json tmp/annotations/annotations.json
 #cp evaluation/bio2rdf/bio2rdf.yml tmp/annotations/mapping.yaml
 #cp ~/Datasets/bio2rdf/* tmp/csv/
-#python3 Test.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bio2rdf/queries/query6.rq
+#python3 Test.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bio2rdf/queries/query10.1.rq
 
 #BSBM
-cp evaluation/bsbm/bsbm.csv.yml tmp/annotations/mapping.yaml
-cp evaluation/bsbm/bsbm.csvw.json tmp/annotations/annotations.json
-cp ~/Datasets/bsbm/scale100000/* tmp/csv/
-python3 Test.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bsbm/queries/q10.rq
+#cp evaluation/bsbm/bsbm.csv.yml tmp/annotations/mapping.yaml
+#cp evaluation/bsbm/bsbm.csvw.json tmp/annotations/annotations.json
+#cp ~/Datasets/bsbm/scale100000/* tmp/csv/
+#python3 Test.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bsbm/queries/q10.rq
