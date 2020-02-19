@@ -20,7 +20,7 @@ def decide_schema_based_on_query(mapping):
 
 
 def generate_sql_schema(csvw,mapping,decision):
-#print('****************MAPPNIG********************\n' + str(mapping).replace("'", '"'))
+   # print('****************MAPPNIG********************\n' + str(mapping).replace("'", '"'))
     sqlGlobal = ""
     foreignkeys = ""
     indexes = ""
@@ -102,6 +102,7 @@ def generateSubjectIndexes(source, mapping, table, calculatedSelectivity):
 def calculateSelectivity(source, colName, table):
     if(not table is None):
         source = csvwParser.getUrl(table).split("/")[-1]
+        print('SOURCE: ' + source + 'COLNAME: ' + colName)
         awkCol = "$" + str(table['filteredRowTitles'].index(colName) + 1)
         path = 'tmp/csv/' + source
         selectivity = 0.0

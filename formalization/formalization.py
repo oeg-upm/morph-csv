@@ -14,7 +14,7 @@ def addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery):
         foreignKeys = []
         for j,col in enumerate(cols):
             if(csvwParser.hasSeparator(col)):
-                #Falta modificar la tabla original, añadir la )foreing key 
+                #Falta modificar la tabla original, añadir la )foreing key
                 colName = csvwParser.getColTitle(col)
                 foreignKeys.append(generateForeignKey(colName))
                 newTables.append(createNewTable(table,col))
@@ -36,10 +36,10 @@ def addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery):
 def createNewTable(table,col):
     nullValue = csvwParser.getNullValue(col)
     delimiter = csvwParser.getDelimiterValue(table)
-    datatype = csvwParser.getDataType(col) 
+    datatype = csvwParser.getDataType(col)
 #    print('NULL:'+ str(nullValue) + '\nDELIMITER:' + str(delimiter) + '\nDATATYPE:\n' +str(datatype))
     result = {
-        'filteredRowTitles':['id', 'value'],       
+        'filteredRowTitles':['id', 'value'],
         'url':'tmp/csv/%s.csv'%(str(csvwParser.getColTitle(col)).replace(' ', '')),
         'dialect':{
             'delimiter':',',
@@ -89,7 +89,7 @@ def mappingTranslation(mapping, column):
         i += 1
 
     source = [["./tmp/csv/"+column + '.csv']]
-    s = "http://example.com/$(id)-$("+column+")"
+    s = "http://example.com/$(id)-$(value)"
     pom = [["ex:"+column, "$(value)"]]
     mapping["mappings"][column] = {"sources": source, "s": s, "po": pom}
     return mapping
@@ -105,7 +105,7 @@ def dataTranslation(data, delimiter, path):
     try:
         if(len(data['columns'])>0):
             print('SCRIPT:\n' + str(data['script']) + '\nCOLS:\n' + str(data['columns']))
-            os.system("bash bash/fn2.sh '%s' '%s' '%s'"%(str(delimiter), str(data['script']), str(path)))
+            os.system("bash bash/fn2.sh '%s' '%s' '%s' > /dev/null"%(str(delimiter), str(data['script']), str(path)))
     except:
         print('Falla DataTranslation')
         print(traceback.format_exc())
@@ -118,7 +118,7 @@ def getPredicateAndObjectFromQuery(query, mapping,parsedQuery,column):
     predicate = getPredicateFromQuery(query, column, mapping)
     pObject = getObjectFromQuery(parsedQuery, predicate)
     return predicate, pObject
-    
+
 def getPredicateFromQuery(query, column,mapping):
     predicate = ''
     try:
@@ -175,7 +175,7 @@ def toThirdNormalForm(mapping, csvColumns, csvw):
     fn3Tm = findTmWithDistinctSubject(fn3Tm, mapping)
     fn3Tm = findColumnsOfFN3Tm(fn3Tm, csvColumns)
     #Scope: Encontrar los TM que comparten el mismo source y cuyos sujetos son diferentes.
-    #HowTo: 
+    #HowTo:
     '''
         1º Encontrar Fuentes Duplicadas DONE
         2º Guardar los nombres del TM comparten fuente DONE
@@ -185,16 +185,16 @@ def toThirdNormalForm(mapping, csvColumns, csvw):
     '''
     #print('\n\n\n***********************FN3tm********************\n\n\n')
     #print(str(fn3Tm).replace('\'', '"') + '\n\n\n')
-#    csvw = obtainFN3NormalizedCsvw(csvw, fn3Tm) 
-#    script  = getFn3FormalizationScript(csvw, fn3Tm) 
+#    csvw = obtainFN3NormalizedCsvw(csvw, fn3Tm)
+#    script  = getFn3FormalizationScript(csvw, fn3Tm)
     #TODO: Execute bash script to create target and remove the "remove" columns from source.
-    #TODO: MODIFY CSVW TO APPEND THE NEW TABLES 
+    #TODO: MODIFY CSVW TO APPEND THE NEW TABLES
 
 
 def findTmWithDistinctSubject(sources, mapping):
     result =  {}
     for source in sources:
-        #TODO QUE PASA SI HAY 3 TM CON EL MISMO 
+        #TODO QUE PASA SI HAY 3 TM CON EL MISMO
         #SOURCE PERO SOLO 2 DE ELLOS TIENEN DISTINTO SUBJECT?
         #DE MOMENTO SUPONEMOS QUE SOLO SE VA A DAR EL CASO DE QUE
         #SOLO HAY 2 TM QUE COMPARTAN EL MISMO SOURCE. SI FALLA ES POR ESO :)

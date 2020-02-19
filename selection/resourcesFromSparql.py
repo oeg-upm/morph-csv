@@ -91,6 +91,7 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
     newMapping = {'prefixes':mapping['prefixes'], 'mappings':{}}
     for tm in mapping['mappings']:
         subject = isTmInQuery(mapping['mappings'][tm], uris)
+        #print('SUBJECT:' + str(subject))
         if(subject['result']):
             if(uris[subject['name']]['fullTM']):
                 #print('***********************1*******************')
@@ -113,7 +114,7 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
                                 'po':[]
                                 }
                         newMapping['mappings'][tm]['po'].append(po)
-#    print('MAPPING:\n' + str(newMapping).replace('\'', '"'))
+    #print('MAPPING:\n' + str(newMapping).replace('\'', '"'))
     newMapping = removeEmptyTM(newMapping)
     newMapping  = addReferencesOfTheJoins(mapping, newMapping)
     return newMapping

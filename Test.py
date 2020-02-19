@@ -54,8 +54,8 @@ def generateData(csvwPath, mappingPath, queryPath):
 	functions, mapping = yarrrml.getCleanYarrrml(mappingPath)
 	csvColumns, mapping = resourcesFromSparql.fromSPARQLtoMapping(mapping, sparqlQuery, parsedQuery)
 	csvColumns, functions = resourcesFromSparql.getColumnsFromFunctions(csvColumns, functions)
-#	print(str(csvColumns).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
-#	sys.exit()
+	#print(str(csvColumns).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
+	#sys.exit()
 	csvw = csvFormatter.csvwFilter(csvw, csvColumns)
 	formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, sparqlQuery, parsedQuery)
 	csvw = formalizedData['csvw']
@@ -72,7 +72,7 @@ def generateData(csvwPath, mappingPath, queryPath):
 	except Exception as e:
                 print('HA FALLADO')
                 print(e)
-#                sys.exit()
+       #         sys.exit()
 	print('csvColumns:\n' + str(csvColumns).replace("'",'"').replace('}', '}\n') + '\n\n*****************************\n\n')
 	print('CSV Format:\n' + str(readFormat(csvw)).replace("'", '"') + '\n\n*****************************\n\n')
 	print('SQL Schema:\n' + str(schema).replace(';', ';\n') + str(alters).replace(';', ';\n'))
