@@ -53,9 +53,11 @@ def generateData(csvwPath, mappingPath, queryPath):
 	parsedQuery = json.loads(open('tmp/annotations/sparql.json').read())
 	functions, mapping = yarrrml.getCleanYarrrml(mappingPath)
 	csvColumns, mapping = resourcesFromSparql.fromSPARQLtoMapping(mapping, sparqlQuery, parsedQuery)
+#	print(str(csvColumns).replace('}', '}\n'))
 	csvColumns, functions = resourcesFromSparql.getColumnsFromFunctions(csvColumns, functions)
-	#print(str(csvColumns).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
-	#sys.exit()
+#	print(str(functions).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
+#	print(str(csvColumns).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
+#	sys.exit()
 	csvw = csvFormatter.csvwFilter(csvw, csvColumns)
 	formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, sparqlQuery, parsedQuery)
 	csvw = formalizedData['csvw']

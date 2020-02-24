@@ -2,6 +2,7 @@ import yaml
 import re
 import os
 import selection.resourcesFromSparql as rscSparql
+import json
 
 def getCleanYarrrml (mappingPath="./tmp/annotations/mapping.yaml"):
     """
@@ -62,8 +63,9 @@ def fromSourceToTables(mapping):
     os.system("bash ./bash/yarrrml-parser.sh")
 def poToLowerCase(mapping):
     cols = rscSparql.getColPatterns(mapping)
-    mapping = str(mapping).replace(col, col.lower()) for col in cols
-    print("********MAPPING*********** YARRML.py")
-    print(mapping.replace("'", '"'))
+    for col in cols:
+        mapping = str(mapping).replace(col, col.lower())
+#    print("********MAPPING*********** YARRML.py")
+    mapping = mapping.replace("'", '"')
     return json.loads(mapping)
 

@@ -3,7 +3,7 @@ PREFIX hgncv: <http://bio2rdf.org/hgnc_vocabulary>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 
-SELECT ?gene ?app_symbol ?date_app
+SELECT *
 WHERE {
 	
 	?gene_sym rdf:type hgncv:Gene-Symbol ;
@@ -11,7 +11,7 @@ WHERE {
 		hgncv:date-approved ?date_app ;
 		hgncv:status ?status ;
 		hgncv:locus ?locus .
-	?locus hgncv:locus-group ?locus_group .
+	?locus hgncv:locus-group ?locus_group
 
 	FILTER (?locus_group="pseudogene")
 	FILTER (?status="Approved")

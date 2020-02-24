@@ -9,9 +9,9 @@ import sys
 
 def fromSPARQLtoMapping(mapping, query, parsedQuery):
     uris = getUrisFromQuery(parsedQuery)
-#    print('\n\nURIS:\n\n' + str(uris).replace(',', ',\n') + '\n\n\n')
+    #print('\n\nURIS:\n\n' + str(uris).replace(',', ',\n') + '\n\n\n')
     translatedMapping = simplifyMappingAccordingToQuery(uris,mapping)
-#    print('\n\n****************+MAPPNIG************\n\n' + str(mapping).replace('\'', '"'))
+    #print('\n\n****************+MAPPNIG************\n\n' + str(translatedMapping).replace('\'', '"'))
     csvColumns = findCsvColumnsInsideTheMapping(translatedMapping)
 
     return csvColumns, translatedMapping
@@ -309,18 +309,18 @@ def getColumnsFromFunctions(csvColumns, functions):
     for tm in functions:
         for func in functions[tm]:
             if(tm in csvColumns.keys()):
-                for csv in csvColumns:
-                    sourceColumns = csvColumns[tm]["columns"]
-                    for column in sourceColumns:
-                        if column in func['column']:
-                            if(tm not in filteredFunctions.keys()):
-                                filteredFunctions[tm] = []
-                            filteredFunctions[tm].append(func)
-                            columns = cleanColPattern(functions[tm])
+                #for csv in csvColumns:
+                sourceColumns = csvColumns[tm]["columns"]
+                for column in sourceColumns:
+                    if column in func['column']:
+                        if(tm not in filteredFunctions.keys()):
+                            filteredFunctions[tm] = []
+                        filteredFunctions[tm].append(func)
+                        columns = cleanColPattern(func)
 #                            extractReferencesFromFno(functions[tm][column], columns)
-                            csvColumns[tm]["columns"].remove(column)
-                            csvColumns[tm]["columns"].extend(columns)
-                            csvColumns[tm]["columns"] = list(dict.fromkeys(csvColumns[tm]["columns"]))
+                        csvColumns[tm]["columns"].remove(column)
+                        csvColumns[tm]["columns"].extend(columns)
+                        csvColumns[tm]["columns"] = list(dict.fromkeys(csvColumns[tm]["columns"]))
     return csvColumns,filteredFunctions
 
 

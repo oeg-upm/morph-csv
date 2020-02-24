@@ -1,0 +1,41 @@
+LOG BSBM-1 DATE:2020-02-24-09:58:18
+QUERY: 1
+PREFIX bsbm-inst: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/>
+PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT DISTINCT ?product ?label
+WHERE { 
+    ?product rdfs:label ?label .
+    ?product bsbm:ProductType <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType105> .
+    ?product bsbm:productFeature <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature815> . 
+    ?product bsbm:productFeature <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature814> . 
+    ?product bsbm:productPropertyNumeric1 ?value1 . 
+	FILTER (?value1 > 486) 
+	}
+ORDER BY ?label
+LIMIT 10
+csvColumns:
+{"producttypeproduct": {"source": "producttypeproduct.csv", "columns": ["productType"]}
+, "product": {"source": "product.csv", "columns": ["producer", "label", "nr", "propertyNum1"]}
+, "productfeatureproduct": {"source": "productfeactureproduct.csv", "columns": ["productFeature"]}
+}
+
+
+*****************************
+
+
+CSV Format:
+{"tmp/csv/producttypeproduct.csv": ""productType"\n"1000"\n", "tmp/csv/product.csv": ""nr","label","producer","propertyNum1"\n"100000","decertification jumpily","1988","1375"\n"}
+
+*****************************
+
+
+SQL Schema:
+DROP TABLE IF EXISTS "product" CASCADE;
+CREATE TABLE product(nr INT,label VARCHAR,producer VARCHAR,propertyNum1 VARCHAR,PRIMARY KEY (nr));
+DROP TABLE IF EXISTS "producttypeproduct" CASCADE;
+CREATE TABLE producttypeproduct(productType INT,PRIMARY KEY (productType));
+
+------------------------------------------------------------------
