@@ -11,7 +11,7 @@ WHERE {
 		hgncv:date-approved ?date_app ;
 		hgncv:status ?status ;
 		hgncv:locus ?locus .
-	?locus hgncv:locus-group ?locus_group .
+	?locus hgncv:locus-group ?locus_group 
 
 	FILTER (?locus_group="pseudogene")
 	FILTER (?status="Approved")
