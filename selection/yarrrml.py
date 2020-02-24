@@ -1,7 +1,7 @@
 import yaml
 import re
 import os
-
+import selection.resourcesFromSparql as rscSparql
 
 def getCleanYarrrml (mappingPath="./tmp/annotations/mapping.yaml"):
     """
@@ -55,8 +55,15 @@ def fromSourceToTables(mapping):
     for tm in mapping["mappings"]:
         source = mapping["mappings"][tm]["sources"][0][0].split("/")[-1].replace(".csv~csv","")
         mapping["mappings"][tm]["sources"] = [{"table": source.upper()}]
+    mapping1 = poToLowerCase(mapping)
     f = open("./tmp/annotations/mapping.yaml", "w+")
     f.write(yaml.dump(mapping, default_flow_style=None))
     f.close()
     os.system("bash ./bash/yarrrml-parser.sh")
+def poToLowerCase(mapping):
+    cols = rscSparql.getColPatterns(mapping)
+    mapping = str(mapping).replace(col, col.lower()) for col in cols
+    print("********MAPPING*********** YARRML.py")
+    print(mapping.replace("'", '"'))
+    return json.loads(mapping)
 
