@@ -118,6 +118,25 @@
         },
         "tableSchema": {
           "primaryKey": "nr",
+		  "foreignKey": [{
+				  "columnReference": "producer",
+				  "reference": {
+					"resource": "producer.csv",
+					"columnReference": "nr"
+				  }},
+				  {
+				  "columnReference": "publisher",
+				  "reference": {
+					"resource": "producer.csv",
+					"columnReference": "nr"
+				  }},
+				  {
+				  "columnReference": "nr",
+				  "reference": {
+					"resource": "productfeatureproduct.csv",
+					"columnReference": "product"
+				  }}
+			],
           "rowTitles":["nr","label","comment","producer","propertyNum1","propertyNum2","propertyNum3","propertyNum4","propertyNum5","propertyNum6","propertyTex1","propertyTex2","propertyTex3","propertyTex4","propertyTex5","propertyTex6","publisher","publishDate"
           ],
           "columns": [
@@ -224,6 +243,13 @@
         "tableSchema": {
           "rowTitles":["product","productFeature"],
           "primaryKey": "product,productFeature",
+		  "foreignKey": [{
+		  "columnReference": "productFeature",
+		  "reference": {
+			"resource": "productfeature.csv",
+			"columnReference": "nr"
+		  }
+		  }],
           "columns": [
             {
               "datatype": "integer",
@@ -244,6 +270,13 @@
         "tableSchema": {
           "rowTitles":["nr","label","comment","homepage","country","publisher","publishDate"],
           "primaryKey":"nr",
+		  "foreignKey": [{
+		  "columnReference": "publisher",
+		  "reference": {
+			"resource": "vendor.csv",
+			"columnReference": "nr"
+			  }
+			}],
           "columns": [
             {
             "titles":"nr",
@@ -283,6 +316,32 @@
         },
         "tableSchema": {
           "primaryKey": "nr",
+		  "foreignKey": [{
+			  "columnReference": "product",
+			  "reference": {
+				"resource": "product.csv",
+				"columnReference": "nr"
+				  }
+				},
+			  {
+			  "columnReference": "producer",
+			  "reference": {
+				"resource": "producer.csv",
+				"columnReference": "nr"
+			  }},
+		      {
+			  "columnReference": "vendor",
+			  "reference": {
+				"resource": "vendor.csv",
+				"columnReference": "nr"
+			  }},
+			  {
+			  "columnReference": "publisher",
+			  "reference": {
+				"resource": "vendor.csv",
+				"columnReference": "nr"
+			  }
+			  }],
           "rowTitles":["nr","product","producer","vendor","price","validFrom","validTo","deliveryDays","offerWebpage","publisher","publishDate"],
           "columns": [
             {
@@ -375,6 +434,25 @@
         },
         "tableSchema": {
           "primaryKey": "nr",
+		  "foreignKey": [{
+          "columnReference": "product",
+          "reference": {
+            "resource": "Product.csv",
+            "columnReference": "nr"
+          }},
+          {
+          "columnReference": "producer",
+          "reference": {
+            "resource": "producer.csv",
+            "columnReference": "nr"
+          }},
+		  {
+          "columnReference": "person",
+          "reference": {
+            "resource": "person.csv",
+            "columnReference": "nr"
+          }
+          }],
           "rowTitles":["nr","product","producer","person","reviewDate","title","text","language","rating1","rating2","rating3","rating4","publisher","publishDate"],
           "columns": [
             {
