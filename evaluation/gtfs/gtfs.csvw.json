@@ -1,495 +1,523 @@
 {
-  "@context": [
-    "http://www.w3.org/ns/csvw"
-  ],
-  "tables": [
-    {
-      "url": "/data/AGENCY.csv",      
-      "tableSchema": {
-        "primaryKey": "agency_id",
-        "columns": [
-          {
-            "datatype": "string",
-            "titles": "agency_id"
-          },
-          {
-            "datatype": "string",
-            "titles": "agency_url"
-          },
-          {
-            "datatype": "string",
-            "titles": "agency_name"
-          },
-          {
-            "datatype": "string",
-            "titles": "agency_timezone"
-          },
-          {
-            "datatype": "string",
-            "titles": "agency_lang"
-          },
-          {
-            "datatype": "string",
-            "titles": "agency_phone"
-          },
-          {
-            "datatype": "string",
-            "titles": "agency_fare_url"
-          }
-        ]
-      }
-    },
-    {
-      "url": "/data/CALENDAR.csv",
-      "tableSchema": { 
-        "primaryKey": "service_id",
-        "columns": [
-          {
-            "datatype": "string",
-            "titles": "service_id"
-          },
-          {
-            "datatype": {
-              "base": "boolean",
-              "format": "1|0"
+    "@context": [
+      "http://www.w3.org/ns/csvw"
+    ],
+    "tables": [
+      {
+        "url": "productfeature.csv",      
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+        "rowTitles":["nr","label","comment","publisher","publishDate"],
+
+          "primaryKey": "nr",
+          "columns": [
+            {
+              "datatype": "integer",
+              "titles": "nr"
             },
-            "titles": "monday"
-          },
-          {
-            "datatype": {
-              "base": "boolean",
-              "format": "1|0"
+            {
+              "datatype": "string",
+              "titles": "label"
             },
-            "titles": "tuesday"
-          },
-          {
-            "datatype": {
-              "base": "boolean",
-              "format": "1|0"
+            {
+              "datatype": "string",
+              "titles": "comment"
             },
-            "titles": "wednesday"
-          },
-          {
-            "datatype": {
-              "base": "boolean",
-              "format": "1|0"
+            {
+              "datatype": "integer",
+              "titles": "publisher"
             },
-            "titles": "thursday"
-          },
-          {
-            "datatype": {
-              "base": "boolean",
-              "format": "1|0"
+            {
+              "datatype": "date",
+              "titles": "publishDate"
+            }
+          ]
+        }
+      },
+      {
+        "url": "producttype.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": { 
+          "primaryKey": "nr",
+          "rowTitles":["nr","label","comment","parent","publisher","publishDate"],
+          "columns": [
+            {
+              "datatype": "integer",
+              "titles": "nr"
             },
-            "titles": "friday"
-          },
-          {
-            "datatype": {
-              "base": "boolean",
-              "format": "1|0"
+            {
+              "datatype": "string",
+              "titles": "label"
             },
-            "titles": "saturday"
-          },
-          {
-            "datatype": {
-              "base": "boolean",
-              "format": "1|0"
+            {
+              "datatype": "string",
+              "titles": "comment"
             },
-            "titles": "sunday"
-          },
-          {
-            "datatype": {
-              "base": "date",
-              "format": "yyyyMMdd"
+            {
+              "datatype": "integer",
+              "titles": "parent"
             },
-            "titles": "start_date"
-          },
-          {
-            "datatype": {
-              "base": "date",
-              "format": "yyyyMMdd"
+            {
+              "datatype": "integer",
+              "titles": "publisher"
             },
-            "titles": "end_date"
-          }
-        ]   
-      }
-    },
-    {
-      "url": "/data/CALENDAR_DATES.csv",
-      "tableSchema": {
-        "primaryKey": "service_id,date",
-        "columns": [
-          {
-            "datatype": "string",
-            "titles": "service_id"
-          },
-          {
-            "datatype": {
-              "base": "date",
-              "format": "yyyyMMdd"
+            {
+              "datatype": "date",
+              "titles": "publishDate"
+            }
+          ]   
+        }
+      },
+      {
+        "url": "producer.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+          "primaryKey": "nr",
+          "rowTitles":["nr","label","comment","homepage","country","publisher","publishDate"],
+          "columns": [
+            {
+              "datatype": "integer",
+              "titles": "nr"
+            },            {
+                "datatype": "string",
+                "titles": "label"
             },
-            "titles": "date"
-          },
-          {
-            "datatype": {
-              "base": "boolean",
-              "format": "1|2"
+            {
+                "datatype": "string",
+                "titles": "comment"
             },
-            "titles": "exception_type"
-          }
-        ]
-      }
-    },
-    {
-      "url": "/data/FEED_INFO.csv",
-      "tableSchema": {
-        "primaryKey": "feed_publisher_name",
-        "columns": [
-          {
-            "datatype": "string",
-            "titles": "feed_publisher_name"
-          },
-          {
-            "datatype": "string",
-            "titles": "feed_publisher_url"
-          },
-          {
-            "datatype": {
-              "base": "date",
-              "format": "yyyyMMdd"
+            {
+                "datatype": "string",
+                "titles": "homepage"
             },
-            "titles": "feed_start_date"
-          },
-          {
-            "datatype": {
-              "base": "date",
-              "format": "yyyyMMdd"
+            {
+                "datatype": "string",
+                "titles": "country"
             },
-            "titles": "feed_end_date"
-          },
-          {
-            "datatype": "string",
-            "titles": "feed_lang"
-          },
-          {
-            "datatype": "string",
-            "titles": "feed_version"
-          }
-        ]
-      }
-    },
-    {
-      "url": "/data/FREQUENCIES.csv",
-      "tableSchema": {
-        "primaryKey": "trip_id,start_time",
-        "foreignKey": [{
-          "columnReference": "trip_id",
+            {
+                "datatype": "integer",
+                "titles": "publisher"
+            },
+            {
+                "datatype": "date",
+                "titles": "publishDate"
+            }
+          ]
+        }
+      },
+      {
+        "url": "product.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+          "primaryKey": "nr",
+		  "foreignKey": [{
+				  "columnReference": "producer",
+				  "reference": {
+					"resource": "producer.csv",
+					"columnReference": "nr"
+				  }},
+				  {
+				  "columnReference": "publisher",
+				  "reference": {
+					"resource": "producer.csv",
+					"columnReference": "nr"
+				  }},
+				  {
+				  "columnReference": "nr",
+				  "reference": {
+					"resource": "productfeatureproduct.csv",
+					"columnReference": "product"
+				  }}
+			],
+          "rowTitles":["nr","label","comment","producer","propertyNum1","propertyNum2","propertyNum3","propertyNum4","propertyNum5","propertyNum6","propertyTex1","propertyTex2","propertyTex3","propertyTex4","propertyTex5","propertyTex6","publisher","publishDate"
+          ],
+          "columns": [
+            {
+                "titles":"nr",
+                "datatype":"integer"
+                },
+                {
+                "titles":"label",
+                "datatype":"string"
+                },
+                {
+                "titles":"comment",
+                "datatype":" string"
+                },
+                {
+                "titles":"producer",
+                "datatype":" integer"
+                },
+                {
+                "titles":"propertyNum1",
+                "datatype":" integer"
+                },
+                {
+                "titles":"propertyNum2",
+                "datatype":" integer"
+                },
+                {
+                "titles":"propertyNum3",
+                "datatype":" integer"
+                },
+                {
+                "titles":"propertyNum4",
+                "datatype":" integer"
+                },
+                {
+                "titles":"propertyNum5",
+                "datatype":" integer"
+                },
+                {
+                "titles":"propertyNum6",
+                "datatype":" integer"
+                },
+                {
+                "titles":"propertyTex1",
+                "datatype":" string"
+                },
+                {
+                "titles":"propertyTex2",
+                "datatype":" string"
+                },
+                {
+                "titles":"propertyTex3",
+                "datatype":" string"
+                },
+                {
+                "titles":"propertyTex4",
+                "datatype":" string"
+                },
+                {
+                "titles":"propertyTex5",
+                "datatype":" string"
+                },
+                {
+                "titles":"propertyTex6",
+                "datatype":" string"
+                },
+                {
+                "titles":"publisher",
+                "datatype":" integer"
+                },
+                {
+                "titles":"publishDate",
+                "datatype":" date"
+                }
+          ]
+        }
+      },
+      {
+        "url": "producttypeproduct.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+          "rowTitles":["product","productType"],
+          "primaryKey": "product,productType",
+          "columns": [
+            {
+              "datatype": "integer",
+              "titles": "product"
+            },
+            {
+              "datatype": "integer",
+              "titles": "productType"
+            }
+          ]
+        }
+      },
+      {
+        "url": "productfeatureproduct.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+          "rowTitles":["product","productFeature"],
+          "primaryKey": "product,productFeature",
+		  "foreignKey": [{
+		  "columnReference": "productFeature",
+		  "reference": {
+			"resource": "productfeature.csv",
+			"columnReference": "nr"
+		  }
+		  }],
+          "columns": [
+            {
+              "datatype": "integer",
+              "titles": "product"
+            },
+            {
+              "datatype": "integer",
+              "titles": "productFeature"
+            }
+          ]
+        }
+      },
+      {
+        "url": "vendor.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+          "rowTitles":["nr","label","comment","homepage","country","publisher","publishDate"],
+          "primaryKey":"nr",
+		  "foreignKey": [{
+		  "columnReference": "publisher",
+		  "reference": {
+			"resource": "vendor.csv",
+			"columnReference": "nr"
+			  }
+			}],
+          "columns": [
+            {
+            "titles":"nr",
+            "datatype": "integer"
+            },
+            {
+            "titles":"label",
+            "datatype": "string"
+            },
+            {
+            "titles":"comment",
+            "datatype": "string"
+            },
+            {
+            "titles":"homepage",
+            "datatype": "string"
+            },
+            {
+            "titles":"country",
+            "datatype": "string"
+            },
+            {
+            "titles":"publisher",
+            "datatype": "integer"
+            },
+            {
+            "titles":"publishDate",
+            "datatype": "date"
+            }
+          ]
+        }
+      },
+      {
+        "url": "offer.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+          "primaryKey": "nr",
+		  "foreignKey": [{
+			  "columnReference": "product",
+			  "reference": {
+				"resource": "product.csv",
+				"columnReference": "nr"
+				  }
+				},
+			  {
+			  "columnReference": "producer",
+			  "reference": {
+				"resource": "producer.csv",
+				"columnReference": "nr"
+			  }},
+		      {
+			  "columnReference": "vendor",
+			  "reference": {
+				"resource": "vendor.csv",
+				"columnReference": "nr"
+			  }},
+			  {
+			  "columnReference": "publisher",
+			  "reference": {
+				"resource": "vendor.csv",
+				"columnReference": "nr"
+			  }
+			  }],
+          "rowTitles":["nr","product","producer","vendor","price","validFrom","validTo","deliveryDays","offerWebpage","publisher","publishDate"],
+          "columns": [
+            {
+            "titles": "nr",
+            "datatype": "integer"
+            },
+            {
+            "titles": "product",
+            "datatype": "integer"
+            },
+            {
+            "titles": "producer",
+            "datatype": "integer"
+            },
+            {
+            "titles": "vendor",
+            "datatype": "integer"
+            },
+            {
+            "titles": "price",
+            "datatype": "double"
+            },
+            {
+            "titles": "validFrom",
+            "datatype": "date"
+            },
+            {
+            "titles": "validTo",
+            "datatype": "date"
+            },
+            {
+            "titles": "deliveryDays",
+            "datatype": "integer"
+            },
+            {
+            "titles": "offerWebpage",
+            "datatype": "string"
+            },
+            {
+            "titles": "publisher",
+            "datatype": "integer"
+            },
+            {
+            "titles": "publishDate",
+            "datatype": "date"
+            }
+          ]
+        }
+      },
+      {
+        "url": "person.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+          "primaryKey": "nr",
+          "rowTitles":["nr","name","mbox_sha1sum","country","publisher","publishDate"],
+          "columns": [
+            {
+                "datatype": "integer",
+                "titles": "nr"
+            },
+            {
+              "datatype": "string",
+              "titles": "name"
+            },
+            {
+              "datatype": "string",
+              "titles": "mbox_sha1sum"
+            },
+            {
+              "datatype": "string",
+              "titles": "country"
+            },
+            {
+              "datatype": "integer",
+              "titles": "publisher"
+            },
+            {
+              "datatype": "date",
+              "titles": "publishDate"
+            }
+          ]
+        }
+      },
+      {
+        "url": "review.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+          "primaryKey": "nr",
+		  "foreignKey": [{
+          "columnReference": "product",
           "reference": {
-            "resource": "/data/TRIPS.csv",
-            "columnReference": "trip_id"
-          }
-        }],
-        "columns": [
-          {
-            "datatype": "string",
-            "titles": "trip_id"
-          },
-          {
-            "datatype": {
-              "base": "time",
-              "format": "HH:MM:SS"
-            },
-            "titles": "start_time"
-          },
-          {
-            "datatype": {
-              "base": "time",
-              "format": "HH:MM:SS"
-            },
-            "titles": "end_time"
-          },
-          {
-            "datatype": "integer",
-            "titles": "headway_secs"
-          },
-          {
-            "datatype": "boolean",
-            "titles": "exact_times"
-          }
-        ]
-      }
-    },
-    {
-      "url": "/data/ROUTES.csv",
-      "tableSchema": {
-        "primaryKey": "route_id",
-        "foreignKey": [{
-          "columnReference": "agency_id",
-          "reference": {
-            "resource": "/data/AGENCY.csv",
-            "columnReference": "agency_id"
-          }
-        }],
-        "columns": [
-          {
-            "datatype": "string",
-            "titles": "route_id"
-          },
-          {
-            "datatype": "string",
-            "titles": "agency_id"
-          },
-          {
-            "datatype": "string",
-            "titles": "route_short_name"
-          },
-          {
-            "datatype": "string",
-            "titles": "route_long_name"
-          },
-          {
-            "datatype": "string",
-            "titles": "route_desc"
-          },
-          {
-            "datatype": "string",
-            "titles": "route_color"
-          },
-          {
-            "datatype": "integer",
-            "titles": "route_type"
-          },
-          {
-            "datatype": "string",
-            "titles": "route_url"
-          },
-          {
-            "datatype": "string",
-            "titles": "route_text_color"
-          }
-        ]
-      }
-    },
-    {
-      "url": "/data/SHAPES.csv",
-      "tableSchema": {
-        "primaryKey":"shape_id,shape_pt_sequence",
-        "columns": [
-          {
-            "datatype": "string",
-            "titles": "shape_id"
-          },
-          {
-            "datatype": "decimal",
-            "titles": "shape_pt_lat"
-          },
-          {
-            "datatype": "decimal",
-            "titles": "shape_pt_lon"
-          },
-          {
-            "datatype": "integer",
-            "titles": "shape_pt_sequence"
-          },
-          {
-            "datatype": "decimal",
-            "titles": "shape_dist"
-          }
-        ]
-      }
-    },
-    {
-      "url": "/data/STOP_TIMES.csv",
-      "tableSchema": {
-        "primaryKey": "trip_id,stop_id,arrival_time",
-        "foreignKey": [{
-          "columnReference": "trip_id",
-          "reference": {
-            "resource": "/data/TRIPS.csv",
-            "columnReference": "trip_id"
+            "resource": "Product.csv",
+            "columnReference": "nr"
           }},
           {
-          "columnReference": "stop_id",
+          "columnReference": "producer",
           "reference": {
-            "resource": "/data/STOPS.csv",
-            "columnReference": "stop_id"
+            "resource": "producer.csv",
+            "columnReference": "nr"
+          }},
+		  {
+          "columnReference": "person",
+          "reference": {
+            "resource": "person.csv",
+            "columnReference": "nr"
           }
-        }],
-        "columns": [
-          {
-            "datatype": "string",
-            "titles": "trip_id"
-          },
-          {
-            "datatype": {
-              "base": "time",
-              "format": "HH:MM:SS"
+          }],
+          "rowTitles":["nr","product","producer","person","reviewDate","title","text","language","rating1","rating2","rating3","rating4","publisher","publishDate"],
+          "columns": [
+            {
+              "datatype": "integer",
+              "titles": "nr"
             },
-            "titles": "arrival_time"
-          },
-          {
-            "datatype": {
-              "base": "time",
-              "format": "HH:MM:SS"
+            {
+              "datatype": "integer",
+              "titles": "product"
             },
-            "titles": "departure_time"
-          },
-          {
-            "datatype": "string",
-            "titles": "stop_id"
-          },
-          {
-            "datatype": "integer",
-            "titles": "stop_sequence"
-          },
-          {
-            "datatype": "integer",
-            "titles": "pickup_type"
-          },
-          {
-            "datatype": "integer",
-            "titles": "drop_off_type"
-          },
-          {
-            "datatype": "string",
-            "titles": [ "stop_headsign" ]
-          }
-        ]
+            {
+              "datatype": "integer",
+              "titles": "producer"
+            },
+            {
+              "datatype": "integer",
+              "titles": "person"
+            },
+            {
+              "datatype": "date",
+              "titles": "reviewDate"
+            },
+            {
+              "datatype": "string",
+              "titles": "title"
+            },
+            {
+              "datatype": "string",
+              "titles": "text"
+            },
+            {
+              "datatype": "string",
+              "titles": "language"
+            },
+            {
+              "datatype": "integer",
+              "titles": "rating1",
+              "null":"\\\\N"
+            },
+            {
+              "datatype": "integer",
+              "titles": "rating2",
+              "null":"\\\\N"
+
+            },
+            {
+              "datatype": "integer",
+              "titles": "rating3",
+              "null":"\\\\N"
+            },
+            {
+              "datatype": "integer",
+              "titles": "rating4",
+              "null":"\\\\N"
+            },
+            {
+              "datatype": "integer",
+              "titles": "publisher"
+            },
+            {
+              "datatype": "date",
+              "titles": "publishDate"
+            }
+          ]
+        }
       }
-    },
-    {
-      "url": "/data/STOPS.csv",
-      "tableSchema": {
-        "primaryKey": "stop_id",
-        "foreignKey": [{
-          "columnReference": "parent_station",
-          "reference": {
-            "resource": "/data/STOPS.csv",
-            "columnReference": "stop_id"
-          }
-        }],
-        "columns": [
-          {
-            "datatype": "string",
-            "titles": "stop_id"
-          },
-          {
-            "datatype": "string",
-            "titles": "stop_name"
-          },
-          {
-            "datatype": "string",
-            "titles": "stop_code"
-          },
-          {
-            "datatype": "decimal",
-            "titles": "stop_lat"
-          },
-          {
-            "datatype": "decimal",
-            "titles": "stop_lon"
-          },
-          {
-            "datatype": "string",
-            "titles": "stop_url"
-          },
-          {
-            "datatype": "integer",
-            "titles": "wheelchair_boarding"
-          },
-          {
-            "datatype": "string",
-            "null": "",
-            "titles": "parent_station"
-          },
-          {
-            "datatype": "integer",
-            "titles": "location_type"
-          },
-          {
-            "datatype": "string",
-            "titles": "stop_desc"
-          },
-          {
-            "datatype": "string",
-            "titles": "zone_id"
-          },
-          {
-            "datatype": "string",
-            "titles": "stop_timezone"
-          }
-        ]
-      }
-    },
-    {
-      "url": "/data/TRIPS.csv",
-      "tableSchema": {
-        "primaryKey": "trip_id",
-        "foreignKey": [{
-          "columnReference": "route_id",
-          "reference": {
-            "resource": "/data/ROUTES.csv",
-            "columnReference": "route_id"
-          }},
-          {
-          "columnReference": "shape_id",
-          "reference": {
-            "resource": "/data/SHAPES.csv",
-            "columnReference": "shape_id"
-          }},
-          {
-          "columnReference": "service_id",
-          "reference": {
-            "resource": "/data/CALENDAR.csv",
-            "columnReference": "service_id"
-          }},
-          {
-          "columnReference": "service_id",
-          "reference": {
-            "resource": "/data/CALENDAR_DATES.csv",
-            "columnReference": "service_id"
-          }
-        }],
-        "columns": [
-          {
-            "datatype": "string",
-            "titles": "route_id"
-          },
-          {
-            "datatype": "string",
-            "titles": "trip_id"
-          },
-          {
-            "datatype": "string",
-            "titles": "service_id"
-          },
-          {
-            "datatype": "string",
-            "titles": "trip_short_name"
-          },
-          {
-            "datatype": "integer",
-            "titles": "direction_id"
-          },
-          {
-            "datatype": "string",
-            "titles": "shape_id"
-          },
-          {
-            "datatype": "integer",
-            "titles": "wheelchair_accessible"
-          },
-          {
-            "datatype": "string",
-            "titles": "trip_headsign"
-          }
-          ,
-          {
-            "datatype": "string",
-            "titles": "block_id"
-          }
-        ]
-      }
-    }
-  ]
-}
+    ]
+  }
