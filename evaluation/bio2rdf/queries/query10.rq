@@ -6,5 +6,5 @@ WHERE {
    ?hgroup rdf:type homogv:Resource .
    ?hgroup   rdfs:label ?label .
    ?hgroup   homogv:gene-symbol ?symbol .
-   ?hgroup  homogv:x-refseq ?refseq .
+   ?hgroup  homogv:x-refseq ?refseq 
 }
