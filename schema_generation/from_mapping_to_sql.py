@@ -216,7 +216,7 @@ def createIndex(tableName, colName, selectivity):
     if(selectivity > indexTrigger):
         index = "CREATE"
         if(selectivity == 1.0):
-            index += "UNIQUE"
-        index += "INDEX %s_index_%s ON %s(%s);"%(colName, tableName, tableName, colName)
+            index += " UNIQUE"
+        index += " INDEX IF NOT EXISTS %s_index_%s ON %s(%s);"%(colName, tableName, tableName, colName)
     return index
 
