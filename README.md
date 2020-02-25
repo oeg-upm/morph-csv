@@ -38,7 +38,6 @@ Then choose one of the available options:
 
 ## Authors and Contact
 Ontology Engineering Group - Data Integration:
-- David Chaves-Fraga ([dchaves@fi.upm.es](mailto:dchaves@fi.upm.es))
-- Jhon Toledo ([ja.toledo@upm.es](mailto:ja.toledo@upm.es))
+- [David Chaves-Fraga](https://github.com/dachafra) ([dchaves@fi.upm.es](mailto:dchaves@fi.upm.es))
+- [Jhon Toledo](https://github.com/jatoledo) ([ja.toledo@upm.es](mailto:ja.toledo@upm.es))
 - [Luis Pozo](https://github.com/w0xter) ([luis.pozo@upm.es](mailto:luis.pozo@upm.es))
-- Freddy Priyatna
