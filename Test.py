@@ -6,7 +6,7 @@ import clean.csvFormatter as csvFormatter
 import clean.csvwParser as csvwParser
 import selection.resourcesFromSparql as resourcesFromSparql
 import selection.yarrrml as yarrrml
-import formalization.formalization as formalizer
+import normalization.normalization as normalizer
 import schema_generation.from_mapping_to_sql as mapping2Sql
 import schema_generation.create_and_insert as insert
 import schema_generation.morph_properties as genproperties
@@ -29,10 +29,10 @@ def runTest(csvwPath, mappingPath, queryPath,expectedResults):
 	checkColumns(csvColumns, expectedResults['csvColumns'])
 	csvw = csvFormatter.csvwFilter(csvw, csvColumns)
 	print('The Required Elements are correct')
-	formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, sparqlQuery, parsedQuery)
-	csvw = formalizedData['csvw']
-	query = formalizedData['query']
-	mapping = formalizedData['mapping']
+	normalizedData = normalizer.addNormalizedTablesToCsvw(csvw, mapping, sparqlQuery, parsedQuery)
+	csvw = normalizedData['csvw']
+	query = normalizedData['query']
+	mapping = normalizedData['mapping']
 	csvFormatter.csvFormatter(csvw)
 	print(str(csvw).replace('\'', '"'))
 	#Checking the format:
@@ -55,14 +55,14 @@ def generateData(csvwPath, mappingPath, queryPath):
 	csvColumns, mapping = resourcesFromSparql.fromSPARQLtoMapping(mapping, sparqlQuery, parsedQuery)
 #	print(str(csvColumns).replace('}', '}\n'))
 	csvColumns, functions = resourcesFromSparql.getColumnsFromFunctions(csvColumns, functions)
-#	print(str(functions).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
-#	print(str(csvColumns).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
-#	sys.exit()
+	#print(str(mapping).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
+	#print(str(csvColumns).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
+	#sys.exit()
 	csvw = csvFormatter.csvwFilter(csvw, csvColumns)
-	formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, sparqlQuery, parsedQuery)
-	csvw = formalizedData['csvw']
-	query = formalizedData['query']
-	mapping = formalizedData['mapping']
+	normalizedData = normalizer.addNormalizedTablesToCsvw(csvw, mapping, sparqlQuery, parsedQuery)
+	csvw = normalizedData['csvw']
+	query = normalizedData['query']
+	mapping = normalizedData['mapping']
 	csvFormatter.csvFormatter(csvw)
 	yarrrml.fromSourceToTables(mapping)
 	schema,alters = mapping2Sql.generate_sql_schema(csvw,
@@ -74,7 +74,7 @@ def generateData(csvwPath, mappingPath, queryPath):
 	except Exception as e:
                 print('HA FALLADO')
                 print(e)
-       #         sys.exit()
+                sys.exit()
 	print('csvColumns:\n' + str(csvColumns).replace("'",'"').replace('}', '}\n') + '\n\n*****************************\n\n')
 	print('CSV Format:\n' + str(readFormat(csvw)).replace("'", '"') + '\n\n*****************************\n\n')
 	print('SQL Schema:\n' + str(schema).replace(';', ';\n') + str(alters).replace(';', ';\n'))
