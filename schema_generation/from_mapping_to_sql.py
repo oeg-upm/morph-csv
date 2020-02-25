@@ -25,7 +25,7 @@ def generate_sql_schema(csvw,mapping,decision):
     foreignkeys = ""
     indexes = ""
     alters = ""
-    calculatedSelectivity = {}
+    indexes, calculatedSelectivity = createIndexesOfTheMapping(mapping, csvw, {})
     for i,table in enumerate(csvw["tables"]):
         sql = ''
         source = csvwParser.getUrl(table).split("/")[-1:][0].replace(".csv","").lower()
@@ -58,6 +58,7 @@ def generate_sql_schema(csvw,mapping,decision):
                         if(isPrimaryKey(csvw, reference, refTable)):
                             foreignkeys += "ALTER TABLE " + source +  " ADD FOREIGN KEY ("+column.lower()+") REFERENCES "+refTable+" ("+reference.lower()+");"
                         else:
+                            #Is this wrong?
                             if(refTable not in calculatedSelectivity.keys()):
                                 calculatedSelectivity[refTable] = []
                             selectivity = 0.0
@@ -112,7 +113,7 @@ def calculateSelectivity(source, colName, table):
         print("The column %s from  %s has a selecivity of: %s"%(colName, source, selectivity))
         return selectivity
     else:
-        return False
+        return 0
 def isPrimaryKey(csvw,column, tableName):
 #    print('TABLE NAME:%s'%(tableName))
 #    print('COLUMN:%s'%(column))
@@ -164,5 +165,58 @@ def translate_type_to_sql(dataType):
         translated_type = "DATE"
     else:
         translated_type = "VARCHAR"
-
     return translated_type
+
+def createIndexesOfTheMapping(mapping, csvw, calculatedSelectivity):
+    indexes = ''
+    for el in mapping["mappings"]:
+        tm = mapping["mappings"][el]
+        source = tm["sources"][0]["table"].split("/")[-1].replace("~csv", "")
+        table = csvwParser.findTableByUrl(source, csvw)
+        subjectCols = getColumnsFromSubject(mapping, el)
+        for subjectCol in subjectCols:
+            if(not isSelectivityCalculated(source, subjectCol, calculatedSelectivity)):
+                if(not source.lower() in calculatedSelectivity):
+                    calculatedSelectivity[source.lower()] = []
+                calculatedSelectivity[source.lower()].append(subjectCol.lower())
+                selectivity = calculateSelectivity(source, subjectCol, table)
+                indexes += createIndex(source, subjectCol, selectivity)
+
+        joinReferences = getColumnsFromJoins(tm["po"], mapping)
+
+        for join in joinReferences:
+            outerTable = csvwParser.findTableByUrl(join["outerSource"], csvw)
+            if(not isSelectivityCalculated(source, join["innerRef"], calculatedSelectivity)):
+                calculatedSelectivity[source.lower()].append(join["innerRef"].lower())
+                selectivity = calculateSelectivity(source, join["innerRef"], table)
+                indexes += createIndex(source, join["innerRef"], selectivity)
+            if(not isSelectivityCalculated(join["outerSource"], join["outerRef"], calculatedSelectivity)):
+                if(join["outerSource"].lower() in calculatedSelectivity.keys()):
+                    calculatedSelectivity[join["outerSource"].lower()] = []
+                calculatedSelectivity[join["outerSource"].lower()].append(join["outerRef"].lower())
+                selectivity = calculateSelectivity(join["outerSource"], join["outerRef"], outerTable)
+                indexes += createIndex(join["outerSource"], join["outerRef"], selectivity)
+    return indexes, calculatedSelectivity
+
+def isSelectivityCalculated(source, col, calculatedSelectivity):
+    return (source.lower() in calculatedSelectivity.keys() and col.lower() in calculatedSelectivity[source.lower()])
+def getColumnsFromJoins(tpo, mapping):
+    result = []
+    for po in tpo:
+        if(po is type(dict)):
+            outerSource = mapping[po["mapping"]]["source"].split("/")[-1:].replace("~csv", "")
+            joinReferences = resourcesFromSparql.getJoinReferences(po["o"])
+            joinReferences["outerSource"] = outerSource
+            result.append(joinReferences)
+    return result
+def createIndex(tableName, colName, selectivity):
+    index = ''
+    colName = colName.lower()
+    tableName = tableName.lower()
+    if(selectivity > indexTrigger):
+        index = "CREATE"
+        if(selectivity == 1.0):
+            index += "UNIQUE"
+        index += "INDEX %s_index_%s ON %s(%s);"%(colName, tableName, tableName, colName)
+    return index
+

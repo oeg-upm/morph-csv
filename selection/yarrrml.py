@@ -56,7 +56,7 @@ def fromSourceToTables(mapping):
     for tm in mapping["mappings"]:
         source = mapping["mappings"][tm]["sources"][0][0].split("/")[-1].replace(".csv~csv","")
         mapping["mappings"][tm]["sources"] = [{"table": source.upper()}]
-    mapping1 = poToLowerCase(mapping)
+#    mapping = poToLowerCase(mapping)
     f = open("./tmp/annotations/mapping.yaml", "w+")
     f.write(yaml.dump(mapping, default_flow_style=None))
     f.close()
