@@ -25,7 +25,9 @@ def generate_sql_schema(csvw,mapping,decision):
     foreignkeys = ""
     indexes = ""
     alters = ""
-    indexes, calculatedSelectivity = createIndexesOfTheMapping(mapping, csvw, {})
+    indexes = ''
+    calculatedSelectivity ={}
+
     for i,table in enumerate(csvw["tables"]):
         sql = ''
         source = csvwParser.getUrl(table).split("/")[-1:][0].replace(".csv","").lower()
@@ -77,6 +79,7 @@ def generate_sql_schema(csvw,mapping,decision):
 
         sql = sql[:-1] + ");"
         sqlGlobal += sql
+    indexes +=  createIndexesOfTheMapping(mapping, csvw, calculatedSelectivity)
     alters += foreignkeys
     alters += indexes
 #    sqlGlobal += function.translate_fno_to_sql(functions)
@@ -199,7 +202,7 @@ def createIndexesOfTheMapping(mapping, csvw, calculatedSelectivity):
                 calculatedSelectivity[join["outerSource"].lower()].append(join["outerRef"].lower())
                 selectivity = calculateSelectivity(join["outerSource"], join["outerRef"], outerTable)
                 indexes += createIndex(join["outerSource"], join["outerRef"], selectivity)
-    return indexes, calculatedSelectivity
+    return indexes
 
 def isSelectivityCalculated(source, col, calculatedSelectivity):
     return (source.lower() in calculatedSelectivity.keys() and col.lower() in calculatedSelectivity[source.lower()])
