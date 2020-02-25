@@ -47,7 +47,7 @@ def generate_sql_schema(csvw,mapping,decision):
                 sql += "PRIMARY KEY (" + primarykeys + "),"
                 if(not source in calculatedSelectivity.keys()):
                     calculatedSelectivity[source] = []
-                calculatedSelectivity[source].extend(primaryKeys.lower().split(","))
+                calculatedSelectivity[source].extend(primarykeys.lower().split(","))
             else:
                 result = generateSubjectIndexes(source, mapping, table, calculatedSelectivity)
                 indexes += result["indexes"]
