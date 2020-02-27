@@ -13,12 +13,12 @@ def addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery):
         cols = csvwParser.getCols(table)
         foreignKeys = []
         for j,col in enumerate(cols):
-            if(csvwParser.hasSeparator(col)):
+            if(col in table['filteredRowTitles'] and csvwParser.hasSeparator(col)):
                 #Falta modificar la tabla original, añadir la )foreing key
                 colName = csvwParser.getColTitle(col)
                 foreignKeys.append(generateForeignKey(colName))
                 newTables.append(createNewTable(table,col))
-                predicate,variable =getPredicateAndObjectFromQuery(query, mapping, parsedQuery,colName)
+                predicate,variable = getPredicateAndObjectFromQuery(query, mapping, parsedQuery,colName)
                 #sys.exit()
                 query = queryRewritten(query,predicate,variable,colName)
                 save_rewritten_query(query,"./tmp/query.rq")

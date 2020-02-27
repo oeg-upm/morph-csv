@@ -6,6 +6,7 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    shm_size: '16gb'
     volumes:
       - ./data:/data
       - ./results/:/results
@@ -20,6 +21,7 @@ services:
     container_name: postgres
     image: postgres
     restart: always
+    shm_size: '16gb'
     environment:
       POSTGRES_PASSWORD: csv
       POSTGRES_USER: user

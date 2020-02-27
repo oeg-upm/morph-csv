@@ -23,8 +23,8 @@
 #BIO2RDF:
 cp evaluation/bio2rdf/bio2rdf.csvw.json tmp/annotations/annotations.json
 cp evaluation/bio2rdf/bio2rdf.yml tmp/annotations/mapping.yaml
-cp ~/Datasets/bio2rdf/* tmp/csv/
-python3 Test.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bio2rdf/queries/query10.1.rq > tmp/log.txt
+#cp ~/Datasets/bio2rdf/* tmp/csv/
+python3 Test.py  -c evaluation/bio2rdf/config-bio2rdf.json -q evaluation/bio2rdf/queries/query10.1.rq
 
 #BSBM
 #cp evaluation/bsbm/bsbm.csv.yml tmp/annotations/mapping.yaml

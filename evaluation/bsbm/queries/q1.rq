@@ -3,14 +3,14 @@ PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
-SELECT DISTINCT ?product ?label
+SELECT  DISTINCT ?product ?label
 WHERE { 
     ?product rdfs:label ?label .
-    ?product bsbm:ProductType <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType105> .
-    ?product bsbm:productFeature <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature815> . 
-    ?product bsbm:productFeature <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature814> . 
+    ?product bsbm:productType <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType257> .
+    ?product bsbm:productFeature <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature52> .
+    ?product bsbm:productFeature <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature51> . 
     ?product bsbm:productPropertyNumeric1 ?value1 . 
-	FILTER (?value1 > 486) 
+	FILTER (?value1 > "144") 
 	}
 ORDER BY ?label
 LIMIT 10
