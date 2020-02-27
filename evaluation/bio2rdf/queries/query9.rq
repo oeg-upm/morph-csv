@@ -1,15 +1,17 @@
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX ndcv: <http://bio2rdf.org/ndc_vocabulary:>
+PREFIX ncbiv: <http://bio2rdf.org/ncbigene_vocabulary:>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
 
-SELECT ?prod ?prod_type ?date ?package ?pack_label
+SELECT ?gene ?title ?evidence ?term 
 WHERE {
-        ?prod rdf:type ndcv:Product ;
-                ndcv:product-type ?prod_type ;
-	        	ndcv:start-marketing-date ?date;
-                ndcv:has-package ?package .
-        ?package rdfs:label ?pack_label .
+	
+	?gene rdf:type ncbiv:Resource ;
+		dcterms:title ?title ;
+		ncbiv:evidence ?evidence ;
+		ncbiv:go-term ?term ;
+		ncbiv:go-category ?category .
 
-        FILTER (?date >= '2016-01-15'^^xsd:date) .
+	FILTER (?category="ncbigene_vocabulary:Function")
+
 }

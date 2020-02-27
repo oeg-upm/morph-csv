@@ -1,10 +1,20 @@
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX hgncv: <http://bio2rdf.org/hgnc_vocabulary>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX homogv: <http://bio2rdf.org/homologene_vocabulary:>
-SELECT ?hgroup ?label ?symbol ?refseq
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT *
 WHERE {
-   ?hgroup rdf:type homogv:Resource .
-   ?hgroup   rdfs:label ?label .
-   ?hgroup   homogv:gene-symbol ?symbol .
-   ?hgroup  homogv:x-refseq ?refseq 
+	
+	?gene_sym rdf:type hgncv:Gene-Symbol ;
+		hgncv:approved-symbol ?app_symbol ;
+		hgncv:date-approved ?date_app ;
+		hgncv:status ?status ;
+		hgncv:locus ?locus .
+	?locus hgncv:locus-group ?locus_group 
+
+	FILTER (?locus_group="pseudogene")
+	FILTER (?status="Approved")
+
+
 }
