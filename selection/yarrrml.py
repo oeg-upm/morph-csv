@@ -2,10 +2,7 @@ import yaml
 import re
 import os
 import selection.resourcesFromSparql as rscSparql
-<<<<<<< HEAD
-=======
 import json
->>>>>>> de8f7774a2f3997e559de78533a4877a0654a233
 
 def getCleanYarrrml (mappingPath="./tmp/annotations/mapping.yaml"):
     """
@@ -59,26 +56,25 @@ def fromSourceToTables(mapping):
     for tm in mapping["mappings"]:
         source = mapping["mappings"][tm]["sources"][0][0].split("/")[-1].replace(".csv~csv","")
         mapping["mappings"][tm]["sources"] = [{"table": source.upper()}]
-<<<<<<< HEAD
-    mapping1 = poToLowerCase(mapping)
-=======
-#    mapping = poToLowerCase(mapping)
->>>>>>> de8f7774a2f3997e559de78533a4877a0654a233
+    mapping = poToLowerCase(mapping)
     f = open("./tmp/annotations/mapping.yaml", "w+")
-    f.write(yaml.dump(mapping, default_flow_style=None))
+    dumpedYaml = sanitizeYaml(mapping)
+    f.write(dumpedYaml)
     f.close()
     os.system("bash ./bash/yarrrml-parser.sh")
+def sanitizeYaml(mapping):
+    for tm in mapping["mappings"]:
+        for i,po in enumerate(mapping["mappings"][tm]["po"]):
+            if(type(po) is list):
+                if(' ' in po[1] or '[' in po[1] or ']' in po[1] or ':' in po[1]):
+                    mapping["mappings"][tm]["po"][i][1] = '"' + po[1] + '"'
+    dumpedYaml =  str(yaml.dump(mapping, default_flow_style=None)).replace("'\"", '"').replace("\"'",'"').replace('\'', '')
+    return dumpedYaml
 def poToLowerCase(mapping):
     cols = rscSparql.getColPatterns(mapping)
-<<<<<<< HEAD
-    mapping = str(mapping).replace(col, col.lower()) for col in cols
-    print("********MAPPING*********** YARRML.py")
-    print(mapping.replace("'", '"'))
-=======
     for col in cols:
         mapping = str(mapping).replace(col, col.lower())
 #    print("********MAPPING*********** YARRML.py")
     mapping = mapping.replace("'", '"')
->>>>>>> de8f7774a2f3997e559de78533a4877a0654a233
     return json.loads(mapping)
 

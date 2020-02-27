@@ -990,17 +990,17 @@
                                                                                                                                                                                                                                                                                                                                       "CCDS_IDs",
                                                                                                                                                                                                                                                                                                                                                 "VEGA_IDs",
                                                                                                                                                                                                                                                                                                                                                           "Locus_Specific_Databases",
-                                                                                                                                                                                                                                                                                                                                                                    "Entrez_Gene_ID_(supplied_by_NCBI)",
-                                                                                                                                                                                                                                                                                                                                                                              "OMIM_ID_(supplied_by_NCBI)",
-                                                                                                                                                                                                                                                                                                                                                                                        "RefSeq_(supplied_by_NCBI)",
-                                                                                                                                                                                                                                                                                                                                                                                                  "UniProt_ID_(supplied_by_UniProt)",
-                                                                                                                                                                                                                                                                                                                                                                                                            "Ensembl_ID_(supplied_by_Ensembl)",
-                                                                                                                                                                                                                                                                                                                                                                                                                      "Vega_ID_(supplied_by_Vega)",
-                                                                                                                                                                                                                                                                                                                                                                                                                                "UCSC_ID_(supplied_by_UCSC)",
-                                                                                                                                                                                                                                                                                                                                                                                                                                          "Mouse_Genome_Database_ID_(supplied_by_MGI)",
-                                                                                                                                                                                                                                                                                                                                                                                                                                                    "Rat_Genome_Database_ID_(supplied_by_RGD)",
-                                                                                                                                                                                                                                                                                                                                                                                                                                                              "RNAcentral_IDs_(supplied_by_RNAcentral)",
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "LNCipedia_symbol_(supplied_by_LNCipedia)"
+                                                                                                                                                                                                                                                                                                                                                                    "Entrez_Gene_ID_supplied_by_NCBI",
+                                                                                                                                                                                                                                                                                                                                                                              "OMIM_ID_supplied_by_NCBI",
+                                                                                                                                                                                                                                                                                                                                                                                        "RefSeq_supplied_by_NCBI",
+                                                                                                                                                                                                                                                                                                                                                                                                  "UniProt_ID_supplied_by_UniProt",
+                                                                                                                                                                                                                                                                                                                                                                                                            "Ensembl_ID_supplied_by_Ensembl",
+                                                                                                                                                                                                                                                                                                                                                                                                                      "Vega_ID_supplied_by_Vega",
+                                                                                                                                                                                                                                                                                                                                                                                                                                "UCSC_ID_supplied_by_UCSC",
+                                                                                                                                                                                                                                                                                                                                                                                                                                          "Mouse_Genome_Database_ID_supplied_by_MGI",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    "Rat_Genome_Database_ID_supplied_by_RGD",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                              "RNAcentral_IDs_supplied_by_RNAcentral",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "LNCipedia_symbol_supplied_by_LNCipedia"
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
                       ],
                               "primaryKey": "HGNC_ID",
@@ -1015,7 +1015,7 @@
                                                             
                                   },
                                   {
-                                                  "columnReference": "Entrez_Gene_ID_(supplied_by_NCBI)",
+                                                  "columnReference": "Entrez_Gene_ID_supplied_by_NCBI",
                                                   "reference": {
                                                                     "resource": "/data/ncbigene/gene_info",
                                                                                   "columnReference": "GeneID"
@@ -1215,57 +1215,57 @@
                                                                         
                                   },
                                   {
-                                                  "titles": "Entrez_Gene_ID_(supplied_by_NCBI)",
+                                                  "titles": "Entrez_Gene_ID_supplied_by_NCBI",
                                                               "null": ""
                                                                         
                                   },
                                   {
-                                                  "titles": "OMIM_ID_(supplied_by_NCBI)",
+                                                  "titles": "OMIM_ID_supplied_by_NCBI",
                                                               "null": ""
                                                                         
                                   },
                                   {
-                                                  "titles": "RefSeq_(supplied_by_NCBI)",
+                                                  "titles": "RefSeq_supplied_by_NCBI",
                                                               "null": ""
                                                                         
                                   },
                                   {
-                                                  "titles": "UniProt_ID_(supplied_by_UniProt)",
+                                                  "titles": "UniProt_ID_supplied_by_UniProt",
                                                               "null": ""
                                                                         
                                   },
                                   {
-                                                  "titles": "Ensembl_ID_(supplied_by_Ensembl)",
+                                                  "titles": "Ensembl_ID_supplied_by_Ensembl",
                                                               "null": ""
                                                                         
                                   },
                                   {
-                                                  "titles": "Vega_ID_(supplied_by_Vega)",
+                                                  "titles": "Vega_ID_supplied_by_Vega",
                                                               "null": ""
                                                                         
                                   },
                                   {
-                                                  "titles": "UCSC_ID_(supplied_by_UCSC)",
+                                                  "titles": "UCSC_ID_supplied_by_UCSC",
                                                               "null": ""
                                                                         
                                   },
                                   {
-                                                  "titles": "Mouse_Genome_Database_ID_(supplied_by_MGI)",
+                                                  "titles": "Mouse_Genome_Database_ID_supplied_by_MGI",
                                                               "null": ""
                                                                         
                                   },
                                   {
-                                                  "titles": "Rat_Genome_Database_ID_(supplied_by_RGD)",
+                                                  "titles": "Rat_Genome_Database_ID_supplied_by_RGD",
                                                               "null": ""
                                                                         
                                   },
                                   {
-                                                  "titles": "RNACentral_IDs_(supplied_by_RNACentral)",
+                                                  "titles": "RNACentral_IDs_supplied_by_RNACentral",
                                                               "null": ""
                                                                         
                                   },
                                   {
-                                                  "titles": "LNCipedia_symbol_(supplied_by_LNCipedia)",
+                                                  "titles": "LNCipedia_symbol_supplied_by_LNCipedia",
                                                               "null": ""
                                                                         
                                   }

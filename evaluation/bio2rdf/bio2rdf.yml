@@ -532,16 +532,16 @@ mappings:
             condition:
               function: equal
               parameters:
-                - [str1, $(Entrez_Gene_ID_(supplied_by_NCBI))]
+                - [str1, $(Entrez_Gene_ID_supplied_by_NCBI)]
                 - [str2, $(GeneID)]
-      - [hgncv:x-omim, "http://bio2rdf.org/omim:$(OMIM_ID_(Supplied_by_NCBI))"]
-      - [hgncv:x-refseq, "http://bio2rdf.org/refseq:$(RefSeq_(Supplied_by_NCBI))"]
-      - [hgncv:x-uniprot, "http://bio2rdf.org/uniprot:$(UniProt_ID_(supplied_by_UniProt))"]
-      - [hgncv:x-ensembl, "http://rdf.ebi.ac.uk/resource/ensembl/$(Ensembl_ID_(supplied_by_Ensembl))"]
-      - [hgncv:x-vega, "http://bio2rdf.org/vega:$(Vega_ID_(supplied_by_Vega))"]
-      - [hgncv:x-ucsc, "http://bio2rdf.org/ucsc:$(UCSC_ID_(supplied_by_UCSC))"]
-      - [hgncv:x-mgi, $(Mouse_Genome_Database_ID_(supplied_by_MGI))]
-      - [hgncv:x-rgd, $(Rat_Genome_Database_ID_(supplied_by_RGD))]
+      - [hgncv:x-omim, "http://bio2rdf.org/omim:$(OMIM_ID_Supplied_by_NCBI)"]
+      - [hgncv:x-refseq, "http://bio2rdf.org/refseq:$(RefSeq_Supplied_by_NCBI)"]
+      - [hgncv:x-uniprot, "http://bio2rdf.org/uniprot:$(UniProt_ID_supplied_by_UniProt)"]
+      - [hgncv:x-ensembl, "http://rdf.ebi.ac.uk/resource/ensembl/$(Ensembl_ID_supplied_by_Ensembl)"]
+      - [hgncv:x-vega, "http://bio2rdf.org/vega:$(Vega_ID_supplied_by_Vega)"]
+      - [hgncv:x-ucsc, "http://bio2rdf.org/ucsc:$(UCSC_ID_supplied_by_UCSC)"]
+      - [hgncv:x-mgi, $(Mouse_Genome_Database_ID_supplied_by_MGI)]
+      - [hgncv:x-rgd, $(Rat_Genome_Database_ID_supplied_by_RGD)]
 
   TMhgnc2:
     sources:
