@@ -7,9 +7,9 @@ PREFIX dc: <http://purl.org/dc/elements/1.1/>
 SELECT ?productLabel ?offer ?price ?vendor ?vendorTitle ?review ?revTitle 
        ?reviewer ?revName ?rating1 ?rating2
 WHERE { 
-	<http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer39/Product1820> rdfs:label ?productLabel .
+	<http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer13/Product585> rdfs:label ?productLabel .
     OPTIONAL {
-        ?offer bsbm:product <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer39/Product1820> .
+        ?offer bsbm:product <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer13/Product585> .
 		?offer bsbm:price ?price .
 		?offer bsbm:vendor ?vendor .
 		?vendor rdfs:label ?vendorTitle .
@@ -19,7 +19,7 @@ WHERE {
         FILTER (?date > "2008-06-20T00:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> )
     }
     OPTIONAL {
-	?review bsbm:reviewFor <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer39/Product1820> .
+	?review bsbm:reviewFor <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer13/Product585> .
 	?review rev:reviewer ?reviewer .
 	?reviewer foaf:name ?revName .
 	?review dc:title ?revTitle .
