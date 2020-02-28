@@ -9,6 +9,6 @@ WHERE {
 	?gene rdf:type genagev:Aging-Related-Gene ;
 		rdfs:label ?label ;
 		genagev:taxon ?tax .
-	?tax rdfs:label ?name ;
-		taxv:unique-name ?uname .
+	?tax rdfs:label ?name.
+	OPTIONAL{?tax taxv:unique-name ?uname}
 }
