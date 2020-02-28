@@ -9,6 +9,7 @@ unzip ontop-cli-3.0.0.zip -d ontop
 mv /morphcsv/tmp/run-ontop.sh /morphcsv/tmp/ontop/
 cd /morphcsv/tmp/ontop/jdbc/
 wget https://jdbc.postgresql.org/download/postgresql-42.2.9.jar
+
 cd /
 #gtfs
 cp /morphcsv/evaluation/gtfs/gtfs.csvw.json /mappings/
@@ -16,7 +17,6 @@ cp /morphcsv/evaluation/gtfs/gtfs-csv.yaml /mappings/
 cp /morphcsv/evaluation/gtfs/config-gtfs.json /mappings/
 mkdir /queries/gtfs
 cp -r /morphcsv/evaluation/gtfs/queries/* /queries/gtfs/
-cp /morphcsv/evaluation/gtfs/evaluate.sh /morphcsv/evaluate-gtfs.sh
 
 #bio2rdf
 cp /morphcsv/evaluation/bio2rdf/bio2rdf.csvw.json /mappings/
@@ -24,6 +24,12 @@ cp /morphcsv/evaluation/bio2rdf/bio2rdf.yml /mappings/
 cp /morphcsv/evaluation/bio2rdf/config-bio2rdf.json /mappings/
 mkdir /queries/bio2rdf
 cp -r /morphcsv/evaluation/bio2rdf/queries/* /queries/bio2rdf/
-cp /morphcsv/evaluation/bio2rdf/evaluate.sh /morphcsv/evaluate-bio2rdf.sh
+
+#bsbm
+cp /morphcsv/evaluation/bsbm/bsbm.csvw.json /mappings/
+cp /morphcsv/evaluation/bsbm/bsbm.csv.yml /mappings/
+cp /morphcsv/evaluation/bsbm/config-bsbm.json /mappings/
+mkdir /queries/bsbm
+cp -r /morphcsv/evaluation/bsbm/queries/* /queries/bsbm/
 #data
 #use the csv with links inside the evaluation folders to download the data manually
