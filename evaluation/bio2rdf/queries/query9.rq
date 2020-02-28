@@ -12,6 +12,6 @@ WHERE {
 		ncbiv:go-term ?term ;
 		ncbiv:go-category ?category .
 
-	FILTER (?category="ncbigene_vocabulary:Function")
+	#FILTER (?category="ncbigene_vocabulary:Function")
 
 }
