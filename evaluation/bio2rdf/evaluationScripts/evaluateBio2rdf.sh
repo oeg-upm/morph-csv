@@ -19,5 +19,5 @@ for j in 1 2 4 6 7 12 13 14 17
 	        docker exec postgres psql -U user -d postgres -c "CREATE DATABASE morphcsv"
 	        sleep 5
         done
-        docker exec -w /morphcsv morphcsv bash mvResults.sh $j
+        docker exec -w /morphcsv morphcsv bash mvBio2rdfResults.sh $j
   done
