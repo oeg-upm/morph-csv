@@ -142,7 +142,8 @@
           "columns": [
             {
                 "titles":"nr",
-                "datatype":"integer"
+                "datatype":"integer",
+                "null":"\\\\N"
                 },
                 {
                 "titles":"label",
@@ -150,67 +151,75 @@
                 },
                 {
                 "titles":"comment",
-                "datatype":" string"
+                "datatype":"string"
                 },
                 {
                 "titles":"producer",
-                "datatype":" integer"
+                "datatype":"integer",
+                "null":"\\\\N"
                 },
                 {
                 "titles":"propertyNum1",
-                "datatype":" integer"
+                "datatype":"integer",
+                "null":"\\\\N"
                 },
                 {
                 "titles":"propertyNum2",
-                "datatype":" integer"
+                "datatype":"integer",
+                "null":"\\\\N"
                 },
                 {
                 "titles":"propertyNum3",
-                "datatype":" integer"
+                "datatype":"integer",
+                "null":"\\\\N"
                 },
                 {
                 "titles":"propertyNum4",
-                "datatype":" integer"
+                "datatype":"integer",
+                "null":"\\\\N"
                 },
                 {
                 "titles":"propertyNum5",
-                "datatype":" integer"
+                "datatype":"integer",
+                "null":"\\\\N"
                 },
                 {
                 "titles":"propertyNum6",
-                "datatype":" integer"
+                "datatype":"integer",
+                "null":"\\\\N"
                 },
                 {
                 "titles":"propertyTex1",
-                "datatype":" string"
+                "datatype":"string"
                 },
                 {
                 "titles":"propertyTex2",
-                "datatype":" string"
+                "datatype":"string"
                 },
                 {
                 "titles":"propertyTex3",
-                "datatype":" string"
+                "datatype":"string"
                 },
                 {
                 "titles":"propertyTex4",
-                "datatype":" string"
+                "datatype":"string"
                 },
                 {
                 "titles":"propertyTex5",
-                "datatype":" string"
+                "datatype":"string"
                 },
                 {
                 "titles":"propertyTex6",
-                "datatype":" string"
+                "datatype":"string"
                 },
                 {
                 "titles":"publisher",
-                "datatype":" integer"
+                "datatype":"integer",
+                "null":"\\\\N"
                 },
                 {
                 "titles":"publishDate",
-                "datatype":" date"
+                "datatype":"date"
                 }
           ]
         }

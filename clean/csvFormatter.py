@@ -36,6 +36,13 @@ def csvwFilter(csvw, selection):
 #Function to call the bash Scripts files and send the scvw data.
 def scriptCaller(data):
     url = parser.getUrl(data).split("/")[-1:][0]
+    header = False
+    try:
+        header = data["dialect"]["header"]
+    except:
+        header = False 
+    if(not header):
+        insertTitles({'header':False, 'result':"w0xter"}, url)
     replaceCsvFormat(parser.getGsubPatterns(data), url)
     titles = {'header':False, 'result':parser.getFilteredTitles(data)}
     insertTitles(titles, url)
