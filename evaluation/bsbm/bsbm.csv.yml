@@ -17,7 +17,7 @@ prefixes:
 mappings:
   productfeature:
     sources:
-      - [/app/data/productfeature.csv~csv]
+      - [productfeature.csv~csv]
     s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature$(nr)
     po:
       - [a, bsbm:ProductFeature]
@@ -27,7 +27,7 @@ mappings:
       - [dc:date, $(publishDate)]
   producttype:
     sources:
-      - [/app/data/producttype.csv~csv]
+      - [producttype.csv~csv]
     s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType$(nr)
     po:
       - [a, bsbm:ProductType]
@@ -45,7 +45,7 @@ mappings:
                 - [str2, $(parent)]
   producer:
     sources:
-      - [/app/data/producer.csv~csv]
+      - [producer.csv~csv]
     s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer$(nr)/Producer$(nr)
     po:
       - [a, bsbm:Producer]
@@ -64,7 +64,7 @@ mappings:
                 - [str2, $(publisher)]
   product:
     sources:
-      - [/app/data/product.csv~csv]
+      - [product.csv~csv]
     s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/dataFromProducer$(producer)/Product$(nr)
     po:
       - [a, bsbm:Product]
@@ -107,7 +107,7 @@ mappings:
               parameters:
                   - [str1, $(nr)]
                   - [str2, $(product)]
-      - p: bsbm:ProductType
+      - p: bsbm:productType
         o: 
           - mapping: producttypeproduct
             condition: 
@@ -117,16 +117,16 @@ mappings:
                   - [str2, $(product)]
   producttypeproduct:
     sources:
-      - [/app/data/producttypeproduct.csv~csv]
+      - [producttypeproduct.csv~csv]
     s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductType$(productType)
     po:
-      - [a, bsbm:Product]
+      - [a, bsbm:ProductTypeProduct]
   productfeatureproduct:
     sources:
-      - [/app/data/productfeatureproduct.csv~csv]
+      - [productfeatureproduct.csv~csv]
     s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/ProductFeature$(productFeature)
     po:
-      - [a, bsbm:Product]
+      - [a, bsbm:ProductFeatureProduct]
       - p: bsbm:productFeature
         o:
           - mapping: productfeature
@@ -137,7 +137,7 @@ mappings:
                 - [str2, $(nr)]
   vendor:
     sources:
-      - [/app/data/vendor.csv~csv]
+      - [vendor.csv~csv]
     s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/Vendor$(nr)
     po:
       - [a, bsbm:Vendor]
@@ -156,7 +156,7 @@ mappings:
                 - [str2, $(publisher)] 
   offer:
     sources:
-      - [/app/data/offer.csv~csv]
+      - [offer.csv~csv]
     s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/Offer$(nr)
     po:
       - [a, bsbm:Offer]
@@ -200,7 +200,7 @@ mappings:
                 - [str2, $(publisher)] 
   person:
     sources:
-      - [/app/data/person.csv~csv]
+      - [person.csv~csv]
     s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/Reviewer$(nr)
     po:
       - [a, bsbm:Person]
@@ -211,7 +211,7 @@ mappings:
       - [dc:date, publishDate]
   review:
     sources:
-      - [/app/data/review.csv~csv]
+      - [review.csv~csv]
     s: http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/Review$(nr)
     po:
       - [a, bsbm:Review]
