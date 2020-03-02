@@ -14,8 +14,8 @@ WHERE {
 	FILTER (?p3 < "158")
     OPTIONAL { 
         ?product bsbm:productFeature ?productFeature2 .
-        ?product rdfs:label ?testVar }
-    FILTER (!bound(?testVar)) 
+        ?product rdfs:label ?testvar }
+    FILTER (!bound(?testvar)) 
 }
 ORDER BY ?label
 LIMIT 10
