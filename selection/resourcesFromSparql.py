@@ -21,7 +21,11 @@ def getUrisFromQuery(query, mapping=None):
     for el in query['where']:
         if 'patterns' in el.keys():
             for tp in el['patterns']:
-                result.update(extractTriplePatternUris(result, tp))
+                if('patterns' in tp.keys()):
+                    for tp1 in tp['patterns']:
+                        result.update(extractTriplePatternUris(result, tp))
+                else:
+                    result.update(extractTriplePatternUris(result, tp))
         else:
             result.update(extractTriplePatternUris(result, el, query, mapping))
     return result
