@@ -14,5 +14,5 @@ WHERE {
     ?offer bsbm:validTo ?date .
     FILTER (?date > "2008-03-18 00:00:00"^^<http://www.w3.org/2001/XMLSchema#dateTime> )
 }
-ORDER BY xsd:double(str(?price))
+ORDER BY (?price)
 LIMIT 10

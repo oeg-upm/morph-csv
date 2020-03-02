@@ -162,9 +162,9 @@ mappings:
       - [a, bsbm:Offer]
       - [bsbm:price, $(price)]
       - [bsbm:validFrom, $(validFrom)]
-      - [bsbm:validTo,validTo]
-      - [bsbm:deliveryDays, deliveryDays]
-      - [bsbm:offerWebpage, $/(offerWebpage)~iri]
+      - [bsbm:validTo, $(validTo)]
+      - [bsbm:deliveryDays, $(deliveryDays)]
+      - [bsbm:offerWebpage, $(offerWebpage)~iri]
       - [dc:date, $(publishDate)]
       - p: bsbm:product
         o:
@@ -205,10 +205,10 @@ mappings:
     po:
       - [a, bsbm:Person]
       - [foaf:name, $(name)]
-      - [foaf:mbox_sha1sum, mbox_sha1sum]
+      - [foaf:mbox_sha1sum, $(mbox_sha1sum)]
       - [bsbm:country, http://downlode.org/rdf/iso-3166/countries#$(country)]
       - [dc:publisher, http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/instances/RatingSite$(publisher)]
-      - [dc:date, publishDate]
+      - [dc:date, $(publishDate)]
   review:
     sources:
       - [/review.csv~csv]
@@ -216,7 +216,7 @@ mappings:
     po:
       - [a, bsbm:Review]
       - [bsbm:reviewDate, $(reviewDate)]
-      - [rev:text, $(text)@en]
+      - [rev:text, $(text), en~lang]
       - [bsbm:rating1 , $(rating1)]
       - [bsbm:rating2 , $(rating2)]
       - [bsbm:rating3 , $(rating3)]
