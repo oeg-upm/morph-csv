@@ -172,16 +172,16 @@ mappings:
             condition:
               function: equal
               parameters:
-                - [str1, $(nr)]
-                - [str2, $(product)] 
+                - [str1, $(product)]
+                - [str2, $(nr)] 
       - p: bsbm:producer
         o:
           - mapping: producer
             condition:
               function: equal
               parameters:
-                - [str1, $(nr)]
-                - [str2, $(producer)] 
+                - [str1, $(producer)]
+                - [str2, $(nr)] 
       - p: bsbm:vendor
         o:
           - mapping: vendor
