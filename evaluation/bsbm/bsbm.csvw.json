@@ -15,6 +15,7 @@
           "columns": [
             {
               "datatype": "integer",
+              "null":"\\\\N",
               "titles": "nr"
             },
             {
@@ -27,6 +28,7 @@
             },
             {
               "datatype": "integer",
+              "null":"\\\\N",
               "titles": "publisher"
             },
             {
@@ -47,6 +49,7 @@
           "columns": [
             {
               "datatype": "integer",
+              "null":"\\\\N",
               "titles": "nr"
             },
             {
@@ -59,10 +62,12 @@
             },
             {
               "datatype": "integer",
+              "null":"\\\\N",
               "titles": "parent"
             },
             {
               "datatype": "integer",
+              "null":"\\\\N",
               "titles": "publisher"
             },
             {
@@ -83,6 +88,7 @@
           "columns": [
             {
               "datatype": "integer",
+              "null":"\\\\N",
               "titles": "nr"
             },            {
                 "datatype": "string",
@@ -102,6 +108,7 @@
             },
             {
                 "datatype": "integer",
+                "null":"\\\\N",
                 "titles": "publisher"
             },
             {
@@ -235,10 +242,12 @@
           "columns": [
             {
               "datatype": "integer",
+              "null":"\\\\N",
               "titles": "product"
             },
             {
               "datatype": "integer",
+              "null":"\\\\N",
               "titles": "productType"
             }
           ]
@@ -262,10 +271,12 @@
           "columns": [
             {
               "datatype": "integer",
+              "null":"\\\\N",
               "titles": "product"
             },
             {
               "datatype": "integer",
+              "null":"\\\\N",
               "titles": "productFeature"
             }
           ]
@@ -289,8 +300,9 @@
           "columns": [
             {
             "titles":"nr",
-            "datatype": "integer"
-            },
+            "datatype": "integer",
+            "null":"\\\\N"
+},
             {
             "titles":"label",
             "datatype": "string"
@@ -309,7 +321,8 @@
             },
             {
             "titles":"publisher",
-            "datatype": "integer"
+            "datatype": "integer",
+            "null":"\\\\N"          
             },
             {
             "titles":"publishDate",
@@ -355,20 +368,24 @@
           "columns": [
             {
             "titles": "nr",
-            "datatype": "integer"
-            },
+            "datatype": "integer",
+            "null":"\\\\N"          
+          },
             {
             "titles": "product",
-            "datatype": "integer"
-            },
+            "datatype": "integer",
+            "null":"\\\\N"
+          },
             {
             "titles": "producer",
-            "datatype": "integer"
-            },
+            "datatype": "integer",
+            "null":"\\\\N"
+          },
             {
             "titles": "vendor",
-            "datatype": "integer"
-            },
+            "datatype": "integer",
+            "null":"\\\\N"
+          },
             {
             "titles": "price",
             "datatype": "double"
@@ -383,16 +400,18 @@
             },
             {
             "titles": "deliveryDays",
-            "datatype": "integer"
-            },
+            "datatype": "integer",
+            "null":"\\\\N"
+          },
             {
             "titles": "offerWebpage",
             "datatype": "string"
             },
             {
             "titles": "publisher",
-            "datatype": "integer"
-            },
+            "datatype": "integer",
+            "null":"\\\\N"
+          },
             {
             "titles": "publishDate",
             "datatype": "date"
@@ -411,6 +430,7 @@
           "columns": [
             {
                 "datatype": "integer",
+                "null":"\\\\N",
                 "titles": "nr"
             },
             {
@@ -427,6 +447,7 @@
             },
             {
               "datatype": "integer",
+              "null":"\\\\N",
               "titles": "publisher"
             },
             {
@@ -466,18 +487,22 @@
           "columns": [
             {
               "datatype": "integer",
+              "null":"\\\\N",
               "titles": "nr"
             },
             {
               "datatype": "integer",
+              "null":"\\\\N",
               "titles": "product"
             },
             {
               "datatype": "integer",
+              "null":"\\\\N",
               "titles": "producer"
             },
             {
               "datatype": "integer",
+              "null":"\\\\N",
               "titles": "person"
             },
             {
@@ -498,8 +523,8 @@
             },
             {
               "datatype": "integer",
-              "titles": "rating1",
-              "null":"\\\\N"
+              "null":"\\\\N",
+              "titles": "rating1"
             },
             {
               "datatype": "integer",
