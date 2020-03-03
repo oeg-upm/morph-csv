@@ -146,14 +146,6 @@ mappings:
       - [foaf:homepage, $(homepage)~iri]
       - [bsbm:country, http://downlode.org/rdf/iso-3166/countries#$(country)]
       - [dc:date, $(publishDate)]
-      - p: dc:publisher
-        o:
-          - mapping: vendor
-            condition:
-              function: equal
-              parameters:
-                - [str1, $(nr)]
-                - [str2, $(publisher)] 
   offer:
     sources:
       - [/offer.csv~csv]
@@ -196,8 +188,8 @@ mappings:
             condition:
               function: equal
               parameters:
-                - [str1, $(nr)]
-                - [str2, $(publisher)] 
+                - [str1, $(publisher)]
+                - [str2, $(nr)] 
   person:
     sources:
       - [/person.csv~csv]
