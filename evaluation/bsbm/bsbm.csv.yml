@@ -217,6 +217,7 @@ mappings:
       - [a, bsbm:Review]
       - [bsbm:reviewDate, $(reviewDate)]
       - [rev:text, $(text), en~lang]
+      - [dc:title, $(title)]
       - [bsbm:rating1 , $(rating1)]
       - [bsbm:rating2 , $(rating2)]
       - [bsbm:rating3 , $(rating3)]
