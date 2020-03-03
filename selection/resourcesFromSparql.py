@@ -219,16 +219,27 @@ def removeEmptyTM(mapping):
 def findCsvColumnsInsideTheMapping(mapping):
     columns = {}
     for tm in mapping['mappings']:
-        columns[tm] = {
-                'source':str(mapping['mappings'][tm]['sources'][0]).split('/')[-1:][0].split('~')[0],
-                'columns':[]
-                }
-        columns[tm]['columns'].extend(cleanColPattern(mapping['mappings'][tm]['s']))
+        if(not tm in columns.keys()):
+            columns[tm] = {
+                    'source':str(mapping['mappings'][tm]['sources'][0]).split('/')[-1:][0].split('~')[0],
+                    'columns':[]
+                    }
+            columns[tm]['columns'].extend(cleanColPattern(mapping['mappings'][tm]['s']))
         for po in mapping['mappings'][tm]['po']:
             if(type(po) is dict):
                 for o in po['o']:
                     references = getJoinReferences(o)
-                    colReference = cleanColPattern(references['innerRef'] )
+                    colReference = cleanColPattern(references['innerRef'])
+                    outerTm = o['mapping']
+                    outerColReference = cleanColPattern(references['outerRef'])
+                    if(not outerTm in columns.keys()):
+                        columns[outerTm] = {
+                            'source':str(mapping['mappings'][outerTm]['sources'][0]).split('/')[-1:][0].split('~')[0],
+                            'columns':[]
+                            }
+                        columns[outerTm]['columns'].extend(cleanColPattern(mapping['mappings'][outerTm]['s']))
+                    if(not bool(set(outerColReference)& set(columns[outerTm]['columns']))):
+                        columns[outerTm]['columns'].extend(outerColReference)
                     if(not bool(set(colReference)& set(columns[tm]['columns']))):
                         columns[tm]['columns'].extend(cleanColPattern(references['innerRef']))
             else:
