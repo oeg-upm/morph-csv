@@ -2,9 +2,9 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>
 
-SELECT DISTINCT ?product ?productLabel
+SELECT DISTINCT ?product ?productlabel
 WHERE { 
-	?product rdfs:label ?productLabel .
+	?product rdfs:label ?productlabel .
 	?product2 bsbm:productFeature ?prodFeature .
 	?product bsbm:productFeature ?prodFeature .
 	?product2 bsbm:productPropertyNumeric1 ?origProperty1 .
@@ -14,5 +14,5 @@ WHERE {
 	?product bsbm:productPropertyNumeric2 ?simProperty2 .
 	FILTER (?simProperty2 < (?origProperty2 + 170) && ?simProperty2 > (?origProperty2 - 170))
 }
-ORDER BY ?productLabel
+ORDER BY ?productlabel
 LIMIT 5
