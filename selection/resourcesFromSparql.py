@@ -9,7 +9,7 @@ import sys
 
 def fromSPARQLtoMapping(mapping, query, parsedQuery):
     uris = getUrisFromQuery(parsedQuery)
-    #print('\n\nURIS:\n\n' + str(uris).replace(',', ',\n') + '\n\n\n')
+    print('\n\nURIS:\n\n' + str(uris).replace(',', ',\n') + '\n\n\n')
     translatedMapping = simplifyMappingAccordingToQuery(uris,mapping)
     #print('\n\n****************+MAPPNIG************\n\n' + str(translatedMapping).replace('\'', '"'))
     csvColumns = findCsvColumnsInsideTheMapping(translatedMapping)
@@ -45,8 +45,8 @@ def extractTriplePatternUris(result, el, query=None, mapping=None):
             if(isUri(uri)):
                 if(uri == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'):
                     uri = tm['object']['value']
-                if not  'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' in result[subject]['uris']:
-                    result[subject]['uris'].append('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
+                    if not  'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' in result[subject]['uris']:
+                        result[subject]['uris'].append('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')
                 if(not uri in result[subject]['uris']):
                     result[subject]['uris'].append(uri)
             else:
@@ -86,18 +86,28 @@ def obtainURISfromTP(tp, uris):#Simplificable
             elif str(tp[1]) != "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" and value == tp[1]:
                 uris[str(tp[0])]["predicates"].append(str(value))
 
+def getTMsfromQueryUris(mapping, uris):
+    for subject in uris:
+        uris[subject]['TMs'] = []
+        for tm in mapping['mappings']:
+            tmUris = getUrisFromTM(mapping['mappings'][tm])
+            if len(list(set(tmUris) & set(uris[subject]['uris']))) == len(uris[subject]['uris']):
+                uris[subject]['TMs'].append(tm)
+    return uris
+
 def simplifyMappingAccordingToQuery(uris, minMapping):
     mapping = substitutePrefixes(minMapping)
+    newMapping = {'prefixes':mapping['prefixes'], 'mappings':{}}
     #print('MAPPING:\n' + str(mapping).replace('\'', '"'))
     #sys.exit()
     if(checkEmptyUris(uris)):
         return mapping
-    newMapping = {'prefixes':mapping['prefixes'], 'mappings':{}}
-    for tm in mapping['mappings']:
-        subject = isTmInQuery(mapping['mappings'][tm], uris)
-        #print('SUBJECT:' + str(subject))
-        if(subject['result']):
-            if(uris[subject['name']]['fullTM']):
+    else:
+        uris = getTMsfromQueryUris(mapping, uris)
+    for subject in uris.keys():
+        for tm in uris[subject]['TMs']:
+            #print('SUBJECT:' + str(subject))
+            if(uris[subject]['fullTM']):
                 #print('***********************1*******************')
                 if(tm not in newMapping['mappings'].keys()):
                     newMapping['mappings'][tm] = {
@@ -109,7 +119,7 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
                 #print(str(newMapping).replace('\'', '"'))
             else:
                 for po in mapping['mappings'][tm]['po']:
-                    if(isPoInUris(po, uris[subject['name']]['uris'])):
+                    if(isPoInUris(po, uris[subject]['uris'])):
                         #print('*****************2*******************+')
                         if(tm not in newMapping['mappings'].keys()):
                             newMapping['mappings'][tm] = {
@@ -117,7 +127,7 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
                                 's':mapping['mappings'][tm]['s'],
                                 'po':[]
                                 }
-                        newMapping['mappings'][tm]['po'].append(po)
+                        newMapping['mappings'][tm]['po'].extend(po)
     #print('MAPPING:\n' + str(newMapping).replace('\'', '"'))
     newMapping = removeEmptyTM(newMapping)
     newMapping  = addReferencesOfTheJoins(mapping, newMapping)
@@ -132,14 +142,16 @@ def isTmInQuery(tm, uris):
     tmUris = getUrisFromTM(tm)
     result = False
     subjectName = ''
-    #print('********************TM URIS*****************')
-    #print(tmUris)
+    print('*****************%s^^+*******+++++'%(str(tm['sources'])))
     for subject in uris.keys():
+        print('********************%s*****************'%(subject))
+        print(list(set(tmUris) & set(uris[subject]['uris'])))
+        print(uris[subject]['uris'])
         if len(list(set(tmUris) & set(uris[subject]['uris']))) == len(uris[subject]['uris']):
             result = True
             subjectName = subject
-            break
-    return {'result':result,'name':subjectName}
+            return {'result':result,'name':subjectName}
+    return {'result':False,'name':''}
 
 def getUrisFromTM(tm):
     result = [tm['s']]

@@ -143,7 +143,7 @@ mappings:
       - [a, bsbm:Vendor]
       - [rdfs:label, $(label)]
       - [rdfs:comment, $(comment)]
-      - [foaf:homepage, $(homepage)~iri]
+      - [foaf:homepage, $(homepage)]
       - [bsbm:country, http://downlode.org/rdf/iso-3166/countries#$(country)]
       - [dc:date, $(publishDate)]
   offer:

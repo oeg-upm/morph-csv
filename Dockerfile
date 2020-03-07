@@ -9,5 +9,5 @@ RUN mkdir /morphcsv && mkdir /results && mkdir -p /data/bsbm && mkdir /mappings 
 COPY . /morphcsv
 
 RUN pip3 install -r /morphcsv/requirements.txt
-RUN bash /morphcsv/evaluation/preparation.sh
+#RUN bash /morphcsv/evaluation/preparation.sh
 CMD ["tail", "-f", "/dev/null"]

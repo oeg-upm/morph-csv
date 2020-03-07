@@ -47,34 +47,34 @@ def runTest(csvwPath, mappingPath, queryPath,expectedResults):
 
 def generateData(csvwPath, mappingPath, queryPath):
 	csvw = json.loads(open(csvwPath).read())
-	csvw = csvwParser.insertRowTitles(csvw)
+#	csvw = csvwParser.insertRowTitles(csvw)
 	sparqlQuery = utils.readQuery(queryPath)
 	utils.sparqlQueryParser(queryPath)
 	parsedQuery = json.loads(open('tmp/annotations/sparql.json').read())
 	functions, mapping = yarrrml.getCleanYarrrml(mappingPath)
 	csvColumns, mapping = resourcesFromSparql.fromSPARQLtoMapping(mapping, sparqlQuery, parsedQuery)
-#	print(str(csvColumns).replace('}', '}\n'))
+	print(str(csvColumns).replace('}', '}\n'))
 	csvColumns, functions = resourcesFromSparql.getColumnsFromFunctions(csvColumns, functions)
 	#print(str(mapping).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
 	#print(str(csvColumns).replace('\'', '"').replace('True', 'true').replace('False', 'false'))
-	#sys.exit()
+	sys.exit()
 	csvw = csvFormatter.csvwFilter(csvw, csvColumns)
-	normalizedData = normalizer.addNormalizedTablesToCsvw(csvw, mapping, sparqlQuery, parsedQuery)
-	csvw = normalizedData['csvw']
-	query = normalizedData['query']
-	mapping = normalizedData['mapping']
-	csvFormatter.csvFormatter(csvw)
+	#normalizedData = normalizer.addNormalizedTablesToCsvw(csvw, mapping, sparqlQuery, parsedQuery)
+	#csvw = normalizedData['csvw']
+	#query = normalizedData['query']
+	#mapping = normalizedData['mapping']
+#	csvFormatter.csvFormatter(csvw)
 	yarrrml.fromSourceToTables(mapping)
 	schema,alters = mapping2Sql.generate_sql_schema(csvw,
                         mapping,
 			mapping2Sql.decide_schema_based_on_query(mapping))
 	sqlFunctions = sqlAlters.translate_fno_to_sql(functions)
-	try:
-		insert.create_and_insert(csvw, schema, sqlFunctions, alters)
-	except Exception as e:
-                print('HA FALLADO')
-                print(e)
-                sys.exit()
+	#try:
+	#	insert.create_and_insert(csvw, schema, sqlFunctions, alters)
+	#except Exception as e:
+        #        print('HA FALLADO')
+        #        print(e)
+        #        sys.exit()
 	print('csvColumns:\n' + str(csvColumns).replace("'",'"').replace('}', '}\n') + '\n\n*****************************\n\n')
 	print('CSV Format:\n' + str(readFormat(csvw)).replace("'", '"') + '\n\n*****************************\n\n')
 	print('SQL Schema:\n' + str(schema).replace(';', ';\n') + str(alters).replace(';', ';\n'))
