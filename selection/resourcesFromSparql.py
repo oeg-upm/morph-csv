@@ -127,7 +127,8 @@ def simplifyMappingAccordingToQuery(uris, minMapping):
                                 's':mapping['mappings'][tm]['s'],
                                 'po':[]
                                 }
-                        newMapping['mappings'][tm]['po'].extend(po)
+                        if(po not in newMapping['mappings'][tm]['po']):
+                            newMapping['mappings'][tm]['po'].append(po)
     #print('MAPPING:\n' + str(newMapping).replace('\'', '"'))
     newMapping = removeEmptyTM(newMapping)
     newMapping  = addReferencesOfTheJoins(mapping, newMapping)
