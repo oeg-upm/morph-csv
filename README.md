@@ -7,8 +7,8 @@ Morph-CSV is an open source tool for querying tabular data sources using SPARQL.
 ## How to use it?
 We provide two ways to run morph-csv: using the created docker image or directly run with Python3. First of all clone the repository:
 ```bash
-git clone https://github.com/oeg-upm/morph-csv-sparql.git
-cd morph-csv-sparql
+git clone https://github.com/oeg-upm/morph-csv.git
+cd morph-csv
 ```
 Then choose one of the available options:
 - Using docker and docker-compose*:
