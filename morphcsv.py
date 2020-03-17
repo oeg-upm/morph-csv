@@ -33,33 +33,25 @@ def main():
 
     print("Downloading mappings, data and query")
     maketmpdirs()
-#    downloadAnnotations(config)
-#   downloadCSVfilesFromRML()
-
+    downloadAnnotations(config)
+    downloadCSVfilesFromRML()
     query = readQuery(query_path)
     sparqlQueryParser(query_path)
     parsedQuery = json.loads(open('tmp/annotations/sparql.json').read())
-
     print("Removing FnO functions from RML")
     functions, mapping = getCleanYarrrml()
     print("Selecting RML rules, CSVW annotations and CSV files and columns for answering the query")
-    csvColumns, mapping = fromSPARQLtoMapping(mapping, query, parsedQuery) 
+    csvColumns, mapping = fromSPARQLtoMapping(mapping, query, parsedQuery)
     csvColumns,functions = getColumnsFromFunctions(csvColumns, functions)
-    #functions = filterFunctionsAccording2Query(functions, mapping)
     print('Required Columns: '+ str(csvColumns).replace("'", "\""))
     csvw = csvwParser.jsonLoader('./tmp/annotations/annotations.json')
     csvw = csvwParser.insertRowTitles(csvw)
-#    print('++++++++++++++++CSVW++++++++++++++++')
-#    print(str(csvw).replace('\'','"').replace('True', 'true').replace('False', 'false'))
     csvw = formatter.csvwFilter(csvw,csvColumns)
-    #print('***********CSVW************')
-    #print(csvw)
     print("Formalizing the data to 2NF")
     formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery)
     csvw = formalizedData['csvw']
     query = formalizedData['query']
     mapping = formalizedData['mapping']
-    #TODO formalizer.toThirdNormalForm(mapping, csvColumns, csvw)
     print("Preparing the data to execute the query")
     formatter.csvFormatter(csvw)
     print("Tanslating the RML mapping without functions to R2RML")
