@@ -1,9 +1,0 @@
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX wbv: <http://bio2rdf.org/wormbase_vocabulary:>
-
-
-SELECT * WHERE {
-    ?s rdf:type wbv:Resource .
-    ?s rdfs:seeAlso ?seeAlso
-}

@@ -1,5 +1,8 @@
 #!/bin/bash
 cd ..
+mkdir /morphcsv/mappings
+mkdir /morphcsv/queries
+mkdir /morphcsv/data
 cp -r /morphcsv/evaluation/engines/* /morphcsv/tmp/
 chmod +x /morphcsv/tmp/*.sh
 cd /morphcsv/tmp/
