@@ -9,10 +9,10 @@ Loading the data for answering SPARQL query over multiple tabular sources.
 
 ### Loading Time in the Madrid-GTFS-Bench
 <p float="left">
-<img style="float: left;" src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/load/load_gtfs_1.png?raw=true" width="50%">
-<img style="float: left;" src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/load/load_gtfs_10.png?raw=true" width="30%">
-<img style="float: left;"  src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/load/load_gtfs_100.png?raw=true" width="50%">
-<img style="float: left;" src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/load/load_gtfs_1000.png?raw=true" width="50%">
+<img style="float: left;" src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/load/load_gtfs_1.png?raw=true" width="45%">
+<img style="float: left;" src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/load/load_gtfs_10.png?raw=true" width="45%">
+<img style="float: left;"  src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/load/load_gtfs_100.png?raw=true" width="45%">
+<img style="float: left;" src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/load/load_gtfs_1000.png?raw=true" width="45%">
 <p>
 
 ### Loading Time in the BSBM
