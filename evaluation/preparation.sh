@@ -3,6 +3,7 @@ cd ..
 mkdir /morphcsv/mappings
 mkdir /morphcsv/queries
 mkdir /morphcsv/data
+mkdir /morphcsv/results
 cp -r /morphcsv/evaluation/engines/* /morphcsv/tmp/
 chmod +x /morphcsv/tmp/*.sh
 cd /morphcsv/tmp/
