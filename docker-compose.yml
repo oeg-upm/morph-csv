@@ -1,8 +1,0 @@
-version: "2.0"
-services:
-  morph-csv:
-    image: dchaves1/morph-csv:1.1
-    container_name: morphcsv
-    volumes:
-      - ./configs:/morphcsv/configs
-      - ./output:/morphcsv/output
