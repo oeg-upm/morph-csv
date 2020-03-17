@@ -8,7 +8,7 @@ David Chaves-Fraga, Edna Ruckhaus, Freddy Priyatna, Maria-Esther Vidal, Oscar Co
 Loading the data for answering SPARQL query over multiple tabular sources.
 
 ### Loading Time in the Madrid-GTFS-Bench
-<img src="load/load_gtfs_1" width="40%">
+<img src="load/load_gtfs_1?raw=true" width="40%">
 ![GTFS-1](load/load_gtfs_1.png?raw=true "GTFS-1" )
 ![GTFS-10](load/load_gtfs_10.png?raw=true "GTFS-10")
 ![GTFS-100](load/load_gtfs_100.png?raw=true "GTFS-100")
