@@ -58,9 +58,10 @@ def insertRowTitles(csvw):
         if(data['header'] is True):
             os.system("bash bash/removeCsvHeader.sh '%s'"%(path))
             try:
-                csvw['tables'][i]['tableSchema']['dialect']['header'] = False
+                csvw['tables'][i]['dialect']['header'] = False
             except:
-                pass
+
+                print('Wrong csvw tableSchema you must add the dialect object to the table ' + path  + ' and the header property inside dialect')
        # print('*****************TITLES' + table['url']+'**********************\n\n\n')
        # print(titles)
         csvw['tables'][i]['tableSchema']['rowTitles'] = titles
