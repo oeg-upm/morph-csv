@@ -4,7 +4,7 @@ SELECT ?property ?hasValue ?isValueOf
 WHERE {
   { 
     ?offer bsbm:price ?price .
-  	?offer ?property ?hasValue 
+    ?offer ?property ?hasValue 
   }
   UNION
   { 
