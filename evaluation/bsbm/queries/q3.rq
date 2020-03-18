@@ -9,9 +9,9 @@ WHERE {
     ?product bsbm:productType ?productType .
 	?product bsbm:productFeature ?productFeature1 .
 	?product bsbm:productPropertyNumeric1 ?p1 .
-	FILTER ( ?p1 > "289" ) 
+	FILTER ( ?p1 > 289 ) 
 	?product bsbm:productPropertyNumeric3 ?p3 .
-	FILTER (?p3 < "158")
+	FILTER (?p3 < 158)
     OPTIONAL { 
         ?product bsbm:productFeature ?productFeature2 .
         ?product rdfs:label ?testvar } 
