@@ -5,7 +5,7 @@ PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>
 SELECT ?product ?label
 WHERE {
 	?product rdfs:label ?label .
-    ?product rdf:type bsbm:Product .
+	?product rdf:type bsbm:Product .
 	FILTER regex(?label, "prelate%")
 }
 
