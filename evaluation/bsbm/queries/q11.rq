@@ -2,8 +2,12 @@ PREFIX bsbm: <http://www4.wiwiss.fu-berlin.de/bizer/bsbm/v01/vocabulary/>
 
 SELECT ?property ?hasValue ?isValueOf
 WHERE {
-  { ?offer bsbm:price ?price .
-  	?offer ?property ?hasValue }
+  { 
+    ?offer bsbm:price ?price .
+  	?offer ?property ?hasValue 
+  }
   UNION
-  { ?isValueOf ?property ?offer }
+  { 
+    ?isValueOf ?property ?offer 
+  }
 }
