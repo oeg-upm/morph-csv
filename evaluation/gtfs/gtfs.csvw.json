@@ -5,11 +5,11 @@
   "tables": [
     {
       "url": "/data/AGENCY.csv", 
-      "tableSchema": {
+      
               "dialect":{
           "header":true
         },
-      
+      "tableSchema": {
         "primaryKey": "agency_id",
         "columns": [
           {
@@ -45,11 +45,11 @@
     },
     {
       "url": "/data/CALENDAR.csv",
-      "tableSchema": {
+      
               "dialect":{
           "header":true
         },
-       
+      "tableSchema": { 
         "primaryKey": "service_id",
         "columns": [
           {
@@ -124,11 +124,11 @@
     },
     {
       "url": "/data/CALENDAR_DATES.csv",
-      "tableSchema": {
+      
               "dialect":{
           "header":true
         },
-      
+      "tableSchema": {
         "primaryKey": "service_id,date",
         "columns": [
           {
@@ -154,11 +154,11 @@
     },
     {
       "url": "/data/FEED_INFO.csv",
-      "tableSchema": {
+      
               "dialect":{
           "header":true
         },
-      
+      "tableSchema": {
         "primaryKey": "feed_publisher_name",
         "columns": [
           {
@@ -196,11 +196,11 @@
     },
     {
       "url": "/data/FREQUENCIES.csv",
-      "tableSchema": {
+      
               "dialect":{
           "header":true
         },
-      
+      "tableSchema": {
         "primaryKey": "trip_id,start_time",
         "foreignKey": [{
           "columnReference": "trip_id",
@@ -241,11 +241,11 @@
     },
     {
       "url": "/data/ROUTES.csv",
-      "tableSchema": {
+      
               "dialect":{
           "header":true
         },
-      
+      "tableSchema": {
         "primaryKey": "route_id",
         "foreignKey": [{
           "columnReference": "agency_id",
@@ -296,11 +296,11 @@
     },
     {
       "url": "/data/SHAPES.csv",
-      "tableSchema": {
+      
               "dialect":{
           "header":true
         },
-      
+      "tableSchema": {
         "primaryKey":"shape_id,shape_pt_sequence",
         "columns": [
           {
@@ -328,11 +328,11 @@
     },
     {
       "url": "/data/STOP_TIMES.csv",
-      "tableSchema": {
+      
               "dialect":{
           "header":true
         },
-      
+      "tableSchema": {
         "primaryKey": "trip_id,stop_id,arrival_time",
         "foreignKey": [{
           "columnReference": "trip_id",
@@ -391,11 +391,11 @@
     },
     {
       "url": "/data/STOPS.csv",
-      "tableSchema": {
+      
               "dialect":{
           "header":true
         },
-      
+      "tableSchema": {
         "primaryKey": "stop_id",
         "foreignKey": [{
           "columnReference": "parent_station",
@@ -459,11 +459,11 @@
     },
     {
       "url": "/data/TRIPS.csv",
-      "tableSchema": {
+      
               "dialect":{
           "header":true
         },
-      
+      "tableSchema": {
         "primaryKey": "trip_id",
         "foreignKey": [{
           "columnReference": "route_id",
