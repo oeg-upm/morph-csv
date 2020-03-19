@@ -43,3 +43,21 @@ Query execution time of queries over two open-source OBDA engines (Morph and Ont
 <img src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/execution/execution_bsbm_morph_180.png?raw=true" width="48%">
 <img src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/execution/execution_bsbm_morph_360.png?raw=true" width="48%">
 <p>
+
+### Query execution time in Ontop
+#### Madrid-GTFS-Bench
+<p align="center">
+<img src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/execution/execution_gtfs_ontop_1.png?raw=true" width="48%">
+<img src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/execution/execution_gtfs_ontop_10.png?raw=true" width="48%">
+<img src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/execution/execution_gtfs_ontop_100.png?raw=true" width="48%">
+<img src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/execution/execution_gtfs_ontop_1000.png?raw=true" width="48%">
+<p>
+
+#### BSBM
+<p align="center">
+<img src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/execution/execution_bsbm_ontop_45.png?raw=true" width="48%">
+<img src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/execution/execution_bsbm_ontop_90.png?raw=true" width="48%">
+<img src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/execution/execution_bsbm_ontop_180.png?raw=true" width="48%">
+<img src="https://github.com/oeg-upm/morph-csv/blob/evaluation/swj2020-si-webofdata/execution/execution_bsbm_ontop_360.png?raw=true" width="48%">
+<p>
+
