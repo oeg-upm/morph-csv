@@ -74,7 +74,7 @@ mappings:
     s: http://bio2rdf.org/ncbigene:$(GeneID)
     po:
       - [rdf:type, ncbiv:Resource]
-      - [ncbiv:go-term, $(GO_ID)]
+      - [ncbiv:go_term, $(GO_ID)]
       - p: ncbiv:gene-$(Category)-association
         o:
           - mapping: TMncbigene-gene2go2
@@ -108,9 +108,9 @@ mappings:
               parameters:
                 - [str1, $(GeneID)]
                 - [str2, $(GeneID)]
-      - [ncbiv:go-category, "ncbigene_vocabulary:$(Category)"]
-      - [ncbiv:go-term, $(GO_ID)]
-      - p: ncbiv:go-term
+      - [ncbiv:go_category, "ncbigene_vocabulary:$(Category)"]
+      - [ncbiv:go_term, $(GO_ID)]
+      - p: ncbiv:go_term
         o:
         - function: sql:concat
           parameters:
@@ -339,7 +339,7 @@ mappings:
     s: http://bio2rdf.org/wormbase_resource:$(gene_id)_$(GO_id)_$(evidence)
     po:
       - [rdf:type, wbv:Resource]
-      - [rdf:type, wbv:Gene-GO-Association]
+      - [rdf:type, wbv:Gene-go_Association]
       - [rdfs:label, "$(gene_id) $(GO_id) association [wormbase_resource:$(gene_id)_$(GO_id)_$(evidence)]"]
       - [dcterms:title, "$(gene_id) $(GO_id) association"]
       - [dcterms:identifier, "wormbase_resource:$(gene_id)_$(GO_id)_$(evidence)"]
