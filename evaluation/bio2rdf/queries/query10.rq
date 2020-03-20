@@ -14,7 +14,7 @@ WHERE {
 	?locus hgncv:locus-group ?locus_group 
 
 	FILTER (?locus_group="pseudogene")
-	FILTER (?status="Approved")
+	FILTER (?status="hgncv:Approved")
 
 
 }
