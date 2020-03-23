@@ -6,7 +6,16 @@ RUN npm i -g @rmlio/yarrrml-parser
 RUN npm -g install sparqljs
 RUN mkdir /morphcsv && mkdir /results && mkdir -p /data/bsbm && mkdir /mappings && mkdir /queries
 
-COPY . /morphcsv
+COPY bash /morphcsv/bash
+COPY clean /morphcsv/clean
+COPY evaluation /morphcsv/evaluation
+COPY normalization /morphcsv/normalization
+COPY selection /morphcsv/selection
+COPY schema_generation /morphcsv/schema_generation
+COPY utils /morphcsv/utils
+ADD requirements.txt /morphcsv/
+ADD morphcsv.py /morphcsv/
+ADD debug.py /morphcsv/
 
 RUN pip3 install -r /morphcsv/requirements.txt
 #RUN bash /morphcsv/evaluation/preparation.sh
