@@ -1,62 +1,65 @@
 
 import re
-
 def translate_fno_to_sql(functions):
     sql = ""
     for tm in functions:
         #if 'query' in functions[tm]
         for func in functions[tm]:
             parameters = func["params"]
-#            print('**********************************')
-#            print(str(parameters).replace("'", '"'))
-            column = func["column"].lower().replace('-', '_') + '_fn'
+            print('**********************************')
+            print(str(parameters).replace("'", '"'))
+            column = func["column"].lower().replace('-', '_')
             source = func["source"].split("/")[-1].split('.')[0].lower()
             sql += "ALTER TABLE \"" + source + "\" ADD COLUMN " + column + " VARCHAR;"
-            sql += "UPDATE \"" + source + "\" SET " + column + "=" + translate_function_to_sql(parameters, sql)
-            if(sql[-1] == ','):
-                sql = sql[:-1]
-            if(sql[-1] != ')'):
-                sql += ')'
+            sql += "UPDATE \"" + source + "\" SET " + column + "=" + parseFunction(parameters)
             sql += ';'
-
     return sql
-
-
-def translate_function_to_sql(parameters, sql):
-    function = translate_f_to_sql(parameters['function'])
-    sql = function + '('
-    for i,param in enumerate(parameters['parameters']):
+def parseFunction(func):
+    parsedFunc = recursiveFuncParser({}, func)
+    sql = translateToSql('',parsedFunc)
+    return sql
+def translateToSql(sql,parsedFunc):
+    for el in parsedFunc.keys():
+        sql += rmlFunc2sql(el) + '('
+        for param in parsedFunc[el]:
+            if(type(param) is dict):
+                sql += translateToSql('', param) + ','
+            else:
+                value = "'" + param "'"
+                col = re.findall('\$\(([^)]+)\)', value)
+                if(len(col) > 0):
+                    value = col[0].lower()
+                sql +=  value +  ','
+        sql = sql[:-1] + ')'
+        return sql
+def recursiveFuncParser(sql, func):
+    result = sql.copy()
+    result[func['function']] = []
+    for i,param in enumerate(func['parameters']):
         if(type(param) is dict):
-            sql += translate_function_to_sql(param['value'], sql)
-            if(sql[-1] == ')'):
-                sql += ','
-        else:
-            value = "'" + param[1]  + "'"
-            col = re.findall('\$\(([^)]+)\)', value)
-            if(len(col) > 0):
-                value = col[0].lower()
-            if i < len(parameters['parameters']) - 1:
-                sql += value + ','
-    sql += value + ')'
-    return sql
-
-def translate_f_to_sql(value):
-    if value == "sql:lower":
+            containedFunc =  recursiveFuncParser({}, param['value'])
+            result[func['function']].append(containedFunc)
+        elif type(param) is list:
+            result[func['function']].append(param[1])
+    return result
+def rmlFunc2sql(key):
+    sql = ''
+    if key == "sql:lower":
         sql = "lower"
-    elif value == "sql:upper":
+    elif key == "sql:upper":
         sql = "upper"
-    elif value == "sql:concat":
+    elif key == "sql:concat":
         sql = "concat"
-    elif value == "sql:ltrim":
+    elif key == "sql:ltrim":
         sql = "ltrim"
-    elif value == "sql:replace":
+    elif key == "sql:replace":
         sql = "replace"
-    elif value == "sql:left":
+    elif key == "sql:left":
         sql = "left"
-    elif value == "sql:right":
+    elif key == "sql:right":
         sql = "right"
-    elif value == "sql:substring":
+    elif key == "sql:substring":
         sql = "substr"
-    elif value == "sql:regexp_replace":
+    elif key == "sql:regexp_replace":
         sql = "regexp_replace"
     return sql
