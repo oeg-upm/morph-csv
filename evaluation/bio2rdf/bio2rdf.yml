@@ -468,7 +468,7 @@ mappings:
                 - [str1, $(Approved_Symbol)]
                 - [str2, $(Approved_Symbol)]
       - [hgncv:approved-name, $(Approved_Name)]
-      - p: hgncv:status
+      - p: hgncv:statusfn
         o:
         - function: sql:concat
           parameters:
