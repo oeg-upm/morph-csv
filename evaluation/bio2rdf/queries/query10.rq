@@ -9,7 +9,7 @@ WHERE {
 	?gene_sym rdf:type hgncv:Gene-Symbol ;
 		hgncv:approved-symbol ?app_symbol ;
 		hgncv:date-approved ?date_app ;
-		hgncv:status ?status ;
+		hgncv:statusfn ?status ;
 		hgncv:locus ?locus .
 	?locus hgncv:locus-group ?locus_group 
 
