@@ -1,0 +1,13 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX wbv: <http://bio2rdf.org/wormbase_vocabulary:>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX genagev: <http://bio2rdf.org/genage_vocabulary:>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT ?interaction ?gene ?title ?cosmid
+WHERE {
+	?interaction rdf:type wbv:Resource ;
+		wbv:involves ?gene .
+	?gene dcterms:title ?title ;
+		wbv:cosmid ?cosmid .
+}

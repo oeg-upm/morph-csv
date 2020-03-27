@@ -1,0 +1,557 @@
+{
+    "@context": [
+      "http://www.w3.org/ns/csvw"
+    ],
+    "tables": [
+      {
+        "url": "productfeature.csv",      
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+        "rowTitles":["nr","label","comment","publisher","publishDate"],
+
+          "primaryKey": "nr",
+          "columns": [
+            {
+              "datatype": "integer",
+              "null":"\\\\N",
+              "titles": "nr"
+            },
+            {
+              "datatype": "string",
+              "titles": "label"
+            },
+            {
+              "datatype": "string",
+              "titles": "comment"
+            },
+            {
+              "datatype": "integer",
+              "null":"\\\\N",
+              "titles": "publisher"
+            },
+            {
+              "datatype": "date",
+              "titles": "publishDate"
+            }
+          ]
+        }
+      },
+      {
+        "url": "producttype.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": { 
+          "primaryKey": "nr",
+          "rowTitles":["nr","label","comment","parent","publisher","publishDate"],
+          "columns": [
+            {
+              "datatype": "integer",
+              "null":"\\\\N",
+              "titles": "nr"
+            },
+            {
+              "datatype": "string",
+              "titles": "label"
+            },
+            {
+              "datatype": "string",
+              "titles": "comment"
+            },
+            {
+              "datatype": "integer",
+              "null":"\\\\N",
+              "titles": "parent"
+            },
+            {
+              "datatype": "integer",
+              "null":"\\\\N",
+              "titles": "publisher"
+            },
+            {
+              "datatype": "date",
+              "titles": "publishDate"
+            }
+          ]   
+        }
+      },
+      {
+        "url": "producer.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+          "primaryKey": "nr",
+          "rowTitles":["nr","label","comment","homepage","country","publisher","publishDate"],
+          "columns": [
+            {
+              "datatype": "integer",
+              "null":"\\\\N",
+              "titles": "nr"
+            },            {
+                "datatype": "string",
+                "titles": "label"
+            },
+            {
+                "datatype": "string",
+                "titles": "comment"
+            },
+            {
+                "datatype": "string",
+                "titles": "homepage"
+            },
+            {
+                "datatype": "string",
+                "titles": "country"
+            },
+            {
+                "datatype": "integer",
+                "null":"\\\\N",
+                "titles": "publisher"
+            },
+            {
+                "datatype": "date",
+                "titles": "publishDate"
+            }
+          ]
+        }
+      },
+      {
+        "url": "product.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+          "primaryKey": "nr",
+		  "foreignKey": [{
+				  "columnReference": "producer",
+				  "reference": {
+					"resource": "producer.csv",
+					"columnReference": "nr"
+				  }},
+				  {
+				  "columnReference": "publisher",
+				  "reference": {
+					"resource": "producer.csv",
+					"columnReference": "nr"
+				  }},
+				  {
+				  "columnReference": "nr",
+				  "reference": {
+					"resource": "productfeatureproduct.csv",
+					"columnReference": "product"
+				  }}
+			],
+          "rowTitles":["nr","label","comment","producer","propertyNum1","propertyNum2","propertyNum3","propertyNum4","propertyNum5","propertyNum6","propertyTex1","propertyTex2","propertyTex3","propertyTex4","propertyTex5","propertyTex6","publisher","publishDate"
+          ],
+          "columns": [
+            {
+                "titles":"nr",
+                "datatype":"integer",
+                "null":"\\\\N"
+                },
+                {
+                "titles":"label",
+                "datatype":"string"
+                },
+                {
+                "titles":"comment",
+                "datatype":"string"
+                },
+                {
+                "titles":"producer",
+                "datatype":"integer",
+                "null":"\\\\N"
+                },
+                {
+                "titles":"propertyNum1",
+                "datatype":"integer",
+                "null":"\\\\N"
+                },
+                {
+                "titles":"propertyNum2",
+                "datatype":"integer",
+                "null":"\\\\N"
+                },
+                {
+                "titles":"propertyNum3",
+                "datatype":"integer",
+                "null":"\\\\N"
+                },
+                {
+                "titles":"propertyNum4",
+                "datatype":"integer",
+                "null":"\\\\N"
+                },
+                {
+                "titles":"propertyNum5",
+                "datatype":"integer",
+                "null":"\\\\N"
+                },
+                {
+                "titles":"propertyNum6",
+                "datatype":"integer",
+                "null":"\\\\N"
+                },
+                {
+                "titles":"propertyTex1",
+                "datatype":"string"
+                },
+                {
+                "titles":"propertyTex2",
+                "datatype":"string"
+                },
+                {
+                "titles":"propertyTex3",
+                "datatype":"string"
+                },
+                {
+                "titles":"propertyTex4",
+                "datatype":"string"
+                },
+                {
+                "titles":"propertyTex5",
+                "datatype":"string"
+                },
+                {
+                "titles":"propertyTex6",
+                "datatype":"string"
+                },
+                {
+                "titles":"publisher",
+                "datatype":"integer",
+                "null":"\\\\N"
+                },
+                {
+                "titles":"publishDate",
+                "datatype":"date"
+                }
+          ]
+        }
+      },
+      {
+        "url": "producttypeproduct.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+          "rowTitles":["product","productType"],
+          "primaryKey": "product,productType",
+          "columns": [
+            {
+              "datatype": "integer",
+              "null":"\\\\N",
+              "titles": "product"
+            },
+            {
+              "datatype": "integer",
+              "null":"\\\\N",
+              "titles": "productType"
+            }
+          ]
+        }
+      },
+      {
+        "url": "productfeatureproduct.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+          "rowTitles":["product","productFeature"],
+          "primaryKey": "product,productFeature",
+		  "foreignKey": [{
+		  "columnReference": "productFeature",
+		  "reference": {
+			"resource": "productfeature.csv",
+			"columnReference": "nr"
+		  }
+		  }],
+          "columns": [
+            {
+              "datatype": "integer",
+              "null":"\\\\N",
+              "titles": "product"
+            },
+            {
+              "datatype": "integer",
+              "null":"\\\\N",
+              "titles": "productFeature"
+            }
+          ]
+        }
+      },
+      {
+        "url": "vendor.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+          "rowTitles":["nr","label","comment","homepage","country","publisher","publishDate"],
+          "primaryKey":"nr",
+		  "foreignKey": [{
+		  "columnReference": "publisher",
+		  "reference": {
+			"resource": "vendor.csv",
+			"columnReference": "nr"
+			  }
+			}],
+          "columns": [
+            {
+            "titles":"nr",
+            "datatype": "integer",
+            "null":"\\\\N"
+},
+            {
+            "titles":"label",
+            "datatype": "string"
+            },
+            {
+            "titles":"comment",
+            "datatype": "string"
+            },
+            {
+            "titles":"homepage",
+            "datatype": "string"
+            },
+            {
+            "titles":"country",
+            "datatype": "string"
+            },
+            {
+            "titles":"publisher",
+            "datatype": "integer",
+            "null":"\\\\N"          
+            },
+            {
+            "titles":"publishDate",
+            "datatype": "date"
+            }
+          ]
+        }
+      },
+      {
+        "url": "offer.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+          "primaryKey": "nr",
+		  "foreignKey": [{
+			  "columnReference": "product",
+			  "reference": {
+				"resource": "product.csv",
+				"columnReference": "nr"
+				  }
+				},
+			  {
+			  "columnReference": "producer",
+			  "reference": {
+				"resource": "producer.csv",
+				"columnReference": "nr"
+			  }},
+		      {
+			  "columnReference": "vendor",
+			  "reference": {
+				"resource": "vendor.csv",
+				"columnReference": "nr"
+			  }},
+			  {
+			  "columnReference": "publisher",
+			  "reference": {
+				"resource": "vendor.csv",
+				"columnReference": "nr"
+			  }
+			  }],
+          "rowTitles":["nr","product","producer","vendor","price","validFrom","validTo","deliveryDays","offerWebpage","publisher","publishDate"],
+          "columns": [
+            {
+            "titles": "nr",
+            "datatype": "integer",
+            "null":"\\\\N"          
+          },
+            {
+            "titles": "product",
+            "datatype": "integer",
+            "null":"\\\\N"
+          },
+            {
+            "titles": "producer",
+            "datatype": "integer",
+            "null":"\\\\N"
+          },
+            {
+            "titles": "vendor",
+            "datatype": "integer",
+            "null":"\\\\N"
+          },
+            {
+            "titles": "price",
+            "datatype": "double"
+            },
+            {
+            "titles": "validFrom",
+            "datatype": "date"
+            },
+            {
+            "titles": "validTo",
+            "datatype": "date"
+            },
+            {
+            "titles": "deliveryDays",
+            "datatype": "integer",
+            "null":"\\\\N"
+          },
+            {
+            "titles": "offerWebpage",
+            "datatype": "string"
+            },
+            {
+            "titles": "publisher",
+            "datatype": "integer",
+            "null":"\\\\N"
+          },
+            {
+            "titles": "publishDate",
+            "datatype": "date"
+            }
+          ]
+        }
+      },
+      {
+        "url": "person.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+          "primaryKey": "nr",
+          "rowTitles":["nr","name","mbox_sha1sum","country","publisher","publishDate"],
+          "columns": [
+            {
+                "datatype": "integer",
+                "null":"\\\\N",
+                "titles": "nr"
+            },
+            {
+              "datatype": "string",
+              "titles": "name"
+            },
+            {
+              "datatype": "string",
+              "titles": "mbox_sha1sum"
+            },
+            {
+              "datatype": "string",
+              "titles": "country"
+            },
+            {
+              "datatype": "integer",
+              "null":"\\\\N",
+              "titles": "publisher"
+            },
+            {
+              "datatype": "date",
+              "titles": "publishDate"
+            }
+          ]
+        }
+      },
+      {
+        "url": "review.csv",
+        "dialect":{
+          "header":false
+        },
+        "tableSchema": {
+          "primaryKey": "nr",
+		  "foreignKey": [{
+          "columnReference": "product",
+          "reference": {
+            "resource": "Product.csv",
+            "columnReference": "nr"
+          }},
+          {
+          "columnReference": "producer",
+          "reference": {
+            "resource": "producer.csv",
+            "columnReference": "nr"
+          }},
+		  {
+          "columnReference": "person",
+          "reference": {
+            "resource": "person.csv",
+            "columnReference": "nr"
+          }
+          }],
+          "rowTitles":["nr","product","producer","person","reviewDate","title","text","language","rating1","rating2","rating3","rating4","publisher","publishDate"],
+          "columns": [
+            {
+              "datatype": "integer",
+              "null":"\\\\N",
+              "titles": "nr"
+            },
+            {
+              "datatype": "integer",
+              "null":"\\\\N",
+              "titles": "product"
+            },
+            {
+              "datatype": "integer",
+              "null":"\\\\N",
+              "titles": "producer"
+            },
+            {
+              "datatype": "integer",
+              "null":"\\\\N",
+              "titles": "person"
+            },
+            {
+              "datatype": "date",
+              "titles": "reviewDate"
+            },
+            {
+              "datatype": "string",
+              "titles": "title"
+            },
+            {
+              "datatype": "string",
+              "titles": "text"
+            },
+            {
+              "datatype": "string",
+              "titles": "language"
+            },
+            {
+              "datatype": "integer",
+              "null":"\\\\N",
+              "titles": "rating1"
+            },
+            {
+              "datatype": "integer",
+              "titles": "rating2",
+              "null":"\\\\N"
+
+            },
+            {
+              "datatype": "integer",
+              "titles": "rating3",
+              "null":"\\\\N"
+            },
+            {
+              "datatype": "integer",
+              "titles": "rating4",
+              "null":"\\\\N"
+            },
+            {
+              "datatype": "integer",
+              "titles": "publisher"
+            },
+            {
+              "datatype": "date",
+              "titles": "publishDate"
+            }
+          ]
+        }
+      }
+    ]
+  }
