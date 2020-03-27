@@ -1,4 +1,4 @@
-# Morph-CSV 2.0
+# Morph-CSV 1.0
 
 Morph-CSV is an open source tool for querying tabular data sources using SPARQL. It exploits the information from the query, RML+FnO mappings and CSVW metadata to enhance the performance and completness of traditional OBDA systems (SPARQL-to-SQL translators). At this moment can be embebed in the top of any R2RML-compliant system.
 
@@ -14,7 +14,7 @@ Then choose one of the available options:
 - Using docker and docker-compose*:
     ```bash
     docker-compose up -d
-    docker exec -it morphcsv ./run-morph-csv.sh -c /configs/config-file.json -q /queries/query-file.rq
+    docker exec -it morphcsv python3 /morphcsv/morphcsv.py -c /configs/config-file.json -q /queries/query-file.rq
     ```
 
     *If you have any local resource you want to use copy it to the corresponding shared volume (folders: data, mappings, configs or queries)
@@ -35,7 +35,7 @@ The path of the data sources in CSVW and YARRRML anotations have to be the same.
 ```
 
 ## Evaluation
-Morph-CSV has ben tested over three use cases: BSBM, [Madrid-GTFS-Bench](https://github.com/oeg-upm/gtfs-bench/) and Bio2RDF project. You can get the resources used and the results obtained in the branch evaluation (available soon)
+Morph-CSV has ben tested over three use cases: BSBM, [Madrid-GTFS-Bench](https://github.com/oeg-upm/gtfs-bench/) and Bio2RDF project. You can get the resources used and the results obtained in the branch [evaluation](https://github.com/oeg-upm/morph-csv/tree/evaluation).
 
 
 ## Publications:
@@ -43,7 +43,6 @@ Morph-CSV has ben tested over three use cases: BSBM, [Madrid-GTFS-Bench](https:/
 - Oscar Corcho, Freddy Priyatna, David Chaves-Fraga: "Towards a New Generation of Ontology Based Data Access". In: Semantic Web Journal, 2019. [Online version](http://www.semantic-web-journal.net/content/towards-new-generation-ontology-based-data-access)
 - Ana Iglesias-Molina, David Chaves-Fraga, Freddy Priyatna, Oscar Corcho: "Enhancing the Maintainability of the Bio2RDF project Using Declarative Mappings". In: 12th International Semantic Web Applications and Tools for Health Care and Life Sciences Conference, 2019. [Online version](https://www.researchgate.net/publication/338717453_Enhancing_the_Maintainability_of_the_Bio2RDF_Project_Using_Declarative_Mappings)
 -  David Chaves-Fraga, Edna Ruckhaus, Freddy Priyatna, Maria-Esther Vidal, Oscar Corcho, (2020). Enhancing OBDA Query Translation over Tabular Data with Morph-CSV. arXiv preprint arXiv:2001.09052 [Pre-print version](https://www.researchgate.net/publication/338840456_Enhancing_OBDA_Query_Translation_over_Tabular_Data_with_Morph-CSV)
-
 
 
 
