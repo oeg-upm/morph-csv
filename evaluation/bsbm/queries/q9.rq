@@ -1,3 +1,0 @@
-PREFIX rev: <http://purl.org/stuff/rev#>
-DESCRIBE ?x
-WHERE { ?reviewer rev:reviewer ?x }
