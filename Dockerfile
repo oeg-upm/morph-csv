@@ -8,7 +8,7 @@ RUN mkdir /morphcsv && mkdir /results && mkdir -p /data/bsbm && mkdir /mappings 
 
 COPY bash /morphcsv/bash
 COPY clean /morphcsv/clean
-COPY evaluation /morphcsv/evaluation
+#COPY evaluation /morphcsv/evaluation
 COPY normalization /morphcsv/normalization
 COPY selection /morphcsv/selection
 COPY schema_generation /morphcsv/schema_generation

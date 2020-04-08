@@ -3,9 +3,7 @@ services:
 #Morph-csv  
   morphcsv:
     container_name: morphcsv
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+    image: oegdataintegration/morph-csv:1.0.1
     shm_size: '16gb'
     volumes:
       - ./data:/data
