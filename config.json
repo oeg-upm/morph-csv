@@ -1,0 +1,4 @@
+{
+    "csvw":"https://raw.githubusercontent.com/oeg-upm/morph-csv/evaluation/swj2020-si-webofdata/resources/gtfs/gtfs.csvw.json",
+    "mapping":"https://raw.githubusercontent.com/oeg-upm/morph-csv/evaluation/swj2020-si-webofdata/resources/gtfs/gtfs-csv.yaml"
+}

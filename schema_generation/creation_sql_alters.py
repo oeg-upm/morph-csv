@@ -25,7 +25,7 @@ def translateToSql(sql,parsedFunc):
             if(type(param) is dict):
                 sql += translateToSql('', param) + ','
             else:
-                value = "'" + param "'"
+                value = "'" + param + "'"
                 col = re.findall('\$\(([^)]+)\)', value)
                 if(len(col) > 0):
                     value = col[0].lower()

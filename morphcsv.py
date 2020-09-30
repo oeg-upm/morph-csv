@@ -7,7 +7,7 @@ from selection.yarrrml import *
 from utils.utilsresources import *
 from clean import csvFormatter as formatter
 from clean import csvwParser as csvwParser
-from formalization import formalization as formalizer
+from normalization import normalization as normalizer
 import schema_generation.from_mapping_to_sql as mapping2Sql
 import schema_generation.create_and_insert as insert
 import schema_generation.creation_sql_alters as sqlAlters
@@ -48,7 +48,7 @@ def main():
     csvw = csvwParser.insertRowTitles(csvw)
     csvw = formatter.csvwFilter(csvw,csvColumns)
     print("Formalizing the data to 2NF")
-    formalizedData = formalizer.addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery)
+    formalizedData = normalizer.addNormalizedTablesToCsvw(csvw, mapping, query, parsedQuery)
     csvw = formalizedData['csvw']
     query = formalizedData['query']
     mapping = formalizedData['mapping']
