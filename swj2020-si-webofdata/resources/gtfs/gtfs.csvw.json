@@ -172,6 +172,7 @@
           {
             "datatype": {
               "base": "date",
+              "null":"",
               "format": "yyyyMMdd"
             },
             "titles": "feed_start_date"
