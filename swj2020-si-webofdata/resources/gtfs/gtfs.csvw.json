@@ -14,30 +14,37 @@
         "columns": [
           {
             "datatype": "string",
+            "null":"",
             "titles": "agency_id"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "agency_url"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "agency_name"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "agency_timezone"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "agency_lang"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "agency_phone"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "agency_fare_url"
           }
         ]
@@ -54,10 +61,12 @@
         "columns": [
           {
             "datatype": "string",
+            "null":"",
             "titles": "service_id"
           },
           {
             "datatype": {
+              "null":"",
               "base": "boolean",
               "format": "1|0"
             },
@@ -65,6 +74,7 @@
           },
           {
             "datatype": {
+              "null":"",
               "base": "boolean",
               "format": "1|0"
             },
@@ -72,6 +82,7 @@
           },
           {
             "datatype": {
+              "null":"",
               "base": "boolean",
               "format": "1|0"
             },
@@ -79,6 +90,7 @@
           },
           {
             "datatype": {
+              "null":"",
               "base": "boolean",
               "format": "1|0"
             },
@@ -86,6 +98,7 @@
           },
           {
             "datatype": {
+              "null":"",
               "base": "boolean",
               "format": "1|0"
             },
@@ -93,6 +106,7 @@
           },
           {
             "datatype": {
+              "null":"",
               "base": "boolean",
               "format": "1|0"
             },
@@ -100,6 +114,7 @@
           },
           {
             "datatype": {
+              "null":"",
               "base": "boolean",
               "format": "1|0"
             },
@@ -107,6 +122,7 @@
           },
           {
             "datatype": {
+              "null":"",
               "base": "date",
               "format": "yyyyMMdd"
             },
@@ -114,6 +130,7 @@
           },
           {
             "datatype": {
+              "null":"",
               "base": "date",
               "format": "yyyyMMdd"
             },
@@ -133,10 +150,12 @@
         "columns": [
           {
             "datatype": "string",
+            "null":"",
             "titles": "service_id"
           },
           {
             "datatype": {
+              "null":"",
               "base": "date",
               "format": "yyyyMMdd"
             },
@@ -144,6 +163,7 @@
           },
           {
             "datatype": {
+              "null":"",
               "base": "boolean",
               "format": "1|2"
             },
@@ -163,10 +183,12 @@
         "columns": [
           {
             "datatype": "string",
+            "null":"",
             "titles": "feed_publisher_name"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "feed_publisher_url"
           },
           {
@@ -179,6 +201,7 @@
           },
           {
             "datatype": {
+              "null":"",
               "base": "date",
               "format": "yyyyMMdd"
             },
@@ -186,10 +209,12 @@
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "feed_lang"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "feed_version"
           }
         ]
@@ -213,10 +238,12 @@
         "columns": [
           {
             "datatype": "string",
+            "null":"",
             "titles": "trip_id"
           },
           {
             "datatype": {
+              "null":"",
               "base": "time",
               "format": "HH:MM:SS"
             },
@@ -224,6 +251,7 @@
           },
           {
             "datatype": {
+              "null":"",
               "base": "time",
               "format": "HH:MM:SS"
             },
@@ -231,10 +259,12 @@
           },
           {
             "datatype": "integer",
+            "null":"",
             "titles": "headway_secs"
           },
           {
             "datatype": "boolean",
+            "null":"",
             "titles": "exact_times"
           }
         ]
@@ -258,38 +288,47 @@
         "columns": [
           {
             "datatype": "string",
+            "null":"",
             "titles": "route_id"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "agency_id"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "route_short_name"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "route_long_name"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "route_desc"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "route_color"
           },
           {
             "datatype": "integer",
+            "null":"",
             "titles": "route_type"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "route_url"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "route_text_color"
           }
         ]
@@ -306,22 +345,27 @@
         "columns": [
           {
             "datatype": "string",
+            "null":"",
             "titles": "shape_id"
           },
           {
             "datatype": "decimal",
+            "null":"",
             "titles": "shape_pt_lat"
           },
           {
             "datatype": "decimal",
+            "null":"",
             "titles": "shape_pt_lon"
           },
           {
             "datatype": "integer",
+            "null":"",
             "titles": "shape_pt_sequence"
           },
           {
             "datatype": "decimal",
+            "null":"",
             "titles": "shape_dist"
           }
         ]
@@ -351,10 +395,12 @@
         "columns": [
           {
             "datatype": "string",
+            "null":"",
             "titles": "trip_id"
           },
           {
             "datatype": {
+              "null":"",
               "base": "time",
               "format": "HH:MM:SS"
             },
@@ -362,6 +408,7 @@
           },
           {
             "datatype": {
+              "null":"",
               "base": "time",
               "format": "HH:MM:SS"
             },
@@ -369,22 +416,27 @@
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "stop_id"
           },
           {
             "datatype": "integer",
+            "null":"",
             "titles": "stop_sequence"
           },
           {
             "datatype": "integer",
+            "null":"",
             "titles": "pickup_type"
           },
           {
             "datatype": "integer",
+            "null":"",
             "titles": "drop_off_type"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": [ "stop_headsign" ]
           }
         ]
@@ -408,30 +460,37 @@
         "columns": [
           {
             "datatype": "string",
+            "null":"",
             "titles": "stop_id"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "stop_name"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "stop_code"
           },
           {
             "datatype": "decimal",
+            "null":"",
             "titles": "stop_lat"
           },
           {
             "datatype": "decimal",
+            "null":"",
             "titles": "stop_lon"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "stop_url"
           },
           {
             "datatype": "integer",
+            "null":"",
             "titles": "wheelchair_boarding"
           },
           {
@@ -441,18 +500,22 @@
           },
           {
             "datatype": "integer",
+            "null":"",
             "titles": "location_type"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "stop_desc"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "zone_id"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "stop_timezone"
           }
         ]
@@ -494,39 +557,48 @@
         "columns": [
           {
             "datatype": "string",
+            "null":"",
             "titles": "route_id"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "trip_id"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "service_id"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "trip_short_name"
           },
           {
             "datatype": "integer",
+            "null":"",
             "titles": "direction_id"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "shape_id"
           },
           {
             "datatype": "integer",
+            "null":"",
             "titles": "wheelchair_accessible"
           },
           {
             "datatype": "string",
+            "null":"",
             "titles": "trip_headsign"
           }
           ,
           {
             "datatype": "string",
+            "null":"",
             "titles": "block_id"
           }
         ]
