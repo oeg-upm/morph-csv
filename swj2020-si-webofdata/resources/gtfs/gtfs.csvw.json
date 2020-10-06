@@ -265,6 +265,7 @@
           {
             "datatype": "boolean",
             "null":"",
+            "format": "1|0",
             "titles": "exact_times"
           }
         ]
