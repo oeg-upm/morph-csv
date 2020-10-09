@@ -90,7 +90,17 @@ def main():
     #----------------------END SCHEMA CREATION AND LOAD-----------------------------------
     print("Execution Times: ")
     print(json.dumps(measuredTimes, indent=2))
+    saveExecutionTimes(measuredTimes)
     print("Answering query")
+
+def saveExecutionTimes(data):
+    f = open('./tmp/execution_times.csv','w')
+    cols = ''.join(key + "," for key in data.keys())
+    cols = cols[:-1]
+    values = ''.join(str(data[key]) + "," for key in data.keys())
+    values = values[:-1] + '\n'
+    f.write(cols + '\n' + values)
+    f.close()
 
 if __name__ == "__main__":
     main()
