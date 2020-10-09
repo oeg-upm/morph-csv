@@ -131,8 +131,10 @@ def getDelimiter(table):
         colsToPrint = []
         for i in table['filteredRowTitles']:
             colsToPrint.append(rowTitles.index(i))
-        result['arg'] = ''.join('$' + str(i + 1) + '"\\",\\""' for i in sorted(colsToPrint))
-        result['arg'] ='"\\""'+ result['arg'][:-6] + '\\""'
+        result['arg'] = ''.join('$' + str(i + 1) + '","' for i in sorted(colsToPrint))
+        result['arg'] = result['arg'][:-3]           
+        # result['arg'] = ''.join('$' + str(i + 1) + '"\\",\\""' for i in sorted(colsToPrint))
+        # result['arg'] ='"\\""'+ result['arg'][:-6] + '\\""'
         return result
     except Exception as e:
         print('Falla GetDelimiter')
@@ -156,9 +158,19 @@ def getNullValues(table):
             title = getColTitle(col)
             index = rowTitles.index(title)
             arg = ''
+            nullValue = None
             if('null' in col.keys()):
-                arg = 'gsub(/^%s$/,\"null\",$%s);'%(str(col['null']), str(index+1))
-                result['data'].append({'col':'$%s'%(str(index+1)), 'value':col['null']})
+                nullValue = col['null']
+            elif('datatype' in col.keys() and 'null' in col['datatype'].keys()):
+                nullValue = col['datatype']['null']
+            if(nullValue != None):
+                nullSelector = "^%s$"%(nullValue)
+                newNullValue = '"null"'
+                if(index == len(rowTitles) - 1):
+                    nullSelector = "^%s$"%(nullValue)
+                    newNullValue = '"null"'
+                arg = 'gsub(/%s/,%s,$%s);'%(str(nullSelector),str(newNullValue), str(index+1))
+                result['data'].append({'col':'$%s'%(str(index+1)), 'value':nullValue})
             '''
             else:
                 arg = 'gsub(/^$/,\"null\",$%s);'%( str(index+1))
@@ -304,9 +316,16 @@ def getGsubPatterns(table):
     separator = getSeparatorScripts(table)['columns']
     result['split'] =  str(date['split'])
     nullValues = getNullValues(table)
+    booleanFormat = getBooleanFormat(table)
     #Replacing Real NullValues in date columns splitting
+    nullReplacer = ""
+    addingQuotes = ""
     for col in nullValues['data']:
-        result['split'] = result['split'].replace(str(col['col'])+'NULL',col['value'])
+        aux = str(result['split']).replace(col['col']+'NULL',col['value'])
+        booleanFormat = booleanFormat.replace(col['col']+'NULL',col['value'])
+        result['split'] = aux
+        #nullReplacer += 'gsub(/null/, "Null", %s);'%(col['col'])
+        #addingQuotes += 'if(%s!=Null){%s="\\""%s"\\""}'%(col['col'],col['col'],col['col'])
     #Substituting Date Col by his formatted array
     for el in date['print']:
         delimiter['arg'] = delimiter['arg'].replace(el['col'],' ' +  el['data'] + ' ')
@@ -315,9 +334,10 @@ def getGsubPatterns(table):
        delimiter['arg'] = delimiter['arg'].replace(col, 'NR')
     script = nullValues['fullArg']
     script += getDefaultEmptyStringValue(table)['arg']
-    script += getBooleanFormat(table)
+    script += booleanFormat
     result['gsub'] = 'gsub(/\\"/,"",$0);'
-    result['gsub'] += '%s$0=%s;gsub(/"null"/, "Null", $0);'%(str(script),str(delimiter['arg']))
+    #result['gsub'] += '%s %s %s $0=%s;'%(str(script),nullReplacer,addingQuotes,str(delimiter['arg']))
+    result['gsub'] += '%s $0=%s;gsub(/null/, "Null", $0);'%(str(script),str(delimiter['arg']))
     result['print'] = '$0'
     result['delimiter'] = delimiter['delimiter'].encode('unicode-escape').decode('ascii')
     return result
@@ -381,11 +401,11 @@ def getFilteredTitles(table):
     result = result[:-2]
     return result
 def orderAccordingToRowTitles(titles, rowT):
-		result = [rowTitles.index(title) for title in titles]
-		result = sorted(result)
-		for i,title in enumerate(result):
-				result[i] = rowTitles[result[i]]
-		return result
+    result = [rowTitles.index(title) for title in titles]
+    result = sorted(result)
+    for i,title in enumerate(result):
+            result[i] = rowTitles[result[i]]
+    return result
 
 def getSeparatorScripts(table):
     result = {'columns':[], 'script':''}
