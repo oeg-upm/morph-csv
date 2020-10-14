@@ -330,7 +330,6 @@ mappings:
               parameters:
                 - [str1, $(gene_id)]
                 - [str2, $(gene_id)]
-      - [wbv:evidence-type, $(evidence)]
       - [wbv:condition, $(variant)]
 
   TMwormbase-gene_association:
