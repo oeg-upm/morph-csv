@@ -533,7 +533,7 @@ mappings:
               parameters:
                 - [str1, $(Entrez_Gene_ID_supplied_by_NCBI)]
                 - [str2, $(GeneID)]
-      - [hgncv:x-omim, "http://bio2rdf.org/omim:$(OMIM_ID_Supplied_by_NCBI)"]
+      - [hgncv:x-omim, "http://bio2rdf.org/omim:$(OMIM_ID_supplied_by_NCBI)"]
       - [hgncv:x-refseq, "http://bio2rdf.org/refseq:$(RefSeq_Supplied_by_NCBI)"]
       - [hgncv:x-uniprot, "http://bio2rdf.org/uniprot:$(UniProt_ID_supplied_by_UniProt)"]
       - [hgncv:x-ensembl, "http://rdf.ebi.ac.uk/resource/ensembl/$(Ensembl_ID_supplied_by_Ensembl)"]
