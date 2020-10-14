@@ -850,7 +850,9 @@
               "titles": "Previous_Names",
               "separator": ", ",
               "null": "",
-              format:"\"(.*?)\""
+              "datatype":{
+                format:"\"(.*?)\""
+              }
             },
             {
               "titles": "Synonyms",
