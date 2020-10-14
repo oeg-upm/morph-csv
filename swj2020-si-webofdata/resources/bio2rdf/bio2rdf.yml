@@ -521,7 +521,7 @@ mappings:
       - [hgncv:gene-family-description, $(Gene_family_description)]
       - [hgncv:record-type, $(Record_Type)]
       - [hgncv:primary-id, $(Primary_IDs)]
-      - [hgncv:secondary-id, $(Secondary IDs)]
+      - [hgncv:secondary-id, $(Secondary_IDs)]
       - [hgncv:x-ccds, "http://bio2rdf.org/ccds:$(CCDS_IDs)"]
       - [hgncv:x-vega, "http://bio2rdf.org/vega:$(VEGA_IDs)"]
       - [hgncv:locus-specific-xref, $(Locus_Specific_Databases)]
