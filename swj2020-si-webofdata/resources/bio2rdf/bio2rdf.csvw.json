@@ -848,7 +848,7 @@
             },
             {
               "titles": "Previous_Names",
-              "separator": ", ",
+              "separator": "\\\", \\\"",
               "null": "",
               "datatype":{
                 format:"\"(.*?)\""
