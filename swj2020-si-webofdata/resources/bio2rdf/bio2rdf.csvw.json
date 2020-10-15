@@ -849,10 +849,7 @@
             {
               "titles": "Previous_Names",
               "separator": "\\\", \\\"",
-              "null": "",
-              "datatype":{
-                format:"\"(.*?)\""
-              }
+              "null": ""
             },
             {
               "titles": "Synonyms",
