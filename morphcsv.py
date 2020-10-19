@@ -84,13 +84,15 @@ def main():
     #----------------------SCHEMA CREATION AND LOAD-----------------------------------
     schemaCreationAndLoadTime = time.time()
     schema, alters = mapping2Sql.generate_sql_schema(csvw,mapping,mapping2Sql.decide_schema_based_on_query(mapping))
-    insert.create_and_insert(csvw, schema, sqlAlters.translate_fno_to_sql(functions), alters)
+    sqlFunctions =  sqlAlters.translate_fno_to_sql(functions)
+    insert.create_and_insert(csvw, schema,sqlFunctions, alters)
     measuredTimes['schemaCreationAndLoad'] = time.time() - schemaCreationAndLoadTime
-    print(str(schema).replace(';',';\n\n').replace(',',',\n'))
     #----------------------END SCHEMA CREATION AND LOAD-----------------------------------
     print("Execution Times: ")
     print(json.dumps(measuredTimes, indent=2))
     saveExecutionTimes(measuredTimes)
+    saveFile('tmp/annotations/schema.sql',str(schema + "\n"  + sqlFunctions +  "\n" +  alters).replace(";",";\n").replace(",",",\n"))
+    saveFile('tmp/annotations/csvw.min.json', json.dumps(csvw, indent=2))
     print("Answering query")
 
 def saveExecutionTimes(data):
@@ -102,5 +104,9 @@ def saveExecutionTimes(data):
     f.write(cols + '\n' + values)
     f.close()
 
+def saveFile(path, data):
+    f = open(path, 'w')
+    f.write(data)
+    f.close()
 if __name__ == "__main__":
     main()

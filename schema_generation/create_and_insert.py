@@ -9,7 +9,7 @@ def create_and_insert(csvw,sql, sqlFunctions, alters):
 #        con = psycopg2.connect(database="morphcsv", user="user", password="1234", host="127.0.0.1", port="5432")
 
         #Docker connection
-        con = psycopg2.connect(database="morphcsv", user="user", password="csv", host="172.18.0.2")
+        con = psycopg2.connect(database="morphcsv", user="user", password="csv", host="postgres")
     except:
         print("I am unable to connect to the database.")
         sys.exit()

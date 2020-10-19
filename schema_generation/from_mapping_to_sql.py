@@ -109,14 +109,13 @@ def generateSubjectIndexes(source, mapping, table, calculatedSelectivity):
 def calculateSelectivity(source, colName, table):
     if(not table is None):
         source = csvwParser.getUrl(table).split("/")[-1]
-        print('SOURCE: ' + source + 'COLNAME: ' + colName)
         awkCol = "$" + str(table['filteredRowTitles'].index(colName) + 1)
         path = 'tmp/csv/' + source
         selectivity = 0.0
         os.system('bash bash/selectivityCalculator.sh \'%s\' \'%s\''%(path, awkCol))
         with open('tmp/selectivity.tmp.txt', "r") as f:
             selectivity = float(f.readline())
-        print("The column %s from  %s has a selecivity of: %s"%(colName, source, selectivity))
+        writeSelectivity(colName, source, selectivity)
         return selectivity
     else:
         return 0
@@ -175,6 +174,7 @@ def translate_type_to_sql(dataType):
 
 def createIndexesOfTheMapping(mapping, csvw, calculatedSelectivity):
     indexes = ''
+    writeSelectivity("","",0,createFile=True)
     for el in mapping["mappings"]:
         tm = mapping["mappings"][el]
         source = tm["sources"][0]["table"].split("/")[-1].replace("~csv", "")
@@ -226,3 +226,13 @@ def createIndex(tableName, colName, selectivity):
         index += " INDEX IF NOT EXISTS %s_index_%s ON %s(%s);"%(colName, tableName, tableName, colName)
     return index
 
+def writeSelectivity(colName, source, selectivity, createFile=False):
+    if(not createFile):
+        data = "%s,%s,%s,%s,%s\n"%(colName, source, str(selectivity),str(selectivity > indexTrigger), str(selectivity == 1.0))
+        f = open('tmp/annotations/selectivityinfo.csv', 'a')
+        f.write(data)
+        f.close()
+    else:
+        f = open('tmp/annotations/selectivityinfo.csv','w')
+        f.write("column_name,source,selectivity,index,unique_index\n")
+        f.close()

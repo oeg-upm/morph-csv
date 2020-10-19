@@ -161,7 +161,7 @@ def getNullValues(table):
             nullValue = None
             if('null' in col.keys()):
                 nullValue = col['null']
-            elif('datatype' in col.keys() and 'null' in col['datatype'].keys()):
+            elif('datatype' in col.keys() and type(col['datatype']) is dict and 'null' in col['datatype'].keys()):
                 nullValue = col['datatype']['null']
             if(nullValue != None):
                 nullSelector = "^%s$"%(nullValue)
@@ -401,10 +401,11 @@ def getFilteredTitles(table):
     result = result[:-2]
     return result
 def orderAccordingToRowTitles(titles, rowT):
-    result = [rowTitles.index(title) for title in titles]
+    #print('Row Titles:\n ' + str(rowT))
+    result = [rowT.index(title) for title in titles]
     result = sorted(result)
     for i,title in enumerate(result):
-            result[i] = rowTitles[result[i]]
+            result[i] = rowT[result[i]]
     return result
 
 def getSeparatorScripts(table):
@@ -419,3 +420,43 @@ def getSeparatorScripts(table):
                 result['script'] += '''len%s=split($%s,data%s,\"%s\");n%s=\"\";for(i=1;i<=len%s;++i){n%s=n%s NR \"%s\" data%s[i];system(\"echo \" n%s \" >> tmp/csv/%s\");n%s=\"\"}$%s=NR;'''%(index,index,index,separator,index,index,index,index,delimiter,index,index,name,index, index)
                 result['columns'].append('$' + str(index))
     return result
+'''
+def getSeparatorScripts(table):
+    result = {'columns':[], 'script':''}
+    if(columnsChecker(table)):
+        for col in table['tableSchema']['columns']:
+            if(hasSeparator(col)):
+                index = str(getIndexOfCol(col, table) + 1)
+                name = str(getColTitle(col)).replace(' ','') + '.csv'
+                separator = str(getSeparatorValue(col))
+                removeQuotes = ""
+                if('"' in separator):
+                    separator = separator.replace('"','\\"')
+                    removeQuotes = getRemoveQuotesScript(index)
+                delimiter = str(getDelimiterValue(col))
+                result['script'] += '%s len%s=split($%s,data%s,\"%s\");n%s=\"\";for(i=1;i<=len%s;++i){n%s=n%s NR \"%s\" data%s[i];system(\"echo \\"\" n%s \"\\" >> tmp/csv/%s\");n%s=\"\"}$%s=NR;'%(
+                    removeQuotes,
+                    index,
+                    index,
+                    index,
+                    separator,
+                    index,
+                    index,
+                    index,
+                    index,
+                    delimiter,
+                    index,
+                    index,
+                    name,
+                    index,
+                    index)
+                result['columns'].append('$' + str(index))
+    print(result)
+    return result
+
+def getRemoveQuotesScript(col):
+    if(str(col)[0] != '$'):
+        col = '$' + str(col)
+    return 'gsub(/^\\"/, \\"\\",%s);gsub(/\\"$/,\\"\\",%s);'%(col, col)
+'''
+
