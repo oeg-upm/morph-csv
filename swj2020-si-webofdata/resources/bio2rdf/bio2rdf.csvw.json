@@ -849,7 +849,8 @@
             {
               "titles": "Previous_Names",
               "separator": "\", \"",
-              "null": ""
+              "null": "",
+              "format":"\"(.*?)\""
             },
             {
               "titles": "Synonyms",
