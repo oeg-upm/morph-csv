@@ -1,25 +1,28 @@
 import os
 import json
-from flask import Flask 
+from flask import Flask
 from flask import request
 
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.config.from_object("config.DevelopmentConfig")
 
 
 @app.route('/runmorphcsv', methods=["POST"])
 def runmorphcsv():
+    print(request.form)
     csvwLink = request.form['csvwLink']
     yarrrmlLink = request.form['yarrrmlLink']
     queryLink = request.form['queryLink']
     csvwFile = request.files['csvwFile']
     yarrrmlFile = request.files['yarrrmlFile']
-    queryFile = request.files['queryFile']    
+    queryFile = request.files['queryFile']
     yarrrmlError = False
     csvwError = False
     queryError = False
-    
+
     if(csvwLink== '' and csvwFile.filename == ''):
         print("Falta el CSVW")
         csvwError = True
@@ -40,8 +43,8 @@ def runmorphcsv():
         yarrrmlPath = yarrrmlLink
         if(yarrrmlFile.filename != ''):
             yarrrmlPath = '/data/annotation.json'
-            yarrrmlFile.save(csvwPath)            
-        
+            yarrrmlFile.save(csvwPath)
+
         if(queryFile.filename != ''):
             queryFile.save('/data/query.rq')
         else:
