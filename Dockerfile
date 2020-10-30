@@ -14,6 +14,7 @@ COPY selection /morphcsv/selection
 COPY schema_generation /morphcsv/schema_generation
 COPY utils /morphcsv/utils
 COPY morph-csv-interface/backend /server
+COPY morph-csv-interface/morph-rdb /morph-rdb
 ADD requirements.txt /morphcsv/
 ADD morphcsv.py /morphcsv/
 ADD debug.py /morphcsv/

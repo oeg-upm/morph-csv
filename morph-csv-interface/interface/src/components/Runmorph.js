@@ -1,11 +1,9 @@
 import React, {useState} from 'react'
-import { Row,Col,Form, Input, Button, Switch, Typography } from 'antd';
+import { Row,Col,Form, Input, Button, Switch, Typography, Divider} from 'antd';
 
 const {Text} = Typography
 
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 24 },
-};
+
 
 const RunMorph = (props) => {
     let [isCsvwFile, setIsCsvwFile] = useState(false);
@@ -16,21 +14,16 @@ const RunMorph = (props) => {
     let [yarrrmlFile, setYarrrmlFile] = useState(null)
     let [uploaded, setUploaded] = useState(false)
     let [uploading, setUploading] = useState(false)
-    let [runMorphRdb,setRunMorphRdb] = useState(true)
+    let [runMorphRdb,setRunMorphRdb] = useState(false)
     let [morphRdbData,setMorphRdbData] = useState({})
     const onFinish = values => {
-    console.log('Success:', values);
     uploadFiles(values)
   };
   function callBack(data){
     props.parentCallback(data,runMorphRdb)
   }
   const uploadFiles = (values) => {
-    values.yarrrmlLink = "https://raw.githubusercontent.com/oeg-upm/morph-csv/evaluation/swj2020-si-webofdata/resources/gtfs/gtfs-csv.yaml"
-    values.csvwLink = "https://raw.githubusercontent.com/oeg-upm/morph-csv/evaluation/swj2020-si-webofdata/resources/gtfs/gtfs.csvw.json"   
-    values.queryLink = "https://raw.githubusercontent.com/oeg-upm/morph-csv/evaluation/swj2020-si-webofdata/resources/gtfs/queries/original/q1.rq" 
     const formData = new FormData();
-    formData.append('runMorphRdb',runMorphRdb)
     if(isCsvwFile){
       formData.append("csvwFile", csvwFile)
     }else{
@@ -51,13 +44,14 @@ const RunMorph = (props) => {
   }
 
   return (
+    <>
     <Form
       name="basic"
       onFinish={onFinish}
     >
         <Row gutter={[16,16]}>
             <Col>
-                <Text>Would you rather upload a CSVW file?</Text> 
+                <Text>Do you prefer upload a CSVW file?</Text> 
             </Col>
             <Col>
                 <Switch value={isCsvwFile} onChange={() => {setIsCsvwFile(!isCsvwFile)}} />            
@@ -66,15 +60,15 @@ const RunMorph = (props) => {
         {
             !isCsvwFile?(
                 <Form.Item
-                label="csvwLink"
+                label="CSVW Url"
                 name="csvwLink"
               >
-                <Input value="https://raw.githubusercontent.com/oeg-upm/morph-csv/evaluation/swj2020-si-webofdata/resources/gtfs/gtfs.csvw.json"/>
+                <Input value=""/>
               </Form.Item>
             ):(
               <Form.Item label={(csvwFile)
                 ? `File ${csvwFile.name} selected`
-                : ' Choose File'
+                : ' Choose  File'
             }>
               <label className="custom-file-upload">
               <Input
@@ -92,7 +86,7 @@ const RunMorph = (props) => {
 
 <Row gutter={[16,16]}>
             <Col>
-                <Text>Would you rather upload a Yarrrml file?</Text> 
+                <Text>Do you prefer upload a YARRRML+FnO file?</Text> 
             </Col>
             <Col>
                 <Switch value={isYarrrmlFile} onChange={() => {setIsYarrrmlFile(!isYarrrmlFile)}} />            
@@ -102,7 +96,7 @@ const RunMorph = (props) => {
 {
             !isYarrrmlFile?(
                 <Form.Item
-                label="yarrrmlLink"
+                label="YARRRML+FnO Url"
                 name="yarrrmlLink"
                 value=""
               >
@@ -128,7 +122,7 @@ const RunMorph = (props) => {
         }
         <Row gutter={[16,16]}>
             <Col>
-                <Text>Would you rather upload a Query file?</Text> 
+                <Text>Do you prefer upload a Query file?</Text> 
             </Col>
             <Col>
                 <Switch value={isQueryFile} onChange={() => {setIsQueryFile(!isQueryFile)}} />            
@@ -137,7 +131,7 @@ const RunMorph = (props) => {
 {
             !isQueryFile?(
                 <Form.Item
-                label="queryLink"
+                label="Query Url"
                 name="queryLink"
               >
                 <Input />
@@ -145,7 +139,7 @@ const RunMorph = (props) => {
             ):(
               <Form.Item label={(queryFile)
                 ? `File ${queryFile.name} selected`
-                : ' Choose File'
+                : ' Choose  File'
             }>
               <label className="custom-file-upload">
               <Input
@@ -161,17 +155,24 @@ const RunMorph = (props) => {
             )
         }    
         <Row gutter={[16,16]}>
-          <Col><Text>Run Morphrdb?</Text></Col>
           <Col>
-          <Switch value={runMorphRdb} defaultChecked onChange={() => {setRunMorphRdb(!runMorphRdb)}} />            
+          <Text>Run Morph-RDB?</Text>
+          </Col>
+          <Col>
+          <Switch onChange={() => {setRunMorphRdb(!runMorphRdb);}} />            
+          </Col>
+          <Col>
+            <Text type="secondary"> This will return a table with the sparql result</Text>
           </Col>
         </Row>
-      <Form.Item {...tailLayout}>
+      <Form.Item >
         <Button type="primary" htmlType="submit">
           Submit
         </Button>
       </Form.Item>
     </Form>
+    <Divider></Divider>
+    </>
   );
 };
 export default RunMorph

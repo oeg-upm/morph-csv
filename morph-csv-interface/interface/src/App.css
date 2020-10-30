@@ -27,7 +27,12 @@
 .App-link {
   color: #61dafb;
 }
-
+.textJustify{
+  text-align: justify!important;
+}
+.imgFluid {
+  max-height: 60px;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -7,7 +7,7 @@ export default function Layout(props){
         justify="center"
         >
             <Col
-                lg={18}
+                lg={12}
                 md={20}
                 xs={22}
             >

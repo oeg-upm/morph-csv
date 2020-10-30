@@ -10,7 +10,7 @@ from flask_restful import Resource,Api,reqparse
 import zipfile
 import xmltodict
 import json
-app = Flask(__name__)
+app = Flask(__name__,static_folder='/server/public', static_url_path='/')
 api = Api(app)
 CORS(app)
 
@@ -25,7 +25,7 @@ def readxml(path):
     data = xmltodict.parse(open(path, encoding='utf-8').read())
     result = {'head':[],'data':[]}
     result['head'] = [{'title':var['@name'],'dataIndex':var['@name'], 'key':var['@name']} for var in data['sparql']['head']['variable']]
-    for i,b in enumerate(data['sparql']['results']['result'][:50]):
+    for i,b in enumerate(data['sparql']['results']['result']):
         aux = {}
         for r in b["binding"]:
             value = 'uri' if 'uri' in r.keys() else 'literal'
@@ -61,12 +61,14 @@ class Runmorphcsv(Resource):
         csvwFile = request.files['csvwFile'] if ('csvwFile' in request.files.keys()) else None
         yarrrmlFile = request.files['yarrrmlFile'] if ('yarrrmlFile' in request.files.keys()) else None
         queryFile = request.files['queryFile'] if ('queryFile' in request.files.keys()) else None
-        runMorphRdb = request.form['runMorphRdb']
+        runMorphRdb = 'runMorphRdb' in request.form.keys() 
         yarrrmlError = False
         csvwError = False
         addQuery = False
         qPath = " -f "
-
+        print("*"*10)
+        print("RunMorphRdb: " + str(runMorphRdb))
+        print("*"*10)
         if(csvwLink == '' and csvwFile == None):
             print("Falta el CSVW")
             csvwError = True
@@ -98,27 +100,30 @@ class Runmorphcsv(Resource):
             f.write(json.dumps(morphcsvConfig))
             f.close()
             try:
-                exitCode = os.system("bash /morphcsv/bash/runFromServer.sh '%s'"%qPath)
-                print("ExitCode: " + str(exitCode))
-                if(not runMorphRdb):
-                    data = getZipFile()
-                    return send_file(
+                os.system("bash /morphcsv/bash/runFromServer.sh '%s'"%qPath)
+                if(runMorphRdb):
+                    os.system("bash /morph-rdb/runMorphRdb.sh %s"%qPath)
+                    data = readxml(morphRdbResultPath)
+                    return(jsonify(data))
+                else:
+                   data = getZipFile()
+                   return send_file(
                         data,
                         mimetype='application/zip',
                         as_attachment=True,
                         attachment_filename='data.zip'
-                        )
-                else:
-                    exitCode = os.system("bash /morph-rdb/runMorphRdb.sh %s"%qPath)
-                    data = readxml(morphRdbResultPath)
-                    return(jsonify(data))
+                        )                    
 
             except:
                 return jsonify({'message':'Something goes wrong...'})
         else:
             return jsonify({'message':'Something goes wrong...'})
-api.add_resource(Runmorphcsv,API_URL)            
+api.add_resource(Runmorphcsv,API_URL)          
 
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
+    
 def run(host="0.0.0.0", port=5000):
     print("API_URL: " + API_URL)
     app.run(debug=False,host=host,port=port)
