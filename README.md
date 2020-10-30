@@ -5,25 +5,34 @@ Morph-CSV is an open source tool for querying tabular data sources using SPARQL.
 ![Morph-csv workflow](figures/architecture.png?raw=true "Morph-CSV workflow")
 
 ## How to use it?
-We provide two ways to run morph-csv: using the created docker image or directly run with Python3. First of all clone the repository:
+First of all clone the repository:
 ```bash
 git clone https://github.com/oeg-upm/morph-csv.git
 cd morph-csv
 ```
-Then choose one of the available options:
+The best way to run Morph-CSV is using its user interface, deployable with docker*:
+```bash
+ docker-compose up -d
+ ```
+An user interface as we show in the following image will be display in localhost:5000
+![Morph-csv demo](figures/demo.png?raw=true "Morph-CSV demo")
+
+If you prefer a CLI tool, we provide two ways to run morph-csv: using the created docker image or directly run with Python3:
 - Using docker and docker-compose*:
     ```bash
     docker-compose up -d
     docker exec -it morphcsv python3 /morphcsv/morphcsv.py -c /configs/config-file.json -q /queries/query-file.rq
     ```
 
-    *If you have any local resource you want to use copy it to the corresponding shared volume (folders: data, mappings, configs or queries)
+   
 
 - Using python3 (under a UNIX system):
     ```bash
     pip3 install -r requirements.txt
     python3 morphcsv.py -c path-to-config-file.json -q path-to-query-file.rq
     ```
+
+ *If you have any local resource you want to use copy it to the corresponding shared volume (folders: data, mappings, configs or queries)
 
 ### Define your config.json file
 The path of the data sources in CSVW and YARRRML anotations have to be the same.
