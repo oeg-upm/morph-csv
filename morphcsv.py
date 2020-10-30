@@ -19,14 +19,18 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--json_config", required=True, help="Input config file with yarrrml and csvw")
     parser.add_argument("-q", "--sparql_query", required=False, help="SPARQL query")
-    parser.add_argument("-n", "--naive", required=False, help="Morph-csv Naive mode")
+    parser.add_argument("-f", "--fullmode", action="store_true",required=False, help="Run Morph-csv in full mode, the executed query is SLECT * WHERE {?s ?p ?q}")
+    parser.add_argument("-d", "--download_dataset", action="store_true", required=False, help="Download the dataset from the mapping links")
 
     args = parser.parse_args()
-    if len(sys.argv) == 5:
+    if args.json_config is not None:
         try:
             with open(args.json_config, "r") as json_file:
                 config = json.load(json_file)
-            query_path = str(args.sparql_query)
+            if(args.sparql_query is None or args.fullmode):
+                query_path = '/morphcsv/tmp/fullMode.rq'
+            else:
+                query_path = str(args.sparql_query)
 
         except ValueError:
             print("No input the correct arguments, run pip3 morphcsv.py -h to see the help")
@@ -37,7 +41,8 @@ def main():
     print("Downloading mappings, data and query")
     maketmpdirs()
     downloadAnnotations(config)
-    #downloadCSVfilesFromRML()
+    if(args.download_dataset):
+        downloadCSVfilesFromRML()
     query = readQuery(query_path)
     sparqlQueryParser(query_path)
     parsedQuery = json.loads(open('tmp/annotations/sparql.json').read())    

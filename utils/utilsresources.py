@@ -42,7 +42,7 @@ def maketmpdirs():
     os.system("mkdir ./tmp/")
     os.system("mkdir ./tmp/annotations")
     os.system("mkdir ./tmp/csv")
-
+    os.system("mkdir ./tmp/csv/processeds")
 
 def removetmpdirs():
     os.system("rm -r ./tmp")
