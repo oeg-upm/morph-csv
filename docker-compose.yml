@@ -3,7 +3,10 @@ services:
 #Morph-csv  
   morphcsv:
     container_name: morphcsv
-    image: oegdataintegration/morph-csv:1.0.1
+#    image: oegdataintegration/morph-csv:1.0.1
+    build: .
+    ports: 
+      - "5000:5000"
     shm_size: '16gb'
     volumes:
       - ./data:/data

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/style.css">
+    <title>Morph-CSV Interface</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col mt-5">
+                <h1>Morph-CSV Interface</h1>
+            </div>
+        </div>
+        <form class="mt-5" action="http://localhost:5000/runmorphcsv" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="csvwLink">CSVW Link</label>
+              <input type="text" class="form-control" name="csvwLink" id="csvwLink" placeholder="Introduce your csvw file link">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" name="csvwFileLabel" id="csvwFileLabel">CSVW</span>
+                </div>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="csvwFile" id="csvwFile" aria-describedby="csvwFileLabel">
+                  <label class="custom-file-label" for="csvwFile">Choose your CSVW file</label>
+                </div>
+              </div>           
+            <div class="form-group">
+              <label for="yarrrmlLink">Yarrrml Mapping Link</label>
+              <input type="text" class="form-control" name="yarrrmlLink" id="yarrrmlLink" placeholder="Introduce your yarrrml file link">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" >YARRRML</span>
+                </div>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="yarrrmlFile" id="yarrrmlFile" aria-describedby="yarrrmlFile">
+                  <label class="custom-file-label" for="inputGroupFile01">Choose your Yarrrml file</label>
+                </div>
+              </div>         
+            <div class="form-group">
+                <label for="queryLink">Sparql Query Link</label>
+                <input type="text" class="form-control" name="queryLink" id="queryLink" placeholder="Introduce your sparql query file link">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Query</span>
+                </div>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="queryFile" id="queryFile" aria-describedby="sparqlQueryFileInput">
+                  <label class="custom-file-label" for="queryFile">Choose your Sparql Query file</label>
+                </div>
+              </div> 
+              <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+    </div>    
+<script src="./assets/bootstrap/jquery-3.5.1.slim.min.js"></script>
+<script src="./assets/bootstrap/popper.min.js"></script>
+<script src="./assets/bootstrap/bootstrap.min.js"></script>
+<script>
+    $('#csvwFile').on('change',function(){
+        //get the file name
+        var fileName = $(this).val();
+        //replace the "Choose a file" label
+        $(this).next('.custom-file-label').html(fileName);
+    })
+    $('#yarrrmlFile').on('change',function(){
+        //get the file name
+        var fileName = $(this).val();
+        //replace the "Choose a file" label
+        $(this).next('.custom-file-label').html(fileName);
+    })
+    $('#queryFile').on('change',function(){
+        //get the file name
+        var fileName = $(this).val();
+        //replace the "Choose a file" label
+        $(this).next('.custom-file-label').html(fileName);
+    })
+</script>
+</body>
+</html>

@@ -6,3 +6,4 @@ csvwParser/code/tmp/*
 tmp
 */__pycache__/*
 data/*
+results/
