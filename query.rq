@@ -1,5 +1,0 @@
-PREFIX gtfs: <http://vocab.gtfs.org/terms#>
-SELECT * WHERE {
-    ?freq a gtfs:Frequency;
-    gtfs:exactTimes ?o.
-}
