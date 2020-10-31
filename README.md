@@ -15,7 +15,7 @@ The best way to run Morph-CSV is using its user interface, deployable with docke
  docker-compose up -d
  ```
 An user interface as we show in the following image will be display in localhost:5000
-![Morph-csv demo](figures/demo.png?raw=true "Morph-CSV demo")
+![Morph-csv demo](figures/morph-csv.gif "Morph-CSV demo")
 
 If you prefer a CLI tool, we provide two ways to run morph-csv: using the created docker image or directly run with Python3:
 - Using docker and docker-compose*:
