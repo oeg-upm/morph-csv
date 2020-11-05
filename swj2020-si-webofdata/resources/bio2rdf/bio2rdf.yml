@@ -62,9 +62,9 @@ mappings:
     po:
       - [rdf:type, ncbiv:Resource]
       - [ncbiv:x-ensembl.gene, "ensembl:$(Ensembl_gene_identifier)"]
-      - [ncbiv:rna-accession.version, "genbank:$(RNA_nucleotide_accession.version)"]
+      - [ncbiv:rna-accession.version, "genbank:$(RNA_nucleotide_accession_version)"]
       - [ncbiv:x-ensembl.rna, "ensembl:$(Ensembl_rna_identifier)"]
-      - [ncbiv:protein-accession, "genbank:$(protein_accession.version)"]
+      - [ncbiv:protein-accession, "genbank:$(protein_accession_version)"]
       - [ncbiv:x-ensembl.protein, "ensembl:$(Ensembl_protein_identifier)"]
       - [rdfs:seeAlso, "http://rdf.ebi.ac.uk/resource/ensembl/$(Ensembl_gene_identifier)"]
 
@@ -248,7 +248,7 @@ mappings:
       - [genagev:promoter-accession, $(acc_promoter)]
       - [genagev:cds-accession, $(acc_cds)]
       - [genagev:orf-accession, $(acc_orf)]
-      - [genagev:article, "http://bio2rdf.org/pubmed:$(references)"]
+      - [genagev:article, "http://bio2rdf.org/pubmed:$(references_aux)"]
 
   TMwormbase-geneid:
     sources:
