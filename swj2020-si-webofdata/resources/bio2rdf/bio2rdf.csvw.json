@@ -422,7 +422,7 @@
               "null": ""
             },
             {
-              "titles": "references"
+              "titles": "references_aux"
             }
           ]
         }
@@ -567,7 +567,7 @@
             "symbol",
             "association",
             "GO_id",
-            "references",
+            "references_aux",
             "evidence",
             "dbxrefs",
             "ud1",
@@ -588,7 +588,7 @@
               "null": ""
             },
             {
-              "titles": "references",
+              "titles": "references_aux",
               "null": "",
               "separator": "|"
             },
