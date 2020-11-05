@@ -58,7 +58,7 @@
           "primaryKey": "GeneID,Vega_protein_identifier",
           "columns": [
             {
-              "titles": "RNA_nucleotide_accession.version",
+              "titles": "RNA_nucleotide_accession_version",
               "null": "-"
             },
             {
@@ -66,7 +66,7 @@
               "null": "-"
             },
             {
-              "titles": "protein_accession.version",
+              "titles": "protein_accession_version",
               "null": "-"
             },
             {
@@ -86,7 +86,7 @@
           "primaryKey": "Ensembl_protein_identifier",
           "columns": [
             {
-              "titles": "RNA_nucleotide_accession.version",
+              "titles": "RNA_nucleotide_accession_version",
               "null": "-"
             },
             {
@@ -94,7 +94,7 @@
               "null": "-"
             },
             {
-              "titles": "protein_accession.version",
+              "titles": "protein_accession_version",
               "null": "-"
             },
             {
