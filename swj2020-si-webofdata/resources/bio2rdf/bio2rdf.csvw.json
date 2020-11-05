@@ -68,10 +68,6 @@
             {
               "titles": "protein_accession_version",
               "null": "-"
-            },
-            {
-              "titles": "Vega_protein_identifier",
-              "null": "-"
             }
           ]
         }
