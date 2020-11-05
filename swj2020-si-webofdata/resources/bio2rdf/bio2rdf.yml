@@ -372,7 +372,7 @@ mappings:
                   - [sql:valueParam, $(GO_id)]
                   - [sql:valueParam2, ":"]
                   - [sql:valueParam3, "_"]
-      - [wbv:publication, $(references)]
+      - [wbv:publication, $(references_aux)]
 
   TMtaxonomy-division:
     sources:
