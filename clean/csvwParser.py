@@ -131,10 +131,10 @@ def getDelimiter(table):
         colsToPrint = []
         for i in table['filteredRowTitles']:
             colsToPrint.append(rowTitles.index(i))
-        result['arg'] = ''.join('$' + str(i + 1) + '","' for i in sorted(colsToPrint))
-        result['arg'] = result['arg'][:-3]           
-        # result['arg'] = ''.join('$' + str(i + 1) + '"\\",\\""' for i in sorted(colsToPrint))
-        # result['arg'] ='"\\""'+ result['arg'][:-6] + '\\""'
+#        result['arg'] = ''.join('$' + str(i + 1) + '","' for i in sorted(colsToPrint))
+#        result['arg'] = result['arg'][:-3]           
+        result['arg'] = ''.join('$' + str(i + 1) + '"\\",\\""' for i in sorted(colsToPrint))
+        result['arg'] ='"\\""'+ result['arg'][:-6] + '\\""'
         return result
     except Exception as e:
         print('Falla GetDelimiter')
@@ -308,7 +308,22 @@ def getColTitle(col):
         elif(str(col['title']) not in emptyValues):
             title = col['title']
     return title
+def getColumnFormat(table,colIndex):
+    colName = getRowTitles(table)[colIndex]
+    columnFormat = ""
+    col = getColumn(table,colName)
+    colFormat = ""
+    if("format" in col.keys()):
+        colFormat = col["format"]
+    return colFormat
 
+def getColumn(table, colName):
+    result = {}
+    for column in  table["columns"]:
+        if(column["title"] == colName):
+            result = column
+            break
+    return result
 def getGsubPatterns(table):
     result = {'split': '', 'gsub':'', 'print':'', 'delimiter':''}
     date = getDateFormat(table)
@@ -321,9 +336,9 @@ def getGsubPatterns(table):
     nullReplacer = ""
     addingQuotes = ""
     for col in nullValues['data']:
-        aux = str(result['split']).replace(col['col']+'NULL',col['value'])
+        splitAux = str(result['split']).replace(col['col']+'NULL',col['value'])
         booleanFormat = booleanFormat.replace(col['col']+'NULL',col['value'])
-        result['split'] = aux
+        result['split'] = splitAux
         #nullReplacer += 'gsub(/null/, "Null", %s);'%(col['col'])
         #addingQuotes += 'if(%s!=Null){%s="\\""%s"\\""}'%(col['col'],col['col'],col['col'])
     #Substituting Date Col by his formatted array
@@ -331,13 +346,13 @@ def getGsubPatterns(table):
         delimiter['arg'] = delimiter['arg'].replace(el['col'],' ' +  el['data'] + ' ')
     #Substituting FN2 cols by the NR
     for col in separator:
-       delimiter['arg'] = delimiter['arg'].replace(col, 'NR')
+       delimiter['arg'] += delimiter['arg'].replace(col, 'NR')
     script = nullValues['fullArg']
     script += getDefaultEmptyStringValue(table)['arg']
     script += booleanFormat
     result['gsub'] = 'gsub(/\\"/,"",$0);'
     #result['gsub'] += '%s %s %s $0=%s;'%(str(script),nullReplacer,addingQuotes,str(delimiter['arg']))
-    result['gsub'] += '%s $0=%s;gsub(/null/, "Null", $0);'%(str(script),str(delimiter['arg']))
+    result['gsub'] += '%s $0=%s;gsub(/"null"/, "Null", $0);'%(str(script),str(delimiter['arg']))
     result['print'] = '$0'
     result['delimiter'] = delimiter['delimiter'].encode('unicode-escape').decode('ascii')
     return result
@@ -350,7 +365,7 @@ def getIndexOfCol(col, table, title=""):
 
 def getSeparatorValue(col):
     try:
-        return str(col['separator'].encode('unicode-escape').decode('ascii'))
+        return str(col['separator'].encode('unicode-escape').decode('ascii')).replace('"','\\"')
     except:
         return 'NONE'
 
@@ -417,7 +432,11 @@ def getSeparatorScripts(table):
                 name = str(getColTitle(col)).replace(' ','') + '.csv'
                 separator = str(getSeparatorValue(col))
                 delimiter = str(getDelimiterValue(col))
-                result['script'] += '''len%s=split($%s,data%s,\"%s\");n%s=\"\";for(i=1;i<=len%s;++i){n%s=n%s NR \"%s\" data%s[i];system(\"echo \" n%s \" >> tmp/csv/%s\");n%s=\"\"}$%s=NR;'''%(index,index,index,separator,index,index,index,index,delimiter,index,index,name,index, index)
+                colFormat = str(col["format"]) if "format" in col.keys() else ""
+                if(len(colFormat) > 0 and colFormat[0] == '"' and colFormat[-1] == '"'):
+                    result['script'] += getRemoveQuotesScript(index)
+                #result['script'] += '''len%s=split($%s,data%s,\"%s\");n%s=\"\";for(i=1;i<=len%s;++i){gsub(/\\(/,"",data%s[i]);gsub(/\\)/,"",data%s[i]);n%s=n%s NR + 1 "%s" "\\""data%s[i]"\\"";system("echo " n%s " >> tmp/csv/%s);n%s=\"\"}$%s=NR;'''%(index,index,index,index,index,separator,index,index,index,index,delimiter,index,index,name,index, index)
+                result['script'] += '''len%s=split($%s,data%s,"%s");n%s="";for(i=1;i<=len%s;++i){n%s=n%s NR "%s" "\\"" data%s[i] "\\" \\n";printf(n%s) >> "tmp/csv/%s";n%s=""}$%s=NR;'''%(index,index,index,separator,index,index,index,index,delimiter,index,index,name,index, index)
                 result['columns'].append('$' + str(index))
     return result
 '''
@@ -453,10 +472,8 @@ def getSeparatorScripts(table):
                 result['columns'].append('$' + str(index))
     print(result)
     return result
-
+'''
 def getRemoveQuotesScript(col):
     if(str(col)[0] != '$'):
         col = '$' + str(col)
-    return 'gsub(/^\\"/, \\"\\",%s);gsub(/\\"$/,\\"\\",%s);'%(col, col)
-'''
-
+    return 'gsub(/^"/, "",%s);gsub(/"$/,"",%s);'%(col, col)
