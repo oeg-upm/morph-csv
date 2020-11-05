@@ -106,7 +106,6 @@
           "header": false
         },
         "tableSchema": {
-          "primaryKey": "GeneID,GO_ID",
           "foreignKey": [
             {
               "columnReference": "GeneID",
@@ -206,7 +205,6 @@
             },
             {
               "titles": "Other_designations",
-              "separator": "\\|",
               "null": "-"
             },
             {
