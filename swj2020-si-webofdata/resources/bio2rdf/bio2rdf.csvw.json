@@ -55,7 +55,6 @@
           "header": true
         },
         "tableSchema": {
-          "primaryKey": "GeneID,Vega_protein_identifier",
           "columns": [
             {
               "titles": "RNA_nucleotide_accession_version",
