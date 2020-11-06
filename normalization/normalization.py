@@ -51,7 +51,8 @@ def createNewTable(table,col):
                 {
                     'titles':'value',
                     'null':csvwParser.getNullValue(col),
-                    'datatype':csvwParser.getDataType(col)
+                    'datatype':csvwParser.getDataType(col),
+		    'format':'\\".*?\\"'
                     }
                 ],
             'primarykey':'id,value'

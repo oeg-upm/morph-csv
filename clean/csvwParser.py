@@ -346,7 +346,7 @@ def getGsubPatterns(table):
         delimiter['arg'] = delimiter['arg'].replace(el['col'],' ' +  el['data'] + ' ')
     #Substituting FN2 cols by the NR
     for col in separator:
-       delimiter['arg'] += delimiter['arg'].replace(col, 'NR')
+       delimiter['arg'] = delimiter['arg'].replace(col, 'NR')
     script = nullValues['fullArg']
     script += getDefaultEmptyStringValue(table)['arg']
     script += booleanFormat
@@ -436,7 +436,7 @@ def getSeparatorScripts(table):
                 if(len(colFormat) > 0 and colFormat[0] == '"' and colFormat[-1] == '"'):
                     result['script'] += getRemoveQuotesScript(index)
                 #result['script'] += '''len%s=split($%s,data%s,\"%s\");n%s=\"\";for(i=1;i<=len%s;++i){gsub(/\\(/,"",data%s[i]);gsub(/\\)/,"",data%s[i]);n%s=n%s NR + 1 "%s" "\\""data%s[i]"\\"";system("echo " n%s " >> tmp/csv/%s);n%s=\"\"}$%s=NR;'''%(index,index,index,index,index,separator,index,index,index,index,delimiter,index,index,name,index, index)
-                result['script'] += '''len%s=split($%s,data%s,"%s");n%s="";for(i=1;i<=len%s;++i){n%s=n%s NR "%s" "\\"" data%s[i] "\\" \\n";printf(n%s) >> "tmp/csv/%s";n%s=""}$%s=NR;'''%(index,index,index,separator,index,index,index,index,delimiter,index,index,name,index, index)
+                result['script'] += '''len%s=split($%s,data%s,"%s");n%s="";for(i=1;i<=len%s;++i){gsub(/%%/,"%%%%",data%s[i]);n%s=n%s NR "%s" "\\"" data%s[i] "\\" \\n";printf(n%s) >> "tmp/csv/%s";n%s=""}$%s=NR;'''%(index,index,index,separator,index,index,index,index,index,delimiter,index,index,name,index, index)
                 result['columns'].append('$' + str(index))
     return result
 '''
