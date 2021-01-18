@@ -1,6 +1,6 @@
 # Morph-CSV
 
-Morph-CSV is an open source tool for querying tabular data sources using SPARQL. It exploits the information from the query, RML+FnO mappings and CSVW metadata to enhance the performance and completness of traditional OBDA systems (SPARQL-to-SQL translators). At this moment can be embebed in the top of any R2RML-compliant system.
+Morph-CSV is an open source tool for querying tabular data sources using SPARQL. It exploits the information from the query, RML+FnO mappings and CSVW metadata to enhance the performance and completness of traditional OBDA systems (SPARQL-to-SQL translators). At this moment can be embebed in the top of any R2RML-compliant system. For detail information, watch the [introductory video about Morph-CSV](https://www.youtube.com/watch?v=bW9Wj7KUuGY)
 
 ![Morph-csv workflow](figures/architecture.png?raw=true "Morph-CSV workflow")
 
@@ -52,7 +52,7 @@ Morph-CSV has ben tested over three use cases: BSBM, [Madrid-GTFS-Bench](https:/
 - Oscar Corcho, Freddy Priyatna, David Chaves-Fraga: "Towards a New Generation of Ontology Based Data Access". Semantic Web Journal, 2020. [Online version](http://www.semantic-web-journal.net/content/towards-new-generation-ontology-based-data-access)
 - Ana Iglesias-Molina, David Chaves-Fraga, Freddy Priyatna, Oscar Corcho: "Enhancing the Maintainability of the Bio2RDF project Using Declarative Mappings". 12th International Semantic Web Applications and Tools for Health Care and Life Sciences Conference, 2019. [Online version](https://www.researchgate.net/publication/338717453_Enhancing_the_Maintainability_of_the_Bio2RDF_Project_Using_Declarative_Mappings)
 -  David Chaves-Fraga, Edna Ruckhaus, Freddy Priyatna, Maria-Esther Vidal, Oscar Corcho: Enhancing OBDA Query Translation over Tabular Data with Morph-CSV. arXiv preprint arXiv:2001.09052 [Pre-print version](https://www.researchgate.net/publication/338840456_Enhancing_OBDA_Query_Translation_over_Tabular_Data_with_Morph-CSV)
--  David Chaves-Fraga, Luis Pozo, Jhon Toledo, Edna Ruckhaus, Oscar Corcho: Morph-CSV: Virtual Knowledge Graph Access for Tabular Data. 19th International Semantic Web Conference P&D, 2020. 
+-  David Chaves-Fraga, Luis Pozo, Jhon Toledo, Edna Ruckhaus, Oscar Corcho: Morph-CSV: Virtual Knowledge Graph Access for Tabular Data. 19th International Semantic Web Conference P&D, 2020. [Online](http://ceur-ws.org/Vol-2721/paper478.pdf)
 
 
 
