@@ -13,7 +13,7 @@ rfc3986==1.1.0
 scandir==1.9.0
 six==1.11.0
 uritemplate==3.0.0
-PyYaml==5.1
+PyYaml==5.4
 rdflib==4.2.2
 psycopg2-binary==2.8.4
 Flask==1.1.2
