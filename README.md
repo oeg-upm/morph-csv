@@ -4,6 +4,21 @@ Morph-CSV is an open source tool for querying tabular data sources using SPARQL.
 
 ![Morph-csv workflow](figures/architecture.png?raw=true "Morph-CSV workflow")
 
+
+
+**Citing Morph-CSV**: If you used Morph-CSV in your work, please cite as:
+
+```bib
+@article{chaves2021enhancing,
+  author    = {Chaves{-}Fraga, David and Ruckhaus, Edna and Priyatna, Freddy and Vidal, Maria{-}Esther and Corcho, Oscar},
+  title     = {Enhancing Virtual Ontology Based Access over Tabular Data with Morph-CSV},
+  journal   = {Semantic Web},
+  year      = {2021},
+  doi       = {https://doi.org/10.3233/SW-210432},
+  publisher = {IOS Press}
+}
+```
+
 ## How to use it?
 First of all clone the repository:
 ```bash
@@ -61,5 +76,5 @@ Ontology Engineering Group - Data Integration:
 - [Luis Pozo](https://github.com/w0xter) ([luis.pozo@upm.es](mailto:luis.pozo@upm.es))
 
 ## Acknowledgements
-The development of morph-CSV has been supported by the Spanish national project Datos 4.0
+The development of Morph-CSV has been supported by the Spanish national project Datos 4.0
 
