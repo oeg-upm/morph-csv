@@ -1,6 +1,6 @@
 # Morph-CSV
 
-Morph-CSV is an open source tool for querying tabular data sources using SPARQL. It exploits the information from the query, RML+FnO mappings and CSVW metadata to enhance the performance and completness of traditional OBDA systems (SPARQL-to-SQL translators). At this moment can be embebed in the top of any R2RML-compliant system. For detail information, watch the [introductory video about Morph-CSV](https://www.youtube.com/watch?v=bW9Wj7KUuGY)
+Morph-CSV is an open source tool for querying tabular data sources using SPARQL. It exploits the information from the query, RML+FnO mappings and CSVW metadata to enhance the performance and completness of traditional OBDA systems (SPARQL-to-SQL translators). At this moment can be embebed in the top of any R2RML-compliant system. For detail information, watch the [introductory video about Morph-CSV](https://www.youtube.com/watch?v=bW9Wj7KUuGY). IF you have any related question on how to create RML+FnO or CSVW annotations, please ask to the [W3C Community Group on Knowledge Graph Construction](https://github.com/kg-construct/rml-questions/discussions)
 
 ![Morph-csv workflow](figures/architecture.png?raw=true "Morph-CSV workflow")
 
