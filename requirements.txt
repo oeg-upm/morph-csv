@@ -4,7 +4,7 @@ csvw==1.4.2
 isodate==0.6.0
 itsdangerous==1.1.0
 MarkupSafe==1.0
-numpy==1.16.1
+numpy==1.22.0
 pandas==0.24.1
 pathlib2==2.3.2
 python-dateutil==2.7.5
